@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="generator" content="VoodooPad">
+	<title>Calibration</title>
+	<link rel="stylesheet" href="helpfiles_style.css" type="text/css" media="screen"/>
+</head>
+
+<body>
+	<div id="helpTopBar">
+		Calibration
+		<div id="homelink">
+			<a href="index.html" title="Touché Help">Touché Help</a>
+			| <a href="helpindex.html" title="Index">Index</a>
+		</div>
+	</div>
+	
+	<div id="wrapper">
+	   <h1>Calibration</h1>
+    
+	   <div class="main">
+	       <style type="text/css">
+p.p1 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande}
+p.p2 {margin: 0.0px 0.0px 9.0px 0.0px; text-align: center; line-height: 16.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande; min-height: 15.0px}
+ul.ul1 {list-style-type: disc}
+</style>
+
+<p class="p1">Calibrating your setup is necessary, so that Touché can transform your touches from camera to space to screen space. Without calibration (or with bad calibration data), the touches might not show up correctly under your fingers.</p>
+<p class="p1">Touché calibration method is robust against having the camera tilted or rotated in respect to the multitouch surface, as well as moving at towards or away from the surface.</p>
+<p class="p1">If you are using an input source for the first time, Touché will prompt you to calibrate your setup. If you switch to a different capturing resolution, Touché can work without being recalibrated, but will recommend to calibrate the new resolution indepentdently, so that it doesn't have to be resampled from existing calibration data for another resolution.</p>
+<p class="p1">Depending on your particular setup, you might want to use more or less calibration points than default (rule of thumb: The worse the orientation difference between the surface and your camera, the more calibration points you want). For information on how to change the amount of calibration points, see "<a href="camera%20to%20screen%20coordinate%20conversion%20settings.html">Camera to screen coordinate conversion settings</a>".</p>
+<p class="p1">You can <b>start the calibration tool</b> be by clicking the "Calibrate..." menu item in the "Setup" menu.</p>
+<p class="p2"><img src="calibration.calibration.jpg" alt="calibration.jpg"></p>
+<p class="p1">When you start the calibration tool, you will see a white spot in the top left corner of your screen. To calibrate your setup, simply touch the white spot on the multitouch surface and keep your finger down until the white spot moves on to the next calibration point. Then, lift your finger off the surface and touch the white spot again at its new position. Repeat this process until the calibration is finished.</p>
+<p class="p1">Try to touch the white spot nicely in the middle. Calibration points that you have already calibrated will be marked with a red dot.</p>
+<p class="p1">Please do not drag your finger across the screen during calibration, but lift it off, move it anove the white spot and touch down. Dragging your finger will not work (Touché will not register your touch if you drag to the next calibration point, rather than lifting your finger and touching it down again).</p>
+<p class="p1">Do not touch the surface anywhere else than where the white spot is during calibration. If you touch the surface somewhere else, Touché will register your touch and save its coordinates for this calibration point. If you introduce "wrong" calibration data this way, the results of the camera to screen coordinate conversion will be greatly distorted!</p>
+<p class="p1">If you made a mistake during the calibration, cancel the current calibration run and start a new one by clicking the "Calibrate" menu item in the "Setup" menu.</p>
+<p class="p1">If you want to cancel the current calibration run, you can either hit the "Escape" key if the tool is running on your main screen, or you can right-click (control-click) the entry for the Touché calibration tool in the <a href="tracking%20client%20list.html">tracking client list</a> in order to quit the current calibration run via the contextual menu that will appear (see "<a href="telling%20multitouch%20applications%20to%20quit.html">Telling multitouch applications to quit</a>").</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Related topics</b></p>
+<ul class="ul1">
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="configuring%20touch%C3%A9.html">Configuring Touché</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="testing%20your%20setup.html">Testing your setup</a></li>
+</ul>
+
+	   </div>
+	</div>
+</body>
+</html>
+

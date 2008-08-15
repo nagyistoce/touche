@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="generator" content="VoodooPad">
+	<title>libdc1394 input settings</title>
+	<link rel="stylesheet" href="helpfiles_style.css" type="text/css" media="screen"/>
+</head>
+
+<body>
+	<div id="helpTopBar">
+		libdc1394 input settings
+		<div id="homelink">
+			<a href="index.html" title="Touché Help">Touché Help</a>
+			| <a href="helpindex.html" title="Index">Index</a>
+		</div>
+	</div>
+	
+	<div id="wrapper">
+	   <h1>libdc1394 input settings</h1>
+    
+	   <div class="main">
+	       <style type="text/css">
+p.p1 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande}
+p.p2 {margin: 0.0px 0.0px 9.0px 0.0px; text-align: center; line-height: 16.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande; min-height: 15.0px}
+ul.ul1 {list-style-type: disc}
+</style>
+
+<p class="p1">libdc1394 is a high-performance library for capturing video data from 1394 (FireWire) cameras. It is compatible with all FireWire cameras that support the IIDC specification, such as <a href="addressbook://A773AE1E-5977-492E-9E2F-9B20B2846F39:ABPerson">Apple</a>'s original external iSight.</p>
+<p class="p1">Additionally, libdc1394 allows you to fiddle with additional parameters that QuickTime does not expose, such as focus or brightness settings.</p>
+<p class="p2"><img src="libdc1394%20input%20settings.libdc1394_settings.jpg" alt="libdc1394_settings.jpg"></p>
+<p class="p1">The following settings are available:</p>
+<p class="p3"><br></p>
+<p class="p1"><b>libdc1394 Camera</b></p>
+<p class="p1">This menu is used to choose the IIDC-compatible video device that should be used for capturing. If you have multiple cameras connected, be sure to select the one you want to use here.</p>
+<p class="p1">If the selected camera is not available when Touché starts the tracking pipeline in the future, it will automatically fall back to a default. If no video device compatible with libdc1394 is connected at all, an error will be reported.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Capturing Resolution</b></p>
+<p class="p1">You can choose the resolution of frames captured by the camera here. Larger settings can provide for better tracking accuracy, but tend to be (a lot) slower than smaller settings. 320x240 is a good default choice for older Macs, whereas powerful Macs should also be doing fine with higher settings.</p>
+<p class="p1">Note that you can only select resolutions that your camera supports natively. If you want to use a resolution other than the ones supported by your camera, you will have to use a <a href="quicktime%20input%20settings.html">QuickTime input source</a> instead, which can resample captured frames to whichever resolution you want.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Maximum FPS</b></p>
+<p class="p1">Touché will try to process frames as soon as they are delivered by the camera, dropping frames only if it can't keep up with the camera's pace. Thusly, cameras with high framerates might cause Touché to use up most of the available CPU time, leaving little for the actual multitouch apps running next to the Touché tracker.</p>
+<p class="p1">Therefore, you can set a cap on the framerate. If the camera delivers frames at faster rates than this setting, Touché will start dropping frames in order to process no more frames per second than what you have selected here, saving CPU time.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Minimum blob diameter</b></p>
+<p class="p1">You can specify a minimum size for the blobs that should be recognized and tracked. Any blobs that have a diameter below this threshold will be disregarded. This is useful in order to ignore stray white pixels or very small blobs that you do not intend to track.</p>
+<p class="p1">Note that this setting is given in percentage of the capture resolution in order to be independent from the actual resolution. As an example, if you have selected 1% here, Touché will only track blobs with diameters above 3.2 for 320x240, above 6.4 for 640x480, etc.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Enable blob tracking</b></p>
+<p class="p1">If this checkbox is unchecked, Touché will not deliver the frames to the tracker, but will still capture video data and apply filters. This is useful during the setup process, where you do not want to track blobs yet, while you are still fiddling with the filter settings.</p>
+<p class="p1">Be sure to have this checkbox checked before starting a multitouch app.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Focus, Shutter, Gain, Brightness, Exposure</b></p>
+<p class="p1">With libdc1394, these camera parameters can be manipulated. Note that not all of these features might be supported by your camera. If a feature is not supported to be manipulated, the corresponding interface elements will be disabled.</p>
+<p class="p1">Additionally, some cameras support an "Auto" mode for certain features. For example, <a href="addressbook://A773AE1E-5977-492E-9E2F-9B20B2846F39:ABPerson">Apple</a>'s original external iSight supports an "Auto" mode for the focus setting. Note that if a camera doesn't support an "Auto" mode for a feature, the checkbox will be disabled. Checking the box will set the feature to "Auto" mode, whereas unchecking the box will return the feature to manual control.</p>
+<p class="p1">Note that some features might not have a visible effect on the camera image (This is due to the camera claiming to support the features when it actually doesn't).</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Related topics</b></p>
+<ul class="ul1">
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="core%20image%20filter%20settings.html">Core Image filter settings</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="supported%20input%20devices.html">Supported input devices</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tracking%20pipeline%20configuration.html">Tracking pipeline configuration</a></li>
+</ul>
+
+	   </div>
+	</div>
+</body>
+</html>
+

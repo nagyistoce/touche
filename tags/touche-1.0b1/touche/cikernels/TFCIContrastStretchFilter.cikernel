@@ -1,0 +1,48 @@
+/*
+ *  TFCIContrastStretchFilter.cikernel
+ *
+ *  Created by Georg Kaindl on 03/06/08.
+ *
+ *  Copyright (C) 2008 Georg Kaindl
+ *
+ *  This file is part of Touché.
+ *
+ *  Touché is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of
+ *  the License, or (at your option) any later version.
+ *
+ *  Touché is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with Touché. If not, see <http: *www.gnu.org/licenses/>.
+ *
+ */
+
+kernel vec4 contrastStretch(sampler Image, sampler maxPixel, sampler minPixel, float minIntensitiesDistance)
+{
+	vec4 pixMax = sample(maxPixel, samplerCoord(maxPixel));
+	vec4 pixMin = sample(minPixel, samplerCoord(minPixel));
+	vec4 pix = sample(Image, samplerCoord(Image));
+	
+	pix.rgb = (distance(pixMax.rgb, pixMin.rgb) >= minIntensitiesDistance) ? ((pix.rgb - pixMin.rgb) / (pixMax.rgb - pixMin.rgb)) : pix.rgb;
+
+	return pix;
+}
+
+kernel vec4 contrastStretchWithGivenMinMax(sampler Image, vec3 MinVal, vec3 InvMinMaxDiff)
+{
+	vec4 pix = sample(Image, samplerCoord(Image));
+	pix.rgb = (pix.rgb - MinVal) * InvMinMaxDiff;
+	
+	return pix;
+}
+
+kernel vec4 contrastBoost(sampler Image, float multiply, float subtract)
+{
+	vec4 pix = sample(Image, samplerCoord(Image));
+	return clamp(((pix - subtract) * multiply), 0.0, 1.0);
+}

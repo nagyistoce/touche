@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="generator" content="VoodooPad">
+	<title>Wii Remote input settings</title>
+	<link rel="stylesheet" href="helpfiles_style.css" type="text/css" media="screen"/>
+</head>
+
+<body>
+	<div id="helpTopBar">
+		Wii Remote input settings
+		<div id="homelink">
+			<a href="index.html" title="Touché Help">Touché Help</a>
+			| <a href="helpindex.html" title="Index">Index</a>
+		</div>
+	</div>
+	
+	<div id="wrapper">
+	   <h1>Wii Remote input settings</h1>
+    
+	   <div class="main">
+	       <style type="text/css">
+p.p1 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande}
+p.p2 {margin: 0.0px 0.0px 9.0px 0.0px; text-align: center; line-height: 16.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande; min-height: 15.0px}
+ul.ul1 {list-style-type: disc}
+</style>
+
+<p class="p1">You can use a Wii Remote as an infrared camera with Touché by selecting "Wii Remote" as blob input source. Note that your Mac needs to support Bluetooth for this feature, and that Bluetooth has to be activated.</p>
+<p class="p1">Once you have selected "Wii Remote" input or once you start Touché with the Wii Remote input source, you will be prompted to hold down the 1 and 2 buttons simultaneously on the Wii Remote you wan't to connect. Keep these buttons held down until Touché has connected to the Wii Remote.</p>
+<p class="p1">While trying to connect a Wii Remote, be sure not to have a running Wii console nearby, since it will jump onto the Wii Remote's signal faster than Touché can and will thusly prevent Touché from connecting to the Wii Remote.</p>
+<p class="p1">Note that the Wii Remote's IR tracking mechanism can only track up to 4 touches at the same time. If you want to use more touch points, you will have to use a camera source instead (see "<a href="tracking%20pipeline%20configuration.html">Tracking pipeline configuration</a>").</p>
+<p class="p2"><img src="wii%20remote%20input%20settings.wii_remote_settings.jpg" alt="wii_remote_settings.jpg"></p>
+<p class="p1">The following settings are available for the Wii Remote input source:</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Maximum FPS</b></p>
+<p class="p1">Touché will try to process IR data as soon as it is delivered by the Wii Remote, dropping data only if it can't keep up with the Wii Remote's pace. Since the Wii Remote has a very high framerate, it might cause Touché to use up most of the available CPU time to process IR data, leaving little for the actual multitouch apps running next to the Touché tracker.</p>
+<p class="p1">Therefore, you can set a cap on the framerate. If the Wii Remote delivers data at faster rates than this setting, Touché will start dropping data in order to process no more frames per second than what you have selected here, saving CPU time.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Enable blob tracking</b></p>
+<p class="p1">If this checkbox is unchecked, Touché will not deliver the frames to the tracker, but will still capture IR data notmally. This is useful during the setup process, where you do not want to track blobs yet, while you are still fiddling with the other settings.</p>
+<p class="p1">Be sure to have this checkbox checked before starting a multitouch app.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Related topics</b></p>
+<ul class="ul1">
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="supported%20input%20devices.html">Supported input devices</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tracking%20pipeline%20configuration.html">Tracking pipeline configuration</a></li>
+</ul>
+
+	   </div>
+	</div>
+</body>
+</html>
+

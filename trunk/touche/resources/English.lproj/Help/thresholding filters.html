@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="generator" content="VoodooPad">
+	<title>Thresholding filters</title>
+	<link rel="stylesheet" href="helpfiles_style.css" type="text/css" media="screen"/>
+</head>
+
+<body>
+	<div id="helpTopBar">
+		Thresholding filters
+		<div id="homelink">
+			<a href="index.html" title="Touché Help">Touché Help</a>
+			| <a href="helpindex.html" title="Index">Index</a>
+		</div>
+	</div>
+	
+	<div id="wrapper">
+	   <h1>Thresholding filters</h1>
+    
+	   <div class="main">
+	       <style type="text/css">
+p.p1 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande}
+p.p2 {margin: 0.0px 0.0px 9.0px 0.0px; text-align: center; line-height: 16.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande; min-height: 15.0px}
+ul.ul1 {list-style-type: disc}
+</style>
+
+<p class="p1">The thresholding filters are used to convert the preprocessed video frames into a binary image (either "black" or "white" on every pixel) which can then be passed on to postprocessing before being fed into the blob tracking stage. In the ideal case, the whole video frame should be black after the thresholding, except for the blobs, which should be white.</p>
+<p class="p2"><img src="thresholding%20filters.filters_thresholding.jpg" alt="filters_thresholding.jpg"></p>
+<p class="p1">Thresholding is a crucial step in the pipeline and is strongly affected by how the image looks after the preprocessing stage: If the blobs are too weak or if there's too much bright noise, it might be hard to threshold the picture in a meaningful way. In this case, it's advisable to go back to the preprocessing stage and play with the settings in order to get a better picture, or to try to enhance the thresholded picture in the postprocessing stage.</p>
+<p class="p1">The following filters and options are available in the thresholding stage:</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Convert to grayscale</b></p>
+<p class="p1">Color information can be used to reduce image noise while converting the picture to grayscale. This is possible because the infrared camera doesn't have a notion of color anyway, so discarding the color information does not introduce any information loss. The idea is to discard color in a way that color noise goes away, while the bright, white blobs will be kept.</p>
+<p class="p1">While this filter works very well to reduce overall color noise, it is especially suitable to get rid of color noise amplified by the contrast enhancement process of the preprocessing stage. If contrast enhancement generates lots of color artifacts for you, give this filter a try!</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Type of grayscale conversion</b></p>
+<p class="p1">If "Convert to grayscale" is enabled, one of the three options <b>Minimum RGB channel, Product of RGB channels </b>or<b> Product² of RGB channels</b> has to be selected. This is the type of operation used to compute a grayscale value from the color channel intensities.</p>
+<p class="p1">"Minimum RGB channel" will set a pixel's grayscale intensity to the minimum of the three color channels, "Product of RGB channels" will set the grayscale intensity to the product of the the three channels, and "Product² of RGB channels" will set it to the square of the product. All three operations emphasize those pixels in which all three color channels are high (i.e. the white pixels), but the strength of this effect is lowest with the "Minimum RGB channel" setting and highest with the "Product² of RGB channels" setting.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Blob luminance threshold</b></p>
+<p class="p1">The blob tracker operates on binary images, where each pixel is either "On" (white) or "Off" (black). The color or grayscale image on which the previous filters operate is transformed into a binary image by applying a luminance threshold to each pixel. Every pixel whose luminance falls below the threshold is set to "Off" (black), all other pixels are set to "On" (white).</p>
+<p class="p1">Setting this slider to a position where any touches on the multitouch surface are preserved, but all other pixels are set to black would be the ideal case. Try fiddling with this slider until you can generate an image with as little "wrong" pixels as possible and where the touch blobs are preserved.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Related topics</b></p>
+<ul class="ul1">
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="postprocessing%20filters.html">Postprocessing filters</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="preprocessing%20filters.html">Preprocessing filters</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tracking%20pipeline%20configuration.html">Tracking pipeline configuration</a></li>
+</ul>
+
+	   </div>
+	</div>
+</body>
+</html>
+

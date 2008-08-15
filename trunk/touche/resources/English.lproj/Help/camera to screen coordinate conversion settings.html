@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="generator" content="VoodooPad">
+	<title>Camera to screen coordinate conversion settings</title>
+	<link rel="stylesheet" href="helpfiles_style.css" type="text/css" media="screen"/>
+</head>
+
+<body>
+	<div id="helpTopBar">
+		Camera to screen coordinate conversion settings
+		<div id="homelink">
+			<a href="index.html" title="Touché Help">Touché Help</a>
+			| <a href="helpindex.html" title="Index">Index</a>
+		</div>
+	</div>
+	
+	<div id="wrapper">
+	   <h1>Camera to screen coordinate conversion settings</h1>
+    
+	   <div class="main">
+	       <style type="text/css">
+p.p1 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande}
+p.p2 {margin: 0.0px 0.0px 9.0px 0.0px; text-align: center; line-height: 16.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande; min-height: 15.0px}
+ul.ul1 {list-style-type: disc}
+</style>
+
+<p class="p1">The camera to screen coordinate conversion is necessary in order to compute a screen position for each blob detected by the camera. This is done by providing reference points with known screen and camera positions during a <a href="calibration.html">calibration</a> process.</p>
+<p class="p2"><img src="camera%20to%20screen%20coordinate%20conversion%20settings.cam2screen_conversion.jpg" alt="cam2screen_conversion.jpg"></p>
+<p class="p1">The following options are available for the camera to screen coordinate converter:</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Amount of calibration points per screen axis</b></p>
+<p class="p1">The setting of this configuration item only comes into effect when you do a new calibration process. It specifies the amount of calibration points per axis that will make up the calibration grid.</p>
+<p class="p1">As a rule of thumb, the larger the disparity between the blobs as they appear on the camera and the screen, the more calibration points should be used. Usually, between 3 and 8 points per axis yield very good results, although more points can be necessary in some cases. If the camera view resembles the screen closely, 2 points per axis might also suffice.</p>
+<p class="p1">Note that large amounts of calibration points can make the coordinate conversion process slower during normal operation, although this effect should be negligible.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Transform blob bounding boxes</b></p>
+<p class="p1">If this checkbox is on, the converter will also transform the bounding box of each touch to screen dimensions. You can turn this off if you are not interested in using the bounding boxes, which will yield better performance.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Transform blob edge vertices</b></p>
+<p class="p1">If this item is set, the converter will transform the vertices of the detected blob edges to screen dimensions. If you are not intending to use the edge vertices, you can turn this off in order to enhance performance.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Related topics</b></p>
+<ul class="ul1">
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="calibration.html">Calibration</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tracking%20pipeline%20configuration.html">Tracking pipeline configuration</a></li>
+</ul>
+
+	   </div>
+	</div>
+</body>
+</html>
+

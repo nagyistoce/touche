@@ -36,6 +36,10 @@
 		6E239BB60D1C2A9A00054844 /* TFLabelFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E239BB50D1C2A9A00054844 /* TFLabelFactory.m */; };
 		6E239BBF0D1C386700054844 /* TFBlobSimpleDistanceLabelizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E239BBE0D1C386700054844 /* TFBlobSimpleDistanceLabelizer.m */; };
 		6E239BC20D1C423E00054844 /* TFBlobLabelizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E239BC10D1C423E00054844 /* TFBlobLabelizer.m */; };
+		6E2DC3DE0E5874FE00409C0E /* TFSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC3DD0E5874FE00409C0E /* TFSocket.m */; };
+		6E2DC5770E5A075B00409C0E /* TFIPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC5760E5A075B00409C0E /* TFIPSocket.m */; };
+		6E2DC57A0E5A07AD00409C0E /* TFIPStreamSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC5790E5A07AD00409C0E /* TFIPStreamSocket.m */; };
+		6E2DC57D0E5A07D000409C0E /* TFIPDatagramSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC57C0E5A07D000409C0E /* TFIPDatagramSocket.m */; };
 		6E31C0740DD49B9D0005829C /* TFClientCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E31C0730DD49B9D0005829C /* TFClientCell.m */; };
 		6E34D9170DC396E00040AF2D /* TFTouchTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E34D9160DC396E00040AF2D /* TFTouchTestController.m */; };
 		6E421F710D58CB6B0009839C /* TFTrackingServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E421F700D58CB6B0009839C /* TFTrackingServer.m */; };
@@ -169,6 +173,8 @@
 		6EE60D680DDF14FE0069A40E /* TFScreenPrefsMeasureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60D670DDF14FE0069A40E /* TFScreenPrefsMeasureView.m */; };
 		6EE60E5B0DDF2E350069A40E /* MiscPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EE60E590DDF2E350069A40E /* MiscPreferences.xib */; };
 		6EE60E9C0DDF2EFF0069A40E /* TFMiscPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60E9B0DDF2EFF0069A40E /* TFMiscPreferencesController.m */; };
+		6EED5D110E5C73CF00375CC0 /* TFIPTCPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5D100E5C73CF00375CC0 /* TFIPTCPSocket.m */; };
+		6EED5D150E5C758500375CC0 /* TFIPUDPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5D140E5C758500375CC0 /* TFIPUDPSocket.m */; };
 		6EEDEF5D0D32812D00B29263 /* TFOpenGLQTView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */; };
 		6EF130A20D32AC3200D807B8 /* TFPipelineSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF130A10D32AC3200D807B8 /* TFPipelineSetupController.m */; };
 		6EF5E3EA0DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF5E3E90DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m */; };
@@ -195,6 +201,15 @@
 				6E93943C0DC7763D00D21ADC /* WiiRemote.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6EE22FFF0E57373B00724A19 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -245,6 +260,14 @@
 		6E239BBE0D1C386700054844 /* TFBlobSimpleDistanceLabelizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlobSimpleDistanceLabelizer.m; sourceTree = "<group>"; };
 		6E239BC00D1C423E00054844 /* TFBlobLabelizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBlobLabelizer.h; sourceTree = "<group>"; };
 		6E239BC10D1C423E00054844 /* TFBlobLabelizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlobLabelizer.m; sourceTree = "<group>"; };
+		6E2DC3DC0E5874FE00409C0E /* TFSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFSocket.h; sourceTree = "<group>"; };
+		6E2DC3DD0E5874FE00409C0E /* TFSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFSocket.m; sourceTree = "<group>"; };
+		6E2DC5750E5A075B00409C0E /* TFIPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPSocket.h; sourceTree = "<group>"; };
+		6E2DC5760E5A075B00409C0E /* TFIPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPSocket.m; sourceTree = "<group>"; };
+		6E2DC5780E5A07AD00409C0E /* TFIPStreamSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPStreamSocket.h; sourceTree = "<group>"; };
+		6E2DC5790E5A07AD00409C0E /* TFIPStreamSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPStreamSocket.m; sourceTree = "<group>"; };
+		6E2DC57B0E5A07D000409C0E /* TFIPDatagramSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPDatagramSocket.h; sourceTree = "<group>"; };
+		6E2DC57C0E5A07D000409C0E /* TFIPDatagramSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPDatagramSocket.m; sourceTree = "<group>"; };
 		6E31C0720DD49B9D0005829C /* TFClientCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFClientCell.h; sourceTree = "<group>"; };
 		6E31C0730DD49B9D0005829C /* TFClientCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFClientCell.m; sourceTree = "<group>"; };
 		6E34D9150DC396E00040AF2D /* TFTouchTestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTouchTestController.h; sourceTree = "<group>"; };
@@ -421,6 +444,10 @@
 		6EE60E5A0DDF2E350069A40E /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MiscPreferences.xib; sourceTree = "<group>"; };
 		6EE60E9A0DDF2EFF0069A40E /* TFMiscPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFMiscPreferencesController.h; sourceTree = "<group>"; };
 		6EE60E9B0DDF2EFF0069A40E /* TFMiscPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFMiscPreferencesController.m; sourceTree = "<group>"; };
+		6EED5D0F0E5C73CF00375CC0 /* TFIPTCPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPTCPSocket.h; sourceTree = "<group>"; };
+		6EED5D100E5C73CF00375CC0 /* TFIPTCPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPTCPSocket.m; sourceTree = "<group>"; };
+		6EED5D130E5C758500375CC0 /* TFIPUDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPUDPSocket.h; sourceTree = "<group>"; };
+		6EED5D140E5C758500375CC0 /* TFIPUDPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPUDPSocket.m; sourceTree = "<group>"; };
 		6EEDEF5B0D32812D00B29263 /* TFOpenGLQTView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOpenGLQTView.h; sourceTree = "<group>"; };
 		6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOpenGLQTView.m; sourceTree = "<group>"; };
 		6EF130A00D32AC3200D807B8 /* TFPipelineSetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPipelineSetupController.h; sourceTree = "<group>"; };
@@ -629,7 +656,26 @@
 			name = Labeling;
 			sourceTree = "<group>";
 		};
-		6E421F6E0D58CB440009839C /* Client-Server Communication */ = {
+		6E2DC3DB0E5874D000409C0E /* TCPIP */ = {
+			isa = PBXGroup;
+			children = (
+				6E2DC3DC0E5874FE00409C0E /* TFSocket.h */,
+				6E2DC3DD0E5874FE00409C0E /* TFSocket.m */,
+				6E2DC5750E5A075B00409C0E /* TFIPSocket.h */,
+				6E2DC5760E5A075B00409C0E /* TFIPSocket.m */,
+				6E2DC5780E5A07AD00409C0E /* TFIPStreamSocket.h */,
+				6E2DC5790E5A07AD00409C0E /* TFIPStreamSocket.m */,
+				6E2DC57B0E5A07D000409C0E /* TFIPDatagramSocket.h */,
+				6E2DC57C0E5A07D000409C0E /* TFIPDatagramSocket.m */,
+				6EED5D0F0E5C73CF00375CC0 /* TFIPTCPSocket.h */,
+				6EED5D100E5C73CF00375CC0 /* TFIPTCPSocket.m */,
+				6EED5D130E5C758500375CC0 /* TFIPUDPSocket.h */,
+				6EED5D140E5C758500375CC0 /* TFIPUDPSocket.m */,
+			);
+			name = TCPIP;
+			sourceTree = "<group>";
+		};
+		6E2DC55C0E5991B000409C0E /* DO */ = {
 			isa = PBXGroup;
 			children = (
 				6E421F6F0D58CB6B0009839C /* TFTrackingServer.h */,
@@ -641,6 +687,15 @@
 				6EB40A5D0D9859750077B998 /* TFServerTouchQueue.m */,
 				6EB40A600D9863630077B998 /* TFTrackingClientHandlingController.h */,
 				6EB40A610D9863630077B998 /* TFTrackingClientHandlingController.m */,
+			);
+			name = DO;
+			sourceTree = "<group>";
+		};
+		6E421F6E0D58CB440009839C /* Client-Server Communication */ = {
+			isa = PBXGroup;
+			children = (
+				6E2DC55C0E5991B000409C0E /* DO */,
+				6E2DC3DB0E5874D000409C0E /* TCPIP */,
 			);
 			name = "Client-Server Communication";
 			sourceTree = "<group>";
@@ -1117,6 +1172,7 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
+				6EE22FFF0E57373B00724A19 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1320,6 +1376,12 @@
 				6E88D1D50DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m in Sources */,
 				6E6021EA0E07CD8500E83E18 /* TFCIGrayscalingFilter.m in Sources */,
 				6E7C61220E2AC257006B4D67 /* TFCIGaussianBlurFilter.m in Sources */,
+				6E2DC3DE0E5874FE00409C0E /* TFSocket.m in Sources */,
+				6E2DC5770E5A075B00409C0E /* TFIPSocket.m in Sources */,
+				6E2DC57A0E5A07AD00409C0E /* TFIPStreamSocket.m in Sources */,
+				6E2DC57D0E5A07D000409C0E /* TFIPDatagramSocket.m in Sources */,
+				6EED5D110E5C73CF00375CC0 /* TFIPTCPSocket.m in Sources */,
+				6EED5D150E5C758500375CC0 /* TFIPUDPSocket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

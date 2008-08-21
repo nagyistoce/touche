@@ -99,24 +99,29 @@
 	size_t rv = 0;
 	
 	if (0 <= [_inQueue count]) {
-		NSMutableData* inBuffer;
+		NSMutableArray* packetQueue;
 		NSData* sA;
 		
 		if (NULL != sockAddr) {
-			inBuffer = [_inQueue objectForKey:*sockAddr];
+			packetQueue = [_inQueue objectForKey:*sockAddr];
 		}
 		
-		if (nil == inBuffer) {
+		if (nil == packetQueue) {
 			sA = [[[_inQueue allKeys] objectAtIndex:0] retain];
-			inBuffer = [_inQueue objectForKey:sA];
+			packetQueue = [_inQueue objectForKey:sA];
 		} else
 			sA = [*sockAddr retain];
+		
+		NSMutableData* inBuffer = [packetQueue objectAtIndex:0];
 		
 		size_t amountToRead = MIN(length, [inBuffer length]);
 		[inBuffer getBytes:bytes length:amountToRead];
 		[inBuffer replaceBytesInRange:NSMakeRange(0, amountToRead) withBytes:NULL length:0];
 		
 		if (0 >= [inBuffer length])
+			[packetQueue removeObjectAtIndex:0];
+		
+		if (0 >= [packetQueue count])
 			[_inQueue removeObjectForKey:sA];
 		
 		if (NULL != sockAddr)
@@ -135,20 +140,22 @@
 {
 	if (NULL != bytes && 0 < length && (nil != sockAddr || [self isConnected])) {
 		if (nil == _outQueue)
-			_outQueue = [[NSMutableData alloc] init];
+			_outQueue = [[NSMutableDictionary alloc] init];
 	
 		if (nil == sockAddr)
 			sockAddr = [NSData dataWithBytes:&self->_peerSA length:sizeof(struct sockaddr_in)];
 	
-		NSMutableData* outBuffer = [_outQueue objectForKey:sockAddr];
-		if (nil == outBuffer) {
-			outBuffer = [[NSMutableData alloc] initWithCapacity:length];
-			[_outQueue setObject:outBuffer forKey:sockAddr];
-			[outBuffer release];
+		NSMutableArray* packetQueue = [_outQueue objectForKey:sockAddr];
+		if (nil == packetQueue) {
+			packetQueue = [[NSMutableArray alloc] initWithCapacity:1];
+			[_outQueue setObject:packetQueue forKey:sockAddr];
+			[packetQueue release];
 		}
 		
-		[outBuffer appendBytes:bytes length:length];
-		
+		NSData* outBuffer = [[NSMutableData alloc] initWithBytes:bytes length:length];
+		[packetQueue addObject:outBuffer];
+		[outBuffer release];
+						
 		(void)[self _sendDatagrams];
 	}
 }
@@ -282,14 +289,16 @@
 				_availDataCount += _availDataCount;
 				
 				NSData* sA = [NSData dataWithBytes:&sockAddr length:sizeof(struct sockaddr_in)];
-				NSMutableData* inBuffer = [_inQueue objectForKey:sA];
-				if (nil == inBuffer) {
-					inBuffer = [[NSMutableData alloc] initWithCapacity:bytesRead];
-					[_inQueue setObject:inBuffer forKey:sA];
-					[inBuffer release];
+				NSMutableArray* packetQueue = [_inQueue objectForKey:sA];
+				if (nil == packetQueue) {
+					packetQueue = [[NSMutableArray alloc] initWithCapacity:1];
+					[_inQueue setObject:packetQueue forKey:sA];
+					[packetQueue release];
 				}
 				
-				[inBuffer appendBytes:bytes length:(NSUInteger)bytesRead];
+				NSMutableData* inBuffer = [[NSMutableData alloc] initWithBytes:bytes length:(NSUInteger)bytesRead];
+				[packetQueue addObject:inBuffer];
+				[inBuffer release];
 			} else if (0 > bytesRead) {
 				if (EAGAIN != _lastErrorCode && EWOULDBLOCK != _lastErrorCode)
 					[self handleSocketError];
@@ -306,7 +315,8 @@
 	
 	if (0 < [_outQueue count]) {
 		NSData* sA = [[_outQueue allKeys] objectAtIndex:0];
-		NSMutableData* outBuffer = [_outQueue objectForKey:sA];
+		NSMutableArray* packetQueue = [_outQueue objectForKey:sA];
+		NSMutableData* outBuffer = [packetQueue objectAtIndex:0];
 		
 		int amountSent = [self sendBytes:[outBuffer bytes]
 								  length:[outBuffer length]
@@ -318,6 +328,9 @@
 			if (0 < amountSent) {
 				[outBuffer replaceBytesInRange:NSMakeRange(0, amountSent) withBytes:NULL length:0];
 				if (0 >= [outBuffer length])
+					[packetQueue removeObjectAtIndex:0];
+				
+				if (0 >= [packetQueue count])
 					[_outQueue removeObjectForKey:sA];
 				
 				if (_delegateCapabilities.delegateHasDataSent)

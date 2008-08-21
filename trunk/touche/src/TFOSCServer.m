@@ -1,5 +1,5 @@
 //
-//  TFOSCListener.m
+//  TFOSCServer.m
 //  Touché
 //
 //  Created by Georg Kaindl on 21/8/08.
@@ -22,14 +22,16 @@
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "TFOSCListener.h"
+#import "TFOSCServer.h"
+
+#import <BBOSC/BBOSCPacket.h>
 
 #import "TFIPUDPSocket.h"
 
 
 #define	DEFAULT_PORT		(4556)
 
-@implementation TFOSCListener
+@implementation TFOSCServer
 
 @synthesize delegate;
 
@@ -76,7 +78,15 @@
 {
 	delegate = newDelegate;
 	
-	_delegateHasDispatchMethod = [delegate respondsToSelector:@selector(oscListener:didReceiveOSCPacket:from:)];
+	_delegateHasDispatchMethod = [delegate respondsToSelector:@selector(oscServer:didReceiveOSCPacket:from:)];
+}
+
+- (void)sendOSCPacket:(BBOSCPacket*)packet to:(NSData*)sockAddr
+{
+	NSData* packetData = [packet packetizedData];
+	
+	if (0 < [packetData length])
+		[_socket sendData:packetData toEndpoint:sockAddr];
 }
 
 #pragma mark -
@@ -91,7 +101,7 @@
 		// since OSC/UDP apparently doesn't have a "size" field, we have to be faithful that the
 		// packet we received actually encapsulates a complete OSC message or bundle...
 		if (_delegateHasDispatchMethod)
-			[delegate oscListener:self didReceiveOSCPacket:packet from:fromAddr];
+			[delegate oscServer:self didReceiveOSCPacket:packet from:fromAddr];
 	}
 }
 

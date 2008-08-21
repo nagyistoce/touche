@@ -175,6 +175,8 @@
 		6EE60E9C0DDF2EFF0069A40E /* TFMiscPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60E9B0DDF2EFF0069A40E /* TFMiscPreferencesController.m */; };
 		6EED5D110E5C73CF00375CC0 /* TFIPTCPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5D100E5C73CF00375CC0 /* TFIPTCPSocket.m */; };
 		6EED5D150E5C758500375CC0 /* TFIPUDPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5D140E5C758500375CC0 /* TFIPUDPSocket.m */; };
+		6EED5EE70E5CE8E400375CC0 /* BBOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */; };
+		6EED5EF50E5CE8F200375CC0 /* BBOSC.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */; };
 		6EEDEF5D0D32812D00B29263 /* TFOpenGLQTView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */; };
 		6EF130A20D32AC3200D807B8 /* TFPipelineSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF130A10D32AC3200D807B8 /* TFPipelineSetupController.m */; };
 		6EF5E3EA0DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF5E3E90DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m */; };
@@ -195,6 +197,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				6EED5EF50E5CE8F200375CC0 /* BBOSC.framework in Copy Frameworks */,
 				6EE606D40DD9F5C80069A40E /* dc1394.framework in Copy Frameworks */,
 				6E76BF1E0DCA141F00D30859 /* OpenCV.framework in Copy Frameworks */,
 				6E7ECAAB0E0E69250080F7EF /* Sparkle.framework in Copy Frameworks */,
@@ -448,6 +451,7 @@
 		6EED5D100E5C73CF00375CC0 /* TFIPTCPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPTCPSocket.m; sourceTree = "<group>"; };
 		6EED5D130E5C758500375CC0 /* TFIPUDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPUDPSocket.h; sourceTree = "<group>"; };
 		6EED5D140E5C758500375CC0 /* TFIPUDPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPUDPSocket.m; sourceTree = "<group>"; };
+		6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BBOSC.framework; path = frameworks/BBOSC.framework; sourceTree = "<group>"; };
 		6EEDEF5B0D32812D00B29263 /* TFOpenGLQTView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOpenGLQTView.h; sourceTree = "<group>"; };
 		6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOpenGLQTView.m; sourceTree = "<group>"; };
 		6EF130A00D32AC3200D807B8 /* TFPipelineSetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPipelineSetupController.h; sourceTree = "<group>"; };
@@ -490,6 +494,7 @@
 				6EE606A70DD9F5C40069A40E /* dc1394.framework in Frameworks */,
 				6E07FD0A0DF03ECC00FCB681 /* WebKit.framework in Frameworks */,
 				6E7ECA810E0E69170080F7EF /* Sparkle.framework in Frameworks */,
+				6EED5EE70E5CE8E400375CC0 /* BBOSC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -881,6 +886,7 @@
 		6E9394210DC7750E00D21ADC /* Third-Party Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */,
 				6EE606A60DD9F5C40069A40E /* dc1394.framework */,
 				6E76BF180DCA140C00D30859 /* OpenCV.framework */,
 				6E7ECA800E0E69170080F7EF /* Sparkle.framework */,

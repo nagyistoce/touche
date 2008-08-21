@@ -31,14 +31,8 @@
 
 @implementation TFBlob
 
-@synthesize center;
-@synthesize previousCenter;
-@synthesize boundingBox;
-@synthesize edgeVertices;
-@synthesize label;
-@synthesize isUpdate;
-@synthesize createdAt;
-@synthesize trackedSince;
+@synthesize center, previousCenter, acceleration, boundingBox, edgeVertices,
+			label, isUpdate, createdAt, previousCreatedAt, trackedSince;
 
 + (id)blob
 {
@@ -147,6 +141,7 @@
 {
 	TFBlobPoint*	centerC			= [coder decodeObject];
 	TFBlobPoint*	previousCenterC	= [coder decodeObject];
+	TFBlobVector*	accelerationC	= [coder decodeObject];
 	TFBlobBox*		boundingBoxC	= [coder decodeObject];
 	NSArray*		edgeVerticesC	= [coder decodeObject];
 	TFBlobLabel*	labelC			= [coder decodeObject];
@@ -156,12 +151,14 @@
 	if (nil != self) {
 		self.center			= centerC;
 		self.previousCenter	= previousCenterC;
+		self.acceleration	= accelerationC;
 		self.boundingBox	= boundingBoxC;
 		self.edgeVertices	= edgeVerticesC;
 		self.label			= labelC;
 
 		[coder decodeValueOfObjCType:@encode(BOOL) at:&isUpdate];
 		[coder decodeValueOfObjCType:@encode(NSTimeInterval) at:&createdAt];
+		[coder decodeValueOfObjCType:@encode(NSTimeInterval) at:&previousCreatedAt];
 		[coder decodeValueOfObjCType:@encode(NSTimeInterval) at:&trackedSince];
 	}
 		
@@ -172,11 +169,13 @@
 {
 	[coder encodeObject:center];
 	[coder encodeObject:previousCenter];
+	[coder encodeObject:acceleration];
 	[coder encodeObject:boundingBox];
 	[coder encodeObject:edgeVertices];
 	[coder encodeObject:label];
 	[coder encodeValueOfObjCType:@encode(BOOL) at:&isUpdate];
 	[coder encodeValueOfObjCType:@encode(NSTimeInterval) at:&createdAt];
+	[coder encodeValueOfObjCType:@encode(NSTimeInterval) at:&previousCreatedAt];
 	[coder encodeValueOfObjCType:@encode(NSTimeInterval) at:&trackedSince];
 }
 

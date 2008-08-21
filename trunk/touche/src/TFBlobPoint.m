@@ -59,6 +59,11 @@
 	return self;
 }
 
+- (float)vectorLength
+{
+	return hypot(x, y);
+}
+
 #pragma mark -
 #pragma mark NSCopying protocol
 

@@ -26,6 +26,7 @@
 
 #import "TFIncludes.h"
 #import "TFBlob.h"
+#import "TFBlobPoint.h"
 #import "TFBlobLabel.h"
 #import "TFLabelFactory.h"
 
@@ -63,7 +64,13 @@
 	newBlob.label.isNew = NO;
 	newBlob.previousCenter = [[oldBlob.center copy] autorelease];
 	newBlob.isUpdate = YES;
+	newBlob.previousCreatedAt = oldBlob.createdAt;
 	newBlob.trackedSince = oldBlob.trackedSince;
+	
+	// compute the acceleration vector
+	float xAccel = newBlob.center.x - 2*oldBlob.center.x + oldBlob.previousCenter.x;
+	float yAccel = newBlob.center.y - 2*oldBlob.center.y + oldBlob.previousCenter.y;
+	newBlob.acceleration = [TFBlobVector pointWithX:xAccel Y:yAccel];
 }
 
 - (void)prepareUnmatchedBlobForRemoval:(TFBlob*)blob

@@ -1,5 +1,5 @@
 //
-//  TFOSCListener.h
+//  TFOSCServer.h
 //  Touché
 //
 //  Created by Georg Kaindl on 21/8/08.
@@ -25,15 +25,15 @@
 #import <Cocoa/Cocoa.h>
 
 
-@class TFOSCListener;
+@class TFOSCServer;
 
-@interface NSObject (TFOSCListenerDelegate)
-- (void)oscListener:(TFOSCListener*)listener didReceiveOSCPacket:(NSData*)packet from:(NSData*)framAddr;
+@interface NSObject (TFOSCServerDelegate)
+- (void)oscServer:(TFOSCServer*)server didReceiveOSCPacket:(NSData*)packet from:(NSData*)framAddr;
 @end
 
-@class TFIPUDPSocket, TFSocket;
+@class TFIPUDPSocket, TFSocket, BBOSCPacket;
 
-@interface TFOSCListener : NSObject {
+@interface TFOSCServer : NSObject {
 @protected
 	id					delegate;
 	BOOL				_delegateHasDispatchMethod;
@@ -48,6 +48,8 @@
 - (id)initWithPort:(UInt16)port andLocalDevice:(NSString*)localDevice;
 
 - (void)setDelegate:(id)newDelegate;
+
+- (void)sendOSCPacket:(BBOSCPacket*)packet to:(NSData*)sockAddr; // sockAddr = struct sockaddr_in within NSData
 
 #pragma mark -
 #pragma mark TFIPUDPSocket delegate

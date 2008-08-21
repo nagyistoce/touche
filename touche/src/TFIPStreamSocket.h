@@ -44,7 +44,6 @@
 	NSMutableData*			_inBuffer;
 	NSTimer*				_connectionTimer;
 	
-	struct sockaddr_in		_peerSA;
 	int						_connectionErrorCode;
 	
 	struct {

@@ -177,6 +177,8 @@
 		6EED5D150E5C758500375CC0 /* TFIPUDPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5D140E5C758500375CC0 /* TFIPUDPSocket.m */; };
 		6EED5EE70E5CE8E400375CC0 /* BBOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */; };
 		6EED5EF50E5CE8F200375CC0 /* BBOSC.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */; };
+		6EED5F070E5DAFD000375CC0 /* TFOSCListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5F060E5DAFD000375CC0 /* TFOSCListener.m */; };
+		6EED5F1A0E5DBBE100375CC0 /* TFOSCSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5F190E5DBBE100375CC0 /* TFOSCSender.m */; };
 		6EEDEF5D0D32812D00B29263 /* TFOpenGLQTView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */; };
 		6EF130A20D32AC3200D807B8 /* TFPipelineSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF130A10D32AC3200D807B8 /* TFPipelineSetupController.m */; };
 		6EF5E3EA0DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF5E3E90DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m */; };
@@ -452,6 +454,10 @@
 		6EED5D130E5C758500375CC0 /* TFIPUDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPUDPSocket.h; sourceTree = "<group>"; };
 		6EED5D140E5C758500375CC0 /* TFIPUDPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPUDPSocket.m; sourceTree = "<group>"; };
 		6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BBOSC.framework; path = frameworks/BBOSC.framework; sourceTree = "<group>"; };
+		6EED5F050E5DAFD000375CC0 /* TFOSCListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOSCListener.h; sourceTree = "<group>"; };
+		6EED5F060E5DAFD000375CC0 /* TFOSCListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOSCListener.m; sourceTree = "<group>"; };
+		6EED5F180E5DBBE100375CC0 /* TFOSCSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOSCSender.h; sourceTree = "<group>"; };
+		6EED5F190E5DBBE100375CC0 /* TFOSCSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOSCSender.m; sourceTree = "<group>"; };
 		6EEDEF5B0D32812D00B29263 /* TFOpenGLQTView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOpenGLQTView.h; sourceTree = "<group>"; };
 		6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOpenGLQTView.m; sourceTree = "<group>"; };
 		6EF130A00D32AC3200D807B8 /* TFPipelineSetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPipelineSetupController.h; sourceTree = "<group>"; };
@@ -700,6 +706,7 @@
 			isa = PBXGroup;
 			children = (
 				6E2DC55C0E5991B000409C0E /* DO */,
+				6EED5F010E5DAF2300375CC0 /* OSC */,
 				6E2DC3DB0E5874D000409C0E /* TCPIP */,
 			);
 			name = "Client-Server Communication";
@@ -1082,6 +1089,17 @@
 			name = libdc1394;
 			sourceTree = "<group>";
 		};
+		6EED5F010E5DAF2300375CC0 /* OSC */ = {
+			isa = PBXGroup;
+			children = (
+				6EED5F050E5DAFD000375CC0 /* TFOSCListener.h */,
+				6EED5F060E5DAFD000375CC0 /* TFOSCListener.m */,
+				6EED5F180E5DBBE100375CC0 /* TFOSCSender.h */,
+				6EED5F190E5DBBE100375CC0 /* TFOSCSender.m */,
+			);
+			name = OSC;
+			sourceTree = "<group>";
+		};
 		6EF1309F0D32AC1D00D807B8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1388,6 +1406,8 @@
 				6E2DC57D0E5A07D000409C0E /* TFIPDatagramSocket.m in Sources */,
 				6EED5D110E5C73CF00375CC0 /* TFIPTCPSocket.m in Sources */,
 				6EED5D150E5C758500375CC0 /* TFIPUDPSocket.m in Sources */,
+				6EED5F070E5DAFD000375CC0 /* TFOSCListener.m in Sources */,
+				6EED5F1A0E5DBBE100375CC0 /* TFOSCSender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

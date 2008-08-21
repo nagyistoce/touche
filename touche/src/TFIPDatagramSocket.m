@@ -68,8 +68,12 @@
 
 - (BOOL)connectTo:(in_addr_t)addr port:(in_port_t)port
 {
-	_socketConnected = ([super connectTo:addr port:port]);	
-	[_inQueue removeAllObjects];
+	_socketConnected = ([super connectTo:addr port:port]);
+	
+	if (_socketConnected) {
+		[self getPeerName:&self->_peerSA];
+		[_inQueue removeAllObjects];
+	}
 	
 	return _socketConnected;
 }
@@ -129,9 +133,12 @@
 
 - (void)sendto:(const void*)bytes length:(size_t)length endpoint:(NSData*)sockAddr
 {
-	if (NULL != bytes && 0 < length && (NULL != sockAddr || [self isConnected])) {
+	if (NULL != bytes && 0 < length && (nil != sockAddr || [self isConnected])) {
 		if (nil == _outQueue)
 			_outQueue = [[NSMutableData alloc] init];
+	
+		if (nil == sockAddr)
+			sockAddr = [NSData dataWithBytes:&self->_peerSA length:sizeof(struct sockaddr_in)];
 	
 		NSMutableData* outBuffer = [_outQueue objectForKey:sockAddr];
 		if (nil == outBuffer) {

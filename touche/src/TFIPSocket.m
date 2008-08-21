@@ -257,11 +257,11 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 		if (![self open])
 			return NO;
 	
-	in_addr_t addr = htonl(INADDR_ANY);
-	if (nil != name && ![self resolveName:name intoAddress:&addr])
+	in_addr_t addr;
+	if (nil == name || ![self resolveName:name intoAddress:&addr])
 		return NO;
 	
-	
+	return [self connectTo:addr port:port];
 }
 
 - (BOOL)getPeerName:(struct sockaddr_in *)sockAddr

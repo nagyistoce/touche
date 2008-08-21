@@ -31,9 +31,10 @@
 
 @interface TFIPSocket : TFSocket {
 @protected	
-	int		_sockType;
-	BOOL	_socketBound, _socketConnected, _socketListening;
-	int		_lastErrorCode;
+	int						_sockType;
+	BOOL					_socketBound, _socketConnected, _socketListening;
+	int						_lastErrorCode;
+	struct sockaddr_in		_peerSA;
 }
 
 @property (nonatomic, readonly, getter=isBound) BOOL _socketBound;

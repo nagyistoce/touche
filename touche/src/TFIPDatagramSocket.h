@@ -35,8 +35,8 @@
 
 @interface TFIPDatagramSocket : TFIPSocket {
 @protected
-	NSMutableDictionary*		_inQueue;
-	NSMutableDictionary*		_outQueue;
+	NSMutableDictionary*		_inQueue;	// NSData<sockaddr_in>  ->  NSArray<NSData>
+	NSMutableDictionary*		_outQueue;	// NSData<sockaddr_in>  ->  NSArray<NSData>
 	NSUInteger					_availDataCount;
 	
 	struct {

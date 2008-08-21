@@ -37,4 +37,6 @@
 
 - (id)initWithX:(float)xPos Y:(float)yPos;
 
+- (float)vectorLength;
+
 @end

@@ -28,24 +28,30 @@
 @class TFBlobBox;
 @class TFBlobLabel;
 
+typedef TFBlobPoint TFBlobVector;
+
 @interface TFBlob : NSObject <NSCopying, NSCoding> {
 	TFBlobPoint*		center;
 	TFBlobPoint*		previousCenter;
+	TFBlobVector*		acceleration;
 	TFBlobBox*			boundingBox;
 	NSArray*			edgeVertices;
 	TFBlobLabel*		label;
 	BOOL				isUpdate;
 	NSTimeInterval		createdAt;
+	NSTimeInterval		previousCreatedAt;
 	NSTimeInterval		trackedSince;
 }
 
 @property (retain) TFBlobPoint* center;
 @property (retain) TFBlobPoint* previousCenter;
+@property (retain) TFBlobVector* acceleration;
 @property (retain) TFBlobBox* boundingBox;
 @property (retain) NSArray* edgeVertices;
 @property (retain) TFBlobLabel* label;
 @property (assign) BOOL isUpdate;
 @property (readonly) NSTimeInterval createdAt;
+@property (assign) NSTimeInterval previousCreatedAt;
 @property (assign) NSTimeInterval trackedSince;
 
 + (id)blob;

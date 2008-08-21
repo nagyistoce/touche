@@ -178,6 +178,8 @@
 		6EED5EE70E5CE8E400375CC0 /* BBOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */; };
 		6EED5EF50E5CE8F200375CC0 /* BBOSC.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */; };
 		6EED5FF00E5E048000375CC0 /* TFOSCServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5FEF0E5E048000375CC0 /* TFOSCServer.m */; };
+		6EED5FFC0E5E0AB000375CC0 /* TFBlob+TUIOMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5FFB0E5E0AB000375CC0 /* TFBlob+TUIOMethods.m */; };
+		6EED5FFF0E5E0D2800375CC0 /* TFTUIOServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5FFE0E5E0D2800375CC0 /* TFTUIOServer.m */; };
 		6EEDEF5D0D32812D00B29263 /* TFOpenGLQTView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */; };
 		6EF130A20D32AC3200D807B8 /* TFPipelineSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF130A10D32AC3200D807B8 /* TFPipelineSetupController.m */; };
 		6EF5E3EA0DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF5E3E90DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m */; };
@@ -455,6 +457,10 @@
 		6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BBOSC.framework; path = frameworks/BBOSC.framework; sourceTree = "<group>"; };
 		6EED5FEE0E5E048000375CC0 /* TFOSCServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOSCServer.h; sourceTree = "<group>"; };
 		6EED5FEF0E5E048000375CC0 /* TFOSCServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOSCServer.m; sourceTree = "<group>"; };
+		6EED5FFA0E5E0AB000375CC0 /* TFBlob+TUIOMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFBlob+TUIOMethods.h"; sourceTree = "<group>"; };
+		6EED5FFB0E5E0AB000375CC0 /* TFBlob+TUIOMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFBlob+TUIOMethods.m"; sourceTree = "<group>"; };
+		6EED5FFD0E5E0D2800375CC0 /* TFTUIOServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOServer.h; sourceTree = "<group>"; };
+		6EED5FFE0E5E0D2800375CC0 /* TFTUIOServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOServer.m; sourceTree = "<group>"; };
 		6EEDEF5B0D32812D00B29263 /* TFOpenGLQTView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOpenGLQTView.h; sourceTree = "<group>"; };
 		6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOpenGLQTView.m; sourceTree = "<group>"; };
 		6EF130A00D32AC3200D807B8 /* TFPipelineSetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPipelineSetupController.h; sourceTree = "<group>"; };
@@ -705,6 +711,7 @@
 				6E2DC55C0E5991B000409C0E /* DO */,
 				6EED5F010E5DAF2300375CC0 /* OSC */,
 				6E2DC3DB0E5874D000409C0E /* TCPIP */,
+				6EED5FF90E5E07BA00375CC0 /* TUIO */,
 			);
 			name = "Client-Server Communication";
 			sourceTree = "<group>";
@@ -1095,6 +1102,17 @@
 			name = OSC;
 			sourceTree = "<group>";
 		};
+		6EED5FF90E5E07BA00375CC0 /* TUIO */ = {
+			isa = PBXGroup;
+			children = (
+				6EED5FFD0E5E0D2800375CC0 /* TFTUIOServer.h */,
+				6EED5FFE0E5E0D2800375CC0 /* TFTUIOServer.m */,
+				6EED5FFA0E5E0AB000375CC0 /* TFBlob+TUIOMethods.h */,
+				6EED5FFB0E5E0AB000375CC0 /* TFBlob+TUIOMethods.m */,
+			);
+			name = TUIO;
+			sourceTree = "<group>";
+		};
 		6EF1309F0D32AC1D00D807B8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1402,6 +1420,8 @@
 				6EED5D110E5C73CF00375CC0 /* TFIPTCPSocket.m in Sources */,
 				6EED5D150E5C758500375CC0 /* TFIPUDPSocket.m in Sources */,
 				6EED5FF00E5E048000375CC0 /* TFOSCServer.m in Sources */,
+				6EED5FFC0E5E0AB000375CC0 /* TFBlob+TUIOMethods.m in Sources */,
+				6EED5FFF0E5E0D2800375CC0 /* TFTUIOServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -763,10 +763,10 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 				if (nil == pixelBuffer)
 					continue;
 				
-				if ([delegate respondsToSelector:@selector(didCaptureFrame:)]) {
+				if (_delegateCapabilities.hasDidCaptureFrame) {
 					CIImage* image = nil;
 					
-					if ([delegate respondsToSelector:@selector(wantedCIImageColorSpace)])
+					if (_delegateCapabilities.hasWantedCIImageColorSpace)
 						image = [CIImage imageWithCVImageBuffer:pixelBuffer
 														options:[NSDictionary dictionaryWithObject:(id)[delegate wantedCIImageColorSpace]
 																							forKey:kCIImageColorSpace]];

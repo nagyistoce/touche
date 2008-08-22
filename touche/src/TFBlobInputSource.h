@@ -32,11 +32,14 @@
 	float		maximumFramesPerSecond;
 	
 	NSDate*		_lastCapturedFrame;
+	BOOL		_delegateHasDidDetectBlobs;
 }
 
 @property (nonatomic, assign) id delegate;
 @property (nonatomic, assign) BOOL blobTrackingEnabled;
 @property (nonatomic, assign) float maximumFramesPerSecond;
+
+- (void)setDelegate:(id)newDelegate;
 
 - (BOOL)loadWithConfiguration:(id)configuration error:(NSError**)error;
 - (BOOL)unloadWithError:(NSError**)error;

@@ -38,12 +38,20 @@
 	[super dealloc];
 }
 
+- (void)setDelegate:(id)newDelegate
+{
+	delegate = newDelegate;
+	
+	// cache this for performance reasons
+	_delegateHasFrameForTimestamp = [delegate respondsToSelector:@selector(frameForTimestamp:)];
+}
+
 - (CVReturn)drawFrameForTimeStamp:(const CVTimeStamp*)timeStamp
 {
 	NSUInteger success = kCVReturnError;
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
-	if ([delegate respondsToSelector:@selector(frameForTimestamp:)]) {
+	if (_delegateHasFrameForTimestamp) {
 		CIImage* newFrame = [[delegate frameForTimestamp:timeStamp] retain];
 	
 		@synchronized(self) {

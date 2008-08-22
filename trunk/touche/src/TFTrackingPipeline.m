@@ -232,6 +232,14 @@ enum {
 	return self;
 }
 
+- (void)setDelegate:(id)newDelegate
+{
+	delegate = newDelegate;
+	
+	// cache the blob tracking delegate method availability for performance reasons
+	_delegateHasDidFindBlobs = [delegate respondsToSelector:@selector(pipelineDidFindBlobs:unmatchedBlobs:)];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([object isEqual:[NSUserDefaults standardUserDefaults]]) {
@@ -927,7 +935,7 @@ errorReturn:
 			[_coordConverter transformBlobsFromCameraToScreen:unmatchedBlobs errors:NULL];
 		}
 				
-		if ([delegate respondsToSelector:@selector(pipelineDidFindBlobs:unmatchedBlobs:)])
+		if (_delegateHasDidFindBlobs)
 			[delegate pipelineDidFindBlobs:blobs unmatchedBlobs:unmatchedBlobs];
 	}
 }

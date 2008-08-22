@@ -38,7 +38,7 @@ typedef TFBlobLabel TFTouchLabel;
 
 #import <ToucheFramework/TFFullscreenController.h>
 
-#import <ToucheFramework/TFTrackingClient.h>
+#import <ToucheFramework/TFDOTrackingClient.h>
 
 #import <ToucheFramework/TFAlignedMalloc.h>
 #import <ToucheFramework/TFCombinadicIndices.h>

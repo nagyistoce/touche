@@ -31,7 +31,7 @@
 #import "TFIncludes.h"
 #import "TFTouchView.h"
 #import "TFCalibrationPoint.h"
-#import "TFTrackingClient.h"
+#import "TFDOTrackingClient.h"
 #import "TFBlob.h"
 #import "TFBlobPoint.h"
 
@@ -85,7 +85,7 @@
 	if (isCalibrating)
 		return;
 	
-	_trackingClient = [[TFTrackingClient alloc] init];
+	_trackingClient = [[TFDOTrackingClient alloc] init];
 	_trackingClient.delegate = self;
 	_touchView.delegate = self;
 	
@@ -230,22 +230,22 @@
 #pragma mark -
 #pragma mark Delegate methods for TFTrackingClient
 
-- (BOOL)clientShouldQuitByServerRequest:(TFTrackingClient*)client
+- (BOOL)clientShouldQuitByServerRequest:(TFDOTrackingClient*)client
 {
 	[self _cancelCalibrationByUserRequest];
 	
 	return NO;
 }
 
-- (NSDictionary*)infoDictionaryForClient:(TFTrackingClient*)client
+- (NSDictionary*)infoDictionaryForClient:(TFDOTrackingClient*)client
 {
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			TFLocalizedString(@"TFCalibrationControllerHumandReadableName", @"Touché Calibration Tool"),
-				kToucheTrackingClientInfoHumanReadableName,
+				kToucheTrackingReceiverInfoHumanReadableName,
 			nil];
 }
 
-- (void)touchesDidBegin:(NSSet*)touches viaClient:(TFTrackingClient*)client
+- (void)touchesDidBegin:(NSSet*)touches viaClient:(TFDOTrackingClient*)client
 {
 	if (nil == _firstTouchLabel) {
 		TFBlob* firstTouch = (TFBlob*)[touches anyObject];
@@ -253,7 +253,7 @@
 	}
 }
 
-- (void)touchesDidUpdate:(NSSet*)touches viaClient:(TFTrackingClient*)client
+- (void)touchesDidUpdate:(NSSet*)touches viaClient:(TFDOTrackingClient*)client
 {
 	if (nil == _firstTouchLabel)
 		return;
@@ -290,7 +290,7 @@
 	}
 }
 
-- (void)touchesDidEnd:(NSSet*)touches viaClient:(TFTrackingClient*)client
+- (void)touchesDidEnd:(NSSet*)touches viaClient:(TFDOTrackingClient*)client
 {
 	if (nil == _firstTouchLabel)
 		return;

@@ -26,7 +26,7 @@
 
 @class TFBlobTrackingView;
 @class TFTrackingPipeline;
-@class TFTrackingServer;
+@class TFTrackingDataDistributionCenter;
 @class TFPipelineSetupController;
 @class TFScreenPreferencesController;
 @class TFMiscPreferencesController;
@@ -58,7 +58,7 @@
 	BOOL									_isLoadingPipelineAsync;
 
 	TFTrackingPipeline*						_pipeline;
-	TFTrackingServer*						_server;
+	TFTrackingDataDistributionCenter*		_distributionCenter;
 	TFPipelineSetupController*				_pipelineSetupController;
 	TFScreenPreferencesController*			_screenPrefsController;
 	TFMiscPreferencesController*			_miscPrefsController;

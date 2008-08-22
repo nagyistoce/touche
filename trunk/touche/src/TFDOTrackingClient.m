@@ -1,5 +1,5 @@
 //
-//  TFTrackingClient.m
+//  TFDOTrackingClient.m
 //  Touché
 //
 //  Created by Georg Kaindl on 5/2/08.
@@ -23,35 +23,26 @@
 //
 //
 
-#import "TFTrackingClient.h"
+#import "TFDOTrackingClient.h"
 
 #import "TFIncludes.h"
 #import "NSScreen+Extras.h"
+#import "TFTrackingDataReceiver.h"
 
 #define SERVER_REQUEST_TIMEOUT			((NSTimeInterval)3.0)
 
-NSString* kToucheTrackingClientInfoName					= @"kToucheTrackingClientInfoName";
-NSString* kToucheTrackingClientInfoHumanReadableName	= @"kToucheTrackingClientInfoHumanReadableName";
-NSString* kToucheTrackingClientInfoVersion				= @"kToucheTrackingClientInfoVersion";
-NSString* kToucheTrackingClientInfoIcon					= @"kToucheTrackingClientInfoIcon";
-
-@interface TFTrackingClient (NonPublicMethods)
+@interface TFDOTrackingClient (PrivateMethods)
 - (void)_connectionDidDie;
 @end
 
-@implementation TFTrackingClient
+@implementation TFDOTrackingClient
 
-@synthesize delegate;
-@synthesize isConnected;
+@synthesize delegate, connected;
 
 - (void)dealloc
 {
 	[self disconnect];
-	
-	[_clientName release];
-	_clientName = nil;
-	
-	isConnected = NO;
+	connected = NO;
 	
 	[super dealloc];
 }
@@ -62,9 +53,7 @@ NSString* kToucheTrackingClientInfoIcon					= @"kToucheTrackingClientInfoIcon";
 		[self release];
 		return nil;
 	}
-	
-	isConnected = NO;
-	
+		
 	return self;
 }
 
@@ -83,7 +72,7 @@ NSString* kToucheTrackingClientInfoIcon					= @"kToucheTrackingClientInfoIcon";
 
 - (BOOL)connectWithName:(NSString*)clientName serviceName:(NSString*)serviceName server:(NSString*)serverName error:(NSError**)error
 {
-	if (isConnected) {
+	if (self.isConnected) {
 		[self disconnect];
 	}
 	
@@ -117,7 +106,7 @@ NSString* kToucheTrackingClientInfoIcon					= @"kToucheTrackingClientInfoIcon";
 	}
 	
 	[[_server connectionForProxy] setRequestTimeout:SERVER_REQUEST_TIMEOUT];
-	[_server setProtocolForProxy:@protocol(TFTrackingServerProtocol)];
+	[_server setProtocolForProxy:@protocol(TFDOTrackingServerProtocol)];
 	
 	if (![_server registerClient:self withName:clientName error:error]) {
 		[_server release];
@@ -131,14 +120,14 @@ NSString* kToucheTrackingClientInfoIcon					= @"kToucheTrackingClientInfoIcon";
 												 name:NSConnectionDidDieNotification
 											   object:[_server connectionForProxy]];
 	
-	isConnected = YES;
+	connected = YES;
 	
 	return YES;
 }
 
 - (void)disconnect
 {
-	if (!isConnected)
+	if (!self.isConnected)
 		return;
 	
 	[_server unregisterClientWithName:_clientName];
@@ -150,17 +139,17 @@ NSString* kToucheTrackingClientInfoIcon					= @"kToucheTrackingClientInfoIcon";
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	isConnected = NO;
+	connected = NO;
 }
 
 - (void)_connectionDidDie:(NSNotification*)notification
 {
-	if (!isConnected)
+	if (!self.isConnected)
 		return;
 
 	[_server release];
 	_server = nil;
-	isConnected = NO;
+	connected = NO;
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
@@ -177,9 +166,9 @@ NSString* kToucheTrackingClientInfoIcon					= @"kToucheTrackingClientInfoIcon";
 	NSMutableDictionary* infoDict = (nil != dict) ? [NSMutableDictionary dictionaryWithDictionary:dict] :
 													[NSMutableDictionary dictionaryWithCapacity:4];
 	
-	if (nil == [infoDict objectForKey:kToucheTrackingClientInfoHumanReadableName])
-		[infoDict setObject:[NSString stringWithString:_clientName] forKey:kToucheTrackingClientInfoHumanReadableName];
-	if (nil == [infoDict objectForKey:kToucheTrackingClientInfoVersion]) {
+	if (nil == [infoDict objectForKey:kToucheTrackingReceiverInfoHumanReadableName])
+		[infoDict setObject:[NSString stringWithString:_clientName] forKey:kToucheTrackingReceiverInfoHumanReadableName];
+	if (nil == [infoDict objectForKey:kToucheTrackingReceiverInfoVersion]) {
 		NSString* versionString = nil;
 		
 		if (nil != delegate) {
@@ -194,16 +183,16 @@ NSString* kToucheTrackingClientInfoIcon					= @"kToucheTrackingClientInfoIcon";
 		if (nil == versionString)
 			versionString = [NSString stringWithString:TFLocalizedString(@"unknown", @"unknown")];
 		
-		[infoDict setObject:versionString forKey:kToucheTrackingClientInfoVersion];
+		[infoDict setObject:versionString forKey:kToucheTrackingReceiverInfoVersion];
 	}
-	if (nil == [infoDict objectForKey:kToucheTrackingClientInfoIcon]) {
+	if (nil == [infoDict objectForKey:kToucheTrackingReceiverInfoIcon]) {
 		NSString* appBundlePath = [[NSBundle bundleForClass:[delegate class]] bundlePath];
 		NSImage* appIcon = [[NSWorkspace sharedWorkspace] iconForFile:appBundlePath];
 		if (nil != appIcon)
-			[infoDict setObject:appIcon forKey:kToucheTrackingClientInfoIcon];
+			[infoDict setObject:appIcon forKey:kToucheTrackingReceiverInfoIcon];
 	}
 	
-	[infoDict setObject:[NSString stringWithString:_clientName] forKey:kToucheTrackingClientInfoName];
+	[infoDict setObject:[NSString stringWithString:_clientName] forKey:kToucheTrackingReceiverInfoName];
 
 	return [NSDictionary dictionaryWithDictionary:infoDict];
 }

@@ -1,5 +1,5 @@
 //
-//  TFTrackingClient.h
+//  TFDOTrackingClient.h
 //  Touché
 //
 //  Created by Georg Kaindl on 5/2/08.
@@ -24,23 +24,20 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "TFTrackingCommProtocols.h"
+#import "TFDOTrackingCommProtocols.h"
+#import "TFTrackingDataReceiverInfoDictKeys.h"
 
-extern NSString* kToucheTrackingClientInfoName;
-extern NSString* kToucheTrackingClientInfoHumanReadableName;
-extern NSString* kToucheTrackingClientInfoVersion;
-extern NSString* kToucheTrackingClientInfoIcon;
-
-@interface TFTrackingClient : NSObject <TFTrackingClientProtocol> {
+@interface TFDOTrackingClient : NSObject <TFDOTrackingClientProtocol> {
 	id			delegate;
 
-	id			_server;
-	BOOL		isConnected;
+@protected
+	BOOL		connected;
 	NSString*	_clientName;
+	id			_server;
 }
 
 @property (assign) id delegate;
-@property (readonly) BOOL isConnected;
+@property (readonly, getter=isConnected) BOOL connected;
 
 - (BOOL)connectWithName:(NSString*)clientName;
 - (BOOL)connectWithName:(NSString*)clientName error:(NSError**)error;
@@ -53,12 +50,12 @@ extern NSString* kToucheTrackingClientInfoIcon;
 
 @end
 
-@interface NSObject (TFTrackingClientDelegate)
-- (void)client:(TFTrackingClient*)client didGetDisconnectedWithError:(NSError*)error;
-- (void)serverConnectionHasDiedForClient:(TFTrackingClient*)client;
-- (NSDictionary*)infoDictionaryForClient:(TFTrackingClient*)client;
-- (BOOL)clientShouldQuitByServerRequest:(TFTrackingClient*)client;
-- (void)touchesDidBegin:(NSSet*)touches viaClient:(TFTrackingClient*)client;
-- (void)touchesDidUpdate:(NSSet*)touches viaClient:(TFTrackingClient*)client;
-- (void)touchesDidEnd:(NSSet*)touches viaClient:(TFTrackingClient*)client;
+@interface NSObject (TFDOTrackingClientDelegate)
+- (void)client:(TFDOTrackingClient*)client didGetDisconnectedWithError:(NSError*)error;
+- (void)serverConnectionHasDiedForClient:(TFDOTrackingClient*)client;
+- (NSDictionary*)infoDictionaryForClient:(TFDOTrackingClient*)client;
+- (BOOL)clientShouldQuitByServerRequest:(TFDOTrackingClient*)client;
+- (void)touchesDidBegin:(NSSet*)touches viaClient:(TFDOTrackingClient*)client;
+- (void)touchesDidUpdate:(NSSet*)touches viaClient:(TFDOTrackingClient*)client;
+- (void)touchesDidEnd:(NSSet*)touches viaClient:(TFDOTrackingClient*)client;
 @end

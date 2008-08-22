@@ -1,8 +1,8 @@
 //
-//  TFTrackingClientHandlingController.h
+//  TFTrackingDataReceiver.m
 //  Touché
 //
-//  Created by Georg Kaindl on 24/3/08.
+//  Created by Georg Kaindl on 22/8/08.
 //
 //  Copyright (C) 2008 Georg Kaindl
 //
@@ -21,30 +21,42 @@
 //  You should have received a copy of the GNU Lesser General Public
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
-//
 
-#import <Cocoa/Cocoa.h>
+#import "TFTrackingDataReceiver.h"
 
-@class TFTrackingClient;
-@class TFServerTouchQueue;
 
-@interface TFTrackingClientHandlingController : NSObject {
-	TFTrackingClient*		client;
-	BOOL					isRunning;
+@implementation TFTrackingDataReceiver
 
-	TFServerTouchQueue*		_queue;
-	NSThread*				_thread;
+@synthesize active, connected, receiverID, owningDistributor, infoDictionary;
+
+- (id)init
+{
+	if (nil != (self = [super init])) {
+		active = YES;
+	}
+	
+	return self;
 }
 
-@property (readonly) TFTrackingClient* client;
-@property (readonly) BOOL isRunning;
+- (void)dealloc
+{
+	[receiverID release];
+	receiverID = nil;
+	
+	[infoDictionary release];
+	infoDictionary = nil;
+	
+	[super dealloc];
+}
 
-- (id)initWithClient:(TFTrackingClient*)theClient;
-- (void)tellClientToQuit;
-- (void)disconnectWithError:(NSError*)error;
+- (void)receiverShouldQuit
+{
+	[self doesNotRecognizeSelector:_cmd];
+}
 
-- (void)queueTouchesForForwarding:(NSDictionary*)touches;
-- (void)forwardTouchesInThread;
-- (void)stop;
+- (void)consumeTrackingData:(id)trackingData
+{
+	[self doesNotRecognizeSelector:_cmd];
+}
 
 @end

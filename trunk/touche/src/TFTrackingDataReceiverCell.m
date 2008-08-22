@@ -1,5 +1,5 @@
 //
-//  TFClientCell.m
+//  TFTrackingDataReceiverCell.m
 //  Touché
 //
 //  Created by Georg Kaindl on 9/5/08.
@@ -23,11 +23,12 @@
 //
 //
 
-#import "TFClientCell.h"
+#import "TFTrackingDataReceiverCell.h"
 
 #import "TFIncludes.h"
-#import "TFTrackingClient.h"
-#import "TFTrackingServer.h"
+#import "TFTrackingDataReceiver.h"
+#import "TFTrackingDataDistributor.h"
+
 
 #define	PADDINGX			((CGFloat)12.0f)
 #define PADDINGY			((CGFloat)6.0f)
@@ -35,7 +36,7 @@
 #define PADDINGXTITLE		((CGFloat)10.0f)
 #define PADDINGYVERSION		((CGFloat)2.0f)
 
-@interface TFClientCell (NonPublicMethods)
+@interface TFTrackingDataReceiverCell (NonPublicMethods)
 - (void)_setDefaults;
 - (NSRect)_iconRectForFrame:(NSRect)frame;
 - (NSRect)_nameRectForFrame:(NSRect)frame
@@ -50,10 +51,11 @@
 - (NSAttributedString*)_attributedString:(NSString*)string
 						  withAttributes:(NSMutableDictionary*)attr
 								andColor:(NSColor*)color;
-- (void)_clientShouldQuitClicked:(id)sender;
+- (void)_receiverShouldQuitClicked:(id)sender;
+- (NSDictionary*)_receiverInfoDict;
 @end
 
-@implementation TFClientCell
+@implementation TFTrackingDataReceiverCell
 
 - (void)awakeFromNib
 {
@@ -103,7 +105,7 @@
 												  action:nil
 										   keyEquivalent:[NSString string]];
 	[item setTarget:self];
-	[item setAction:@selector(_clientShouldQuitClicked:)];
+	[item setAction:@selector(_receiverShouldQuitClicked:)];
 	[menu addItem:item];
 	[item release];
 	
@@ -138,7 +140,7 @@
 
 - (NSAttributedString*)_attributedNameWithColor:(NSColor*)color
 {
-	return [self _attributedString:[[self objectValue] objectForKey:kToucheTrackingClientInfoHumanReadableName]
+	return [self _attributedString:[[self _receiverInfoDict] objectForKey:kToucheTrackingReceiverInfoHumanReadableName]
 					withAttributes:_nameAttributes
 						  andColor:color];
 }
@@ -147,7 +149,7 @@
 {
 	NSString* versionString = [NSString stringWithFormat:@"%@ %@",
 							   TFLocalizedString(@"Version", @"Version"),
-							   [[self objectValue] objectForKey:kToucheTrackingClientInfoVersion]];
+							   [[self _receiverInfoDict] objectForKey:kToucheTrackingReceiverInfoVersion]];
 	
 	return [self _attributedString:versionString
 					withAttributes:_versionAttributes
@@ -168,7 +170,7 @@
 
 - (NSImage*)_icon
 {
-	NSImage* icon = (NSImage*)[[self objectValue] valueForKey:kToucheTrackingClientInfoIcon];
+	NSImage* icon = (NSImage*)[[self _receiverInfoDict] valueForKey:kToucheTrackingReceiverInfoIcon];
 	[icon setFlipped:YES];
 	[icon setScalesWhenResized:YES];
 		
@@ -214,10 +216,18 @@
 	return versionRect;
 }
 
-- (void)_clientShouldQuitClicked:(id)sender
+- (void)_receiverShouldQuitClicked:(id)sender
 {
-	TFTrackingServer* server = [[self objectValue] objectForKey:@"trackingServer"];
-	[server askClientWithNameToQuit:[[self objectValue] objectForKey:kToucheTrackingClientInfoName]];
+	TFTrackingDataReceiver* receiver = (TFTrackingDataReceiver*)[self objectValue];
+	TFTrackingDataDistributor* distributor = receiver.owningDistributor;
+	
+	if ([distributor canAskReceiversToQuit])
+		[distributor askReceiverToQuit:receiver];
+}
+
+- (NSDictionary*)_receiverInfoDict
+{
+	return [(TFTrackingDataReceiver*)[self objectValue] infoDictionary];
 }
 
 #pragma mark -
@@ -225,7 +235,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-	TFClientCell* aCopy = [super copyWithZone:zone];
+	TFTrackingDataReceiverCell* aCopy = [super copyWithZone:zone];
 	
 	aCopy->_nameAttributes = [_nameAttributes copy];
 	aCopy->_versionAttributes = [_versionAttributes copy];

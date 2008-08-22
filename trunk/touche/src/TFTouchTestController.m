@@ -26,7 +26,7 @@
 #import "TFTouchTestController.h"
 
 #import "TFIncludes.h"
-#import "TFTrackingClient.h"
+#import "TFDOTrackingClient.h"
 #import "TFTouchView.h"
 #import "TFBlob.h"
 #import "TFBlobLabel.h"
@@ -67,7 +67,7 @@
 
 	NSError* error;
 	
-	_trackingClient = [[TFTrackingClient alloc] init];
+	_trackingClient = [[TFDOTrackingClient alloc] init];
 	_trackingClient.delegate = self;
 	
 	if (![_trackingClient connectWithName:TRACKINGCLIENT_NAME serviceName:nil server:nil error:&error]) {
@@ -211,24 +211,24 @@
 }
 
 #pragma mark -
-#pragma mark Delegate methods for TFTrackingClient
+#pragma mark Delegate methods for TFDOTrackingClient
 
-- (BOOL)clientShouldQuitByServerRequest:(TFTrackingClient*)client
+- (BOOL)clientShouldQuitByServerRequest:(TFDOTrackingClient*)client
 {
 	[self _endTestByUserRequest];
 	
 	return NO;
 }
 
-- (NSDictionary*)infoDictionaryForClient:(TFTrackingClient*)client
+- (NSDictionary*)infoDictionaryForClient:(TFDOTrackingClient*)client
 {
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			TFLocalizedString(@"TFTouchTestControllerHumandReadableName", @"Touché Touch Test Application"),
-				kToucheTrackingClientInfoHumanReadableName,
+				kToucheTrackingReceiverInfoHumanReadableName,
 			nil];
 }
 
-- (void)touchesDidBegin:(NSSet*)touches viaClient:(TFTrackingClient*)client
+- (void)touchesDidBegin:(NSSet*)touches viaClient:(TFDOTrackingClient*)client
 {
 	for (TFBlob* blob in touches) {
 		NSNumber* labelNumber = [NSNumber numberWithInt:[blob.label intLabel]];
@@ -245,7 +245,7 @@
 	[sound play];
 }
 
-- (void)touchesDidUpdate:(NSSet*)touches viaClient:(TFTrackingClient*)client
+- (void)touchesDidUpdate:(NSSet*)touches viaClient:(TFDOTrackingClient*)client
 {
 	for (TFBlob* blob in touches) {
 		[_touchView moveTouchWithID:[NSNumber numberWithInt:[blob.label intLabel]]
@@ -253,7 +253,7 @@
 	}
 }
 
-- (void)touchesDidEnd:(NSSet*)touches viaClient:(TFTrackingClient*)client
+- (void)touchesDidEnd:(NSSet*)touches viaClient:(TFDOTrackingClient*)client
 {
 	for (TFBlob* blob in touches) {
 		NSNumber* labelNumber = [NSNumber numberWithInt:[blob.label intLabel]];

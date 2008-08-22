@@ -1,8 +1,8 @@
 //
-//  TFTouchTestController.h
+//  TFTrackingDataDistributionCenter.h
 //  Touché
 //
-//  Created by Georg Kaindl on 26/4/08.
+//  Created by Georg Kaindl on 22/8/08.
 //
 //  Copyright (C) 2008 Georg Kaindl
 //
@@ -21,33 +21,24 @@
 //  You should have received a copy of the GNU Lesser General Public
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
-//
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
-#import "TFFullscreenController.h"
 
-@class TFDOTrackingClient;
-@class TFTouchView;
+@class TFTrackingDataDistributor, TFThreadMessagingQueue;
 
-@interface TFTouchTestController : TFFullscreenController {
-	BOOL						isRunning;
-	id							delegate;
-
-	IBOutlet TFTouchView*		_touchView;
-	TFDOTrackingClient*			_trackingClient;
-	NSMutableArray*				_freeColors;
-	NSMutableDictionary*		_touchesAndColors;
+@interface TFTrackingDataDistributionCenter : NSObject {
+	NSMutableSet*				_distributors;
+	TFThreadMessagingQueue*		_blobQueue;
+	NSThread*					_thread;
 }
 
-@property (readonly) BOOL isRunning;
-@property (nonatomic, assign) id delegate;
+- (id)init;
+- (void)dealloc;
 
-- (void)startTest;
+- (void)addDistributor:(TFTrackingDataDistributor*)distributor;
+- (void)distributeTrackingDataForActiveBlobs:(NSArray*)activeBlobs inactiveBlobs:(NSArray*)inactiveBlobs;
 
-@end
+- (void)stopAllDistributors;
 
-@interface NSObject (TFTouchTestControllerDelegate)
-- (void)touchTestEndedByUser;
-- (void)touchTestFailedWithError:(NSError*)error;
 @end

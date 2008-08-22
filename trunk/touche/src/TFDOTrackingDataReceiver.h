@@ -1,8 +1,8 @@
 //
-//  TFTouchTestController.h
+//  TFDOTrackingDataReceiver.h
 //  Touché
 //
-//  Created by Georg Kaindl on 26/4/08.
+//  Created by Georg Kaindl on 24/3/08.
 //
 //  Copyright (C) 2008 Georg Kaindl
 //
@@ -25,29 +25,32 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "TFFullscreenController.h"
+#import "TFTrackingDataReceiver.h"
+
 
 @class TFDOTrackingClient;
-@class TFTouchView;
+@class TFThreadMessagingQueue;
 
-@interface TFTouchTestController : TFFullscreenController {
-	BOOL						isRunning;
-	id							delegate;
+@interface TFDOTrackingDataReceiver : TFTrackingDataReceiver {
+@protected
+	TFDOTrackingClient*		client;
+	BOOL					running;
 
-	IBOutlet TFTouchView*		_touchView;
-	TFDOTrackingClient*			_trackingClient;
-	NSMutableArray*				_freeColors;
-	NSMutableDictionary*		_touchesAndColors;
+	TFThreadMessagingQueue*	_queue;
+	NSThread*				_thread;
 }
 
-@property (readonly) BOOL isRunning;
-@property (nonatomic, assign) id delegate;
+@property (readonly) TFDOTrackingClient* client;
+@property (readonly, getter=isRunning) BOOL running;
 
-- (void)startTest;
++ (NSString*)localNameForClientName:(NSString*)string;
 
-@end
+- (void)receiverShouldQuit;
+- (void)consumeTrackingData:(id)trackingData;
 
-@interface NSObject (TFTouchTestControllerDelegate)
-- (void)touchTestEndedByUser;
-- (void)touchTestFailedWithError:(NSError*)error;
+- (id)initWithClient:(TFDOTrackingClient*)theClient;
+- (void)disconnectWithError:(NSError*)error;
+
+- (void)stop;
+
 @end

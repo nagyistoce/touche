@@ -92,7 +92,6 @@ enum {
 
 @synthesize inputMethod;
 @synthesize delegate;
-@synthesize trackingServer;
 @synthesize showBlobsInPreview;
 @synthesize frameStageForDisplay;
 @synthesize transformBlobsToScreenCoordinates;
@@ -928,8 +927,8 @@ errorReturn:
 			[_coordConverter transformBlobsFromCameraToScreen:unmatchedBlobs errors:NULL];
 		}
 				
-		if ([trackingServer respondsToSelector:@selector(didFindBlobs:unmatchedBlobs:)])
-			[trackingServer didFindBlobs:blobs unmatchedBlobs:unmatchedBlobs];
+		if ([delegate respondsToSelector:@selector(pipelineDidFindBlobs:unmatchedBlobs:)])
+			[delegate pipelineDidFindBlobs:blobs unmatchedBlobs:unmatchedBlobs];
 	}
 }
 

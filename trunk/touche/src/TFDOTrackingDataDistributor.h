@@ -1,5 +1,5 @@
 //
-//  TFTrackingServer.h
+//  TFDOTrackingServer.h
 //  Touché
 //
 //  Created by Georg Kaindl on 5/2/08.
@@ -24,26 +24,23 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "TFTrackingCommProtocols.h"
+#import "TFDOTrackingCommProtocols.h"
+#import "TFTrackingDataDistributor.h"
 
-extern NSString* kNewTouchesTrackingClientHandling;
-extern NSString* kUpdatedTouchesTrackingClientHandling;
-extern NSString* kEndedTouchesTrackingClientHandling;
 
-@interface TFTrackingServer : NSObject <TFTrackingServerProtocol> {
+@interface TFDOTrackingDataDistributor : TFTrackingDataDistributor <TFDOTrackingServerProtocol> {
 	NSConnection*			_listenConnection;
-	NSMutableDictionary*	_clients;
 	BOOL					_isRunning;
-	id						delegate;
 	
 	NSThread*				_heartbeatThread;
 }
 
-@property (nonatomic, assign) id delegate;
+- (BOOL)startDistributorWithObject:(id)obj error:(NSError**)error;
+- (void)stopDistributor;
 
-- (BOOL)startServer:(NSString*)serviceName error:(NSError**)error;
-- (void)stopServer;
-- (void)askClientWithNameToQuit:(NSString*)clientName;
+- (BOOL)canAskReceiversToQuit;
+- (void)askReceiverToQuit:(TFTrackingDataReceiver*)receiver;
+- (void)distributeTrackingDataDictionary:(NSDictionary*)trackingDict;
 
 #pragma mark -
 #pragma mark TFTrackingServerProtocol

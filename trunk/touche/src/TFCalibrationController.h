@@ -27,7 +27,7 @@
 
 #import "TFFullscreenController.h"
 
-@class TFTrackingClient;
+@class TFDOTrackingClient;
 @class TFTouchView;
 @class TFCalibrationPoint;
 
@@ -37,7 +37,7 @@
 	BOOL					isCalibrating;
 	id						delegate;
 	
-	TFTrackingClient*		_trackingClient;
+	TFDOTrackingClient*		_trackingClient;
 	NSArray*				_points;
 	NSEnumerator*			_pointsEnumerator;
 	TFCalibrationPoint*		_currentPoint;

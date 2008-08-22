@@ -36,7 +36,7 @@
 #define PADDINGXTITLE		((CGFloat)10.0f)
 #define PADDINGYVERSION		((CGFloat)2.0f)
 
-@interface TFTrackingDataReceiverCell (NonPublicMethods)
+@interface TFTrackingDataReceiverCell (PrivateMethods)
 - (void)_setDefaults;
 - (NSRect)_iconRectForFrame:(NSRect)frame;
 - (NSRect)_nameRectForFrame:(NSRect)frame

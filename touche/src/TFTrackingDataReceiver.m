@@ -59,4 +59,12 @@
 	[self doesNotRecognizeSelector:_cmd];
 }
 
+#pragma mark -
+#pragma mark NSCopying protocol
+
+- (id)copyWithZone:(NSZone*)zone
+{
+	return [self retain];
+}
+
 @end

@@ -1,5 +1,5 @@
 //
-//  TFServerTouchQueue.h
+//  TFThreadMessagingQueue.h
 //  Touché
 //
 //  Created by Georg Kaindl on 24/3/08.
@@ -26,12 +26,12 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface TFServerTouchQueue : NSObject {
+@interface TFThreadMessagingQueue : NSObject {
 	NSMutableArray*		_queueElements;
 	NSConditionLock*	_lock;
 }
 
-- (void)queue:(id)object;
+- (void)enqueue:(id)object;
 - (id)dequeue;
 - (BOOL)isEmpty;
 - (NSInteger)queueLength;

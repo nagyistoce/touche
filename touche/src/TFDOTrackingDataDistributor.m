@@ -1,5 +1,5 @@
 //
-//  TFTrackingServer.m
+//  TFDOTrackingServer.m
 //  Touché
 //
 //  Created by Georg Kaindl on 5/2/08.
@@ -23,36 +23,29 @@
 //
 //
 
-#import "TFTrackingServer.h"
+#import "TFDOTrackingDataDistributor.h"
 
 #import "TFIncludes.h"
 #import "TFBlob.h"
-#import "TFTrackingClientHandlingController.h"
+#import "TFDOTrackingDataReceiver.h"
 #import "TFScreenPreferencesController.h"
-#import "TFTrackingClient.h"
+#import "TFDOTrackingClient.h"
 #import "NSScreen+Extras.h"
 
 #define HEARTBEAT_INTERVAL		((NSTimeInterval)10.0)
 #define CLIENT_REQUEST_TIMEOUT	((NSTimeInterval)3.0)
 
-NSString* kNewTouchesTrackingClientHandling =		@"newTouches";
-NSString* kUpdatedTouchesTrackingClientHandling =	@"updatedTouches";
-NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
-
-@interface TFTrackingServer (NonPublicMethods)
+@interface TFDOTrackingDataDistributor (PrivateMethods)
 - (void)_cleanupClient:(NSString*)clientName;
 - (void)_connectionDidDie:(NSNotification*)notification;
-- (NSDictionary*)_fetchDistantObjectsInClientInfoDict:(NSDictionary*)infoDictionary;
 - (void)_pingClientsThread;
 @end
 
-@implementation TFTrackingServer
-
-@synthesize delegate;
+@implementation TFDOTrackingDataDistributor
 
 - (void)dealloc
 {
-	[self stopServer];
+	[self stopDistributor];
 	
 	[super dealloc];
 }
@@ -70,7 +63,7 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 	return self;
 }
 
-- (BOOL)startServer:(NSString*)serviceName error:(NSError**)error
+- (BOOL)startDistributorWithObject:(id)obj error:(NSError**)error
 {
 	if (_isRunning) {
 		if (NULL != error)
@@ -90,8 +83,11 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 		return NO;
 	}
 	
-	if (nil == serviceName)
+	NSString* serviceName;
+	if (nil == obj || ![obj isKindOfClass:[NSString class]])
 		serviceName = DEFAULT_SERVICE_NAME;
+	else
+		serviceName = (NSString*)obj;
 	
 	_listenConnection = [[NSConnection alloc] init];
 	[_listenConnection setRootObject:self];
@@ -118,7 +114,7 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 	
 	_isRunning = YES;
 	
-	_clients = [[NSMutableDictionary alloc] init];
+	_receivers = [[NSMutableDictionary alloc] init];
 	_heartbeatThread = [[NSThread alloc] initWithTarget:self
 											   selector:@selector(_pingClientsThread)
 												 object:nil];
@@ -127,7 +123,7 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 	return YES;
 }
 
-- (void)stopServer
+- (void)stopDistributor
 {
 	if (!_isRunning)
 		return;
@@ -139,7 +135,7 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 	[_listenConnection release];
 	_listenConnection = nil;
 	
-	@synchronized (_clients) {
+	@synchronized (_receivers) {
 		NSError* error = [NSError errorWithDomain:TFErrorDomain
 											 code:TFErrorClientDisconnectedSinceServerWasStopped
 										 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -153,21 +149,33 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 												   NSStringEncodingErrorKey,
 												   nil]];;
 	
-		for (NSString* name in _clients)
-			[(TFTrackingClientHandlingController*)[_clients objectForKey:name] disconnectWithError:error];
+		for (NSString* name in _receivers)
+			[(TFDOTrackingDataReceiver*)[_receivers objectForKey:name] disconnectWithError:error];
 	
-		[_clients release];
-		_clients = nil;
+		[_receivers release];
+		_receivers = nil;
 	}
 	
 	_isRunning = NO;
 }
 
-- (void)askClientWithNameToQuit:(NSString*)clientName
+- (BOOL)canAskReceiversToQuit
 {
-	TFTrackingClientHandlingController* c = [_clients objectForKey:clientName];
-	if (nil != c)
-		[c tellClientToQuit];
+	return YES;
+}
+
+- (void)askReceiverToQuit:(TFTrackingDataReceiver*)receiver
+{
+	if (receiver.owningDistributor == self)
+		[receiver receiverShouldQuit];
+}
+
+- (void)distributeTrackingDataDictionary:(NSDictionary*)trackingDict
+{	
+	@synchronized(_receivers) {
+		for (TFDOTrackingDataReceiver* receiver in [_receivers allValues])
+			[receiver consumeTrackingData:trackingDict];
+	}
 }
 
 - (void)_connectionDidDie:(NSNotification*)notification
@@ -175,10 +183,10 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 	NSConnection* deadCon = [notification object];
 	
 	NSString* deadName = nil;
-	@synchronized(_clients) {
-		for (NSString* name in _clients) {
-			TFTrackingClientHandlingController* controller = [_clients objectForKey:name];
-			if ([[(id)controller.client connectionForProxy] isEqual:deadCon]) {
+	@synchronized(_receivers) {
+		for (NSString* name in _receivers) {
+			TFDOTrackingDataReceiver* receiver = [_receivers objectForKey:name];
+			if ([[(id)receiver.client connectionForProxy] isEqual:deadCon]) {
 				deadName = name;
 				break;
 			}
@@ -201,12 +209,12 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
 		NSMutableArray* deadNames = [NSMutableArray array];
-		@synchronized(_clients) {
-			for (NSString* name in _clients) {
-				TFTrackingClientHandlingController* controller = [_clients objectForKey:name];
+		@synchronized(_receivers) {
+			for (NSString* name in _receivers) {
+				TFDOTrackingDataReceiver* receiver = [_receivers objectForKey:name];
 				BOOL isAlive = NO;
 				@try {
-					isAlive = [controller.client isAlive];
+					isAlive = [receiver.client isAlive];
 				}
 				@catch (NSException * e) {
 					isAlive = NO;
@@ -234,29 +242,13 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 
 - (void)_cleanupClient:(NSString*)clientName
 {
-	@synchronized(_clients) {
-		TFTrackingClientHandlingController* controller =
-			(TFTrackingClientHandlingController*)[_clients objectForKey:clientName];
-		[controller stop];
+	@synchronized(_receivers) {
+		TFDOTrackingDataReceiver* receiver =
+			(TFDOTrackingDataReceiver*)[_receivers objectForKey:clientName];
+		[receiver stop];
 		
-		[_clients removeObjectForKey:clientName];
+		[_receivers removeObjectForKey:clientName];
 	}
-}
-
-- (NSDictionary*)_fetchDistantObjectsInClientInfoDict:(NSDictionary*)infoDictionary
-{
-	NSMutableDictionary* dict = [NSMutableDictionary dictionaryWithDictionary:infoDictionary];
-	
-	// since NSImage appears not to support bycopy, we "fetch" it manually here by replacing
-	// the NSDistantObject proxy to it with a copy based on its TIFFRepresentation
-	NSImage* icon = [infoDictionary objectForKey:kToucheTrackingClientInfoIcon];
-	if (nil != icon) {
-		icon = [[NSImage alloc] initWithData:[icon TIFFRepresentation]];
-		[dict setObject:icon forKey:kToucheTrackingClientInfoIcon];
-		[icon release];
-	}
-	
-	return [NSDictionary dictionaryWithDictionary:dict];
 }
 
 #pragma mark -
@@ -266,6 +258,8 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 {
 	if (NULL != error)
 		*error = nil;
+
+	name = [TFDOTrackingDataReceiver localNameForClientName:name];
 
 	if (nil == client || nil == name) {
 		if (NULL != error)
@@ -285,7 +279,7 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 		return NO;
 	}
 
-	if ([[_clients allKeys] containsObject:name]) {
+	if ([[_receivers allKeys] containsObject:name]) {
 		if (NULL != error)
 			*error = [NSError errorWithDomain:TFErrorDomain
 										 code:TFErrorClientServerNameRegistrationFailed
@@ -305,7 +299,7 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 		return NO;
 	}
 	
-	[client setProtocolForProxy:@protocol(TFTrackingClientProtocol)];
+	[client setProtocolForProxy:@protocol(TFDOTrackingClientProtocol)];
 	[[client connectionForProxy] setRequestTimeout:CLIENT_REQUEST_TIMEOUT];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -313,19 +307,17 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 												 name:NSConnectionDidDieNotification
 											   object:[client connectionForProxy]];
 		
-	TFTrackingClientHandlingController* controller = [[TFTrackingClientHandlingController alloc] initWithClient:client];
+	TFDOTrackingDataReceiver* receiver =
+			[[TFDOTrackingDataReceiver alloc] initWithClient:client];
 	
-	@synchronized(_clients) {
-		[_clients setObject:controller forKey:name];
+	@synchronized(_receivers) {
+		[_receivers setObject:receiver forKey:receiver.receiverID];
 	}
 	
-	[controller release];
+	[receiver release];
 	
-	NSDictionary* infoDict = [client clientInfo];
-	infoDict = [self _fetchDistantObjectsInClientInfoDict:infoDict];
-	
-	if ([delegate respondsToSelector:@selector(clientConnectedWithName:andInfoDictionary:)])
-		[delegate clientConnectedWithName:name andInfoDictionary:infoDict];
+	/* if ([delegate respondsToSelector:@selector(clientConnectedWithName:andInfoDictionary:)])
+		[delegate clientConnectedWithName:name andInfoDictionary:infoDict]; */
 		
 	return YES;
 }
@@ -333,9 +325,10 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 - (void)unregisterClientWithName:(bycopy NSString*)name
 {
 	BOOL wasRemoved = NO;
+	name = [TFDOTrackingDataReceiver localNameForClientName:name];
 	
-	@synchronized(_clients) {
-		if ([[_clients allKeys] containsObject:name]) {
+	@synchronized(_receivers) {
+		if ([[_receivers allKeys] containsObject:name]) {
 			[self _cleanupClient:name];
 			wasRemoved = YES;
 		}
@@ -358,39 +351,6 @@ NSString* kEndedTouchesTrackingClientHandling =		@"endedTouches";
 - (CGFloat)screenPixelsPerInch
 {
 	return [TFScreenPreferencesController screenPixelsPerInch];
-}
-
-#pragma mark -
-#pragma mark Delegate methods for TFTrackingPipeline
-
-- (void)didFindBlobs:(NSArray*)blobs unmatchedBlobs:(NSArray*)unmatchedBlobs
-{
-	NSMutableDictionary* blobDict = [NSMutableDictionary dictionary];
-	if (nil != unmatchedBlobs && [unmatchedBlobs count] > 0)
-		[blobDict setObject:unmatchedBlobs forKey:kEndedTouchesTrackingClientHandling];
-	
-	NSMutableArray* newTouches = [NSMutableArray array];
-	NSMutableArray* updatedTouches = [NSMutableArray array];
-	
-	for (TFBlob* blob in blobs) {
-		if (blob.isUpdate)
-			[updatedTouches addObject:blob];
-		else
-			[newTouches addObject:blob];
-	}
-	
-	if ([newTouches count] > 0)
-		[blobDict setObject:[NSArray arrayWithArray:newTouches] forKey:kNewTouchesTrackingClientHandling];
-	
-	if ([updatedTouches count] > 0)
-		[blobDict setObject:[NSArray arrayWithArray:updatedTouches] forKey:kUpdatedTouchesTrackingClientHandling];
-	
-	NSDictionary* touches = [NSDictionary dictionaryWithDictionary:blobDict];
-	
-	@synchronized(_clients) {
-		for (TFTrackingClientHandlingController* tchc in [_clients allValues])
-			[tchc queueTouchesForForwarding:touches];
-	}
 }
 
 @end

@@ -27,7 +27,6 @@
 #import "TFIncludes.h"
 #import "TFQTKitCapture.h"
 #import "TFTrackingPipeline.h"
-#import "TFTrackingServer.h"
 #import "TFPipelineSetupController.h"
 #import "TFScreenPreferencesController.h"
 #import "TFMiscPreferencesController.h"
@@ -40,7 +39,11 @@
 #import "TFWizardView.h"
 #import "TFInfoViewController.h"
 #import "TFInfoView.h"
-#import "TFTrackingClient.h"
+#import "TFTrackingDataReceiver.h"
+#import "TFTrackingDataDistributor.h"
+#import "TFDOTrackingDataDistributor.h"
+#import "TFTrackingDataDistributionCenter.h"
+
 
 NSString* tFIsFirstRunPreferenceKey = @"tFIsFirstRunPreferenceKey";
 
@@ -71,7 +74,7 @@ enum {
 };
 
 @interface AppController (NonPublicMethods)
-- (void)_removeDisconnectedClient:(NSString*)name;
+- (void)_removeDisconnectedReceiver:(TFTrackingDataReceiver*)receiver;
 - (void)_showCurrentMainView;
 - (void)_updateCurrentMainView;
 - (void)_promoteViewToMainView:(NSView*)view;
@@ -104,8 +107,8 @@ enum {
 	[_currentMainView release];
 	_currentMainView = nil;
 	
-	[_server release];
-	_server = nil;
+	[_distributionCenter release];
+	_distributionCenter = nil;
 	
 	[_pipelineSetupController release];
 	_pipelineSetupController = nil;
@@ -380,14 +383,10 @@ enum {
 		_statusLabel.string = str;
 }
 
-- (void)_removeDisconnectedClient:(NSString*)clientName
+- (void)_removeDisconnectedReceiver:(TFTrackingDataReceiver*)receiver
 {
 	@synchronized (connectedClients) {
-		for (NSDictionary* dict in connectedClients) {
-			if ([clientName isEqualToString:[dict objectForKey:kToucheTrackingClientInfoName]]) {
-				[[self mutableArrayValueForKey:@"connectedClients"] removeObject:dict];
-			}
-		}
+		[[self mutableArrayValueForKey:@"connectedClients"] removeObject:receiver];
 	}
 	
 	[self _updateCurrentMainView];
@@ -493,13 +492,18 @@ enum {
 
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {	
-	_server = [[TFTrackingServer alloc] init];
-	[_server startServer:nil error:NULL];
-	_server.delegate = self;
+	
+	_distributionCenter = [[TFTrackingDataDistributionCenter alloc] init];
+	
+	TFDOTrackingDataDistributor* doDistributor = [[TFDOTrackingDataDistributor alloc] init];
+	[doDistributor startDistributorWithObject:nil error:NULL];
+	doDistributor.delegate = self;
+	
+	[_distributionCenter addDistributor:doDistributor];
 	
 	_pipeline = [[TFTrackingPipeline sharedPipeline] retain];
 	_pipeline.delegate = self;
-	_pipeline.trackingServer = _server;
+	//_pipeline.trackingServer = _server;
 	
 	BOOL isFirstRun = [[NSUserDefaults standardUserDefaults] boolForKey:tFIsFirstRunPreferenceKey];
 	
@@ -513,7 +517,7 @@ enum {
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender
 {
-	[_server stopServer];
+	[_distributionCenter stopAllDistributors];
 
 	[_pipeline stopProcessing:NULL];
 	[_pipeline unloadPipeline:NULL];
@@ -555,29 +559,29 @@ enum {
 }
 
 #pragma mark -
-#pragma mark TFTrackingServer delegate
+#pragma mark TFTrackingDataDistributor delegate
 
-- (void)clientConnectedWithName:(NSString*)clientName andInfoDictionary:(NSDictionary*)infoDict
+- (void)trackingDataDistributor:(TFTrackingDataDistributor*)distributor
+			 receiverDidConnect:(TFTrackingDataReceiver*)receiver
 {
-	NSMutableDictionary* dict = [NSMutableDictionary dictionaryWithDictionary:infoDict];
-	[dict setObject:_server forKey:@"trackingServer"];
-
-	@synchronized (connectedClients) {		
-		[[self mutableArrayValueForKey:@"connectedClients"] addObject:[NSDictionary dictionaryWithDictionary:dict]];
+	@synchronized (connectedClients) {
+		[[self mutableArrayValueForKey:@"connectedClients"] addObject:receiver];
 	}
 	
 	[self _updateCurrentMainView];
 	[self _updateStatusLabelForListView];
 }
 
-- (void)clientDiedWithName:(NSString*)clientName
+- (void)trackingDataDistributor:(TFTrackingDataDistributor*)distributor 
+				 receiverDidDie:(TFTrackingDataReceiver*)receiver
 {
-	[self _removeDisconnectedClient:clientName];
+	[self _removeDisconnectedReceiver:receiver];
 }
 
-- (void)clientDisconnectedWithName:(NSString*)clientName
+- (void)trackingDataDistributor:(TFTrackingDataDistributor*)distributor
+		  receiverDidDisconnect:(TFTrackingDataReceiver*)receiver
 {
-	[self _removeDisconnectedClient:clientName];
+	[self _removeDisconnectedReceiver:receiver];
 }
 
 #pragma mark -
@@ -898,6 +902,12 @@ enum {
 	[_pipelineSetupController setTrackingInputStatusMessage:@""];
 	
 	[self _loadPipelineAsync];
+}
+
+- (void)pipelineDidFindBlobs:(NSArray*)blobs unmatchedBlobs:(NSArray*)unmatchedBlobs
+{
+	[_distributionCenter distributeTrackingDataForActiveBlobs:blobs
+												inactiveBlobs:unmatchedBlobs];
 }
 
 #pragma mark -

@@ -1,5 +1,5 @@
 //
-//  TFServerTouchQueue.m
+//  TFThreadMessagingQueue.m
 //  Touché
 //
 //  Created by Georg Kaindl on 24/3/08.
@@ -23,11 +23,11 @@
 //
 //
 
-#import "TFServerTouchQueue.h"
+#import "TFThreadMessagingQueue.h"
 
 #import "TFIncludes.h"
 
-@implementation TFServerTouchQueue
+@implementation TFThreadMessagingQueue
 
 - (id)init
 {
@@ -51,7 +51,7 @@
 	[super dealloc];
 }
 
-- (void)queue:(id)object
+- (void)enqueue:(id)object
 {
 	if (nil == object)
 		return;

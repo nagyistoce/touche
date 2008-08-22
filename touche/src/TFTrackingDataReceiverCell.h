@@ -1,8 +1,8 @@
 //
-//  TFTouchTestController.h
+//  TFTrackingDataReceiverCell.h
 //  Touché
 //
-//  Created by Georg Kaindl on 26/4/08.
+//  Created by Georg Kaindl on 9/5/08.
 //
 //  Copyright (C) 2008 Georg Kaindl
 //
@@ -25,29 +25,10 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "TFFullscreenController.h"
 
-@class TFDOTrackingClient;
-@class TFTouchView;
-
-@interface TFTouchTestController : TFFullscreenController {
-	BOOL						isRunning;
-	id							delegate;
-
-	IBOutlet TFTouchView*		_touchView;
-	TFDOTrackingClient*			_trackingClient;
-	NSMutableArray*				_freeColors;
-	NSMutableDictionary*		_touchesAndColors;
+@interface TFTrackingDataReceiverCell : NSActionCell <NSCopying> {
+	NSMutableDictionary*			_nameAttributes;
+	NSMutableDictionary*			_versionAttributes;
 }
 
-@property (readonly) BOOL isRunning;
-@property (nonatomic, assign) id delegate;
-
-- (void)startTest;
-
-@end
-
-@interface NSObject (TFTouchTestControllerDelegate)
-- (void)touchTestEndedByUser;
-- (void)touchTestFailedWithError:(NSError*)error;
 @end

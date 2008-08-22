@@ -1,5 +1,5 @@
 //
-//  TFTrackingCommProtocols.h
+//  TFDOTrackingCommProtocols.h
 //  Touché
 //
 //  Created by Georg Kaindl on 5/2/08.
@@ -23,9 +23,9 @@
 //
 //
 
-#define		DEFAULT_SERVICE_NAME	(@"touche-multitouch-lib-service")
+#define		DEFAULT_SERVICE_NAME	(@"touche-multitouch-lib-do-service")
 
-@protocol TFTrackingClientProtocol
+@protocol TFDOTrackingClientProtocol
 
 - (BOOL)isAlive;
 - (oneway void)disconnectedByServerWithError:(bycopy in NSError*)error;
@@ -37,7 +37,7 @@
 
 @end
 
-@protocol TFTrackingServerProtocol
+@protocol TFDOTrackingServerProtocol
 
 - (BOOL)registerClient:(byref id)client withName:(bycopy NSString*)name error:(bycopy out NSError**)error;
 - (oneway void)unregisterClientWithName:(bycopy NSString*)name;

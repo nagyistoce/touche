@@ -59,7 +59,6 @@ extern NSInteger TFTrackingPipelineInputResolutionHighest;
 	
 	NSInteger								inputMethod;
 	id										delegate;
-	id										trackingServer;
 		
 	BOOL									showBlobsInPreview;
 	BOOL									transformBlobsToScreenCoordinates;
@@ -72,7 +71,6 @@ extern NSInteger TFTrackingPipelineInputResolutionHighest;
 
 @property (readonly) NSInteger inputMethod;
 @property (assign) id delegate;
-@property (assign) id trackingServer;
 @property (assign) BOOL showBlobsInPreview;
 @property (assign) BOOL transformBlobsToScreenCoordinates;
 @property (assign) NSInteger frameStageForDisplay;
@@ -108,8 +106,6 @@ extern NSInteger TFTrackingPipelineInputResolutionHighest;
 - (void)trackingInputMethodDidChangeTo:(NSInteger)methodKey;
 - (void)pipelineDidBecomeUnavailableWithError:(NSError*)error;
 - (void)pipelineDidBecomeAvailableAgain;
+- (void)pipelineDidFindBlobs:(NSArray*)blobs unmatchedBlobs:(NSArray*)unmatchedBlobs;
 @end
 
-@interface NSObject (TFTrackingPipelineTrackingServer)
-- (void)didFindBlobs:(NSArray*)blobs unmatchedBlobs:(NSArray*)unmatchedBlobs;
-@end

@@ -1,8 +1,8 @@
 //
-//  TFClientCell.h
+//  TFTrackingDataReceiver.h
 //  Touché
 //
-//  Created by Georg Kaindl on 9/5/08.
+//  Created by Georg Kaindl on 22/8/08.
 //
 //  Copyright (C) 2008 Georg Kaindl
 //
@@ -21,14 +21,29 @@
 //  You should have received a copy of the GNU Lesser General Public
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
-//
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+
+#import "TFTrackingDataReceiverInfoDictKeys.h"
 
 
-@interface TFClientCell : NSActionCell <NSCopying> {
-	NSMutableDictionary*			_nameAttributes;
-	NSMutableDictionary*			_versionAttributes;
+@class TFTrackingDataDistributor;
+
+@interface TFTrackingDataReceiver : NSObject {
+@protected
+	BOOL							active, connected;
+	NSString*						receiverID;
+	TFTrackingDataDistributor*		owningDistributor;
+	NSDictionary*					infoDictionary;
 }
+
+@property (readonly, getter=isActive) BOOL active;
+@property (readonly, getter=isConnected) BOOL connected;
+@property (readonly) NSString* receiverID;
+@property (assign) TFTrackingDataDistributor* owningDistributor;
+@property (readonly) NSDictionary* infoDictionary;
+
+- (void)receiverShouldQuit;
+- (void)consumeTrackingData:(id)trackingData;
 
 @end

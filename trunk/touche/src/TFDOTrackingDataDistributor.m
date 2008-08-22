@@ -182,22 +182,22 @@
 {
 	NSConnection* deadCon = [notification object];
 	
-	NSString* deadName = nil;
+	TFDOTrackingDataReceiver* deadReceiver = nil;
 	@synchronized(_receivers) {
 		for (NSString* name in _receivers) {
 			TFDOTrackingDataReceiver* receiver = [_receivers objectForKey:name];
 			if ([[(id)receiver.client connectionForProxy] isEqual:deadCon]) {
-				deadName = name;
+				deadReceiver = receiver;
 				break;
 			}
 		}
 	}
 	
-	if (nil != deadName) {
-		[self _cleanupClient:deadName];
+	if (nil != deadReceiver) {
+		[self _cleanupClient:deadReceiver.receiverID];
 		
-		if ([delegate respondsToSelector:@selector(clientDiedWithName:)])
-			[delegate clientDiedWithName:deadName];
+		if ([delegate respondsToSelector:@selector(trackingDataDistributor:receiverDidDie:)])
+			[delegate trackingDataDistributor:self receiverDidDie:deadReceiver];
 	}
 }
 
@@ -208,7 +208,7 @@
 	while (![_heartbeatThread isCancelled]) {
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
-		NSMutableArray* deadNames = [NSMutableArray array];
+		NSMutableArray* deadReceivers = [NSMutableArray array];
 		@synchronized(_receivers) {
 			for (NSString* name in _receivers) {
 				TFDOTrackingDataReceiver* receiver = [_receivers objectForKey:name];
@@ -221,15 +221,15 @@
 				}
 				
 				if (!isAlive)
-					[deadNames addObject:name];
+					[deadReceivers addObject:receiver];
 			}
 		}
 		
-		for (NSString* name in deadNames) {
-			[self _cleanupClient:name];
+		for (TFTrackingDataReceiver* receiver in deadReceivers) {
+			[self _cleanupClient:receiver.receiverID];
 			
-			if ([delegate respondsToSelector:@selector(clientDiedWithName:)])
-				[delegate clientDiedWithName:name];
+			if ([delegate respondsToSelector:@selector(trackingDataDistributor:receiverDidDie:)])
+				[delegate trackingDataDistributor:self receiverDidDie:receiver];
 		}
 		
 		[NSThread sleepForTimeInterval:HEARTBEAT_INTERVAL];
@@ -309,33 +309,35 @@
 		
 	TFDOTrackingDataReceiver* receiver =
 			[[TFDOTrackingDataReceiver alloc] initWithClient:client];
+	receiver.owningDistributor = self;
 	
 	@synchronized(_receivers) {
 		[_receivers setObject:receiver forKey:receiver.receiverID];
 	}
 	
-	[receiver release];
+	if ([delegate respondsToSelector:@selector(trackingDataDistributor:receiverDidConnect:)])
+		[delegate trackingDataDistributor:self receiverDidConnect:receiver];
 	
-	/* if ([delegate respondsToSelector:@selector(clientConnectedWithName:andInfoDictionary:)])
-		[delegate clientConnectedWithName:name andInfoDictionary:infoDict]; */
+	[receiver release];
 		
 	return YES;
 }
 
 - (void)unregisterClientWithName:(bycopy NSString*)name
 {
-	BOOL wasRemoved = NO;
+	BOOL exists = NO;
 	name = [TFDOTrackingDataReceiver localNameForClientName:name];
 	
 	@synchronized(_receivers) {
 		if ([[_receivers allKeys] containsObject:name]) {
-			[self _cleanupClient:name];
-			wasRemoved = YES;
+			exists = YES;
 		}
 	}
 	
-	if (wasRemoved && [delegate respondsToSelector:@selector(clientDisconnectedWithName:)])
-		[delegate clientDisconnectedWithName:name];
+	if (exists && [delegate respondsToSelector:@selector(trackingDataDistributor:receiverDidDisconnect:)])
+		[delegate trackingDataDistributor:self receiverDidDisconnect:[_receivers objectForKey:name]];
+	
+	[self _cleanupClient:name];
 }
 
 - (CGDirectDisplayID)screenId

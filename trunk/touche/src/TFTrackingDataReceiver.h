@@ -46,4 +46,9 @@
 - (void)receiverShouldQuit;
 - (void)consumeTrackingData:(id)trackingData;
 
+#pragma mark -
+#pragma mark NSCopying protocol
+
+- (id)copyWithZone:(NSZone *)zone;
+
 @end

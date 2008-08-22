@@ -38,6 +38,17 @@
 	[super dealloc];
 }
 
+- (void)setDelegate:(id)newDelegate
+{
+	delegate = newDelegate;
+	
+	_delegateCapabilities.hasWantedCIImageColorSpace =
+		[delegate respondsToSelector:@selector(wantedCIImageColorSpace)];
+	
+	_delegateCapabilities.hasDidCaptureFrame =
+		[delegate respondsToSelector:@selector(didCaptureFrame:)];
+}
+
 - (BOOL)isCapturing
 {
 	TFThrowMethodNotImplementedException();

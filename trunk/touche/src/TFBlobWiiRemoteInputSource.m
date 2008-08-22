@@ -464,7 +464,7 @@ enum {
 	}
 	
 	
-	if (blobTrackingEnabled && [delegate respondsToSelector:@selector(didDetectBlobs:)])
+	if (blobTrackingEnabled && _delegateHasDidDetectBlobs)
 		[delegate didDetectBlobs:[NSArray arrayWithArray:blobs]];
 }
 

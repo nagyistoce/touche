@@ -63,6 +63,14 @@
 	[super dealloc];
 }
 
+- (void)setDelegate:(id)newDelegate
+{
+	delegate = newDelegate;
+	
+	// cache for performance reasons
+	_delegateHasDidDetectBlobs = [delegate respondsToSelector:@selector(didDetectBlobs:)];
+}
+
 - (BOOL)_shouldProcessThisFrame
 {
 	NSDate* now = [NSDate date];

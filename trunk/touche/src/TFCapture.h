@@ -27,9 +27,16 @@
 
 @interface TFCapture : NSObject {
 	id		delegate;
+	
+	struct {
+		unsigned int hasWantedCIImageColorSpace:1;
+		unsigned int hasDidCaptureFrame:1;
+	} _delegateCapabilities;
 }
 
 @property (assign) id delegate;
+
+- (void)setDelegate:(id)newDelegate;
 
 - (BOOL)isCapturing;
 - (BOOL)startCapturing:(NSError**)error;

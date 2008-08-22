@@ -362,7 +362,7 @@
 		if (0 == [blobs count])
 			[self _updateBackgroundForSubtraction:capturedFrame];
 				
-		if ([delegate respondsToSelector:@selector(didDetectBlobs:)])
+		if (_delegateHasDidDetectBlobs)
 			[delegate didDetectBlobs:blobs];
 	}
 }

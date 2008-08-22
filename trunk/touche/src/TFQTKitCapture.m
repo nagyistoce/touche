@@ -335,10 +335,10 @@
 		return;
 
 	@synchronized(self) {
-		if ([delegate respondsToSelector:@selector(didCaptureFrame:)]) {
+		if (_delegateCapabilities.hasDidCaptureFrame) {
 			CIImage* image = nil;
 			
-			if ([delegate respondsToSelector:@selector(wantedCIImageColorSpace)])
+			if (_delegateCapabilities.hasWantedCIImageColorSpace)
 				image = [CIImage imageWithCVImageBuffer:videoFrame
 												options:[NSDictionary dictionaryWithObject:(id)[delegate wantedCIImageColorSpace]
 																					forKey:kCIImageColorSpace]];

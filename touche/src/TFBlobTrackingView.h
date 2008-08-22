@@ -28,9 +28,12 @@
 
 @interface TFBlobTrackingView : TFTrackingPipelineView {
 	NSArray*		blobs;
+	BOOL			_delegateHasBlobsForTimestamp;
 }
 
 @property (retain) NSArray* blobs;
+
+- (void)setDelegate:(id)newDelegate;
 
 @end
 

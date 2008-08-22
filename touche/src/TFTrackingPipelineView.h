@@ -29,9 +29,12 @@
 
 @interface TFTrackingPipelineView : TFOpenGLView {
 	id				delegate;
+	BOOL			_delegateHasFrameForTimestamp;
 }
 
 @property (assign) id delegate;
+
+- (void)setDelegate:(id)newDelegate;
 
 @end
 

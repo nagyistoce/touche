@@ -48,6 +48,14 @@
 	}
 }
 
+- (void)setDelegate:(id)newDelegate
+{
+	[super setDelegate:newDelegate];
+	
+	// cache for performance reasons
+	_delegateHasBlobsForTimestamp = [delegate respondsToSelector:@selector(cameraBlobsForTimestamp:)];
+}
+
 - (void)dealloc
 {
 	[blobs release];
@@ -146,7 +154,7 @@
 {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
-	if ([delegate respondsToSelector:@selector(cameraBlobsForTimestamp:)]) {
+	if (_delegateHasBlobsForTimestamp) {
 		NSArray* newBlobs = [delegate cameraBlobsForTimestamp:timeStamp];
 		[self setBlobs:newBlobs];
 	}

@@ -67,6 +67,8 @@ extern NSInteger TFTrackingPipelineInputResolutionHighest;
 	NSMutableDictionary*					_objectBindings;
 	NSInteger								_calibrationStatus;
 	NSError*								_calibrationError;
+	
+	BOOL									_delegateHasDidFindBlobs;
 }
 
 @property (readonly) NSInteger inputMethod;
@@ -76,6 +78,8 @@ extern NSInteger TFTrackingPipelineInputResolutionHighest;
 @property (assign) NSInteger frameStageForDisplay;
 
 + (TFTrackingPipeline*)sharedPipeline;
+
+- (void)setDelegate:(id)newDelegate;
 
 - (BOOL)isReady;
 - (BOOL)isProcessing;

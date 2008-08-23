@@ -48,6 +48,6 @@
 @end
 
 @interface NSObject (TFTouchTestControllerDelegate)
-- (void)touchTestEndedByUser;
-- (void)touchTestFailedWithError:(NSError*)error;
+- (void)touchTestEndedByUser:(TFTouchTestController*)controller;
+- (void)touchTestController:(TFTouchTestController*)controller failedWithError:(NSError*)error;
 @end

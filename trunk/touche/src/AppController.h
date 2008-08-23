@@ -80,9 +80,4 @@
 - (IBAction)startWizard:(id)sender;
 - (IBAction)welcomeViewDismissClicked:(id)sender;
 
-#pragma mark -
-#pragma mark Calibration controller delegate
-
-- (void)didCalibrateWithPoints:(NSArray*)calibrationPoints;
-
 @end

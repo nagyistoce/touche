@@ -68,7 +68,7 @@
 	delegate = newDelegate;
 	
 	// cache for performance reasons
-	_delegateHasDidDetectBlobs = [delegate respondsToSelector:@selector(didDetectBlobs:)];
+	_delegateHasDidDetectBlobs = [delegate respondsToSelector:@selector(blobInputSource:didDetectBlobs:)];
 }
 
 - (BOOL)_shouldProcessThisFrame

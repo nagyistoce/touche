@@ -38,5 +38,5 @@
 @end
 
 @interface NSObject (TFBlobTrackingViewDelegate)
-- (NSArray*)cameraBlobsForTimestamp:(const CVTimeStamp*)timeStamp;
+- (NSArray*)blobTrackingView:(TFBlobTrackingView*)trackingView cameraBlobsForTimestamp:(const CVTimeStamp*)timeStamp;
 @end

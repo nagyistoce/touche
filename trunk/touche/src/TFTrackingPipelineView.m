@@ -43,7 +43,7 @@
 	delegate = newDelegate;
 	
 	// cache this for performance reasons
-	_delegateHasFrameForTimestamp = [delegate respondsToSelector:@selector(frameForTimestamp:)];
+	_delegateHasFrameForTimestamp = [delegate respondsToSelector:@selector(trackingPipelineView:frameForTimestamp:)];
 }
 
 - (CVReturn)drawFrameForTimeStamp:(const CVTimeStamp*)timeStamp
@@ -52,7 +52,7 @@
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
 	if (_delegateHasFrameForTimestamp) {
-		CIImage* newFrame = [[delegate frameForTimestamp:timeStamp] retain];
+		CIImage* newFrame = [[delegate trackingPipelineView:self frameForTimestamp:timeStamp] retain];
 	
 		@synchronized(self) {
 			CGRect oldRect = [_ciimage extent];

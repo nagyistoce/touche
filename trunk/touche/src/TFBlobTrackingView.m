@@ -53,7 +53,7 @@
 	[super setDelegate:newDelegate];
 	
 	// cache for performance reasons
-	_delegateHasBlobsForTimestamp = [delegate respondsToSelector:@selector(cameraBlobsForTimestamp:)];
+	_delegateHasBlobsForTimestamp = [delegate respondsToSelector:@selector(blobTrackingView:cameraBlobsForTimestamp:)];
 }
 
 - (void)dealloc
@@ -155,7 +155,7 @@
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
 	if (_delegateHasBlobsForTimestamp) {
-		NSArray* newBlobs = [delegate cameraBlobsForTimestamp:timeStamp];
+		NSArray* newBlobs = [delegate blobTrackingView:self cameraBlobsForTimestamp:timeStamp];
 		[self setBlobs:newBlobs];
 	}
 	

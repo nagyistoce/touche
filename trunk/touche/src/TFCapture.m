@@ -43,10 +43,10 @@
 	delegate = newDelegate;
 	
 	_delegateCapabilities.hasWantedCIImageColorSpace =
-		[delegate respondsToSelector:@selector(wantedCIImageColorSpace)];
+		[delegate respondsToSelector:@selector(wantedCIImageColorSpaceForCapture:)];
 	
 	_delegateCapabilities.hasDidCaptureFrame =
-		[delegate respondsToSelector:@selector(didCaptureFrame:)];
+		[delegate respondsToSelector:@selector(capture:didCaptureFrame:)];
 }
 
 - (BOOL)isCapturing

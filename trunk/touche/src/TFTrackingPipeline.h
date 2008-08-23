@@ -100,16 +100,16 @@ extern NSInteger TFTrackingPipelineInputResolutionHighest;
 @end
 
 @interface NSObject (TFTrackingPipelineDelegate)
-- (void)pipelineDidLoad;
-- (void)pipelineDidBecomeReady;
-- (void)pipelineNotReadyWithReason:(NSString*)reason;
-- (void)pipelineWillNotBecomeReadyWithError:(NSError*)error;
-- (void)calibrationIsFineForChosenResolution;
-- (void)calibrationNecessaryForCurrentSettingsBecauseOfError:(NSError*)error;
-- (void)calibrationRecommendedForCurrentSettings;
-- (void)trackingInputMethodDidChangeTo:(NSInteger)methodKey;
-- (void)pipelineDidBecomeUnavailableWithError:(NSError*)error;
-- (void)pipelineDidBecomeAvailableAgain;
-- (void)pipelineDidFindBlobs:(NSArray*)blobs unmatchedBlobs:(NSArray*)unmatchedBlobs;
+- (void)pipelineDidLoad:(TFTrackingPipeline*)pipeline;
+- (void)pipelineDidBecomeReady:(TFTrackingPipeline*)pipeline;
+- (void)pipeline:(TFTrackingPipeline*)pipeline notReadyWithReason:(NSString*)reason;
+- (void)pipeline:(TFTrackingPipeline*)pipeline willNotBecomeReadyWithError:(NSError*)error;
+- (void)calibrationIsFineForChosenResolutionInPipeline:(TFTrackingPipeline*)pipeline;
+- (void)pipeline:(TFTrackingPipeline*)pipeline calibrationNecessaryForCurrentSettingsBecauseOfError:(NSError*)error;
+- (void)calibrationRecommendedForCurrentSettingsInPipeline:(TFTrackingPipeline*)pipeline;
+- (void)pipeline:(TFTrackingPipeline*)pipeline trackingInputMethodDidChangeTo:(NSInteger)methodKey;
+- (void)pipeline:(TFTrackingPipeline*)pipeline didBecomeUnavailableWithError:(NSError*)error;
+- (void)pipelineDidBecomeAvailableAgain:(TFTrackingPipeline*)pipeline;
+- (void)pipeline:(TFTrackingPipeline*)pipeline didFindBlobs:(NSArray*)blobs unmatchedBlobs:(NSArray*)unmatchedBlobs;
 @end
 

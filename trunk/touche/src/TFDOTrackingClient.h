@@ -34,10 +34,22 @@
 	BOOL		connected;
 	NSString*	_clientName;
 	id			_server;
+	
+	struct {
+		unsigned int hasDidGetDisconnected:1;
+		unsigned int hasServerConnectionDied:1;
+		unsigned int hasInfoDictionary:1;
+		unsigned int hasShouldQuitByServerRequest:1;
+		unsigned int hasTouchesDidBegin:1;
+		unsigned int hasTouchesDidUpdate:1;
+		unsigned int hasTouchesDidEnd:1;
+	} _delegateCapabilities;
 }
 
 @property (assign) id delegate;
 @property (readonly, getter=isConnected) BOOL connected;
+
+- (void)setDelegate:(id)newDelegate;
 
 - (BOOL)connectWithName:(NSString*)clientName;
 - (BOOL)connectWithName:(NSString*)clientName error:(NSError**)error;

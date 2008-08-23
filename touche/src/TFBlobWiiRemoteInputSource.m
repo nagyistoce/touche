@@ -386,8 +386,8 @@ enum {
 		if (_wasProcessingBeforeBecomingUnavailable)
 			[self startProcessing:NULL];
 		
-		if ([delegate respondsToSelector:@selector(blobInputSourceDidBecomeAvailableAgain)])
-			[delegate blobInputSourceDidBecomeAvailableAgain];
+		if ([delegate respondsToSelector:@selector(blobInputSourceDidBecomeAvailableAgain:)])
+			[delegate blobInputSourceDidBecomeAvailableAgain:self];
 	} else {
 		if ([delegate respondsToSelector:@selector(blobInputSourceDidBecomeReady:)])
 			[delegate blobInputSourceDidBecomeReady:self];
@@ -410,8 +410,8 @@ enum {
 													NSStringEncodingErrorKey,
 												nil]];
 	
-	if ([delegate respondsToSelector:@selector(blobInputSourceWillNotBecomeReadyWithError:)])
-		[delegate blobInputSourceWillNotBecomeReadyWithError:error];
+	if ([delegate respondsToSelector:@selector(blobInputSource:willNotBecomeReadyWithError:)])
+		[delegate blobInputSource:self willNotBecomeReadyWithError:error];
 }
 
 #pragma mark -
@@ -465,7 +465,7 @@ enum {
 	
 	
 	if (blobTrackingEnabled && _delegateHasDidDetectBlobs)
-		[delegate didDetectBlobs:[NSArray arrayWithArray:blobs]];
+		[delegate blobInputSource:self didDetectBlobs:[NSArray arrayWithArray:blobs]];
 }
 
 - (void)wiiRemoteDisconnected:(IOBluetoothDevice*)device
@@ -500,8 +500,8 @@ enum {
 												NSStringEncodingErrorKey,
 											   nil]];
 
-	if ([delegate respondsToSelector:@selector(blobInputSourceDidBecomeUnavailableWithError:)])
-		[delegate blobInputSourceDidBecomeUnavailableWithError:error];
+	if ([delegate respondsToSelector:@selector(blobInputSource:didBecomeUnavailableWithError:)])
+		[delegate blobInputSource:self didBecomeUnavailableWithError:error];
 }
 
 // we don't need those, but they aren't correctly wrapped into respondsToSelector in the framework, so it's here to prevent exceptions

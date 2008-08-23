@@ -340,12 +340,12 @@
 			
 			if (_delegateCapabilities.hasWantedCIImageColorSpace)
 				image = [CIImage imageWithCVImageBuffer:videoFrame
-												options:[NSDictionary dictionaryWithObject:(id)[delegate wantedCIImageColorSpace]
+												options:[NSDictionary dictionaryWithObject:(id)[delegate wantedCIImageColorSpaceForCapture:self]
 																					forKey:kCIImageColorSpace]];
 			else
 				image = [CIImage imageWithCVImageBuffer:videoFrame];
 			
-			[delegate didCaptureFrame:image];
+			[delegate capture:self didCaptureFrame:image];
 		}
 	}
 }

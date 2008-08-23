@@ -51,6 +51,9 @@
 #import "TFBlobCameraInputSource.h"
 #import "TFOpenCVContourBlobDetector.h"
 
+
+@class TFTrackingPipelineView, TFBlobTrackingView;
+
 NSInteger TFTrackingPipelineInputResolutionLowest = 1;
 NSInteger TFTrackingPipelineInputResolutionHighest = 7;
 
@@ -237,7 +240,7 @@ enum {
 	delegate = newDelegate;
 	
 	// cache the blob tracking delegate method availability for performance reasons
-	_delegateHasDidFindBlobs = [delegate respondsToSelector:@selector(pipelineDidFindBlobs:unmatchedBlobs:)];
+	_delegateHasDidFindBlobs = [delegate respondsToSelector:@selector(pipeline:didFindBlobs:unmatchedBlobs:)];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -249,21 +252,21 @@ enum {
 			NSError* error = nil;
 			
 			if (![self _changeQTCaptureDeviceToDeviceWithUniqueId:[change objectForKey:NSKeyValueChangeNewKey] error:&error]) {
-				if ([delegate respondsToSelector:@selector(pipelineDidBecomeUnavailableWithError:)])
-					[delegate pipelineDidBecomeUnavailableWithError:error];
+				if ([delegate respondsToSelector:@selector(pipeline:didBecomeUnavailableWithError:)])
+					[delegate pipeline:self didBecomeUnavailableWithError:error];
 			}
 		} else if ([keyPath isEqualToString:libDc1394CameraUniqueIdPrefKey]) {
 			NSError* error = nil;
 		
 			if (![self _changeLibDc1394CameraToCameraWithUniqueId:[change objectForKey:NSKeyValueChangeNewKey] error:&error]) {
-				if ([delegate respondsToSelector:@selector(pipelineDidBecomeUnavailableWithError:)])
-					[delegate pipelineDidBecomeUnavailableWithError:error];
+				if ([delegate respondsToSelector:@selector(pipeline:didBecomeUnavailableWithError:)])
+					[delegate pipeline:self didBecomeUnavailableWithError:error];
 			}
 		} else if ([keyPath isEqualToString:trackingInputMethodPrefKey]) {
 			inputMethod = [[change objectForKey:NSKeyValueChangeNewKey] integerValue];
 			
-			if ([delegate respondsToSelector:@selector(trackingInputMethodDidChangeTo:)])
-				[delegate trackingInputMethodDidChangeTo:inputMethod];
+			if ([delegate respondsToSelector:@selector(pipeline:trackingInputMethodDidChangeTo:)])
+				[delegate pipeline:self trackingInputMethodDidChangeTo:inputMethod];
 		}
 	}
 	else {
@@ -732,14 +735,14 @@ enum {
 - (void)_checkAndReportCalibrationProblemsToDelegate:(BOOL)isResolutionChange
 {
 	if (TFTrackingPipelineCalibrationRequired == _calibrationStatus) {
-		if ([delegate respondsToSelector:@selector(calibrationNecessaryForCurrentSettingsBecauseOfError:)])
-			[delegate calibrationNecessaryForCurrentSettingsBecauseOfError:_calibrationError];
+		if ([delegate respondsToSelector:@selector(pipeline:calibrationNecessaryForCurrentSettingsBecauseOfError:)])
+			[delegate pipeline:self calibrationNecessaryForCurrentSettingsBecauseOfError:_calibrationError];
 	} else if (TFTrackingPipelineCalibrationRecommended == _calibrationStatus) {
-		if ([delegate respondsToSelector:@selector(calibrationRecommendedForCurrentSettings)])
-			[delegate calibrationRecommendedForCurrentSettings];
+		if ([delegate respondsToSelector:@selector(calibrationRecommendedForCurrentSettingsInPipeline:)])
+			[delegate calibrationRecommendedForCurrentSettingsInPipeline:self];
 	} else if (isResolutionChange) {
-		if ([delegate respondsToSelector:@selector(calibrationIsFineForChosenResolution)])
-			[delegate calibrationIsFineForChosenResolution];
+		if ([delegate respondsToSelector:@selector(calibrationIsFineForChosenResolutionInPipeline:)])
+			[delegate calibrationIsFineForChosenResolutionInPipeline:self];
 	}
 	
 	[_calibrationError release];
@@ -829,18 +832,18 @@ enum {
 	if (NULL != error)
 		*error = nil;
 	
-	if ([delegate respondsToSelector:@selector(pipelineDidLoad)])
-		[delegate pipelineDidLoad];
+	if ([delegate respondsToSelector:@selector(pipelineDidLoad:)])
+		[delegate pipelineDidLoad:self];
 	
 	NSString* reason;
 	if ([_blobInput isReady:&reason]) {
 		[self _checkAndReportCalibrationProblemsToDelegate:NO];
 	
-		if ([delegate respondsToSelector:@selector(pipelineDidBecomeReady)])
-			[delegate pipelineDidBecomeReady];
+		if ([delegate respondsToSelector:@selector(pipelineDidBecomeReady:)])
+			[delegate pipelineDidBecomeReady:self];
 	} else {
-		if ([delegate respondsToSelector:@selector(pipelineNotReadyWithReason:)])
-			[delegate pipelineNotReadyWithReason:reason];
+		if ([delegate respondsToSelector:@selector(pipeline:notReadyWithReason:)])
+			[delegate pipeline:self notReadyWithReason:reason];
 	}
 	
 	return YES;
@@ -916,62 +919,72 @@ errorReturn:
 #pragma mark -
 #pragma mark Delegate methods for TFBlobInputSource
 
-- (void)didDetectBlobs:(NSArray*)detectedBlobs
+- (void)blobInputSource:(TFBlobInputSource*)inputSource didDetectBlobs:(NSArray*)detectedBlobs
 {	
-	@synchronized (self) {
-		NSArray* unmatchedBlobs = nil;
-		NSArray* blobs = [_blobLabelizer labelizeBlobs:detectedBlobs unmatchedBlobs:&unmatchedBlobs ignoringErrors:YES error:NULL];
-		
-		if ([blobs count] <= 0) {
-			[self _cacheBlobs:nil inField:&_currentUntransformedBlobs];
-		} else
-			[self _cacheBlobs:[[[NSArray alloc] initWithArray:blobs copyItems:YES] autorelease] inField:&_currentUntransformedBlobs];
-		
-		if ([blobs count] <= 0 && (nil == unmatchedBlobs || [unmatchedBlobs count] <= 0))
-			return;
-		
-		if (transformBlobsToScreenCoordinates) {
-			[_coordConverter transformBlobsFromCameraToScreen:blobs errors:NULL];
-			[_coordConverter transformBlobsFromCameraToScreen:unmatchedBlobs errors:NULL];
+	if (_blobInput == inputSource) {
+		@synchronized (self) {
+			NSArray* unmatchedBlobs = nil;
+			NSArray* blobs = [_blobLabelizer labelizeBlobs:detectedBlobs unmatchedBlobs:&unmatchedBlobs ignoringErrors:YES error:NULL];
+			
+			if ([blobs count] <= 0) {
+				[self _cacheBlobs:nil inField:&_currentUntransformedBlobs];
+			} else
+				[self _cacheBlobs:[[[NSArray alloc] initWithArray:blobs copyItems:YES] autorelease] inField:&_currentUntransformedBlobs];
+			
+			if ([blobs count] <= 0 && (nil == unmatchedBlobs || [unmatchedBlobs count] <= 0))
+				return;
+			
+			if (transformBlobsToScreenCoordinates) {
+				[_coordConverter transformBlobsFromCameraToScreen:blobs errors:NULL];
+				[_coordConverter transformBlobsFromCameraToScreen:unmatchedBlobs errors:NULL];
+			}
+					
+			if (_delegateHasDidFindBlobs)
+				[delegate pipeline:self didFindBlobs:blobs unmatchedBlobs:unmatchedBlobs];
 		}
-				
-		if (_delegateHasDidFindBlobs)
-			[delegate pipelineDidFindBlobs:blobs unmatchedBlobs:unmatchedBlobs];
 	}
 }
 
-- (void)blobInputSourceDidBecomeReady:(TFBlobInputSource*)source
+- (void)blobInputSourceDidBecomeReady:(TFBlobInputSource*)inputSource
 {
-	[self _checkAndReportCalibrationProblemsToDelegate:NO];
-	
-	if ([delegate respondsToSelector:@selector(pipelineDidBecomeReady)])
-		[delegate pipelineDidBecomeReady];
+	if (_blobInput == inputSource) {
+		[self _checkAndReportCalibrationProblemsToDelegate:NO];
+		
+		if ([delegate respondsToSelector:@selector(pipelineDidBecomeReady:)])
+			[delegate pipelineDidBecomeReady:self];
+	}
 }
 
-- (void)blobInputSourceWillNotBecomeReadyWithError:(NSError*)error
+- (void)blobInputSource:(TFBlobInputSource*)inputSource willNotBecomeReadyWithError:(NSError*)error
 {
-	[self unloadPipeline:nil];
-	
-	if ([delegate respondsToSelector:@selector(pipelineWillNotBecomeReadyWithError:)])
-		[delegate pipelineWillNotBecomeReadyWithError:error];
+	if (_blobInput == inputSource) {
+		[self unloadPipeline:nil];
+		
+		if ([delegate respondsToSelector:@selector(pipeline:willNotBecomeReadyWithError:)])
+			[delegate pipeline:self willNotBecomeReadyWithError:error];
+	}
 }
 
-- (void)blobInputSourceDidBecomeUnavailableWithError:(NSError*)error
+- (void)blobInputSource:(TFBlobInputSource*)inputSource didBecomeUnavailableWithError:(NSError*)error
 {
-	if ([delegate respondsToSelector:@selector(pipelineDidBecomeUnavailableWithError:)])
-		[delegate pipelineDidBecomeUnavailableWithError:error];
+	if (_blobInput == inputSource) {
+		if ([delegate respondsToSelector:@selector(pipeline:didBecomeUnavailableWithError:)])
+			[delegate pipeline:self didBecomeUnavailableWithError:error];
+	}
 }
 
-- (void)blobInputSourceDidBecomeAvailableAgain
+- (void)blobInputSourceDidBecomeAvailableAgain:(TFBlobInputSource*)inputSource
 {
-	if ([delegate respondsToSelector:@selector(pipelineDidBecomeAvailableAgain)])
-		[delegate pipelineDidBecomeAvailableAgain];
+	if (_blobInput == inputSource) {
+		if ([delegate respondsToSelector:@selector(pipelineDidBecomeAvailableAgain:)])
+			[delegate pipelineDidBecomeAvailableAgain:self];
+	}
 }
 
 #pragma mark -
 #pragma mark Delegate methods for TFBlobTrackingView
 
-- (CIImage*)frameForTimestamp:(const CVTimeStamp*)timeStamp
+- (CIImage*)trackingPipelineView:(TFTrackingPipelineView*)pipelineView frameForTimestamp:(const CVTimeStamp*)timeStamp
 {
 	if (nil == _blobInput)
 		return nil;
@@ -985,7 +998,7 @@ errorReturn:
 	return img;
 }
 
-- (NSArray*)cameraBlobsForTimestamp:(const CVTimeStamp*)timeStamp
+- (NSArray*)blobTrackingView:(TFBlobTrackingView*)trackingView cameraBlobsForTimestamp:(const CVTimeStamp*)timeStamp
 {
 	NSArray* blobs = nil;
 	@synchronized(_currentUntransformedBlobs) {

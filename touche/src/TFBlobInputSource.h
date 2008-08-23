@@ -59,9 +59,9 @@
 @end
 
 @interface NSObject (TFBlobInputSourceDelegate)
-- (void)blobInputSourceDidBecomeUnavailableWithError:(NSError*)error;
-- (void)blobInputSourceDidBecomeAvailableAgain;
-- (void)blobInputSourceWillNotBecomeReadyWithError:(NSError*)error;
-- (void)blobInputSourceDidBecomeReady:(TFBlobInputSource*)source;
-- (void)didDetectBlobs:(NSArray*)detectedBlobs;
+- (void)blobInputSource:(TFBlobInputSource*)inputSource didBecomeUnavailableWithError:(NSError*)error;
+- (void)blobInputSourceDidBecomeAvailableAgain:(TFBlobInputSource*)inputSource;
+- (void)blobInputSource:(TFBlobInputSource*)inputSource willNotBecomeReadyWithError:(NSError*)error;
+- (void)blobInputSourceDidBecomeReady:(TFBlobInputSource*)inputSource;
+- (void)blobInputSource:(TFBlobInputSource*)inputSource didDetectBlobs:(NSArray*)detectedBlobs;
 @end

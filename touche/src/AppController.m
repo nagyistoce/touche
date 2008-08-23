@@ -727,187 +727,208 @@ enum {
 #pragma mark -
 #pragma mark Pipeline delegate
 
-- (void)calibrationIsFineForChosenResolution
+- (void)calibrationIsFineForChosenResolutionInPipeline:(TFTrackingPipeline*)pipeline
 {
-	_appStatus = AppStatusIsTracking;
-	
-	[self _showCurrentMainView];
+	if (_pipeline == pipeline) {
+		_appStatus = AppStatusIsTracking;		
+		[self _showCurrentMainView];
+	}
 }
 
-- (void)calibrationRecommendedForCurrentSettings
+- (void)calibrationRecommendedForCurrentSettingsInPipeline:(TFTrackingPipeline*)pipeline
 {
-	_appStatus = AppStatusCalibrationRecommended;
-	
-	if ([_wizardController isRunning])
-		return;
-	
-	TFInfoViewController* c = [[TFInfoViewController alloc] init];
-	[c setTitleText:TFLocalizedString(@"CalibrationRecommended", @"Calibration recommended")];
-	[c setDescriptionText:TFLocalizedString(@"CalibrationRecommendedDescription",
-											@"CalibrationRecommendedDescription")];
-	[c setType:TFInfoViewControllerTypeInfo];
-	[c setActionButtonTitle:TFLocalizedString(@"Calibrate", @"Calibrate")
-					 action:@selector(startCalibration:)
-					 target:self];
-	c.clickingActionAlsoDismisses = YES;
-	c.delegate = self;
-	
-	[self _promoteViewToMainView:[c view]];
+	if (_pipeline == pipeline) {
+		_appStatus = AppStatusCalibrationRecommended;
+		
+		if ([_wizardController isRunning])
+			return;
+		
+		TFInfoViewController* c = [[TFInfoViewController alloc] init];
+		[c setTitleText:TFLocalizedString(@"CalibrationRecommended", @"Calibration recommended")];
+		[c setDescriptionText:TFLocalizedString(@"CalibrationRecommendedDescription",
+												@"CalibrationRecommendedDescription")];
+		[c setType:TFInfoViewControllerTypeInfo];
+		[c setActionButtonTitle:TFLocalizedString(@"Calibrate", @"Calibrate")
+						 action:@selector(startCalibration:)
+						 target:self];
+		c.clickingActionAlsoDismisses = YES;
+		c.delegate = self;
+		
+		[self _promoteViewToMainView:[c view]];
+	}
 }
 
-- (void)calibrationNecessaryForCurrentSettingsBecauseOfError:(NSError*)error
+- (void)pipeline:(TFTrackingPipeline*)pipeline calibrationNecessaryForCurrentSettingsBecauseOfError:(NSError*)error
 {
-	_appStatus = AppStatusCalibrationNeeded;
-	
-	if ([_wizardController isRunning])
-		return;
-	
-	TFInfoViewController* c = [[TFInfoViewController alloc] init];
-	[c setTitleText:TFLocalizedString(@"CalibrationNecessary", @"Calibration necessary")];
-	[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"CalibrationFailedWithErrorSolution",
-																				  @"CalibrationFailedWithErrorSolution")];
-	[c setType:TFInfoViewControllerTypeAlert];
-	[c setActionButtonTitle:TFLocalizedString(@"Calibrate", @"Calibrate")
-					 action:@selector(startCalibration:)
-					 target:self];
-	c.clickingActionAlsoDismisses = YES;
-	c.delegate = self;
-	
-	[self _promoteViewToMainView:[c view]];
+	if (_pipeline == pipeline) {
+		_appStatus = AppStatusCalibrationNeeded;
+		
+		if ([_wizardController isRunning])
+			return;
+		
+		TFInfoViewController* c = [[TFInfoViewController alloc] init];
+		[c setTitleText:TFLocalizedString(@"CalibrationNecessary", @"Calibration necessary")];
+		[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"CalibrationFailedWithErrorSolution",
+																					  @"CalibrationFailedWithErrorSolution")];
+		[c setType:TFInfoViewControllerTypeAlert];
+		[c setActionButtonTitle:TFLocalizedString(@"Calibrate", @"Calibrate")
+						 action:@selector(startCalibration:)
+						 target:self];
+		c.clickingActionAlsoDismisses = YES;
+		c.delegate = self;
+		
+		[self _promoteViewToMainView:[c view]];
+	}
 }
 
-- (void)pipelineDidLoad
+- (void)pipelineDidLoad:(TFTrackingPipeline*)pipeline
 {
-	[self _ensurePipelineSetupControllerLoaded];
-	[_pipelineSetupController updateAfterPipelineReload];
+	if (_pipeline == pipeline) {
+		[self _ensurePipelineSetupControllerLoaded];
+		[_pipelineSetupController updateAfterPipelineReload];
+	}
 }
 
-- (void)pipelineDidBecomeReady
+- (void)pipelineDidBecomeReady:(TFTrackingPipeline*)pipeline
 {	
-	[self _ensurePipelineSetupControllerLoaded];
-	[_pipelineSetupController setTrackingInputStatusMessage:@""];
-	[_pipelineSetupController updateForNewPipelineSettings];
-
-	NSError* error;
-	if (![_pipeline startProcessing:&error] && AppStatusPipelineStartupFailed > _appStatus) {
-		_appStatus = AppStatusPipelineStartupFailed;
-		
-		TFInfoViewController* c = [[TFInfoViewController alloc] init];
-		[c setTitleText:TFLocalizedString(@"PipelineStartupFailed", @"Starting the pipeline failed!")];
-		[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"PipelineStartupFailedSolution",
-																					  @"PipelineStartupFailedSolution")];
-		[c setType:TFInfoViewControllerTypeError];
-		[c hideDismissButton];
-		[c setActionButtonTitle:TFLocalizedString(@"ReloadPipeline", @"Reload pipeline")
-						 action:@selector(_loadPipelineAsync)
-						 target:self];
-		c.delegate = self;
-		
-		[self _promoteViewToMainView:[c view]];
-	} else if (AppStatusPipelineReady >= _appStatus || [_wizardController isRunning]) {
-		[self _showCurrentMainView];
-		
-		if (AppStatusCalibrationNeeded != _appStatus && AppStatusCalibrationRecommended != _appStatus)
-			_appStatus = AppStatusIsTracking;
-	}
-}
-
-- (void)pipelineNotReadyWithReason:(NSString*)reason
-{
-	[self _ensurePipelineSetupControllerLoaded];
-
-	if (AppStatusPipelineNotReady > _appStatus) {
-		_appStatus = AppStatusPipelineNotReady;
-
-		TFInfoViewController* c = [[TFInfoViewController alloc] init];
-		[c setTitleText:TFLocalizedString(@"TrackingPipelineNotReady", @"Tracking pipeline not ready")];
-		[c setDescriptionText:reason];
-		[c setType:TFInfoViewControllerTypeAlert];
-		[c hideDismissButton];
-		[c setActionButtonTitle:TFLocalizedString(@"ConfigurePipeline", @"Configure pipeline")
-						 action:@selector(showWindow:)
-						 target:_pipelineSetupController];
-		c.delegate = self;
-		
-		[self _promoteViewToMainView:[c view]];
-	}
-	
-	[_pipelineSetupController setTrackingInputStatusMessage:reason];
-}
-
-- (void)pipelineWillNotBecomeReadyWithError:(NSError*)error
-{
-	if (AppStatusPipelineError > _appStatus) {
-		_appStatus = AppStatusPipelineError;
-	
-		TFInfoViewController* c = [[TFInfoViewController alloc] init];
-		[c setTitleText:TFLocalizedString(@"PipelineWontBecomeReady", @"Pipeline initialization failed!")];
-		[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"PipelineWontBecomeReadySolution",
-																					  @"PipelineWontBecomeReadySolution")];
-		[c setType:TFInfoViewControllerTypeError];
-		[c hideDismissButton];
-		[c setActionButtonTitle:TFLocalizedString(@"ReloadPipeline", @"Reload pipeline")
-						 action:@selector(_loadPipelineAsync)
-						 target:self];
-		c.delegate = self;
-		
-		[self _promoteViewToMainView:[c view]];
-	}
-}
-
-- (void)pipelineDidBecomeUnavailableWithError:(NSError*)error
-{
-	[self _ensurePipelineSetupControllerLoaded];
-	[_pipelineSetupController updateForNewPipelineSettings];
-	
-	if (AppStatusPipelineIntermittentError > _appStatus) {
-		_appStatus = AppStatusPipelineIntermittentError;
-		
-		TFInfoViewController* c = [[TFInfoViewController alloc] init];
-		[c setTitleText:TFLocalizedString(@"TrackingPipelineStalled", @"Tracking pipeline stalled!")];
-		[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"PipelineStalledSolution",
-																					  @"PipelineStalledSolution")];
-		[c setType:TFInfoViewControllerTypeAlert];
-		[c hideDismissButton];
-		[c setActionButtonTitle:TFLocalizedString(@"ConfigurePipeline", @"Configure pipeline")
-						 action:@selector(showWindow:)
-						 target:_pipelineSetupController];
-		c.delegate = self;
-		
-		[self _promoteViewToMainView:[c view]];
-	}
-	
-	if (nil != [error localizedFailureReason])
-		[_pipelineSetupController setTrackingInputStatusMessage:[error localizedFailureReason]];
-	else if (nil != [error localizedDescription])
-		[_pipelineSetupController setTrackingInputStatusMessage:[error localizedFailureReason]];
-}
-
-- (void)pipelineDidBecomeAvailableAgain
-{
-	[_pipelineSetupController updateForNewPipelineSettings];
-
-	if (AppStatusPipelineIntermittentError == _appStatus) {
-		_appStatus = AppStatusIsTracking;
-		[self _showCurrentMainView];
+	if (_pipeline == pipeline) {
 		[self _ensurePipelineSetupControllerLoaded];
 		[_pipelineSetupController setTrackingInputStatusMessage:@""];
+		[_pipelineSetupController updateForNewPipelineSettings];
+
+		NSError* error;
+		if (![_pipeline startProcessing:&error] && AppStatusPipelineStartupFailed > _appStatus) {
+			_appStatus = AppStatusPipelineStartupFailed;
+			
+			TFInfoViewController* c = [[TFInfoViewController alloc] init];
+			[c setTitleText:TFLocalizedString(@"PipelineStartupFailed", @"Starting the pipeline failed!")];
+			[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"PipelineStartupFailedSolution",
+																						  @"PipelineStartupFailedSolution")];
+			[c setType:TFInfoViewControllerTypeError];
+			[c hideDismissButton];
+			[c setActionButtonTitle:TFLocalizedString(@"ReloadPipeline", @"Reload pipeline")
+							 action:@selector(_loadPipelineAsync)
+							 target:self];
+			c.delegate = self;
+			
+			[self _promoteViewToMainView:[c view]];
+		} else if (AppStatusPipelineReady >= _appStatus || [_wizardController isRunning]) {
+			[self _showCurrentMainView];
+			
+			if (AppStatusCalibrationNeeded != _appStatus && AppStatusCalibrationRecommended != _appStatus)
+				_appStatus = AppStatusIsTracking;
+		}
 	}
 }
 
-- (void)trackingInputMethodDidChangeTo:(NSInteger)methodKey
+- (void)pipeline:(TFTrackingPipeline*)pipeline notReadyWithReason:(NSString*)reason
 {
-	[self _ensurePipelineSetupControllerLoaded];
-	[_pipelineSetupController changeConfigurationViewForInputType:methodKey];
-	[_pipelineSetupController setTrackingInputStatusMessage:@""];
-	
-	[self _loadPipelineAsync];
+	if (_pipeline == pipeline) {
+		[self _ensurePipelineSetupControllerLoaded];
+
+		if (AppStatusPipelineNotReady > _appStatus) {
+			_appStatus = AppStatusPipelineNotReady;
+
+			TFInfoViewController* c = [[TFInfoViewController alloc] init];
+			[c setTitleText:TFLocalizedString(@"TrackingPipelineNotReady", @"Tracking pipeline not ready")];
+			[c setDescriptionText:reason];
+			[c setType:TFInfoViewControllerTypeAlert];
+			[c hideDismissButton];
+			[c setActionButtonTitle:TFLocalizedString(@"ConfigurePipeline", @"Configure pipeline")
+							 action:@selector(showWindow:)
+							 target:_pipelineSetupController];
+			c.delegate = self;
+			
+			[self _promoteViewToMainView:[c view]];
+		}
+		
+		[_pipelineSetupController setTrackingInputStatusMessage:reason];
+	}
 }
 
-- (void)pipelineDidFindBlobs:(NSArray*)blobs unmatchedBlobs:(NSArray*)unmatchedBlobs
+- (void)pipeline:(TFTrackingPipeline*)pipeline willNotBecomeReadyWithError:(NSError*)error
 {
-	[_distributionCenter distributeTrackingDataForActiveBlobs:blobs
-												inactiveBlobs:unmatchedBlobs];
+	if (_pipeline == pipeline) {
+		if (AppStatusPipelineError > _appStatus) {
+			_appStatus = AppStatusPipelineError;
+		
+			TFInfoViewController* c = [[TFInfoViewController alloc] init];
+			[c setTitleText:TFLocalizedString(@"PipelineWontBecomeReady", @"Pipeline initialization failed!")];
+			[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"PipelineWontBecomeReadySolution",
+																						  @"PipelineWontBecomeReadySolution")];
+			[c setType:TFInfoViewControllerTypeError];
+			[c hideDismissButton];
+			[c setActionButtonTitle:TFLocalizedString(@"ReloadPipeline", @"Reload pipeline")
+							 action:@selector(_loadPipelineAsync)
+							 target:self];
+			c.delegate = self;
+			
+			[self _promoteViewToMainView:[c view]];
+		}
+	}
+}
+
+- (void)pipeline:(TFTrackingPipeline*)pipeline didBecomeUnavailableWithError:(NSError*)error
+{
+	if (_pipeline == pipeline) {
+		[self _ensurePipelineSetupControllerLoaded];
+		[_pipelineSetupController updateForNewPipelineSettings];
+		
+		if (AppStatusPipelineIntermittentError > _appStatus) {
+			_appStatus = AppStatusPipelineIntermittentError;
+			
+			TFInfoViewController* c = [[TFInfoViewController alloc] init];
+			[c setTitleText:TFLocalizedString(@"TrackingPipelineStalled", @"Tracking pipeline stalled!")];
+			[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"PipelineStalledSolution",
+																						  @"PipelineStalledSolution")];
+			[c setType:TFInfoViewControllerTypeAlert];
+			[c hideDismissButton];
+			[c setActionButtonTitle:TFLocalizedString(@"ConfigurePipeline", @"Configure pipeline")
+							 action:@selector(showWindow:)
+							 target:_pipelineSetupController];
+			c.delegate = self;
+			
+			[self _promoteViewToMainView:[c view]];
+		}
+		
+		if (nil != [error localizedFailureReason])
+			[_pipelineSetupController setTrackingInputStatusMessage:[error localizedFailureReason]];
+		else if (nil != [error localizedDescription])
+			[_pipelineSetupController setTrackingInputStatusMessage:[error localizedFailureReason]];
+	}
+}
+
+- (void)pipelineDidBecomeAvailableAgain:(TFTrackingPipeline*)pipeline
+{
+	if (_pipeline == pipeline) {
+		[_pipelineSetupController updateForNewPipelineSettings];
+
+		if (AppStatusPipelineIntermittentError == _appStatus) {
+			_appStatus = AppStatusIsTracking;
+			[self _showCurrentMainView];
+			[self _ensurePipelineSetupControllerLoaded];
+			[_pipelineSetupController setTrackingInputStatusMessage:@""];
+		}
+	}
+}
+
+- (void)pipeline:(TFTrackingPipeline*)pipeline trackingInputMethodDidChangeTo:(NSInteger)methodKey
+{
+	if (_pipeline == pipeline) {
+		[self _ensurePipelineSetupControllerLoaded];
+		[_pipelineSetupController changeConfigurationViewForInputType:methodKey];
+		[_pipelineSetupController setTrackingInputStatusMessage:@""];
+		
+		[self _loadPipelineAsync];
+	}
+}
+
+- (void)pipeline:(TFTrackingPipeline*)pipeline didFindBlobs:(NSArray*)blobs unmatchedBlobs:(NSArray*)unmatchedBlobs
+{
+	if (_pipeline == pipeline) {
+		[_distributionCenter distributeTrackingDataForActiveBlobs:blobs
+													inactiveBlobs:unmatchedBlobs];
+	}
 }
 
 #pragma mark -

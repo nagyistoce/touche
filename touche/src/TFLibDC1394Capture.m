@@ -768,13 +768,13 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 					
 					if (_delegateCapabilities.hasWantedCIImageColorSpace)
 						image = [CIImage imageWithCVImageBuffer:pixelBuffer
-														options:[NSDictionary dictionaryWithObject:(id)[delegate wantedCIImageColorSpace]
+														options:[NSDictionary dictionaryWithObject:(id)[delegate wantedCIImageColorSpaceForCapture:self]
 																							forKey:kCIImageColorSpace]];
 					else
 						image = [CIImage imageWithCVImageBuffer:pixelBuffer];
 					
 		
-					[delegate didCaptureFrame:image];
+					[delegate capture:self didCaptureFrame:image];
 				}
 						
 				dc1394_capture_enqueue(_camera, frame);

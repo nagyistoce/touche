@@ -48,6 +48,6 @@
 @end
 
 @interface NSObject (TFCaptureDelegate)
-- (CGColorSpaceRef)wantedCIImageColorSpace;
-- (void)didCaptureFrame:(CIImage*)capturedFrame;
+- (CGColorSpaceRef)wantedCIImageColorSpaceForCapture:(TFCapture*)capture;
+- (void)capture:(TFCapture*)capture didCaptureFrame:(CIImage*)capturedFrame;
 @end

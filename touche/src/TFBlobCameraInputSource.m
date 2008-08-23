@@ -282,14 +282,14 @@
 #pragma mark -
 #pragma mark TFCapture delegate
 
-- (CGColorSpaceRef)wantedCIImageColorSpace
+- (CGColorSpaceRef)wantedCIImageColorSpaceForCapture:(TFCapture*)capture
 {
 	return _workingColorSpace;
 }
 
-- (void)didCaptureFrame:(CIImage*)capturedFrame
+- (void)capture:(TFCapture*)capture didCaptureFrame:(CIImage*)capturedFrame
 {
-	if (![self _shouldProcessThisFrame])
+	if (![self _shouldProcessThisFrame] || capture != [self captureObject])
 		return;
 
 	@synchronized (self) {	
@@ -323,8 +323,8 @@
 		if (!blobTrackingEnabled) {
 			[self _updateBackgroundForSubtraction:capturedFrame];
 			
-			if ([delegate respondsToSelector:@selector(didDetectBlobs:)])
-				[delegate didDetectBlobs:[NSArray array]];
+			if (_delegateHasDidDetectBlobs)
+				[delegate blobInputSource:self didDetectBlobs:[NSArray array]];
 			
 			return;
 		}
@@ -363,7 +363,7 @@
 			[self _updateBackgroundForSubtraction:capturedFrame];
 				
 		if (_delegateHasDidDetectBlobs)
-			[delegate didDetectBlobs:blobs];
+			[delegate blobInputSource:self didDetectBlobs:blobs];
 	}
 }
 

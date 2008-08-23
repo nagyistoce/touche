@@ -21,7 +21,6 @@
 //  You should have received a copy of the GNU Lesser General Public
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
-//
 
 #import "TFDOTrackingClient.h"
 
@@ -55,6 +54,32 @@
 	}
 		
 	return self;
+}
+
+- (void)setDelegate:(id)newDelegate
+{
+	delegate = newDelegate;
+	
+	_delegateCapabilities.hasDidGetDisconnected =
+		[delegate respondsToSelector:@selector(client:didGetDisconnectedWithError:)];
+	
+	_delegateCapabilities.hasInfoDictionary =
+		[delegate respondsToSelector:@selector(infoDictionaryForClient:)];
+	
+	_delegateCapabilities.hasServerConnectionDied =
+		[delegate respondsToSelector:@selector(serverConnectionHasDiedForClient:)];
+	
+	_delegateCapabilities.hasShouldQuitByServerRequest =
+		[delegate respondsToSelector:@selector(clientShouldQuitByServerRequest:)];
+	
+	_delegateCapabilities.hasTouchesDidBegin =
+		[delegate respondsToSelector:@selector(touchesDidBegin:viaClient:)];
+	
+	_delegateCapabilities.hasTouchesDidUpdate =
+		[delegate respondsToSelector:@selector(touchesDidUpdate:viaClient:)];
+	
+	_delegateCapabilities.hasTouchesDidEnd =
+		[delegate respondsToSelector:@selector(touchesDidEnd:viaClient:)];
 }
 
 - (BOOL)connectWithName:(NSString*)clientName
@@ -153,14 +178,14 @@
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	if ([delegate respondsToSelector:@selector(serverConnectionHasDiedForClient:)])
+	if (_delegateCapabilities.hasServerConnectionDied)
 		[delegate serverConnectionHasDiedForClient:self];
 }
 
 - (bycopy NSDictionary*)clientInfo
 {
 	NSDictionary* dict = nil;
-	if ([delegate respondsToSelector:@selector(infoDictionaryForClient:)])
+	if (_delegateCapabilities.hasInfoDictionary)
 		dict = [delegate infoDictionaryForClient:self];
 	
 	NSMutableDictionary* infoDict = (nil != dict) ? [NSMutableDictionary dictionaryWithDictionary:dict] :
@@ -201,7 +226,7 @@
 {
 	BOOL shouldQuit = YES;
 
-	if ([delegate respondsToSelector:@selector(clientShouldQuitByServerRequest:)])
+	if (_delegateCapabilities.hasShouldQuitByServerRequest)
 		shouldQuit = [delegate clientShouldQuitByServerRequest:self];
 
 	if (shouldQuit) {
@@ -232,19 +257,19 @@
 
 - (oneway void)touchesBegan:(bycopy in NSSet*)touches
 {
-	if ([delegate respondsToSelector:@selector(touchesDidBegin:viaClient:)])
+	if (_delegateCapabilities.hasTouchesDidBegin)
 		[delegate touchesDidBegin:touches viaClient:self];
 }
 
 - (oneway void)touchesUpdated:(bycopy in NSSet*)touches
 {
-	if ([delegate respondsToSelector:@selector(touchesDidUpdate:viaClient:)])
+	if (_delegateCapabilities.hasTouchesDidUpdate)
 		[delegate touchesDidUpdate:touches viaClient:self];
 }
 
 - (oneway void)touchesEnded:(bycopy in NSSet*)touches
 {
-	if ([delegate respondsToSelector:@selector(touchesDidEnd:viaClient:)])
+	if (_delegateCapabilities.hasTouchesDidEnd)
 		[delegate touchesDidEnd:touches viaClient:self];
 }
 
@@ -255,7 +280,7 @@
 
 - (oneway void)disconnectedByServerWithError:(bycopy in NSError*)error
 {
-	if ([delegate respondsToSelector:@selector(client:didGetDisconnectedWithError:)])
+	if (_delegateCapabilities.hasDidGetDisconnected)
 		[delegate client:self didGetDisconnectedWithError:error];
 }
 

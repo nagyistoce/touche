@@ -74,8 +74,8 @@
 		[_trackingClient release];
 		_trackingClient = nil;
 		
-		if ([delegate respondsToSelector:@selector(touchTestFailedWithError:)])
-			[delegate touchTestFailedWithError:error];
+		if ([delegate respondsToSelector:@selector(touchTestController:failedWithError:)])
+			[delegate touchTestController:self failedWithError:error];
 		
 		return;
 	}
@@ -127,8 +127,8 @@
 										  NSStringEncodingErrorKey,
 										  nil]];
 		
-		if ([delegate respondsToSelector:@selector(touchTestFailedWithError:)])
-			[delegate touchTestFailedWithError:error];
+		if ([delegate respondsToSelector:@selector(touchTestController:failedWithError:)])
+			[delegate touchTestController:self failedWithError:error];
 			
 		return;
 	}
@@ -193,8 +193,8 @@
 	if (isRunning) {
 		[self _stopTest];
 		
-		if ([delegate respondsToSelector:@selector(touchTestEndedByUser)])
-			[delegate touchTestEndedByUser];
+		if ([delegate respondsToSelector:@selector(touchTestEndedByUser:)])
+			[delegate touchTestEndedByUser:self];
 	}
 }
 

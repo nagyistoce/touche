@@ -55,7 +55,7 @@
 @end
 
 @interface NSObject (TFCalibrationControllerDelegate)
-- (void)calibrationCanceledByUser;
-- (void)calibrationCanceledWithError:(NSError*)error;
-- (void)didCalibrateWithPoints:(NSArray*)calibrationPoints;
+- (void)calibrationCanceledByUser:(TFCalibrationController*)controller;
+- (void)calibrationController:(TFCalibrationController*)controller canceledWithError:(NSError*)error;
+- (void)calibrationController:(TFCalibrationController*)controller didCalibrateWithPoints:(NSArray*)calibrationPoints;
 @end

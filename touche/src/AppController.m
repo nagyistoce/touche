@@ -587,131 +587,141 @@ enum {
 #pragma mark -
 #pragma mark Calibration controller delegate
 
-- (void)calibrationCanceledByUser
+- (void)calibrationCanceledByUser:(TFCalibrationController*)controller
 {
-	_pipeline.transformBlobsToScreenCoordinates = YES;
-	
-	if (!InfoViewIdentifierMatches(_currentMainView, InfoViewIdentifierCalibrationCanceledByUser)) {
-		TFInfoViewController* c = [[TFInfoViewController alloc] init];
-		[c setTitleText:TFLocalizedString(@"CalibrationCanceled", @"Calibration canceled!")];
-		[c setDescriptionText:TFLocalizedString(@"CalibrationCanceledDescription",
-												@"CalibrationCanceledDescription")];
-		[c setType:TFInfoViewControllerTypeAlert];
-		c.previousView = _currentMainView;
-		c.identifier = InfoViewIdentifierCalibrationCanceledByUser;
-		c.delegate = self;
+	if (controller == _calibrationController) {
+		_pipeline.transformBlobsToScreenCoordinates = YES;
 		
-		[self _promoteViewToMainView:[c view]];
-	}
-	
-	_appStatus = AppStatusIsTracking;
-}
-
-- (void)calibrationCanceledWithError:(NSError*)error
-{
-	_pipeline.transformBlobsToScreenCoordinates = YES;
-	
-	if (!InfoViewIdentifierMatches(_currentMainView, InfoViewIdentifierCalibrationCanceledWithError)) {
-		TFInfoViewController* c = [[TFInfoViewController alloc] init];
-		[c setTitleText:TFLocalizedString(@"CalibrationCanceledWithError", @"An error occurred during calibration!")];
-		[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"CalibrationCanceledWithErrorDescription",
-																					  @"CalibrationCanceledWithErrorDescription")];
-		[c setType:TFInfoViewControllerTypeAlert];
-		[c setActionButtonTitle:TFLocalizedString(@"CalibrateAgain", @"Calibrate again")
-						 action:@selector(startCalibration:)
-						 target:self];
-		if (AppStatusCalibrationNeeded != _appStatus && AppStatusCalibrationRecommended != _appStatus)
-			c.previousView = _currentMainView;
-		c.identifier = InfoViewIdentifierCalibrationCanceledWithError;
-		c.delegate = self;
-		[self _promoteViewToMainView:[c view]];
-	}
-	
-	_appStatus = AppStatusIsTracking;
-}
-
-- (void)didCalibrateWithPoints:(NSArray*)calibrationPoints
-{
-	NSError* error;
-	
-	if ([_pipeline calibrateWithPoints:calibrationPoints error:&error]) {
-		if (!InfoViewIdentifierMatches(_currentMainView, InfoViewIdentifierCalibrationSuccessful)) {
+		if (!InfoViewIdentifierMatches(_currentMainView, InfoViewIdentifierCalibrationCanceledByUser)) {
 			TFInfoViewController* c = [[TFInfoViewController alloc] init];
-			[c setTitleText:TFLocalizedString(@"CalibrationSuccessful", @"Calibration successful!")];
-			[c setDescriptionText:TFLocalizedString(@"CalibrationSuccessfulDescription",
-													@"CalibrationSuccessfulDescription")];
-			[c setType:TFInfoViewControllerTypeInfo];
-			if (AppStatusCalibrationNeeded != _appStatus && AppStatusCalibrationRecommended != _appStatus)
-				c.previousView = _currentMainView;
-			c.identifier = InfoViewIdentifierCalibrationSuccessful;
+			[c setTitleText:TFLocalizedString(@"CalibrationCanceled", @"Calibration canceled!")];
+			[c setDescriptionText:TFLocalizedString(@"CalibrationCanceledDescription",
+													@"CalibrationCanceledDescription")];
+			[c setType:TFInfoViewControllerTypeAlert];
+			c.previousView = _currentMainView;
+			c.identifier = InfoViewIdentifierCalibrationCanceledByUser;
 			c.delegate = self;
 			
 			[self _promoteViewToMainView:[c view]];
 		}
 		
 		_appStatus = AppStatusIsTracking;
-	} else {
-		if (!InfoViewIdentifierMatches(_currentMainView, InfoViewIdentifierCalibrationInvalidData)) {
+	}
+}
+
+- (void)calibrationController:(TFCalibrationController*)controller canceledWithError:(NSError*)error
+{
+	if (controller == _calibrationController) {
+		_pipeline.transformBlobsToScreenCoordinates = YES;
+		
+		if (!InfoViewIdentifierMatches(_currentMainView, InfoViewIdentifierCalibrationCanceledWithError)) {
 			TFInfoViewController* c = [[TFInfoViewController alloc] init];
-			[c setTitleText:TFLocalizedString(@"CalibrationInvalidData", @"Calibration yielded invalid data!")];
-			[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"CalibrationInvalidDataDescription",
-																						  @"CalibrationInvalidDataDescription")];
+			[c setTitleText:TFLocalizedString(@"CalibrationCanceledWithError", @"An error occurred during calibration!")];
+			[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"CalibrationCanceledWithErrorDescription",
+																						  @"CalibrationCanceledWithErrorDescription")];
 			[c setType:TFInfoViewControllerTypeAlert];
 			[c setActionButtonTitle:TFLocalizedString(@"CalibrateAgain", @"Calibrate again")
 							 action:@selector(startCalibration:)
 							 target:self];
 			if (AppStatusCalibrationNeeded != _appStatus && AppStatusCalibrationRecommended != _appStatus)
 				c.previousView = _currentMainView;
-			c.identifier = InfoViewIdentifierCalibrationInvalidData;
+			c.identifier = InfoViewIdentifierCalibrationCanceledWithError;
 			c.delegate = self;
-			
 			[self _promoteViewToMainView:[c view]];
 		}
 		
 		_appStatus = AppStatusIsTracking;
 	}
-	
-	_pipeline.transformBlobsToScreenCoordinates = YES;
+}
+
+- (void)calibrationController:(TFCalibrationController*)controller didCalibrateWithPoints:(NSArray*)calibrationPoints
+{
+	if (controller == _calibrationController) {
+		NSError* error;
+		
+		if ([_pipeline calibrateWithPoints:calibrationPoints error:&error]) {
+			if (!InfoViewIdentifierMatches(_currentMainView, InfoViewIdentifierCalibrationSuccessful)) {
+				TFInfoViewController* c = [[TFInfoViewController alloc] init];
+				[c setTitleText:TFLocalizedString(@"CalibrationSuccessful", @"Calibration successful!")];
+				[c setDescriptionText:TFLocalizedString(@"CalibrationSuccessfulDescription",
+														@"CalibrationSuccessfulDescription")];
+				[c setType:TFInfoViewControllerTypeInfo];
+				if (AppStatusCalibrationNeeded != _appStatus && AppStatusCalibrationRecommended != _appStatus)
+					c.previousView = _currentMainView;
+				c.identifier = InfoViewIdentifierCalibrationSuccessful;
+				c.delegate = self;
+				
+				[self _promoteViewToMainView:[c view]];
+			}
+			
+			_appStatus = AppStatusIsTracking;
+		} else {
+			if (!InfoViewIdentifierMatches(_currentMainView, InfoViewIdentifierCalibrationInvalidData)) {
+				TFInfoViewController* c = [[TFInfoViewController alloc] init];
+				[c setTitleText:TFLocalizedString(@"CalibrationInvalidData", @"Calibration yielded invalid data!")];
+				[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"CalibrationInvalidDataDescription",
+																							  @"CalibrationInvalidDataDescription")];
+				[c setType:TFInfoViewControllerTypeAlert];
+				[c setActionButtonTitle:TFLocalizedString(@"CalibrateAgain", @"Calibrate again")
+								 action:@selector(startCalibration:)
+								 target:self];
+				if (AppStatusCalibrationNeeded != _appStatus && AppStatusCalibrationRecommended != _appStatus)
+					c.previousView = _currentMainView;
+				c.identifier = InfoViewIdentifierCalibrationInvalidData;
+				c.delegate = self;
+				
+				[self _promoteViewToMainView:[c view]];
+			}
+			
+			_appStatus = AppStatusIsTracking;
+		}
+		
+		_pipeline.transformBlobsToScreenCoordinates = YES;
+	}
 }
 
 #pragma mark -
 #pragma mark Touch Test Controller delegate
 
-- (void)touchTestEndedByUser
+- (void)touchTestEndedByUser:(TFTouchTestController*)controller
 {
-	if (!InfoViewIdentifierMatches(_currentMainView, InfoViewIdentifierTouchTestSuccessful)) {
-		TFInfoViewController* c = [[TFInfoViewController alloc] init];
-		[c setTitleText:TFLocalizedString(@"TouchTestDone", @"Touch test finished!")];
-		[c setDescriptionText:TFLocalizedString(@"TouchTestDoneDescription",
-												@"TouchTestDoneDescription")];
-		[c setType:TFInfoViewControllerTypeInfo];
-		[c setActionButtonTitle:TFLocalizedString(@"TouchTestStartAgainNoError", @"Run test again")
-						 action:@selector(startTouchTest:)
-						 target:self];
-		c.previousView = _currentMainView;
-		c.identifier = InfoViewIdentifierTouchTestSuccessful;
-		c.delegate = self;
-		
-		[self _promoteViewToMainView:[c view]];
+	if (controller == _touchTestController) {
+		if (!InfoViewIdentifierMatches(_currentMainView, InfoViewIdentifierTouchTestSuccessful)) {
+			TFInfoViewController* c = [[TFInfoViewController alloc] init];
+			[c setTitleText:TFLocalizedString(@"TouchTestDone", @"Touch test finished!")];
+			[c setDescriptionText:TFLocalizedString(@"TouchTestDoneDescription",
+													@"TouchTestDoneDescription")];
+			[c setType:TFInfoViewControllerTypeInfo];
+			[c setActionButtonTitle:TFLocalizedString(@"TouchTestStartAgainNoError", @"Run test again")
+							 action:@selector(startTouchTest:)
+							 target:self];
+			c.previousView = _currentMainView;
+			c.identifier = InfoViewIdentifierTouchTestSuccessful;
+			c.delegate = self;
+			
+			[self _promoteViewToMainView:[c view]];
+		}
 	}
 }
 
-- (void)touchTestFailedWithError:(NSError*)error
+- (void)touchTestController:(TFTouchTestController*)controller failedWithError:(NSError*)error
 {
-	if (!InfoViewIdentifierMatches(_currentMainView, InfoViewIdentifierTouchTestError)) {
-		TFInfoViewController* c = [[TFInfoViewController alloc] init];
-		[c setTitleText:TFLocalizedString(@"TouchTestError", @"Problem loading test app!")];
-		[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"TouchTestErrorDescription",
-																					  @"TouchTestErrorDescription")];
-		[c setType:TFInfoViewControllerTypeAlert];
-		[c setActionButtonTitle:TFLocalizedString(@"TouchTestStartAgain", @"Try test again")
-						 action:@selector(startTouchTest:)
-						 target:self];
-		c.previousView = _currentMainView;
-		c.identifier = InfoViewIdentifierTouchTestError;
-		c.delegate = self;
-		
-		[self _promoteViewToMainView:[c view]];
+	if (controller == _touchTestController) {
+		if (!InfoViewIdentifierMatches(_currentMainView, InfoViewIdentifierTouchTestError)) {
+			TFInfoViewController* c = [[TFInfoViewController alloc] init];
+			[c setTitleText:TFLocalizedString(@"TouchTestError", @"Problem loading test app!")];
+			[c loadDescriptionFromError:error defaultRecoverySuggestion:TFLocalizedString(@"TouchTestErrorDescription",
+																						  @"TouchTestErrorDescription")];
+			[c setType:TFInfoViewControllerTypeAlert];
+			[c setActionButtonTitle:TFLocalizedString(@"TouchTestStartAgain", @"Try test again")
+							 action:@selector(startTouchTest:)
+							 target:self];
+			c.previousView = _currentMainView;
+			c.identifier = InfoViewIdentifierTouchTestError;
+			c.delegate = self;
+			
+			[self _promoteViewToMainView:[c view]];
+		}
 	}
 }
 

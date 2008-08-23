@@ -93,8 +93,8 @@
 		[_trackingClient release];
 		_trackingClient = nil;
 		
-		if ([delegate respondsToSelector:@selector(calibrationCanceledWithError:)])
-			[delegate calibrationCanceledWithError:error];
+		if ([delegate respondsToSelector:@selector(calibrationController:canceledWithError:)])
+			[delegate calibrationController:self canceledWithError:error];
 		
 		return;
 	}
@@ -127,8 +127,8 @@
 										  NSStringEncodingErrorKey,
 										  nil]];
 		
-		if ([delegate respondsToSelector:@selector(calibrationCanceledWithError:)])
-			[delegate calibrationCanceledWithError:error];
+		if ([delegate respondsToSelector:@selector(calibrationController:canceledWithError:)])
+			[delegate calibrationController:self canceledWithError:error];
 		
 		return;
 	}
@@ -166,8 +166,8 @@
 	if (nil == _currentPoint) {
 		[self _stopCalibration];
 	
-		if ([delegate respondsToSelector:@selector(didCalibrateWithPoints:)])
-			[delegate didCalibrateWithPoints:_points];
+		if ([delegate respondsToSelector:@selector(calibrationController:didCalibrateWithPoints:)])
+			[delegate calibrationController:self didCalibrateWithPoints:_points];
 		
 		[self _cleanup];
 		return;
@@ -210,8 +210,8 @@
 		[self _stopCalibration];
 		[self _cleanup];
 		
-		if ([delegate respondsToSelector:@selector(calibrationCanceledByUser)])
-			[delegate calibrationCanceledByUser];
+		if ([delegate respondsToSelector:@selector(calibrationCanceledByUser:)])
+			[delegate calibrationCanceledByUser:self];
 	}
 }
 

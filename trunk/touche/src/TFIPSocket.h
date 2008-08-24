@@ -41,6 +41,9 @@
 @property (nonatomic, readonly, getter=isConnected) BOOL _socketConnected;
 @property (nonatomic, readonly, getter=isListening) BOOL _socketListening;
 
+// name can be an IP address string or a DNS name.
++ (BOOL)resolveName:(NSString*)name intoAddress:(in_addr_t*)addrPtr;
+
 - (id)init;
 - (void)dealloc;
 

@@ -26,9 +26,9 @@
 "Version"							= "Version";
 "unknown"							= "unknown";
 
-"NoClientsConnected"				= "No clients connected";
-"OneClientConnected"				= "One client connected";
-"XClientsConntected"				= "%d clients connected";
+"NoClientsConnected"				= "No Clients";
+"OneClientConnected"				= "Serving One Client";
+"XClientsConntected"				= "Serving %d Clients";
 
 "TellClientToQuit"					= "Tell client to quit";
 

@@ -24,6 +24,8 @@
 
 #import "TFTrackingDataDistributor.h"
 
+#import "TFTrackingDataReceiver.h"
+
 
 NSString* kToucheTrackingDistributorDataNewTouchesKey			= @"ToucheTrackingDataNewTouches";
 NSString* kToucheTrackingDistributorDataUpdatedTouchesKey		= @"ToucheTrackingDataUpdatedTouches";
@@ -69,7 +71,8 @@ NSString* kToucheTrackingDistributorDataEndedTouchesKey			= @"ToucheTrackingData
 
 - (void)askReceiverToQuit:(TFTrackingDataReceiver*)receiver
 {
-	[self doesNotRecognizeSelector:_cmd];
+	if (receiver.owningDistributor == self)
+		[receiver receiverShouldQuit];
 }
 
 - (void)distributeTrackingDataDictionary:(NSDictionary*)trackingDict

@@ -42,6 +42,39 @@
 
 @synthesize _socketBound, _socketConnected, _socketListening;
 
++ (BOOL)resolveName:(NSString*)name intoAddress:(in_addr_t*)addrPtr
+{
+	in_addr_t			addr;
+	struct in_addr		inAddr;
+	const char*			nameString = [name cStringUsingEncoding:NSASCIIStringEncoding];
+	BOOL				success = NO;
+	
+	// try these steps:
+	//   1) if it's an address in a.b.c.d form, parse it and return
+	//   2) if it's not an address, try to resolve it via DNS
+	//   3) fail
+	if (0 < inet_aton(nameString, &inAddr)) {
+		addr = inAddr.s_addr;
+		success = YES;
+	} else {
+		struct hostent*	hostEntity;
+		
+		hostEntity = gethostbyname(nameString);
+		if(NULL != hostEntity) {
+			struct sockaddr_in	sAddr;
+			
+			bcopy((char*)hostEntity->h_addr, (char*)&sAddr.sin_addr, hostEntity->h_length);
+			addr = sAddr.sin_addr.s_addr;
+			success = YES;
+		}
+	}
+	
+	if (NULL != addrPtr)
+		*addrPtr = addr;
+	
+	return success;
+}
+
 - (id)init
 {
 	if (nil != (self = [super init])) {
@@ -195,45 +228,33 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 - (BOOL)resolveName:(NSString*)name intoAddress:(in_addr_t*)addrPtr
 {
 	in_addr_t			addr;
-	struct in_addr		inAddr;
-	const char*			nameString = [name cStringUsingEncoding:NSASCIIStringEncoding];
 	
 	// try these steps:
-	//   1) if it's an address in a.b.c.d form, parse it and return
-	//   2) if it's not an address, try to resolve it via DNS
-	//   3) if it's neither address nor hostname, interpret it as local network interface
-	//   4) fail
-	if (0 < inet_aton(nameString, &inAddr))
-		addr = inAddr.s_addr;
-	else {
-		struct hostent*	hostEntity;
+	//	 1) Try the class method (which tries numeric IPs and DNS name)
+	//   2) if it's neither address nor hostname, interpret it as local network interface
+	//   3) fail
+
+	if (![[self class] resolveName:name intoAddress:addrPtr]) {
+		struct ifreq ifr;
+		struct sockaddr_in *sin;
+		const char*	nameString = [name cStringUsingEncoding:NSASCIIStringEncoding];
 		
-		hostEntity = gethostbyname(nameString);
-		if(NULL != hostEntity) {
-			struct sockaddr_in	sAddr;
-			
-			bcopy((char*)hostEntity->h_addr, (char*)&sAddr.sin_addr, hostEntity->h_length);
-			addr = sAddr.sin_addr.s_addr;
-		} else {
-			struct ifreq			ifr;
-			struct sockaddr_in	*sin;
-			
-			bzero(&ifr, sizeof(struct ifreq));
-			strncpy(ifr.ifr_name, nameString, sizeof(ifr.ifr_name));
-			
-			sin = (struct sockaddr_in *)&ifr.ifr_addr;
-			sin->sin_family = AF_INET;
-			
-			if (ioctl([self nativeSocketHandle], SIOCGIFADDR, (char *)&ifr) < 0)
-				return NO;
-			
-			*sin = *((struct sockaddr_in*)&ifr.ifr_addr);
-			
-			addr = sin->sin_addr.s_addr;
-		}
+		bzero(&ifr, sizeof(struct ifreq));
+		strncpy(ifr.ifr_name, nameString, sizeof(ifr.ifr_name));
+		
+		sin = (struct sockaddr_in *)&ifr.ifr_addr;
+		sin->sin_family = AF_INET;
+		
+		if (ioctl([self nativeSocketHandle], SIOCGIFADDR, (char *)&ifr) < 0)
+			return NO;
+		
+		*sin = *((struct sockaddr_in*)&ifr.ifr_addr);
+		
+		addr = sin->sin_addr.s_addr;
 	}
 	
-	*addrPtr = addr;
+	if (NULL != addrPtr)
+		*addrPtr = addr;
 	
 	return YES;
 }

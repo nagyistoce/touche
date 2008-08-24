@@ -1,6 +1,6 @@
 //
 //  TFTUIOServer.h
-//  Touche
+//  Touché
 //
 //  Created by Georg Kaindl on 21/8/08.
 //
@@ -24,12 +24,35 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "TFOSCServer.h"
 
-@class BBOSCAddress;
 
-@interface TFTUIOServer : NSObject {
+@class TFTUIOServer;
+
+@interface NSObject (TFTUIOServerDelegate)
+- (void)tuioServer:(TFTUIOServer*)server networkErrorDidOccur:(NSError*)error;
+@end
+
+@class BBOSCAddress, BBOSCBundle, BBOSCMessage, TFIPDatagramSocket, TFIPUDPSocket;
+
+@interface TFTUIOServer : TFOSCServer {
+	NSThread*		_socketThread;
 }
 
 + (BBOSCAddress*)tuioProfileAddress;
++ (BBOSCMessage*)tuioSourceMessage;
++ (BBOSCMessage*)tuioFrameSequenceNumberMessageForFrameNumber:(NSInteger)frameNumber;
++ (BBOSCMessage*)tuioAliveMessageForBlobs:(NSArray*)blobs;
++ (BBOSCBundle*)tuioBundleForFrameNumber:(NSInteger)frameNumber
+							 activeBlobs:(NSArray*)activeBlobs
+							  movedBlobs:(NSArray*)movedBlobs;
+
+- (id)initWithPort:(UInt16)port andLocalAddress:(NSString*)localAddress error:(NSError**)error;
+- (void)dealloc;
+
+#pragma mark -
+#pragma mark TFIPDatagramSocket delegate
+
+- (void)socketHadReadWriteError:(TFIPDatagramSocket*)socket;
 
 @end

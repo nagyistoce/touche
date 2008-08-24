@@ -183,6 +183,9 @@
 		6EED62530E5F638200375CC0 /* TFTrackingDataReceiverCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED62510E5F638200375CC0 /* TFTrackingDataReceiverCell.m */; };
 		6EEDEF5D0D32812D00B29263 /* TFOpenGLQTView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */; };
 		6EF130A20D32AC3200D807B8 /* TFPipelineSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF130A10D32AC3200D807B8 /* TFPipelineSetupController.m */; };
+		6EF3C44F0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF3C44E0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.m */; };
+		6EF3C4690E61BEE400BF6B39 /* tuio-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF3C4680E61BEE400BF6B39 /* tuio-image.png */; };
+		6EF3C46F0E61C03300BF6B39 /* TFTUIOTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF3C46E0E61C03300BF6B39 /* TFTUIOTrackingDataDistributor.m */; };
 		6EF5E3EA0DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF5E3E90DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m */; };
 		6EF5E3F90DFEB5DC00432557 /* TFCI3x3ErosionFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6EF5E3F60DFEAFDD00432557 /* TFCI3x3ErosionFilter.cikernel */; };
 		6EF5E3FA0DFEB5DC00432557 /* TFCI3x3DilationFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6EF5E3F80DFEB55700432557 /* TFCI3x3DilationFilter.cikernel */; };
@@ -474,6 +477,11 @@
 		6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOpenGLQTView.m; sourceTree = "<group>"; };
 		6EF130A00D32AC3200D807B8 /* TFPipelineSetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPipelineSetupController.h; sourceTree = "<group>"; };
 		6EF130A10D32AC3200D807B8 /* TFPipelineSetupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPipelineSetupController.m; sourceTree = "<group>"; };
+		6EF3C44D0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOTrackingDataReceiver.h; sourceTree = "<group>"; };
+		6EF3C44E0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOTrackingDataReceiver.m; sourceTree = "<group>"; };
+		6EF3C4680E61BEE400BF6B39 /* tuio-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tuio-image.png"; path = "images/tuio-image.png"; sourceTree = "<group>"; };
+		6EF3C46D0E61C03300BF6B39 /* TFTUIOTrackingDataDistributor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOTrackingDataDistributor.h; sourceTree = "<group>"; };
+		6EF3C46E0E61C03300BF6B39 /* TFTUIOTrackingDataDistributor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOTrackingDataDistributor.m; sourceTree = "<group>"; };
 		6EF5E3E80DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIMorphologicalOpenWith3x3ShapeFilter.h; sourceTree = "<group>"; };
 		6EF5E3E90DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIMorphologicalOpenWith3x3ShapeFilter.m; sourceTree = "<group>"; };
 		6EF5E3F60DFEAFDD00432557 /* TFCI3x3ErosionFilter.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TFCI3x3ErosionFilter.cikernel; sourceTree = "<group>"; };
@@ -615,6 +623,7 @@
 				6E7DB2BD0DEB76E700CF9556 /* AppIcon.icns */,
 				6ECA96690DD249D300A9ABE3 /* warningicon.tiff */,
 				6ECA96680DD249D300A9ABE3 /* erroricon.png */,
+				6EF3C4680E61BEE400BF6B39 /* tuio-image.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1122,10 +1131,14 @@
 		6EED5FF90E5E07BA00375CC0 /* TUIO */ = {
 			isa = PBXGroup;
 			children = (
-				6EED5FFD0E5E0D2800375CC0 /* TFTUIOServer.h */,
-				6EED5FFE0E5E0D2800375CC0 /* TFTUIOServer.m */,
 				6EED5FFA0E5E0AB000375CC0 /* TFBlob+TUIOMethods.h */,
 				6EED5FFB0E5E0AB000375CC0 /* TFBlob+TUIOMethods.m */,
+				6EED5FFD0E5E0D2800375CC0 /* TFTUIOServer.h */,
+				6EED5FFE0E5E0D2800375CC0 /* TFTUIOServer.m */,
+				6EF3C44D0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.h */,
+				6EF3C44E0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.m */,
+				6EF3C46D0E61C03300BF6B39 /* TFTUIOTrackingDataDistributor.h */,
+				6EF3C46E0E61C03300BF6B39 /* TFTUIOTrackingDataDistributor.m */,
 			);
 			name = TUIO;
 			sourceTree = "<group>";
@@ -1293,6 +1306,7 @@
 				6E07FCEF0DF03B4C00FCB681 /* credits-wrapper.html in Resources */,
 				6E07FD4A0DF0419900FCB681 /* credits.html in Resources */,
 				6E7EC9750E0DB7CE0080F7EF /* Help in Resources */,
+				6EF3C4690E61BEE400BF6B39 /* tuio-image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1440,6 +1454,8 @@
 				6EED61480E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.m in Sources */,
 				6EED61610E5F135100375CC0 /* TFThreadMessagingQueue.m in Sources */,
 				6EED62530E5F638200375CC0 /* TFTrackingDataReceiverCell.m in Sources */,
+				6EF3C44F0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.m in Sources */,
+				6EF3C46F0E61C03300BF6B39 /* TFTUIOTrackingDataDistributor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -164,12 +164,6 @@
 	return YES;
 }
 
-- (void)askReceiverToQuit:(TFTrackingDataReceiver*)receiver
-{
-	if (receiver.owningDistributor == self)
-		[receiver receiverShouldQuit];
-}
-
 - (void)distributeTrackingDataDictionary:(NSDictionary*)trackingDict
 {	
 	@synchronized(_receivers) {

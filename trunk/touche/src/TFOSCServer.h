@@ -44,7 +44,7 @@
 
 - (id)init;
 - (id)initWithPort:(UInt16)port;
-- (id)initWithPort:(UInt16)port andLocalAddress:(NSString*)localAddress; // designated initializer
+- (id)initWithPort:(UInt16)port andLocalAddress:(NSString*)localAddress error:(NSError**)error; // designated initializer
 - (id)initWithPort:(UInt16)port andLocalDevice:(NSString*)localDevice;
 
 - (void)setDelegate:(id)newDelegate;

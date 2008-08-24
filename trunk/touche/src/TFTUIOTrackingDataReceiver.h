@@ -1,10 +1,10 @@
 //
-//  TFBlobPoint.h
+//  TFTUIOTrackingDataReceiver.h
 //  Touché
 //
-//  Created by Georg Kaindl on 18/12/07.
+//  Created by Georg Kaindl on 24/8/08.
 //
-//  Copyright (C) 2007 Georg Kaindl
+//  Copyright (C) 2008 Georg Kaindl
 //
 //  This file is part of Touché.
 //
@@ -24,20 +24,19 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "TFTrackingDataReceiver.h"
+#import "TFIPSocket.h"
 
-@interface TFBlobPoint : NSObject <NSCopying, NSCoding> {
-	float		x, y;
+
+@interface TFTUIOTrackingDataReceiver : TFTrackingDataReceiver {
+	NSData*		_peerSA;
 }
 
-@property (assign) float x;
-@property (assign) float y;
+- (id)init;
+- (id)initWithHost:(NSString*)host port:(UInt16)port error:(NSError**)error;
+- (void)dealloc;
 
-+ (id)point;
-+ (id)pointWithX:(float)xPos Y:(float)yPos;
-
-- (id)initWithX:(float)xPos Y:(float)yPos;
-
-- (float)vectorLength;
-- (float)distanceFromBlobPoint:(TFBlobPoint*)otherPoint;
+- (void)receiverShouldQuit;
+- (void)consumeTrackingData:(id)trackingData;
 
 @end

@@ -42,17 +42,19 @@
 
 - (id)initWithPort:(UInt16)port
 {
-	return [self initWithPort:port andLocalAddress:nil];
+	return [self initWithPort:port andLocalAddress:nil error:NULL];
 }
 
-- (id)initWithPort:(UInt16)port andLocalAddress:(NSString*)localAddress
+- (id)initWithPort:(UInt16)port andLocalAddress:(NSString*)localAddress error:(NSError**)error
 {
 	if (nil != (self = [super init])) {
 		_socket = [[TFIPUDPSocket alloc] init];
 		
-		if (![_socket listenAt:localAddress onPort:port]) {
+		if (nil != localAddress && ![_socket listenAt:localAddress onPort:port]) {
 			[self release];
 			self = nil;
+			
+			// TODO: report the error
 		}
 		
 		_socket.delegate = self;
@@ -63,7 +65,7 @@
 
 - (id)initWithPort:(UInt16)port andLocalDevice:(NSString*)localDevice
 {
-	return [self initWithPort:port andLocalAddress:localDevice];
+	return [self initWithPort:port andLocalAddress:localDevice error:NULL];
 }
 
 - (void)dealloc
@@ -85,8 +87,11 @@
 {
 	NSData* packetData = [packet packetizedData];
 	
-	if (0 < [packetData length])
-		[_socket sendData:packetData toEndpoint:sockAddr];
+	if (0 < [packetData length]) {
+		@synchronized (_socket) {
+			[_socket sendData:packetData toEndpoint:sockAddr];
+		}
+	}
 }
 
 #pragma mark -
@@ -96,7 +101,11 @@
 {
 	if (socket == _socket) {
 		NSData* fromAddr = nil;
-		NSData* packet = [_socket receiveDataFromEndpoint:&fromAddr];
+		NSData* packet = nil;
+		
+		@synchronized (_socket) {
+			[_socket receiveDataFromEndpoint:&fromAddr];
+		}
 		
 		// since OSC/UDP apparently doesn't have a "size" field, we have to be faithful that the
 		// packet we received actually encapsulates a complete OSC message or bundle...

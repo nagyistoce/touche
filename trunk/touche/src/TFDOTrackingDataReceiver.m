@@ -74,9 +74,13 @@
 	}
 
 	[_thread release];
+	_thread = nil;
+	
 	[_queue release];
+	_queue = nil;
 
 	[client release];
+	client = nil;
 	
 	[super dealloc];
 }

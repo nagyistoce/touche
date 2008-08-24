@@ -38,6 +38,7 @@ extern NSString* kToucheTrackingDistributorDataEndedTouchesKey;
 				 receiverDidDie:(TFTrackingDataReceiver*)receiver;
 - (void)trackingDataDistributor:(TFTrackingDataDistributor*)distributor
 		  receiverDidDisconnect:(TFTrackingDataReceiver*)receiver;
+// TODO: distributor should be able to report an error object
 @end
 
 @interface TFTrackingDataDistributor : NSObject {

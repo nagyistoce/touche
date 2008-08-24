@@ -64,6 +64,14 @@
 	return hypot(x, y);
 }
 
+- (float)distanceFromBlobPoint:(TFBlobPoint*)otherPoint
+{	
+	float xDist = self.x - otherPoint.x;
+	float yDist = self.y - otherPoint.y;
+	
+	return hypot(xDist, yDist);
+}
+
 #pragma mark -
 #pragma mark NSCopying protocol
 

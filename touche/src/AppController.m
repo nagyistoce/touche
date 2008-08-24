@@ -42,6 +42,7 @@
 #import "TFTrackingDataReceiver.h"
 #import "TFTrackingDataDistributor.h"
 #import "TFDOTrackingDataDistributor.h"
+#import "TFTUIOTrackingDataDistributor.h"
 #import "TFTrackingDataDistributionCenter.h"
 
 
@@ -500,6 +501,12 @@ enum {
 	doDistributor.delegate = self;
 	
 	[_distributionCenter addDistributor:doDistributor];
+	
+	TFTUIOTrackingDataDistributor* tuioDistributor = [[TFTUIOTrackingDataDistributor alloc] init];
+	[tuioDistributor startDistributorWithObject:nil error:NULL];
+	tuioDistributor.delegate = self;
+		
+	[_distributionCenter addDistributor:tuioDistributor];
 	
 	_pipeline = [[TFTrackingPipeline sharedPipeline] retain];
 	_pipeline.delegate = self;

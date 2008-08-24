@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="512"/>
+			<integer value="514"/>
 			<integer value="57"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -856,7 +856,7 @@ bWVudS4</string>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSScrollView" id="653423266">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">4370</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -953,7 +953,6 @@ bWVudS4</string>
 						</object>
 						<string key="NSFrame">{{1, 1}, {426, 263}}</string>
 						<reference key="NSSuperview" ref="653423266"/>
-						<reference key="NSNextKeyView" ref="412988742"/>
 						<reference key="NSDocView" ref="412988742"/>
 						<reference key="NSBGColor" ref="865312023"/>
 						<int key="NScvFlags">2</int>
@@ -980,8 +979,6 @@ bWVudS4</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{428, 265}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView" ref="906625158"/>
 				<int key="NSsFlags">2</int>
 				<reference key="NSVScroller" ref="302593268"/>
 				<reference key="NSHScroller" ref="491419765"/>
@@ -989,7 +986,7 @@ bWVudS4</string>
 				<bytes key="NSScrollAmts">QSAAAEEgAABCUAAAQlAAAA</bytes>
 			</object>
 			<object class="NSCustomView" id="687242953">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1002,7 +999,7 @@ bWVudS4</string>
 						<object class="NSTextFieldCell" key="NSCell" id="674805942">
 							<int key="NSCellFlags">68288064</int>
 							<int key="NSCellFlags2">138413056</int>
-							<string key="NSContents">No clients connected</string>
+							<string key="NSContents">No Clients</string>
 							<object class="NSFont" key="NSSupport">
 								<string key="NSName">LucidaGrande-Bold</string>
 								<double key="NSSize">1.800000e+01</double>
@@ -1018,6 +1015,7 @@ bWVudS4</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{428, 265}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">GCKPlatinumView</string>
 			</object>
 			<object class="NSArrayController" id="1018984380">
@@ -2638,13 +2636,6 @@ bWVudS4</string>
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">src/TFDOTrackingDataDistributor.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">src/TFIPDatagramSocket.h</string>
 					</object>
 				</object>
@@ -2681,6 +2672,13 @@ bWVudS4</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">src/TFSocket.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">src/TFTUIOServer.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -2798,6 +2796,14 @@ bWVudS4</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TFTrackingDataReceiverCell</string>
+					<string key="superclassName">NSActionCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">src/TFTrackingDataReceiverCell.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

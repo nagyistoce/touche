@@ -1,8 +1,8 @@
 //
-//  TFDOTrackingServer.h
+//  TFTUIOTrackingDataDistributor.h
 //  Touché
 //
-//  Created by Georg Kaindl on 5/2/08.
+//  Created by Georg Kaindl on 24/8/08.
 //
 //  Copyright (C) 2008 Georg Kaindl
 //
@@ -21,19 +21,29 @@
 //  You should have received a copy of the GNU Lesser General Public
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
-//
 
 #import <Cocoa/Cocoa.h>
-#import "TFDOTrackingCommProtocols.h"
+
 #import "TFTrackingDataDistributor.h"
 
 
-@interface TFDOTrackingDataDistributor : TFTrackingDataDistributor <TFDOTrackingServerProtocol> {
-	NSConnection*			_listenConnection;
-	BOOL					_isRunning;
+@class TFTUIOServer, TFTUIOTrackingDataReceiver, TFThreadMessagingQueue, BBOSCPacket;
+
+@interface TFTUIOTrackingDataDistributor : TFTrackingDataDistributor {
+	float					motionThreshold;
+
+@protected
+	TFTUIOServer*			_server;
+	NSThread*				_thread;
+	TFThreadMessagingQueue*	_queue;
 	
-	NSThread*				_heartbeatThread;
+	NSMutableDictionary*	_blobPositions;	// blob label => position
 }
+
+@property (nonatomic, assign) float motionThreshold;
+
+- (id)init;
+- (void)dealloc;
 
 - (BOOL)startDistributorWithObject:(id)obj error:(NSError**)error;
 - (void)stopDistributor;
@@ -41,10 +51,9 @@
 - (BOOL)canAskReceiversToQuit;
 - (void)distributeTrackingDataDictionary:(NSDictionary*)trackingDict;
 
-#pragma mark -
-#pragma mark TFTrackingServerProtocol
+- (BOOL)addTUIOClientAtHost:(NSString*)host port:(UInt16)port error:(NSError**)error;
+- (void)removeTUIOClient:(TFTUIOTrackingDataReceiver*)client;
 
-- (BOOL)registerClient:(byref id)client withName:(bycopy NSString*)name error:(bycopy out NSError**)error;
-- (void)unregisterClientWithName:(bycopy NSString*)name;
+- (void)sendTUIOPacket:(BBOSCPacket*)packet toEndpoint:(NSData*)sockAddr;
 
 @end

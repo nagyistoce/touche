@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="418"/>
+			<integer value="568"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -425,6 +425,29 @@
 							</object>
 						</object>
 					</object>
+					<object class="NSMenuItem" id="903413158">
+						<reference key="NSMenu" ref="649796088"/>
+						<string key="NSTitle">Clients</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="940690404"/>
+						<reference key="NSMixedImage" ref="133917768"/>
+						<string key="NSAction">submenuAction:</string>
+						<object class="NSMenu" key="NSSubmenu" id="799691790">
+							<string key="NSTitle">Clients</string>
+							<object class="NSMutableArray" key="NSMenuItems">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSMenuItem" id="203046018">
+									<reference key="NSMenu" ref="799691790"/>
+									<string key="NSTitle">Add TUIO client...</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="940690404"/>
+									<reference key="NSMixedImage" ref="133917768"/>
+								</object>
+							</object>
+						</object>
+					</object>
 					<object class="NSMenuItem" id="818908737">
 						<reference key="NSMenu" ref="649796088"/>
 						<string key="NSTitle">Setup</string>
@@ -513,14 +536,6 @@
 								<object class="NSMenuItem" id="742172065">
 									<reference key="NSMenu" ref="740614258"/>
 									<string key="NSTitle">TUIO Settings...</string>
-									<string key="NSKeyEquiv"/>
-									<int key="NSMnemonicLoc">2147483647</int>
-									<reference key="NSOnImage" ref="940690404"/>
-									<reference key="NSMixedImage" ref="133917768"/>
-								</object>
-								<object class="NSMenuItem" id="388568449">
-									<reference key="NSMenu" ref="740614258"/>
-									<string key="NSTitle">Add TUIO Client...</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="940690404"/>
@@ -794,18 +809,18 @@
 					<object class="NSTextField" id="385798260">
 						<reference key="NSNextResponder" ref="1032527049"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{17, 45}, {394, 112}}</string>
+						<string key="NSFrame">{{17, 29}, {394, 128}}</string>
 						<reference key="NSSuperview" ref="1032527049"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="633205459">
 							<int key="NSCellFlags">67239424</int>
 							<int key="NSCellFlags2">272629760</int>
-							<string type="base64-UTF8" key="NSContents">VG91Y2jDqSBpcyBhbiBhZHZhbmNlZCBibG9iIHRyYWNraW5nIHNvZnR3YXJlIGZvciBtdWx0aXRvdWNo
-IHNldHVwcyB1c2luZyB0aGUgRlRJUiB0ZWNobmlxdWUuIEl0IGNvbWVzIHdpdGggZnJhbWV3b3JrcyB0
-byBlYXNpbHkgd3JpdGUgeW91ciBvd24gbXVsdGl0b3VjaCBhcHBsaWNhdGlvbnMuCgpJZiB5b3Ugd2Fu
-dCwgeW91IGNhbiB1c2UgdGhlIHNldHVwIGFzc2lzdGFudCB0byBoZWxwIHlvdSBnZXQgdXAgYW5kIHJ1
-bm5pbmcuIFlvdSBjYW4gYWxzbyBydW4gaXQgYXQgYSBsYXRlciB0aW1lIGZyb20gdGhlICJTZXR1cCIg
-bWVudS4</string>
+							<string type="base64-UTF8" key="NSContents">VG91Y2jDqSBpcyBhbiBhZHZhbmNlZCBibG9iIHRyYWNraW5nIHNvZnR3YXJlIGZvciBvcHRpY2FsIG11
+bHRpdG91Y2ggdGFibGVzLiBJdCBjb21lcyB3aXRoIGEgZnJhbWV3b3JrIHRvIGVhc2lseSB3cml0ZSB5
+b3VyIG93biBtdWx0aXRvdWNoIGFwcGxpY2F0aW9ucywgYXMgd2VsbCBhcyBzdXBwb3J0IGZvciBUVUlP
+LgoKSWYgeW91IHdhbnQsIHlvdSBjYW4gdXNlIHRoZSBzZXR1cCBhc3Npc3RhbnQgdG8gaGVscCB5b3Ug
+Z2V0IHVwIGFuZCBydW5uaW5nLiBZb3UgY2FuIGFsc28gcnVuIGl0IGF0IGEgbGF0ZXIgdGltZSBmcm9t
+IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 							<object class="NSFont" key="NSSupport" id="650642392">
 								<string key="NSName">LucidaGrande</string>
 								<double key="NSSize">1.200000e+01</double>
@@ -1436,9 +1451,9 @@ bWVudS4</string>
 					<object class="IBActionConnection" key="connection">
 						<string key="label">showTUIOAddClientPanel:</string>
 						<reference key="source" ref="124338352"/>
-						<reference key="destination" ref="388568449"/>
+						<reference key="destination" ref="203046018"/>
 					</object>
-					<int key="connectionID">565</int>
+					<int key="connectionID">569</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1480,6 +1495,7 @@ bWVudS4</string>
 							<reference ref="932342341"/>
 							<reference ref="818908737"/>
 							<reference ref="552936693"/>
+							<reference ref="903413158"/>
 						</object>
 						<reference key="parent" ref="1049"/>
 						<string key="objectName">MainMenu</string>
@@ -1820,7 +1836,6 @@ bWVudS4</string>
 							<reference ref="788668751"/>
 							<reference ref="210670535"/>
 							<reference ref="742172065"/>
-							<reference ref="388568449"/>
 						</object>
 						<reference key="parent" ref="818908737"/>
 					</object>
@@ -2187,9 +2202,27 @@ bWVudS4</string>
 						<reference key="parent" ref="740614258"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">564</int>
-						<reference key="object" ref="388568449"/>
-						<reference key="parent" ref="740614258"/>
+						<int key="objectID">566</int>
+						<reference key="object" ref="903413158"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="799691790"/>
+						</object>
+						<reference key="parent" ref="649796088"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">567</int>
+						<reference key="object" ref="799691790"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="203046018"/>
+						</object>
+						<reference key="parent" ref="903413158"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">568</int>
+						<reference key="object" ref="203046018"/>
+						<reference key="parent" ref="799691790"/>
 					</object>
 				</object>
 			</object>
@@ -2347,7 +2380,10 @@ bWVudS4</string>
 					<string>56.ImportedFromIB2</string>
 					<string>561.IBPluginDependency</string>
 					<string>562.IBPluginDependency</string>
-					<string>564.IBPluginDependency</string>
+					<string>566.IBPluginDependency</string>
+					<string>567.IBEditorWindowLastContentRect</string>
+					<string>567.IBPluginDependency</string>
+					<string>568.IBPluginDependency</string>
 					<string>57.IBEditorWindowLastContentRect</string>
 					<string>57.IBPluginDependency</string>
 					<string>57.ImportedFromIB2</string>
@@ -2387,7 +2423,7 @@ bWVudS4</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{127, 905}, {197, 73}}</string>
-					<string>{{216, 736}, {316, 20}}</string>
+					<string>{{216, 736}, {381, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{74, 862}</string>
@@ -2424,7 +2460,7 @@ bWVudS4</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{343, 563}, {271, 173}}</string>
+					<string>{{408, 583}, {271, 153}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{190, 133}, {295, 83}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2529,6 +2565,9 @@ bWVudS4</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{343, 713}, {175, 23}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{228, 533}, {234, 203}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
@@ -2557,7 +2596,7 @@ bWVudS4</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">565</int>
+			<int key="maxID">569</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

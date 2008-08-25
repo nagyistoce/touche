@@ -8,8 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="514"/>
-			<integer value="57"/>
+			<integer value="418"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -501,6 +500,32 @@
 									<reference key="NSOnImage" ref="940690404"/>
 									<reference key="NSMixedImage" ref="133917768"/>
 								</object>
+								<object class="NSMenuItem" id="210670535">
+									<reference key="NSMenu" ref="740614258"/>
+									<bool key="NSIsDisabled">YES</bool>
+									<bool key="NSIsSeparator">YES</bool>
+									<string key="NSTitle"/>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="940690404"/>
+									<reference key="NSMixedImage" ref="133917768"/>
+								</object>
+								<object class="NSMenuItem" id="742172065">
+									<reference key="NSMenu" ref="740614258"/>
+									<string key="NSTitle">TUIO Settings...</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="940690404"/>
+									<reference key="NSMixedImage" ref="133917768"/>
+								</object>
+								<object class="NSMenuItem" id="388568449">
+									<reference key="NSMenu" ref="740614258"/>
+									<string key="NSTitle">Add TUIO Client...</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="940690404"/>
+									<reference key="NSMixedImage" ref="133917768"/>
+								</object>
 							</object>
 						</object>
 					</object>
@@ -953,6 +978,7 @@ bWVudS4</string>
 						</object>
 						<string key="NSFrame">{{1, 1}, {426, 263}}</string>
 						<reference key="NSSuperview" ref="653423266"/>
+						<reference key="NSNextKeyView" ref="412988742"/>
 						<reference key="NSDocView" ref="412988742"/>
 						<reference key="NSBGColor" ref="865312023"/>
 						<int key="NScvFlags">2</int>
@@ -979,6 +1005,7 @@ bWVudS4</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{428, 265}</string>
+				<reference key="NSNextKeyView" ref="906625158"/>
 				<int key="NSsFlags">2</int>
 				<reference key="NSVScroller" ref="302593268"/>
 				<reference key="NSHScroller" ref="491419765"/>
@@ -986,7 +1013,7 @@ bWVudS4</string>
 				<bytes key="NSScrollAmts">QSAAAEEgAABCUAAAQlAAAA</bytes>
 			</object>
 			<object class="NSCustomView" id="687242953">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1015,7 +1042,6 @@ bWVudS4</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{428, 265}</string>
-				<reference key="NSSuperview"/>
 				<string key="NSClassName">GCKPlatinumView</string>
 			</object>
 			<object class="NSArrayController" id="1018984380">
@@ -1398,6 +1424,22 @@ bWVudS4</string>
 					</object>
 					<int key="connectionID">559</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showTUIOSettings:</string>
+						<reference key="source" ref="124338352"/>
+						<reference key="destination" ref="742172065"/>
+					</object>
+					<int key="connectionID">563</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showTUIOAddClientPanel:</string>
+						<reference key="source" ref="124338352"/>
+						<reference key="destination" ref="388568449"/>
+					</object>
+					<int key="connectionID">565</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1776,6 +1818,9 @@ bWVudS4</string>
 							<reference ref="309919270"/>
 							<reference ref="84726402"/>
 							<reference ref="788668751"/>
+							<reference ref="210670535"/>
+							<reference ref="742172065"/>
+							<reference ref="388568449"/>
 						</object>
 						<reference key="parent" ref="818908737"/>
 					</object>
@@ -2131,6 +2176,21 @@ bWVudS4</string>
 						<reference key="object" ref="855184639"/>
 						<reference key="parent" ref="1058081234"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">561</int>
+						<reference key="object" ref="210670535"/>
+						<reference key="parent" ref="740614258"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">562</int>
+						<reference key="object" ref="742172065"/>
+						<reference key="parent" ref="740614258"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">564</int>
+						<reference key="object" ref="388568449"/>
+						<reference key="parent" ref="740614258"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -2285,6 +2345,9 @@ bWVudS4</string>
 					<string>558.IBPluginDependency</string>
 					<string>56.IBPluginDependency</string>
 					<string>56.ImportedFromIB2</string>
+					<string>561.IBPluginDependency</string>
+					<string>562.IBPluginDependency</string>
+					<string>564.IBPluginDependency</string>
 					<string>57.IBEditorWindowLastContentRect</string>
 					<string>57.IBPluginDependency</string>
 					<string>57.ImportedFromIB2</string>
@@ -2361,7 +2424,7 @@ bWVudS4</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{343, 613}, {271, 123}}</string>
+					<string>{{343, 563}, {271, 173}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{190, 133}, {295, 83}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2463,6 +2526,9 @@ bWVudS4</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{228, 533}, {234, 203}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
@@ -2491,7 +2557,7 @@ bWVudS4</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">560</int>
+			<int key="maxID">565</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2507,6 +2573,8 @@ bWVudS4</string>
 							<string>showMiscPrefs:</string>
 							<string>showPipelineConfigurationWindow:</string>
 							<string>showScreenPrefs:</string>
+							<string>showTUIOAddClientPanel:</string>
+							<string>showTUIOSettings:</string>
 							<string>showTrackingPreviewWindow:</string>
 							<string>startCalibration:</string>
 							<string>startTouchTest:</string>
@@ -2515,6 +2583,8 @@ bWVudS4</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

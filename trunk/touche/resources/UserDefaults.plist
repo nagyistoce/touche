@@ -6,5 +6,7 @@
 	<true/>
 	<key>tFTouchViewTouchesAreAnimatedPreferenceKey</key>
 	<false/>
+	<key>tFTUIOPixelsForMotion</key>
+	<real>5</real>
 </dict>
 </plist>

@@ -30,7 +30,7 @@
 "OneClientConnected"				= "Serving One Client";
 "XClientsConntected"				= "Serving %d Clients";
 
-"TellClientToQuit"					= "Tell client to quit";
+"TellClientToQuit"					= "Quit Client";
 
 "Setup Assistant"					= "Setup Assistant";
 "Welcome to Touché"					= "Welcome to Touché";
@@ -43,6 +43,12 @@
 
 "TFTouchTestControllerHumandReadableName"		= "Touché Touch Test Application";
 "TFTouchTestControllerStartInfo"				= "Touch the screen to test your setup.\nHit 'Esc' to cancel.";
+
+"TFTUIOClientName"	= "%@:%d (TUIO/OSC/UDP)";
+
+"TFTUIOAddClientInvalidHost"		= "Host name could not be resolved.";
+"TFTUIOAddClientInvalidPort"		= "Port must be between 1 and 65535.";
+"TFTUIOAddClientAlreadyExists"		= "This client is already being served.";
 
 "SetUpScreen"						= "Set up screen";
 "ConfigurePipeline"					= "Configure pipeline";
@@ -81,7 +87,7 @@
 "PipelineLoadingFailureSolution"		= "Please rectify the problem and try restarting the pipeline!";
 "PipelineStalledSolution"				= "Please rectify the problem and/or re-configure the pipeline!";
 
-"TFWizardControllerStepSetupFTIRTableTitle"		= "Set up your FTIR multitouch table";
+"TFWizardControllerStepSetupFTIRTableTitle"		= "Set up your optical multitouch table";
 "TFWizardControllerStepSetupScreenTitle"		= "Set up the screen";
 "TFWizardControllerStepConnectCameraTitle"		= "Prepare your camera";
 "TFWizardControllerStepConfigurePipelineTitle"	= "Configure the tracking pipeline";
@@ -90,14 +96,14 @@
 "TFWizardControllerStepFinishedTitle"			= "You're done. Enjoy!";
 "TFWizardControllerStepSetupCameraTitle"		= "Position the camera";
 
-"TFWizardControllerStepSetupFTIRTableDescription"		= "Before you can start configuring the tracker, you have to get your FTIR table up and running. Make sure that you are getting nice, bright infrared spots when touching the table.\n\nIf you don't have an FTIR table yet, you'll have to build one :-)";
+"TFWizardControllerStepSetupFTIRTableDescription"		= "Before you can start configuring the tracker, you have to get your multitouch table up and running. Make sure that you are getting nice, well-defined blobs when touching the table.\n\nIf you don't have a multitouch table yet, you'll have to build one :-)";
 "TFWizardControllerStepSetupScreenDescription"			= "First, please choose the screen you want to use for multitouch applications. This can be a screen other than the main screen of your Mac.\n\nAdditionally, you will have to measure a line on the screen, so that Touché can determine how much your projection screen \"blows up\" the image. This way, applications can be rendered in the most optimized way on your setup.";
 "TFWizardControllerStepConnectCameraDescription"		= "Touché supports either Quicktime-compatible webcams (modded for IR vision), FireWire cameras (via libdc1394) or Wii Remotes as blob input devices.\n\nIf you are using a webcam, now is the time to connect it.\n\nIf you are using a Wii Remote, keep it ready for the next step.";
-"TFWizardControllerStepConfigurePipelineDescription"	= "Now comes the difficult part. You'll have to configure the tracking pipeline for your preferred input device.\n\nThere are lots of options to tweak in order to get good results, so it's a good idea to familiarize yourself with them.\n\nIf you are using a webcam, especially adjust the blob luminance treshold, so that your infrared blobs are recognized reliably.";
+"TFWizardControllerStepConfigurePipelineDescription"	= "Now comes the difficult part. You'll have to configure the tracking pipeline for your preferred input device.\n\nThere are lots of options to tweak in order to get good results, so it's a good idea to familiarize yourself with them. Especially adjust the luminance threshold.\n\nIf you need to track dark blobs in front of a bright background, enable the color inversion filter.";
 "TFWizardControllerStepCalibrateDescription"			= "With your tracking pipeline set up, you need to calibrate the camera-to-screen coordinate converter.\n\nTo do so, simply run the calibration routine and be sure to touch each individual calibration point perfectly in the center, then lift your finger off the surface.\n\nYou can hit \"Escape\" at any time to cancel the calibration process.";
 "TFWizardControllerStepTestDescription"					= "Your tracking pipeline should be working awesomely by now. Test it with a simple application that tracks your fingers as you touch the surface. Hit \"Escape\" to quit it.\n\nIf it doesn't work too well by now, don't fret: You can tweak every configuration setting again in the \"Setup\" menu. You can also launch this assistant again there.";
-"TFWizardControllerStepFinishedDescription"				= "That's it, the setup process is complete. Now is a good time to familiarize yourself with the API to get started writing your own multitouch apps!\n\nYou can tweak each configuration item again in the \"Setup\" menu.\n\nOne more thing: Obviously, Touché's tracker is not limited to tracking only infrared blobs on FTIR tables: Use your imagination! You can also mod the source code for even more fun!";
-"TFWizardControllerStepSetupCameraDescription"			= "Please position the camera or Wii Remote right behind the FTIR table, so that it can capture a good view of the blobs as you touch the surface.\n\nTry to get as big and clear of a picture as possible. It's not so much important that the camera isn't skewed or rotated, though, since this will be taken care of by the camera to screen coordinate conversion.";
+"TFWizardControllerStepFinishedDescription"				= "That's it, the setup process is complete. Now is a good time to familiarize yourself with the API to get started writing your own multitouch apps!\n\nYou can tweak each configuration item again in the \"Setup\" menu.\n\nOne more thing: Obviously, Touché's tracker is not limited to tracking only infrared blobs on optical multitouch tables: Use your imagination! You can also mod the source code for even more fun!";
+"TFWizardControllerStepSetupCameraDescription"			= "Please position the camera or Wii Remote so that it can capture a good view of the blobs as you touch the surface.\n\nTry to get as big and clear of a picture as possible. It's not so much important that the camera isn't skewed or rotated, though, since this will be taken care of by the camera to screen coordinate conversion.";
 
 "TFUnknownErrorDesc"									= "An unknown error occurred.";
 "TFUnknownErrorReason"									= "No additional information about this error is available.";

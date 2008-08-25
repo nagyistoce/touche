@@ -192,7 +192,7 @@
 				[movedTouches addObject:blob];
 			}
 		}
-		
+				
 		BBOSCBundle* tuioBundle = [TFTUIOServer tuioBundleForFrameNumber:frameSequenceNumber
 															 activeBlobs:activeTouches
 															  movedBlobs:movedTouches];

@@ -65,9 +65,11 @@
 		6E7DB4EB0DEC677800CF9556 /* TFError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7DB4EA0DEC677800CF9556 /* TFError.m */; };
 		6E7DB4ED0DEC679200CF9556 /* TFError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7DB4EA0DEC677800CF9556 /* TFError.m */; };
 		6E7DB56C0DED9F8500CF9556 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6EAD35050D2C4B9900C34A1A /* Localizable.strings */; };
-		6E7EC9750E0DB7CE0080F7EF /* Help in Resources */ = {isa = PBXBuildFile; fileRef = 6E7EC9450E0DB7CE0080F7EF /* Help */; };
 		6E7ECA810E0E69170080F7EF /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E7ECA800E0E69170080F7EF /* Sparkle.framework */; };
 		6E7ECAAB0E0E69250080F7EF /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6E7ECA800E0E69170080F7EF /* Sparkle.framework */; };
+		6E7ED5D60E621A1800ECAE8B /* TFTUIOSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7ED5D50E621A1800ECAE8B /* TFTUIOSettingsController.m */; };
+		6E7ED63B0E621EAF00ECAE8B /* TUIOSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E7ED63A0E621EAF00ECAE8B /* TUIOSettings.xib */; };
+		6E7ED6760E621F9200ECAE8B /* Help in Resources */ = {isa = PBXBuildFile; fileRef = 6E7ED6400E621F9100ECAE8B /* Help */; };
 		6E81EB210D522BAF003EA72C /* TFCIRatioImageBlendFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81EB200D522BAF003EA72C /* TFCIRatioImageBlendFilter.m */; };
 		6E81EB230D522CC0003EA72C /* TFCIRatioImageBlendFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E81EB220D522C87003EA72C /* TFCIRatioImageBlendFilter.cikernel */; };
 		6E854C730DBF977200B5EB68 /* TFTrackingPipeline+QTInputAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E854C720DBF977200B5EB68 /* TFTrackingPipeline+QTInputAdditions.m */; };
@@ -316,8 +318,11 @@
 		6E7DB2BD0DEB76E700CF9556 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = images/AppIcon.icns; sourceTree = "<group>"; };
 		6E7DB4BE0DEC588B00CF9556 /* TFError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFError.h; sourceTree = "<group>"; };
 		6E7DB4EA0DEC677800CF9556 /* TFError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFError.m; sourceTree = "<group>"; };
-		6E7EC9460E0DB7CE0080F7EF /* English */ = {isa = PBXFileReference; lastKnownFileType = folder; name = English; path = resources/English.lproj/Help; sourceTree = "<group>"; };
 		6E7ECA800E0E69170080F7EF /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = frameworks/Sparkle.framework; sourceTree = "<group>"; };
+		6E7ED5D40E621A1800ECAE8B /* TFTUIOSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOSettingsController.h; sourceTree = "<group>"; };
+		6E7ED5D50E621A1800ECAE8B /* TFTUIOSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOSettingsController.m; sourceTree = "<group>"; };
+		6E7ED6380E621EA200ECAE8B /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/TUIOSettings.xib; sourceTree = "<group>"; };
+		6E7ED6410E621F9100ECAE8B /* English */ = {isa = PBXFileReference; lastKnownFileType = folder; name = English; path = English.lproj/Help; sourceTree = "<group>"; };
 		6E81EB1F0D522BAF003EA72C /* TFCIRatioImageBlendFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIRatioImageBlendFilter.h; sourceTree = "<group>"; };
 		6E81EB200D522BAF003EA72C /* TFCIRatioImageBlendFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIRatioImageBlendFilter.m; sourceTree = "<group>"; };
 		6E81EB220D522C87003EA72C /* TFCIRatioImageBlendFilter.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TFCIRatioImageBlendFilter.cikernel; sourceTree = "<group>"; };
@@ -816,6 +821,7 @@
 				6EE60E590DDF2E350069A40E /* MiscPreferences.xib */,
 				6EF63F3E0DD7B59100888DB0 /* PipelineSetup.xib */,
 				6EE60CAA0DDEF4030069A40E /* ScreenPreferences.xib */,
+				6E7ED63A0E621EAF00ECAE8B /* TUIOSettings.xib */,
 				6EF63F420DD7B5A500888DB0 /* WizardStep.xib */,
 			);
 			name = Xib;
@@ -830,12 +836,13 @@
 				6EAD35050D2C4B9900C34A1A /* Localizable.strings */,
 			);
 			name = "Localized Resources";
+			path = resources;
 			sourceTree = "<group>";
 		};
 		6E7EC8B90E0BF26D0080F7EF /* Html */ = {
 			isa = PBXGroup;
 			children = (
-				6E7EC9450E0DB7CE0080F7EF /* Help */,
+				6E7ED6400E621F9100ECAE8B /* Help */,
 				6E07FD490DF0419900FCB681 /* credits.html */,
 			);
 			name = Html;
@@ -1168,6 +1175,8 @@
 				6ECA95130DD1F1DA00A9ABE3 /* TFInfoViewController.m */,
 				6E06D15A0DD8557200B86D27 /* TFAboutController.h */,
 				6E06D15B0DD8557200B86D27 /* TFAboutController.m */,
+				6E7ED5D40E621A1800ECAE8B /* TFTUIOSettingsController.h */,
+				6E7ED5D50E621A1800ECAE8B /* TFTUIOSettingsController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1305,8 +1314,9 @@
 				6E7DB2BE0DEB76E700CF9556 /* AppIcon.icns in Resources */,
 				6E07FCEF0DF03B4C00FCB681 /* credits-wrapper.html in Resources */,
 				6E07FD4A0DF0419900FCB681 /* credits.html in Resources */,
-				6E7EC9750E0DB7CE0080F7EF /* Help in Resources */,
 				6EF3C4690E61BEE400BF6B39 /* tuio-image.png in Resources */,
+				6E7ED63B0E621EAF00ECAE8B /* TUIOSettings.xib in Resources */,
+				6E7ED6760E621F9200ECAE8B /* Help in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1456,6 +1466,7 @@
 				6EED62530E5F638200375CC0 /* TFTrackingDataReceiverCell.m in Sources */,
 				6EF3C44F0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.m in Sources */,
 				6EF3C46F0E61C03300BF6B39 /* TFTUIOTrackingDataDistributor.m in Sources */,
+				6E7ED5D60E621A1800ECAE8B /* TFTUIOSettingsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1468,7 +1479,6 @@
 				089C165DFE840E0CC02AAC07 /* English */,
 			);
 			name = InfoPlist.strings;
-			path = resources;
 			sourceTree = "<group>";
 		};
 		6E06D1540DD852B500B86D27 /* About.xib */ = {
@@ -1477,7 +1487,6 @@
 				6E06D1520DD852AC00B86D27 /* English */,
 			);
 			name = About.xib;
-			path = resources;
 			sourceTree = "<group>";
 		};
 		6E07FD490DF0419900FCB681 /* credits.html */ = {
@@ -1486,13 +1495,20 @@
 				6E07FD470DF0419300FCB681 /* English */,
 			);
 			name = credits.html;
-			path = resources;
 			sourceTree = "<group>";
 		};
-		6E7EC9450E0DB7CE0080F7EF /* Help */ = {
+		6E7ED63A0E621EAF00ECAE8B /* TUIOSettings.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				6E7EC9460E0DB7CE0080F7EF /* English */,
+				6E7ED6380E621EA200ECAE8B /* English */,
+			);
+			name = TUIOSettings.xib;
+			sourceTree = "<group>";
+		};
+		6E7ED6400E621F9100ECAE8B /* Help */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6E7ED6410E621F9100ECAE8B /* English */,
 			);
 			name = Help;
 			sourceTree = "<group>";
@@ -1503,7 +1519,6 @@
 				6EAD35060D2C4B9900C34A1A /* English */,
 			);
 			name = Localizable.strings;
-			path = resources;
 			sourceTree = "<group>";
 		};
 		6EE60CAA0DDEF4030069A40E /* ScreenPreferences.xib */ = {
@@ -1512,7 +1527,6 @@
 				6EE60CAB0DDEF4030069A40E /* English */,
 			);
 			name = ScreenPreferences.xib;
-			path = resources;
 			sourceTree = "<group>";
 		};
 		6EE60E590DDF2E350069A40E /* MiscPreferences.xib */ = {
@@ -1521,7 +1535,6 @@
 				6EE60E5A0DDF2E350069A40E /* English */,
 			);
 			name = MiscPreferences.xib;
-			path = resources;
 			sourceTree = "<group>";
 		};
 		6EF63F360DD7B56900888DB0 /* InfoView.xib */ = {
@@ -1530,7 +1543,6 @@
 				6EF63F370DD7B56900888DB0 /* English */,
 			);
 			name = InfoView.xib;
-			path = resources;
 			sourceTree = "<group>";
 		};
 		6EF63F3A0DD7B57D00888DB0 /* MainMenu.xib */ = {
@@ -1539,7 +1551,6 @@
 				6EF63F3B0DD7B57D00888DB0 /* English */,
 			);
 			name = MainMenu.xib;
-			path = resources;
 			sourceTree = "<group>";
 		};
 		6EF63F3E0DD7B59100888DB0 /* PipelineSetup.xib */ = {
@@ -1548,7 +1559,6 @@
 				6EF63F3F0DD7B59100888DB0 /* English */,
 			);
 			name = PipelineSetup.xib;
-			path = resources;
 			sourceTree = "<group>";
 		};
 		6EF63F420DD7B5A500888DB0 /* WizardStep.xib */ = {
@@ -1557,7 +1567,6 @@
 				6EF63F430DD7B5A500888DB0 /* English */,
 			);
 			name = WizardStep.xib;
-			path = resources;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

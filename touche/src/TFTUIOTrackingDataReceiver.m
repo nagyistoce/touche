@@ -60,7 +60,8 @@
 		infoDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
 								receiverID,
 								kToucheTrackingReceiverInfoName,
-								[NSString stringWithFormat:@"%@:%d (TUIO/OSC/UDP)", host, port],
+								[NSString stringWithFormat:
+									TFLocalizedString(@"TFTUIOClientName", @"TFTUIOClientName"), host, port],
 								kToucheTrackingReceiverInfoHumanReadableName,
 								versionString,
 								kToucheTrackingReceiverInfoVersion,

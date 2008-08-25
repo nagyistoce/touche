@@ -70,6 +70,9 @@
 	[_versionAttributes release];
 	_versionAttributes = nil;
 	
+	[_clientMenu release];
+	_clientMenu = nil;
+	
 	[super dealloc];
 }
 
@@ -98,20 +101,6 @@
 						  nil];
 	
 	[pStyle release];
-		
-	NSMenu* menu = [[NSMenu alloc] init];
-	
-	NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:TFLocalizedString(@"TellClientToQuit", @"TellClientToQuit")
-												  action:nil
-										   keyEquivalent:[NSString string]];
-	[item setTarget:self];
-	[item setAction:@selector(_receiverShouldQuitClicked:)];
-	[menu addItem:item];
-	[item release];
-	
-	[self setMenu:menu];
-	
-	[menu release];
 }
 
 - (void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)controlView
@@ -131,6 +120,32 @@
 	NSAttributedString* version = [self _attributedVersionWithColor:[NSColor colorWithCalibratedWhite:.6f alpha:1.0f]];
 	NSRect versionRect = [self _versionRectForFrame:frame versionString:version relativeToNameRect:nameRect];
 	[version drawInRect:versionRect];
+}
+
+- (NSMenu*)menuForEvent:(NSEvent*)anEvent inRect:(NSRect)cellFrame ofView:(NSView*)aView
+{
+	NSMenu* menu = nil;
+	
+	TFTrackingDataReceiver* receiver = (TFTrackingDataReceiver*)[self objectValue];
+	TFTrackingDataDistributor* distributor = receiver.owningDistributor;
+	
+	if ([distributor canAskReceiversToQuit]) {
+		if (nil == _clientMenu) {
+			_clientMenu = [[NSMenu alloc] init];
+			
+			NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:TFLocalizedString(@"TellClientToQuit", @"TellClientToQuit")
+														  action:nil
+												   keyEquivalent:[NSString string]];
+			[item setTarget:self];
+			[item setAction:@selector(_receiverShouldQuitClicked:)];
+			[_clientMenu addItem:item];
+			[item release];
+		}
+		
+		menu = _clientMenu;
+	}
+	
+	return menu;
 }
 
 - (BOOL)acceptsFirstResponder

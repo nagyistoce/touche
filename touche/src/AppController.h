@@ -37,6 +37,7 @@
 @class GCKIPhoneNavigationBarLabelView;
 @class TFWizardController;
 @class TFWizardView;
+@class TFTUIOSettingsController;
 
 @interface AppController : NSWindowController {
 	IBOutlet GCKIPhoneNavigationBarView*		_statusBar;
@@ -65,6 +66,8 @@
 	TFAboutController*						_aboutController;
 	TFWizardController*						_wizardController;
 	
+	TFTUIOSettingsController*				_tuioSettingsController;
+	
 	NSInteger								_appStatus;
 }
 
@@ -75,6 +78,8 @@
 - (IBAction)startTouchTest:(id)sender;
 - (IBAction)showPipelineConfigurationWindow:(id)sender;
 - (IBAction)showScreenPrefs:(id)sender;
+- (IBAction)showTUIOAddClientPanel:(id)sender;
+- (IBAction)showTUIOSettings:(id)sender;
 - (IBAction)showMiscPrefs:(id)sender;
 - (IBAction)showTrackingPreviewWindow:(id)sender;
 - (IBAction)startWizard:(id)sender;

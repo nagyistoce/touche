@@ -29,6 +29,16 @@
 @interface TFTrackingDataReceiverCell : NSActionCell <NSCopying> {
 	NSMutableDictionary*			_nameAttributes;
 	NSMutableDictionary*			_versionAttributes;
+	NSMenu*							_clientMenu;
 }
+
+- (id)init;
+- (void)dealloc;
+
+- (void)awakeFromNib;
+
+- (BOOL)acceptsFirstResponder;
+- (void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)controlView;
+- (NSMenu*)menuForEvent:(NSEvent*)anEvent inRect:(NSRect)cellFrame ofView:(NSView*)aView;
 
 @end

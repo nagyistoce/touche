@@ -42,6 +42,7 @@
 #import "TFTrackingDataReceiver.h"
 #import "TFTrackingDataDistributor.h"
 #import "TFDOTrackingDataDistributor.h"
+#import "TFTUIOSettingsController.h"
 #import "TFTUIOTrackingDataDistributor.h"
 #import "TFTrackingDataDistributionCenter.h"
 
@@ -120,6 +121,9 @@ enum {
 	[_aboutController release];
 	_aboutController = nil;
 	
+	[_tuioSettingsController release];
+	_tuioSettingsController = nil;
+	
 	[super dealloc];
 }
 
@@ -180,6 +184,16 @@ enum {
 		_screenPrefsController = [[TFScreenPreferencesController alloc] init];
 	
 	[_screenPrefsController showWindow:sender];
+}
+
+- (IBAction)showTUIOAddClientPanel:(id)sender
+{
+	[_tuioSettingsController showAddClientPanel:sender];
+}
+
+- (IBAction)showTUIOSettings:(id)sender
+{
+	[_tuioSettingsController showWindow:sender];
 }
 
 - (IBAction)showMiscPrefs:(id)sender
@@ -493,7 +507,6 @@ enum {
 
 - (void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {	
-	
 	_distributionCenter = [[TFTrackingDataDistributionCenter alloc] init];
 	
 	TFDOTrackingDataDistributor* doDistributor = [[TFDOTrackingDataDistributor alloc] init];
@@ -504,13 +517,17 @@ enum {
 	
 	TFTUIOTrackingDataDistributor* tuioDistributor = [[TFTUIOTrackingDataDistributor alloc] init];
 	[tuioDistributor startDistributorWithObject:nil error:NULL];
+	tuioDistributor.motionThreshold = [TFTUIOSettingsController pixelsForBlobMotion];
+	
 	tuioDistributor.delegate = self;
 		
 	[_distributionCenter addDistributor:tuioDistributor];
 	
+	_tuioSettingsController = [[TFTUIOSettingsController alloc] init];
+	_tuioSettingsController.distributor = tuioDistributor;
+	
 	_pipeline = [[TFTrackingPipeline sharedPipeline] retain];
 	_pipeline.delegate = self;
-	//_pipeline.trackingServer = _server;
 	
 	BOOL isFirstRun = [[NSUserDefaults standardUserDefaults] boolForKey:tFIsFirstRunPreferenceKey];
 	

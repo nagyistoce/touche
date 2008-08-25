@@ -3,7 +3,23 @@
 //  Touché
 //
 //  Created by Georg C. Kaindl on 19/05/08.
-//  Copyright 2007 Georg Kaindl. All rights reserved.
+//
+//  Copyright (C) 2007 Georg Kaindl
+//
+//  This file is part of Touché.
+//
+//  Touché is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU Lesser General Public License as
+//  published by the Free Software Foundation, either version 3 of
+//  the License, or (at your option) any later version.
+//
+//  Touché is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
 
 #import <ToucheFramework/TFBlob.h>
@@ -14,15 +30,9 @@
 #import <ToucheFramework/TFBlobLabel.h>
 #import <ToucheFramework/TFLabeledTouchSet.h>
 
-typedef TFBlob TFTouch;
-typedef TFBlobPoint TFTouchPoint;
-typedef TFBlobBox TFTouchBox;
-typedef TFBlobSize TFTouchSize;
-typedef TFBlobLabel TFTouchLabel;
-
 #import <ToucheFramework/TFFullscreenController.h>
 
-#import <ToucheFramework/TFTrackingClient.h>
+#import <ToucheFramework/TFDOTrackingClient.h>
 
 #import <ToucheFramework/TFAlignedMalloc.h>
 #import <ToucheFramework/TFCombinadicIndices.h>
@@ -36,3 +46,10 @@ typedef TFBlobLabel TFTouchLabel;
 #import <ToucheFramework/TFGestureRecognizer.h>
 #import <ToucheFramework/TFZoomPinchRecognizer.h>
 #import <ToucheFramework/TFTapRecognizer.h>
+
+typedef TFDOTrackingClient TFTrackingClient;
+typedef TFBlob TFTouch;
+typedef TFBlobPoint TFTouchPoint;
+typedef TFBlobBox TFTouchBox;
+typedef TFBlobSize TFTouchSize;
+typedef TFBlobLabel TFTouchLabel;

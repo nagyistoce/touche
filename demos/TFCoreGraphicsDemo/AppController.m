@@ -70,7 +70,7 @@
 - (NSDictionary*)infoDictionaryForClient:(TFTrackingClient*)client
 {
 	return [NSDictionary dictionaryWithObjectsAndKeys:
-			@"Touché Core Graphics Demo", kToucheTrackingClientInfoHumanReadableName,
+			@"Touché Core Graphics Demo", kToucheTrackingReceiverInfoHumanReadableName,
 			nil];
 }
 

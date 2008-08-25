@@ -122,7 +122,7 @@ static const NSUInteger numFlares = 10;
 - (NSDictionary*)infoDictionaryForClient:(TFTrackingClient*)client
 {
 	return [NSDictionary dictionaryWithObjectsAndKeys:
-			@"Touché Quartz Composition Demo", kToucheTrackingClientInfoHumanReadableName,
+			@"Touché Quartz Composition Demo", kToucheTrackingReceiverInfoHumanReadableName,
 			nil];
 }
 

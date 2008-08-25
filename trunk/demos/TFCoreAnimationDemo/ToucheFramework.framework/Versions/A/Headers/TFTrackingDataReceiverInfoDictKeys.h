@@ -1,10 +1,8 @@
 //
-//  TFZoomPinchRecognizer.h
-//  Touché
+//  TFTrackingDataReceiverInfoDictKeys.h
+//  Touche
 //
-//  Created by Georg Kaindl on 24/5/08.
-//
-//  Copyright (C) 2008 Georg Kaindl
+//  Created by Georg Kaindl on 22/8/08.
 //
 //  This file is part of Touché.
 //
@@ -21,21 +19,11 @@
 //  You should have received a copy of the GNU Lesser General Public
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
-//
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
-#import "TFGestureRecognizer.h"
 
-extern NSString* TFZoomPinchRecognizerParamPixels;
-extern NSString* TFZoomPinchRecognizerParamAngle;
-
-@interface TFZoomPinchRecognizer : TFGestureRecognizer {
-	float		angleTolerance;
-	float		minDistance;
-}
-
-@property (nonatomic, assign) float angleTolerance;
-@property (nonatomic, assign) float minDistance;
-
-@end
+extern NSString* kToucheTrackingReceiverInfoName;
+extern NSString* kToucheTrackingReceiverInfoHumanReadableName;
+extern NSString* kToucheTrackingReceiverInfoVersion;
+extern NSString* kToucheTrackingReceiverInfoIcon;

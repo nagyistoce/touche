@@ -61,18 +61,26 @@
 	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:xPos]];
 	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:yPos]];
 	
-	NSTimeInterval secsSinceLast = self.createdAt - self.previousCreatedAt;
-	
-	float xDelta = ((self.center.x - self.previousCenter.x)/screenSize.width) / secsSinceLast;
-	// like the position, we need to invert the yDelta
-	float yDelta = -((self.center.y - self.previousCenter.y)/screenSize.height) / secsSinceLast;
-	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:xDelta]];
-	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:yDelta]];
-	
-	float xAccel = (self.acceleration.x/screenSize.width) / secsSinceLast;
-	// we don't need to invert y accel here, since we're just interested into the vec length anyway
-	float yAccel = (self.acceleration.y/screenSize.height) / secsSinceLast;
-	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:hypot(xAccel, yAccel)]];
+	if (self.isUpdate) {
+		NSTimeInterval secsSinceLast = self.createdAt - self.previousCreatedAt;
+		
+		float xDelta = ((self.center.x - self.previousCenter.x)/screenSize.width) / secsSinceLast;
+		// like the position, we need to invert the yDelta
+		float yDelta = -((self.center.y - self.previousCenter.y)/screenSize.height) / secsSinceLast;
+		[setMsg attachArgument:[BBOSCArgument argumentWithFloat:xDelta]];
+		[setMsg attachArgument:[BBOSCArgument argumentWithFloat:yDelta]];
+		
+		float xAccel = (self.acceleration.x/screenSize.width) / secsSinceLast;
+		// we don't need to invert y accel here, since we're just interested into the vec length anyway
+		float yAccel = (self.acceleration.y/screenSize.height) / secsSinceLast;
+		[setMsg attachArgument:[BBOSCArgument argumentWithFloat:hypot(xAccel, yAccel)]];
+	} else {
+		// if this blob is new (i.e. not an update), we set the motion vector and acceleration to 0.0.
+		BBOSCArgument* zeroArg = [BBOSCArgument argumentWithFloat:0.0f];
+		[setMsg attachArgument:zeroArg];	// xDelta
+		[setMsg attachArgument:zeroArg];	// yDelta
+		[setMsg attachArgument:zeroArg];	// acceleration
+	}
 	
 	return setMsg;
 }

@@ -30,12 +30,6 @@
 #import <ToucheFramework/TFBlobLabel.h>
 #import <ToucheFramework/TFLabeledTouchSet.h>
 
-typedef TFBlob TFTouch;
-typedef TFBlobPoint TFTouchPoint;
-typedef TFBlobBox TFTouchBox;
-typedef TFBlobSize TFTouchSize;
-typedef TFBlobLabel TFTouchLabel;
-
 #import <ToucheFramework/TFFullscreenController.h>
 
 #import <ToucheFramework/TFDOTrackingClient.h>
@@ -52,3 +46,10 @@ typedef TFBlobLabel TFTouchLabel;
 #import <ToucheFramework/TFGestureRecognizer.h>
 #import <ToucheFramework/TFZoomPinchRecognizer.h>
 #import <ToucheFramework/TFTapRecognizer.h>
+
+typedef TFDOTrackingClient TFTrackingClient;
+typedef TFBlob TFTouch;
+typedef TFBlobPoint TFTouchPoint;
+typedef TFBlobBox TFTouchBox;
+typedef TFBlobSize TFTouchSize;
+typedef TFBlobLabel TFTouchLabel;

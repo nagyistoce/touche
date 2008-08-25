@@ -70,6 +70,11 @@
 		6E7ED5D60E621A1800ECAE8B /* TFTUIOSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7ED5D50E621A1800ECAE8B /* TFTUIOSettingsController.m */; };
 		6E7ED63B0E621EAF00ECAE8B /* TUIOSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E7ED63A0E621EAF00ECAE8B /* TUIOSettings.xib */; };
 		6E7ED6760E621F9200ECAE8B /* Help in Resources */ = {isa = PBXBuildFile; fileRef = 6E7ED6400E621F9100ECAE8B /* Help */; };
+		6E7ED7CE0E630C1300ECAE8B /* TFDOTrackingClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EED60DA0E5EE64300375CC0 /* TFDOTrackingClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6E7ED7CF0E630C1400ECAE8B /* TFDOTrackingClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED60DB0E5EE64300375CC0 /* TFDOTrackingClient.m */; };
+		6E7ED7D00E630C1600ECAE8B /* TFDOTrackingCommProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EED60EE0E5EE9B600375CC0 /* TFDOTrackingCommProtocols.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6E7ED7D10E630C3C00ECAE8B /* TFTrackingDataReceiverInfoDictKeys.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EED61460E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6E7ED7D20E630C3C00ECAE8B /* TFTrackingDataReceiverInfoDictKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED61470E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.m */; };
 		6E81EB210D522BAF003EA72C /* TFCIRatioImageBlendFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81EB200D522BAF003EA72C /* TFCIRatioImageBlendFilter.m */; };
 		6E81EB230D522CC0003EA72C /* TFCIRatioImageBlendFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E81EB220D522C87003EA72C /* TFCIRatioImageBlendFilter.cikernel */; };
 		6E854C730DBF977200B5EB68 /* TFTrackingPipeline+QTInputAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E854C720DBF977200B5EB68 /* TFTrackingPipeline+QTInputAdditions.m */; };
@@ -1213,6 +1218,9 @@
 				6E07FC1A0DF0210700FCB681 /* TFExceptions.h in Headers */,
 				6E07FC1B0DF0210900FCB681 /* PreferencesStrings.h in Headers */,
 				6EA02F030DF4217700B8A1D3 /* TFTapRecognizer.h in Headers */,
+				6E7ED7CE0E630C1300ECAE8B /* TFDOTrackingClient.h in Headers */,
+				6E7ED7D00E630C1600ECAE8B /* TFDOTrackingCommProtocols.h in Headers */,
+				6E7ED7D10E630C3C00ECAE8B /* TFTrackingDataReceiverInfoDictKeys.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1363,6 +1371,8 @@
 				6E8BC4140DE86F8E006450C8 /* TFZoomPinchRecognizer.m in Sources */,
 				6E7DB4ED0DEC679200CF9556 /* TFError.m in Sources */,
 				6EA02F040DF4217900B8A1D3 /* TFTapRecognizer.m in Sources */,
+				6E7ED7CF0E630C1400ECAE8B /* TFDOTrackingClient.m in Sources */,
+				6E7ED7D20E630C3C00ECAE8B /* TFTrackingDataReceiverInfoDictKeys.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

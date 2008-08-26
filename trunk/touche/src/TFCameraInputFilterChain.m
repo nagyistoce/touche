@@ -36,8 +36,10 @@
 - (void)dealloc
 {
 	[[filters objectAtIndex:0] removeObserver:self
+								   forKeyPath:@"enabled"];
+	[[filters objectAtIndex:1] removeObserver:self
 								   forKeyPath:@"isEnabled"];
-	[[filters objectAtIndex:0] removeObserver:self
+	[[filters objectAtIndex:1] removeObserver:self
 								   forKeyPath:@"useBlending"];
 	
 	[super dealloc];
@@ -53,8 +55,19 @@
 	timeBetweenBackgroundFrameAcquisition = DEFAULT_TIME_BETWEEN_BG_IMAGE_ACQUISITION;
 	[self resetBackgroundAcquisitionTiming];
 	
+	// If the user wants to track dark blobs in front of a bright background, we have the
+	// color inversion filter
+	CIFilter* filter = [CIFilter filterWithName:@"TFCIColorInversionFilter"];
+	[filter setDefaults];
+	[self addFilter:filter];
+	
+	[filter addObserver:self
+			 forKeyPath:@"enabled"
+				options:NSKeyValueObservingOptionNew
+				context:NULL];
+	
 	// This enables background subtraction if a background image gets set
-	CIFilter* filter = [CIFilter filterWithName:@"TFCIBackgroundSubtractionFilter"];
+	filter = [CIFilter filterWithName:@"TFCIBackgroundSubtractionFilter"];
 	[filter setDefaults];
 	[self addFilter:filter];
 	
@@ -110,7 +123,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([object isEqual:[filters objectAtIndex:0]]) {
+	if ([object isEqual:[filters objectAtIndex:1]]) {
 		if ([keyPath isEqualToString:@"isEnabled"]) {
 			if ([[change objectForKey:NSKeyValueChangeNewKey] boolValue])
 				[self resetBackgroundAcquisitionTiming];
@@ -118,6 +131,12 @@
 				[self clearBackground];
 		} else if ([keyPath isEqualToString:@"useBlending"]) {
 			[self resetBackgroundAcquisitionTiming];
+		}
+	} else if ([object isEqual:[filters objectAtIndex:0]]) {
+		if ([keyPath isEqualToString:@"enabled"]) {
+			[self resetBackgroundAcquisitionTiming];
+			[(TFCIBackgroundSubtractionFilter*)[filters objectAtIndex:1]
+				setForceNextBackgroundPictureUpdate:YES];
 		}
 	}
 }
@@ -130,20 +149,22 @@
 	switch (stage) {
 		case TFFilterChainStageUnfiltered:
 			return [[filters objectAtIndex:0] valueForKey:@"inputImage"];
-		case TFFilterChainStageBackgroundSubtracted:
+		case TFFilterChainStageColorInverted:
 			return [[filters objectAtIndex:0] valueForKey:@"outputImage"];
-		case TFFilterChainStageBlurred:
+		case TFFilterChainStageBackgroundSubtracted:
 			return [[filters objectAtIndex:1] valueForKey:@"outputImage"];
-		case TFFilterChainStageContrastStretched:
+		case TFFilterChainStageBlurred:
 			return [[filters objectAtIndex:2] valueForKey:@"outputImage"];
-		case TFFilterChainStageGrayscaleConverted:
+		case TFFilterChainStageContrastStretched:
 			return [[filters objectAtIndex:3] valueForKey:@"outputImage"];
-		case TFFilterChainStageThresholded:
+		case TFFilterChainStageGrayscaleConverted:
 			return [[filters objectAtIndex:4] valueForKey:@"outputImage"];
-		case TFFilterChainStageMorphologicalOpen:
+		case TFFilterChainStageThresholded:
 			return [[filters objectAtIndex:5] valueForKey:@"outputImage"];
-		case TFFilterChainStageMorphologicalClose:
+		case TFFilterChainStageMorphologicalOpen:
 			return [[filters objectAtIndex:6] valueForKey:@"outputImage"];
+		case TFFilterChainStageMorphologicalClose:
+			return [[filters objectAtIndex:7] valueForKey:@"outputImage"];
 		case TFFilterChainStageUnknown:
 		case TFFilterChainStageFinal:
 		default: {			
@@ -155,11 +176,12 @@
 	return nil;
 }
 
-- (void)assignBackgroundForSubtraction:(CIImage*)backgroundImage
+- (void)updateBackgroundForSubtraction
 {
 	NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
 	if (now - _lastBackgroundImageAcquisitionTime > timeBetweenBackgroundFrameAcquisition) {
-		[(TFCIBackgroundSubtractionFilter*)[filters objectAtIndex:0] assignBackgroundImage:backgroundImage];
+		[(TFCIBackgroundSubtractionFilter*)[filters objectAtIndex:1] assignBackgroundImage:
+			[[filters objectAtIndex:0] valueForKey:@"outputImage"]];
 		
 		_lastBackgroundImageAcquisitionTime = now;
 	}
@@ -167,7 +189,7 @@
 
 - (void)clearBackground
 {
-	[(TFCIBackgroundSubtractionFilter*)[filters objectAtIndex:0] clearBackgroundImage];
+	[(TFCIBackgroundSubtractionFilter*)[filters objectAtIndex:1] clearBackgroundImage];
 }
 
 - (void)resetBackgroundAcquisitionTiming

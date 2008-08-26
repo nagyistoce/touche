@@ -34,6 +34,7 @@
 #import "TFBlobQuicktimeKitInputSource.h"
 #import "TFFilterChain.h"
 #import "TFCameraInputFilterChain.h"
+#import "TFCIColorInversionFilter.h"
 #import "TFCILuminanceThresholdFilter.h"
 #import "TFCIBackgroundSubtractionFilter.h"
 #import "TFCIGaussianBlurFilter.h"
@@ -543,6 +544,10 @@ enum {
 			for (CIFilter* filter in ((TFCameraInputFilterChain*)cameraInput.filterChain).filters) {
 				if ([filter isKindOfClass:[TFCILuminanceThresholdFilter class]])
 					[self _bindToPreferences:filter keyPaths:[NSArray arrayWithObject:@"inputThreshold"]];
+				else if ([filter isKindOfClass:[TFCIColorInversionFilter class]])
+					[self _bindToPreferences:filter keyPaths:[NSArray arrayWithObjects:
+															  @"enabled",
+															  nil]];
 				else if ([filter isKindOfClass:[TFCIBackgroundSubtractionFilter class]])
 					[self _bindToPreferences:filter keyPaths:[NSArray arrayWithObjects:
 																@"isEnabled",

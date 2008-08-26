@@ -124,6 +124,7 @@
 		6EA512710DBCDE9C005958C2 /* TFBlobCameraInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EA512700DBCDE9C005958C2 /* TFBlobCameraInputSource.m */; };
 		6EA512770DBCE64B005958C2 /* TFBlobQuicktimeKitInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EA512760DBCE64B005958C2 /* TFBlobQuicktimeKitInputSource.m */; };
 		6EAD35070D2C4B9900C34A1A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6EAD35050D2C4B9900C34A1A /* Localizable.strings */; };
+		6EAE6FD90E640C520083A4C7 /* TFCIColorInversionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAE6FD80E640C520083A4C7 /* TFCIColorInversionFilter.m */; };
 		6EAF4EFA0DFE8BBA00104357 /* TFCI3x3ErosionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAF4EF90DFE8BBA00104357 /* TFCI3x3ErosionFilter.m */; };
 		6EAF4F340DFE945F00104357 /* TFCI3x3DilationFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAF4F330DFE945F00104357 /* TFCI3x3DilationFilter.m */; };
 		6EAF4F390DFEA37500104357 /* TFCIErosionDilationComboFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAF4F380DFEA37500104357 /* TFCIErosionDilationComboFilter.m */; };
@@ -390,6 +391,8 @@
 		6EA512750DBCE64B005958C2 /* TFBlobQuicktimeKitInputSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBlobQuicktimeKitInputSource.h; sourceTree = "<group>"; };
 		6EA512760DBCE64B005958C2 /* TFBlobQuicktimeKitInputSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlobQuicktimeKitInputSource.m; sourceTree = "<group>"; };
 		6EAD35060D2C4B9900C34A1A /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6EAE6FD70E640C520083A4C7 /* TFCIColorInversionFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIColorInversionFilter.h; sourceTree = "<group>"; };
+		6EAE6FD80E640C520083A4C7 /* TFCIColorInversionFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIColorInversionFilter.m; sourceTree = "<group>"; };
 		6EAF4EF80DFE8BBA00104357 /* TFCI3x3ErosionFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCI3x3ErosionFilter.h; sourceTree = "<group>"; };
 		6EAF4EF90DFE8BBA00104357 /* TFCI3x3ErosionFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCI3x3ErosionFilter.m; sourceTree = "<group>"; };
 		6EAF4F320DFE945F00104357 /* TFCI3x3DilationFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCI3x3DilationFilter.h; sourceTree = "<group>"; };
@@ -1042,6 +1045,8 @@
 				6E88D1D40DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m */,
 				6E6021E80E07CD8500E83E18 /* TFCIGrayscalingFilter.h */,
 				6E6021E90E07CD8500E83E18 /* TFCIGrayscalingFilter.m */,
+				6EAE6FD70E640C520083A4C7 /* TFCIColorInversionFilter.h */,
+				6EAE6FD80E640C520083A4C7 /* TFCIColorInversionFilter.m */,
 			);
 			name = CIFilters;
 			sourceTree = "<group>";
@@ -1477,6 +1482,7 @@
 				6EF3C44F0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.m in Sources */,
 				6EF3C46F0E61C03300BF6B39 /* TFTUIOTrackingDataDistributor.m in Sources */,
 				6E7ED5D60E621A1800ECAE8B /* TFTUIOSettingsController.m in Sources */,
+				6EAE6FD90E640C520083A4C7 /* TFCIColorInversionFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

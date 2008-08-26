@@ -6,6 +6,7 @@
 "BackgroundSubtractionName"			= "Subtracts a backround from an image, ignoring alpha and capping each result pixel at 0,0,0";
 "RatioImageBlendFilterName"			= "Blends two pictures by combining according pixels from both with a given ratio.";
 "GaussianFilterName"				= "Gaussian Blur";
+"ColorInvertFilterName"				= "Color Inversion";
 "ContrastStretchFilterName"			= "Contrast Stretch";
 "GrayscalingFilterName"				= "Grayscale from Component Operation";
 "3x3ErosionName"					= "Morphological erosion with a 3x3 pixel shape";

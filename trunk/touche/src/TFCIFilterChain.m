@@ -25,6 +25,7 @@
 #import "TFCIFilterChain.h"
 
 #import "TFIncludes.h"
+#import "TFCIColorInversionFilter.h"
 #import "TFCILuminanceThresholdFilter.h"
 #import "TFCI1PixelBorderAroundImage.h"
 #import "TFCIBackgroundSubtractionFilter.h"
@@ -49,6 +50,7 @@
 	[TFCI1PixelBorderAroundImage class];
 	[TFCIBackgroundSubtractionFilter class];
 	[TFCIGaussianBlurFilter class];
+	[TFCIColorInversionFilter class];
 	[TFCIContrastStretchFilter class];
 	[TFCIGrayscalingFilter class];
 	[TFCI3x3ErosionFilter class];

@@ -32,6 +32,7 @@
 	BOOL			useBlending;
 	BOOL			allowBackgroundPictureUpdate;
 	BOOL			forceBackgroundPictureAfterEnabling;
+	BOOL			forceNextBackgroundPictureUpdate;
 	CGFloat			blendingRatio;
 	
 	CIFilter*			_blendingFilter;
@@ -43,6 +44,7 @@
 @property (assign) BOOL isEnabled;
 @property (assign) BOOL useBlending;
 @property (assign) BOOL forceBackgroundPictureAfterEnabling;
+@property (assign) BOOL forceNextBackgroundPictureUpdate;
 @property (assign) BOOL allowBackgroundPictureUpdate;
 
 - (void)assignBackgroundImage:(CIImage*)newImage;

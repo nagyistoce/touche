@@ -108,7 +108,7 @@
 					pixelType = k24RGBPixelFormat;
 					break;
 				case DC1394_COLOR_CODING_RGB16:
-					pixelType = k48RGBPixelFormat;
+					pixelType = k48RGBCodecType;
 					break;
 			}
 			
@@ -166,7 +166,7 @@
 				return nil;
 			}
 		
-			OSType pixelFormat = (DC1394_COLOR_CODING_MONO8 == frame->color_coding) ? k24RGBPixelFormat : k48RGBPixelFormat;
+			OSType pixelFormat = (DC1394_COLOR_CODING_MONO8 == frame->color_coding) ? k24RGBPixelFormat : k48RGBCodecType;
 		
 			void* planeAddresses[3];
 			size_t planeWidths[3];

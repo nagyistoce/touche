@@ -150,7 +150,6 @@
 		6EC4DC470D1439D9008AB9CF /* TFFilterChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DC460D1439D9008AB9CF /* TFFilterChain.m */; };
 		6EC4DC4B0D143B28008AB9CF /* TFCIFilterChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DC4A0D143B28008AB9CF /* TFCIFilterChain.m */; };
 		6EC4DC570D143D98008AB9CF /* TFCameraInputFilterChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DC560D143D98008AB9CF /* TFCameraInputFilterChain.m */; };
-		6EC4DCBA0D143FDC008AB9CF /* TFOpenGLQTCaptureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DCB90D143FDC008AB9CF /* TFOpenGLQTCaptureView.m */; };
 		6EC4DDB80D144EA7008AB9CF /* CIImage+MakeBitmaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DDB70D144EA7008AB9CF /* CIImage+MakeBitmaps.m */; };
 		6EC86AD20D11D72200664F81 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD10D11D72200664F81 /* GLUT.framework */; };
 		6EC86AD60D11D73000664F81 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD50D11D73000664F81 /* QuickTime.framework */; };
@@ -189,7 +188,6 @@
 		6EED61480E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED61470E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.m */; };
 		6EED61610E5F135100375CC0 /* TFThreadMessagingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED61600E5F135100375CC0 /* TFThreadMessagingQueue.m */; };
 		6EED62530E5F638200375CC0 /* TFTrackingDataReceiverCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED62510E5F638200375CC0 /* TFTrackingDataReceiverCell.m */; };
-		6EEDEF5D0D32812D00B29263 /* TFOpenGLQTView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */; };
 		6EF130A20D32AC3200D807B8 /* TFPipelineSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF130A10D32AC3200D807B8 /* TFPipelineSetupController.m */; };
 		6EF3C44F0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF3C44E0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.m */; };
 		6EF3C4690E61BEE400BF6B39 /* tuio-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF3C4680E61BEE400BF6B39 /* tuio-image.png */; };
@@ -420,8 +418,6 @@
 		6EC4DC4A0D143B28008AB9CF /* TFCIFilterChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIFilterChain.m; sourceTree = "<group>"; };
 		6EC4DC550D143D98008AB9CF /* TFCameraInputFilterChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCameraInputFilterChain.h; sourceTree = "<group>"; };
 		6EC4DC560D143D98008AB9CF /* TFCameraInputFilterChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCameraInputFilterChain.m; sourceTree = "<group>"; };
-		6EC4DCB80D143FDC008AB9CF /* TFOpenGLQTCaptureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOpenGLQTCaptureView.h; sourceTree = "<group>"; };
-		6EC4DCB90D143FDC008AB9CF /* TFOpenGLQTCaptureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOpenGLQTCaptureView.m; sourceTree = "<group>"; };
 		6EC4DDB60D144EA7008AB9CF /* CIImage+MakeBitmaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIImage+MakeBitmaps.h"; sourceTree = "<group>"; };
 		6EC4DDB70D144EA7008AB9CF /* CIImage+MakeBitmaps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CIImage+MakeBitmaps.m"; sourceTree = "<group>"; };
 		6EC86AD10D11D72200664F81 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = /System/Library/Frameworks/GLUT.framework; sourceTree = "<absolute>"; };
@@ -486,8 +482,6 @@
 		6EED61600E5F135100375CC0 /* TFThreadMessagingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFThreadMessagingQueue.m; sourceTree = "<group>"; };
 		6EED62510E5F638200375CC0 /* TFTrackingDataReceiverCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTrackingDataReceiverCell.m; sourceTree = "<group>"; };
 		6EED62520E5F638200375CC0 /* TFTrackingDataReceiverCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTrackingDataReceiverCell.h; sourceTree = "<group>"; };
-		6EEDEF5B0D32812D00B29263 /* TFOpenGLQTView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOpenGLQTView.h; sourceTree = "<group>"; };
-		6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOpenGLQTView.m; sourceTree = "<group>"; };
 		6EF130A00D32AC3200D807B8 /* TFPipelineSetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPipelineSetupController.h; sourceTree = "<group>"; };
 		6EF130A10D32AC3200D807B8 /* TFPipelineSetupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPipelineSetupController.m; sourceTree = "<group>"; };
 		6EF3C44D0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOTrackingDataReceiver.h; sourceTree = "<group>"; };
@@ -1004,12 +998,8 @@
 			children = (
 				6EC4D9F50D11AA39008AB9CF /* TFOpenGLView.h */,
 				6EC4D9F60D11AA39008AB9CF /* TFOpenGLView.m */,
-				6EC4DCB80D143FDC008AB9CF /* TFOpenGLQTCaptureView.h */,
-				6EC4DCB90D143FDC008AB9CF /* TFOpenGLQTCaptureView.m */,
 				6E4A6C060D196C8500B19EB0 /* TFBlobTrackingView.h */,
 				6E4A6C070D196C8500B19EB0 /* TFBlobTrackingView.m */,
-				6EEDEF5B0D32812D00B29263 /* TFOpenGLQTView.h */,
-				6EEDEF5C0D32812D00B29263 /* TFOpenGLQTView.m */,
 				6EA4FF4B0D32890500339E6E /* TFTrackingPipelineView.h */,
 				6EA4FF4C0D32890500339E6E /* TFTrackingPipelineView.m */,
 				6E937B1E0D9D726E00B75112 /* TFTouchView.h */,
@@ -1391,7 +1381,6 @@
 				6EC4DC470D1439D9008AB9CF /* TFFilterChain.m in Sources */,
 				6EC4DC4B0D143B28008AB9CF /* TFCIFilterChain.m in Sources */,
 				6EC4DC570D143D98008AB9CF /* TFCameraInputFilterChain.m in Sources */,
-				6EC4DCBA0D143FDC008AB9CF /* TFOpenGLQTCaptureView.m in Sources */,
 				6EC4DDB80D144EA7008AB9CF /* CIImage+MakeBitmaps.m in Sources */,
 				6E9862FD0D173E4D00B07124 /* TFCI1PixelBorderAroundImage.m in Sources */,
 				6E4A69EE0D18291C00B19EB0 /* TFBlob.m in Sources */,
@@ -1411,7 +1400,6 @@
 				6E203EF00D2EDFF600162547 /* TFQTKitCapture.m in Sources */,
 				6E203EFA0D2EE92300162547 /* TFCapture.m in Sources */,
 				6E4FFE330D2FED53007564F4 /* TFTrackingPipeline.m in Sources */,
-				6EEDEF5D0D32812D00B29263 /* TFOpenGLQTView.m in Sources */,
 				6EA4FF4D0D32890500339E6E /* TFTrackingPipelineView.m in Sources */,
 				6EF130A20D32AC3200D807B8 /* TFPipelineSetupController.m in Sources */,
 				6E1D0DEE0D351F37005AB4DA /* TFCIBackgroundSubtractionFilter.m in Sources */,

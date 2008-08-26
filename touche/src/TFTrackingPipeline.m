@@ -555,6 +555,8 @@ enum {
 																@"blendingRatio",
 																@"forceBackgroundPictureAfterEnabling",
 																@"allowBackgroundPictureUpdate",
+																@"doSmartSubtraction",
+																@"smartSubtractionLuminanceThreshold",
 															  nil]];
 				else if ([filter isKindOfClass:[TFCIGaussianBlurFilter class]])
 					[self _bindToPreferences:filter keyPaths:[NSArray arrayWithObjects:

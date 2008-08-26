@@ -30,7 +30,7 @@
 
 #define	FORCED_BGIMAGE_AFTER_FRAMES		(30.0f)
 
-static CIKernel* tFCIBackgroundSubtractionFilter = nil;
+static NSArray* tFCIBackgroundSubtractionFilters = nil;
 
 @implementation TFCIBackgroundSubtractionFilter
 
@@ -40,6 +40,8 @@ static CIKernel* tFCIBackgroundSubtractionFilter = nil;
 @synthesize forceBackgroundPictureAfterEnabling;
 @synthesize forceNextBackgroundPictureUpdate;
 @synthesize allowBackgroundPictureUpdate;
+@synthesize doSmartSubtraction;
+@synthesize smartSubtractionLuminanceThreshold;
 
 - (void)setIsEnabled:(BOOL)newVal
 {
@@ -137,20 +139,20 @@ static CIKernel* tFCIBackgroundSubtractionFilter = nil;
 		return nil;
 	}
 	
-	if (nil == tFCIBackgroundSubtractionFilter) {
+	if (nil == tFCIBackgroundSubtractionFilters) {
 		NSString*	kernelCode = [NSString stringWithContentsOfFile:
 								  [[NSBundle bundleForClass:[self class]]
 								   pathForResource:@"TFCIBackgroundSubtractionFilter" ofType:@"cikernel"]];
 		
-		NSArray *kernels = [CIKernel kernelsWithString:kernelCode];
-		
-		tFCIBackgroundSubtractionFilter = [[kernels objectAtIndex:0] retain];
+		tFCIBackgroundSubtractionFilters = [[CIKernel kernelsWithString:kernelCode] retain];
 	}
 	
 	isEnabled = NO;
 	useBlending = NO;
-	forceBackgroundPictureAfterEnabling = NO;
+	forceBackgroundPictureAfterEnabling = YES;
 	allowBackgroundPictureUpdate = YES;
+	doSmartSubtraction = NO;
+	smartSubtractionLuminanceThreshold = .4f;
 	
 	_blendingFilter = [CIFilter filterWithName:@"TFCIRatioImageBlendFilter"];
 	[_blendingFilter setDefaults];
@@ -173,6 +175,8 @@ static CIKernel* tFCIBackgroundSubtractionFilter = nil;
 
 - (CIImage*)outputImage
 {	
+	CIImage* retval = nil;
+	
 	@synchronized(self) {	
 		if (isEnabled)
 			_framesProcessedSinceEnabled++;
@@ -197,11 +201,20 @@ static CIKernel* tFCIBackgroundSubtractionFilter = nil;
 		
 		CISampler *bg = [CISampler samplerWithImage:bgImage options:
 						  [NSDictionary dictionaryWithObjectsAndKeys:kCISamplerFilterNearest, kCISamplerFilterMode, nil]];
-				
-		return [self apply:tFCIBackgroundSubtractionFilter, src, bg, kCIApplyOptionDefinition, [src definition], nil];
+		
+		if (doSmartSubtraction) {
+			CIKernel* filterKernel = [tFCIBackgroundSubtractionFilters objectAtIndex:1];
+			NSNumber* threshold = [NSNumber numberWithFloat:smartSubtractionLuminanceThreshold];
+			
+			retval = [self apply:filterKernel, src, bg, threshold, kCIApplyOptionDefinition, [src definition], nil];
+		} else {
+			CIKernel* filterKernel = [tFCIBackgroundSubtractionFilters objectAtIndex:0];
+			
+			retval = [self apply:filterKernel, src, bg, kCIApplyOptionDefinition, [src definition], nil];
+		}
 	}
 	
-	return nil; // just to shut up the compiler
+	return retval;
 }
 
 @end

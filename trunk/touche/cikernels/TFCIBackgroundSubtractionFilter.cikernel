@@ -18,7 +18,7 @@
  *  GNU Lesser General Public License for more details.
  *
  *  You should have received a copy of the GNU Lesser General Public
- *  License along with Touché. If not, see <http: *www.gnu.org/licenses/>.
+ *  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -30,4 +30,15 @@ kernel vec4 backgroundSubtract(sampler Image, sampler Background)
 	pixI.rgb = clamp(pixI.rgb - pixB.rgb, 0.0, 1.0);
 		
 	return pixI;
+}
+
+kernel vec4 smartBackgroundSubtract(sampler Image, sampler Background, float PreservationThreshold)
+{
+	vec4 pixI = sample(Image, samplerCoord(Image));
+	vec4 pixB = sample(Background, samplerCoord(Background));
+	
+	vec4 pixB = clamp(pixI.rgb - pixB.rgb, 0.0, 1.0);
+	float lum = dot(vec3(0.3, 0.59, 0.11), pixB.rgb);
+		
+	return (lum >= PreservationThreshold) ? pixI : pixB;
 }

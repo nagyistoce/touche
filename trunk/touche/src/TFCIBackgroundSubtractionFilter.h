@@ -30,10 +30,12 @@
 	CIImage*		inputImage;
 	BOOL			isEnabled;
 	BOOL			useBlending;
+	BOOL			doSmartSubtraction;
 	BOOL			allowBackgroundPictureUpdate;
 	BOOL			forceBackgroundPictureAfterEnabling;
 	BOOL			forceNextBackgroundPictureUpdate;
 	CGFloat			blendingRatio;
+	CGFloat			smartSubtractionLuminanceThreshold;
 	
 	CIFilter*			_blendingFilter;
 	CIImageAccumulator* _backgroundAccumulator;
@@ -41,11 +43,13 @@
 }
 
 @property (assign) CGFloat blendingRatio;
+@property (assign) CGFloat smartSubtractionLuminanceThreshold;
 @property (assign) BOOL isEnabled;
 @property (assign) BOOL useBlending;
 @property (assign) BOOL forceBackgroundPictureAfterEnabling;
 @property (assign) BOOL forceNextBackgroundPictureUpdate;
 @property (assign) BOOL allowBackgroundPictureUpdate;
+@property (assign) BOOL doSmartSubtraction;
 
 - (void)assignBackgroundImage:(CIImage*)newImage;
 - (void)clearBackgroundImage;

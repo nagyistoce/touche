@@ -38,6 +38,7 @@ static CIKernel* tFCIBackgroundSubtractionFilter = nil;
 @synthesize useBlending;
 @synthesize blendingRatio;
 @synthesize forceBackgroundPictureAfterEnabling;
+@synthesize forceNextBackgroundPictureUpdate;
 @synthesize allowBackgroundPictureUpdate;
 
 - (void)setIsEnabled:(BOOL)newVal
@@ -63,8 +64,10 @@ static CIKernel* tFCIBackgroundSubtractionFilter = nil;
 
 - (void)assignBackgroundImage:(CIImage*)newImage
 {
-	if (!isEnabled || (!allowBackgroundPictureUpdate && nil != [_backgroundAccumulator image]))
+	if (!isEnabled || (!forceNextBackgroundPictureUpdate && !allowBackgroundPictureUpdate && nil != [_backgroundAccumulator image]))
 		return;
+	
+	forceNextBackgroundPictureUpdate = NO;
 
 	@synchronized(self) {
 		CIImage* oldImage = [_backgroundAccumulator image];

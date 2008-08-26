@@ -28,14 +28,15 @@
 enum {
 	TFFilterChainStageUnknown					=		-1,
 	TFFilterChainStageUnfiltered				=		1,
-	TFFilterChainStageBackgroundSubtracted		=		2,
-	TFFilterChainStageBlurred					=		3,
-	TFFilterChainStageContrastStretched			=		4,
-	TFFilterChainStageGrayscaleConverted		=		5,
-	TFFilterChainStageThresholded				=		6,
-	TFFilterChainStageMorphologicalOpen			=		7,
-	TFFilterChainStageMorphologicalClose		=		8,
-	TFFilterChainStageFinal						=		9
+	TFFilterChainStageColorInverted				=		2,
+	TFFilterChainStageBackgroundSubtracted		=		3,
+	TFFilterChainStageBlurred					=		4,
+	TFFilterChainStageContrastStretched			=		5,
+	TFFilterChainStageGrayscaleConverted		=		6,
+	TFFilterChainStageThresholded				=		7,
+	TFFilterChainStageMorphologicalOpen			=		8,
+	TFFilterChainStageMorphologicalClose		=		9,
+	TFFilterChainStageFinal						=		10
 };	
 
 @interface TFFilterChain : NSObject {

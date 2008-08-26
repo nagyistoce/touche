@@ -1,10 +1,10 @@
 //
-//  TFCameraInputFilterChain.h
-//  Touché
+//  TFCIColorInversionFilter.h
+//  Touche
 //
-//  Created by Georg Kaindl on 15/12/07.
+//  Created by Georg Kaindl on 26/8/08.
 //
-//  Copyright (C) 2007 Georg Kaindl
+//  Copyright (C) 2008 Georg Kaindl
 //
 //  This file is part of Touché.
 //
@@ -23,20 +23,16 @@
 //
 
 #import <Cocoa/Cocoa.h>
+
 #import <QuartzCore/QuartzCore.h>
 
-#import "TFCIFilterChain.h"
 
-
-@interface TFCameraInputFilterChain : TFCIFilterChain {
-	NSTimeInterval		timeBetweenBackgroundFrameAcquisition;
-	NSTimeInterval		_lastBackgroundImageAcquisitionTime;
+@interface TFCIColorInversionFilter : CIFilter {
+	BOOL		enabled;
+	CIImage*	inputImage;
+	CIFilter*	_colorInversionFilter;
 }
 
-@property (assign) NSTimeInterval timeBetweenBackgroundFrameAcquisition;
-
-- (void)updateBackgroundForSubtraction;
-- (void)clearBackground;
-- (void)resetBackgroundAcquisitionTiming;
+@property (assign, getter=isEnabled) BOOL enabled;
 
 @end

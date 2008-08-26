@@ -39,7 +39,7 @@
 - (void)_resetBackgroundAcquisitionTiming;
 - (void)_clearBackgroundForSubtraction;
 - (BOOL)_shouldProcessThisFrame;
-- (void)_updateBackgroundForSubtraction:(CIImage*)bgImage;
+- (void)_updateBackgroundForSubtraction;
 - (float)_avgChannelIntensityForCIImage:(CIImage*)image;
 @end
 
@@ -229,10 +229,10 @@
 	return img;
 }
 
-- (void)_updateBackgroundForSubtraction:(CIImage*)bgImage
+- (void)_updateBackgroundForSubtraction
 {
 	if ([filterChain isKindOfClass:[TFCameraInputFilterChain class]])
-		[(TFCameraInputFilterChain*)filterChain assignBackgroundForSubtraction:bgImage];
+		[(TFCameraInputFilterChain*)filterChain updateBackgroundForSubtraction];
 }
 
 - (void)_clearBackgroundForSubtraction
@@ -321,7 +321,7 @@
 		}
 		
 		if (!blobTrackingEnabled) {
-			[self _updateBackgroundForSubtraction:capturedFrame];
+			[self _updateBackgroundForSubtraction];
 			
 			if (_delegateHasDidDetectBlobs)
 				[delegate blobInputSource:self didDetectBlobs:[NSArray array]];
@@ -360,7 +360,7 @@
 		}
 				
 		if (0 == [blobs count])
-			[self _updateBackgroundForSubtraction:capturedFrame];
+			[self _updateBackgroundForSubtraction];
 				
 		if (_delegateHasDidDetectBlobs)
 			[delegate blobInputSource:self didDetectBlobs:blobs];

@@ -34,13 +34,15 @@
 #import "TFRGBA8888BlobDetector.h"
 #import "TFGrayscale8BlobDetector.h"
 #import "TFOpenCVContourBlobDetector.h"
+#import "TFThreadMessagingQueue.h"
+
 
 @interface TFBlobCameraInputSource (NonPublicMethods)
 - (void)_resetBackgroundAcquisitionTiming;
 - (void)_clearBackgroundForSubtraction;
 - (BOOL)_shouldProcessThisFrame;
 - (void)_updateBackgroundForSubtraction;
-- (float)_avgChannelIntensityForCIImage:(CIImage*)image;
+- (void)_processFramesThread;
 @end
 
 @implementation TFBlobCameraInputSource
@@ -197,7 +199,23 @@
 
 	[self _resetBackgroundAcquisitionTiming];
 	
-	return [[self captureObject] startCapturing:error];
+	BOOL success = [[self captureObject] startCapturing:error];
+	
+	if (success)
+		success = [super startProcessing:error];
+	
+	if (success) {
+		if (nil == _processingQueue && nil == _processingThread) {
+			_processingQueue = [[TFThreadMessagingQueue alloc] init];
+			
+			_processingThread = [[NSThread alloc] initWithTarget:self
+														selector:@selector(_processFramesThread)
+														  object:nil];
+			[_processingThread start];
+		}
+	}
+	
+	return success;
 }
 
 - (BOOL)isProcessing
@@ -207,10 +225,27 @@
 
 - (BOOL)stopProcessing:(NSError**)error
 {
-	if ([self isProcessing])
-		return [[self captureObject] stopCapturing:error];
+	BOOL success = NO;
+
+	if ([self isProcessing]) {
+		success = [[self captureObject] stopCapturing:error];
+		
+		if (success)
+			success = [super stopProcessing:error];
+		
+		if (nil != _processingQueue && nil != _processingThread) {
+			[_processingThread cancel];
+			[_processingThread release];
+			_processingThread = nil;
+			
+			// wake the delivering thread if necessary
+			[_processingQueue enqueue:[NSArray array]];
+			[_processingQueue release];
+			_processingQueue = nil;
+		}
+	}
 	
-	return YES;
+	return success;
 }
 
 - (BOOL)hasFilterStages
@@ -245,6 +280,110 @@
 {
 	if ([filterChain isKindOfClass:[TFCameraInputFilterChain class]])
 		[(TFCameraInputFilterChain*)filterChain resetBackgroundAcquisitionTiming];
+}
+
+- (void)_processFramesThread
+{
+	NSAutoreleasePool* outerPool = [[NSAutoreleasePool alloc] init];
+	
+	TFThreadMessagingQueue* processingQueue = [_processingQueue retain];
+	
+	while (YES) {
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		
+		CIImage* capturedFrame = [processingQueue dequeue];
+		
+		if ([[NSThread currentThread] isCancelled]) {
+			[pool release];
+			break;
+		}
+		
+		if (![processingQueue isEmpty])
+			continue;
+		
+		if (![self _shouldProcessThisFrame] || ![capturedFrame isKindOfClass:[CIImage class]])
+			continue;
+		
+		@synchronized (self) {	
+			CGSize frameSize = [capturedFrame extent].size;
+			
+			if (frameSize.width != _lastFrameSize.width || frameSize.height != _lastFrameSize.height) {
+				_lastFrameSize.width = frameSize.width;
+				_lastFrameSize.height = frameSize.height;
+				
+				if (NULL != _imgBuffer) {
+					free(_imgBuffer);
+					_imgBuffer = NULL;
+				}
+				
+				_rowBytes = 0;
+				
+				// if the frame size changed, we need to acquire a new BG image immediately!
+				[self _clearBackgroundForSubtraction];
+				[self _resetBackgroundAcquisitionTiming];
+			}
+			
+			CIImage* img = nil;
+			BOOL renderFiltersOnCPU = YES;
+			@synchronized(filterChain) {
+				img = [filterChain apply:capturedFrame];
+				renderFiltersOnCPU =
+				[filterChain isKindOfClass:[TFCIFilterChain class]] ?
+				[(TFCIFilterChain*)filterChain renderOnCPU] : YES;
+			}
+			
+			if (!blobTrackingEnabled) {
+				[self _updateBackgroundForSubtraction];
+				
+				if (_delegateHasDidDetectBlobs)
+					[delegate blobInputSource:self didDetectBlobs:[NSArray array]];
+				
+				continue;
+			}
+			
+			if ([blobDetector isKindOfClass:[TFRGBA8888BlobDetector class]]) {
+				_imgBuffer = [img createPremultipliedRGBA8888BitmapWithColorSpace:_colorSpace
+																workingColorSpace:_workingColorSpace
+																		 rowBytes:&_rowBytes
+																		   buffer:_imgBuffer
+																	  renderOnCPU:renderFiltersOnCPU];
+				
+				[(TFRGBA8888BlobDetector*)blobDetector setRGBA8888ImageBuffer:_imgBuffer
+																		width:frameSize.width
+																	   height:frameSize.height
+																	 rowBytes:_rowBytes];
+			} else if ([blobDetector isKindOfClass:[TFGrayscale8BlobDetector class]]) {
+				_imgBuffer = [img createGrayscaleBitmapWithColorSpace:_colorSpace
+													workingColorSpace:_workingColorSpace
+															 rowBytes:&_rowBytes
+															   buffer:_imgBuffer
+														  renderOnCPU:renderFiltersOnCPU];
+				
+				[(TFGrayscale8BlobDetector*)blobDetector setGrayscale8ImageBuffer:_imgBuffer
+																			width:frameSize.width
+																		   height:frameSize.height
+																		 rowBytes:_rowBytes];
+			}
+			
+			NSArray* blobs = nil;
+			@synchronized (blobDetector) {
+				[blobDetector detectBlobs:NULL ignoreErrors:YES];
+				blobs = [NSArray arrayWithArray:[blobDetector detectedBlobs]];
+			}
+			
+			if (0 == [blobs count])
+				[self _updateBackgroundForSubtraction];
+			
+			if (_delegateHasDidDetectBlobs)
+				[_deliveryQueue enqueue:blobs];
+		}
+		
+		[pool release];
+	}
+	
+	[processingQueue release];
+	
+	[outerPool release];
 }
 
 - (TFCapture*)captureObject
@@ -289,82 +428,8 @@
 
 - (void)capture:(TFCapture*)capture didCaptureFrame:(CIImage*)capturedFrame
 {
-	if (![self _shouldProcessThisFrame] || capture != [self captureObject])
-		return;
-
-	@synchronized (self) {	
-		CGSize frameSize = [capturedFrame extent].size;
-		
-		if (frameSize.width != _lastFrameSize.width || frameSize.height != _lastFrameSize.height) {
-			_lastFrameSize.width = frameSize.width;
-			_lastFrameSize.height = frameSize.height;
-			
-			if (NULL != _imgBuffer) {
-				free(_imgBuffer);
-				_imgBuffer = NULL;
-			}
-			
-			_rowBytes = 0;
-			
-			// if the frame size changed, we need to acquire a new BG image immediately!
-			[self _clearBackgroundForSubtraction];
-			[self _resetBackgroundAcquisitionTiming];
-		}
-		
-		CIImage* img = nil;
-		BOOL renderFiltersOnCPU = YES;
-		@synchronized(filterChain) {
-			img = [filterChain apply:capturedFrame];
-			renderFiltersOnCPU =
-				[filterChain isKindOfClass:[TFCIFilterChain class]] ?
-					[(TFCIFilterChain*)filterChain renderOnCPU] : YES;
-		}
-		
-		if (!blobTrackingEnabled) {
-			[self _updateBackgroundForSubtraction];
-			
-			if (_delegateHasDidDetectBlobs)
-				[delegate blobInputSource:self didDetectBlobs:[NSArray array]];
-			
-			return;
-		}
-				
-		if ([blobDetector isKindOfClass:[TFRGBA8888BlobDetector class]]) {
-			_imgBuffer = [img createPremultipliedRGBA8888BitmapWithColorSpace:_colorSpace
-															workingColorSpace:_workingColorSpace
-																	 rowBytes:&_rowBytes
-																	   buffer:_imgBuffer
-																  renderOnCPU:renderFiltersOnCPU];
-		
-			[(TFRGBA8888BlobDetector*)blobDetector setRGBA8888ImageBuffer:_imgBuffer
-																	width:frameSize.width
-																   height:frameSize.height
-																 rowBytes:_rowBytes];
-		} else if ([blobDetector isKindOfClass:[TFGrayscale8BlobDetector class]]) {
-			_imgBuffer = [img createGrayscaleBitmapWithColorSpace:_colorSpace
-												workingColorSpace:_workingColorSpace
-														 rowBytes:&_rowBytes
-														   buffer:_imgBuffer
-													  renderOnCPU:renderFiltersOnCPU];
-						
-			[(TFGrayscale8BlobDetector*)blobDetector setGrayscale8ImageBuffer:_imgBuffer
-																		width:frameSize.width
-																	   height:frameSize.height
-																	 rowBytes:_rowBytes];
-		}
-		
-		NSArray* blobs = nil;
-		@synchronized (blobDetector) {
-			[blobDetector detectBlobs:NULL ignoreErrors:YES];
-			blobs = [NSArray arrayWithArray:[blobDetector detectedBlobs]];
-		}
-				
-		if (0 == [blobs count])
-			[self _updateBackgroundForSubtraction];
-				
-		if (_delegateHasDidDetectBlobs)
-			[delegate blobInputSource:self didDetectBlobs:blobs];
-	}
+	if (capture == [self captureObject] && nil != capturedFrame)
+		[_processingQueue enqueue:capturedFrame];
 }
 
 @end

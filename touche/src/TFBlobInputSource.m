@@ -26,11 +26,14 @@
 #import "TFBlobInputSource.h"
 
 #import "TFIncludes.h"
+#import "TFThreadMessagingQueue.h"
+
 
 #define DEFAULT_FPS	((float)30.0f)
 
 @interface TFBlobInputSource (NonPublicMethods)
 - (BOOL)_shouldProcessThisFrame;
+- (void)_deliverBlobsThread;
 @end
 
 @implementation TFBlobInputSource
@@ -69,19 +72,6 @@
 	
 	// cache for performance reasons
 	_delegateHasDidDetectBlobs = [delegate respondsToSelector:@selector(blobInputSource:didDetectBlobs:)];
-}
-
-- (BOOL)_shouldProcessThisFrame
-{
-	NSDate* now = [NSDate date];
-	if (nil == _lastCapturedFrame || [now timeIntervalSinceDate:_lastCapturedFrame] > (NSTimeInterval)(1.0f/maximumFramesPerSecond)) {
-		[_lastCapturedFrame release];
-		_lastCapturedFrame = [now retain];
-		
-		return YES;
-	}
-	
-	return NO;
 }
 
 - (BOOL)loadWithConfiguration:(id)configuration error:(NSError**)error
@@ -123,22 +113,38 @@
 
 - (BOOL)startProcessing:(NSError**)error
 {
-	TFThrowMethodNotImplementedException();
-	
 	if (NULL != error)
 		*error = nil;
 	
-	return NO;
+	if (nil == _deliveryQueue && nil == _deliveryThread) {
+		_deliveryQueue = [[TFThreadMessagingQueue alloc] init];
+		
+		_deliveryThread = [[NSThread alloc] initWithTarget:self
+													selector:@selector(_deliverBlobsThread)
+													  object:nil];
+		[_deliveryThread start];
+	}
+	
+	return YES;
 }
 
 - (BOOL)stopProcessing:(NSError**)error
-{
-	TFThrowMethodNotImplementedException();
-	
+{	
 	if (NULL != error)
 		*error = nil;
+
+	if (nil != _deliveryQueue && nil != _deliveryThread) {
+		[_deliveryThread cancel];
+		[_deliveryThread release];
+		_deliveryThread = nil;
+		
+		// wake the delivering thread if necessary
+		[_deliveryQueue enqueue:[NSArray array]];
+		[_deliveryQueue release];
+		_deliveryQueue = nil;
+	}
 	
-	return NO;
+	return YES;
 }
 
 - (CGSize)currentCaptureResolution
@@ -177,6 +183,49 @@
 	TFThrowMethodNotImplementedException();
 	
 	return nil;
+}
+
+- (BOOL)_shouldProcessThisFrame
+{
+	NSDate* now = [NSDate date];
+	if (nil == _lastCapturedFrame || [now timeIntervalSinceDate:_lastCapturedFrame] > (NSTimeInterval)(1.0f/maximumFramesPerSecond)) {
+		[_lastCapturedFrame release];
+		_lastCapturedFrame = [now retain];
+		
+		return YES;
+	}
+	
+	return NO;
+}
+
+- (void)_deliverBlobsThread
+{
+	NSAutoreleasePool* outerPool = [[NSAutoreleasePool alloc] init];
+	
+	TFThreadMessagingQueue* deliveryQueue = [_deliveryQueue retain];
+	
+	while (YES) {
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		
+		NSArray* blobs = [deliveryQueue dequeue];
+		
+		if ([[NSThread currentThread] isCancelled]) {
+			[pool release];
+			break;
+		}
+		
+		if (![deliveryQueue isEmpty])
+			continue;
+				
+		if ([blobs isKindOfClass:[NSArray class]] && _delegateHasDidDetectBlobs)
+			[delegate blobInputSource:self didDetectBlobs:blobs];
+		
+		[pool release];
+	}
+		
+	[deliveryQueue release];
+		
+	[outerPool release];
 }
 
 @end

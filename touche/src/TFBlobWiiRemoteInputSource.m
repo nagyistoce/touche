@@ -29,6 +29,7 @@
 #import <WiiRemote/WiiRemoteDiscovery.h>
 
 #import "TFIncludes.h"
+#import "TFThreadMessagingQueue.h"
 #import "TFBlob.h"
 #import "TFBlobPoint.h"
 #import "TFBlobBox.h"
@@ -241,7 +242,7 @@ enum {
 	
 	if ([self isReady:&errorReason]) {
 		[_wiiRemote setIRSensorEnabled:YES];
-		_isProcessing = YES;
+		_isProcessing = [super startProcessing:error];
 	}
 	
 	if (!_isProcessing && NULL != error)
@@ -270,7 +271,7 @@ enum {
 	[_wiiRemote setIRSensorEnabled:NO];
 	_isProcessing = NO;
 	
-	return YES;
+	return [super stopProcessing:error];
 }
 
 - (CGSize)currentCaptureResolution
@@ -465,7 +466,7 @@ enum {
 	
 	
 	if (blobTrackingEnabled && _delegateHasDidDetectBlobs)
-		[delegate blobInputSource:self didDetectBlobs:[NSArray arrayWithArray:blobs]];
+		[_deliveryQueue enqueue:blobs];
 }
 
 - (void)wiiRemoteDisconnected:(IOBluetoothDevice*)device

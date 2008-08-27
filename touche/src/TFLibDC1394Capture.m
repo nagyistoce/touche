@@ -30,7 +30,6 @@
 #import "TFThreadMessagingQueue.h"
 
 #define NUM_DMA_BUFFERS					(10)
-#define	SLEEP_ON_ERROR_INTERVAL			((NSTimeInterval)0.0015)
 #define MAX_FEATURE_KEY					(4)
 
 static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
@@ -70,8 +69,8 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	if (NULL != _dc) {
 		dc1394_free(_dc);
 		_dc = NULL;
-	}	
-
+	}
+	
 	[super dealloc];
 }
 
@@ -747,13 +746,10 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		
 			@synchronized(self) {
-				err = dc1394_capture_dequeue(_camera, DC1394_CAPTURE_POLICY_POLL, &frame);
+				err = dc1394_capture_dequeue(_camera, DC1394_CAPTURE_POLICY_WAIT, &frame);
 				
-				if (DC1394_SUCCESS != err || NULL == frame) {
-					[NSThread sleepForTimeInterval:SLEEP_ON_ERROR_INTERVAL];
+				if (DC1394_SUCCESS != err || NULL == frame)
 					continue;
-				}
-				
 				// if this is not the most recent frame, drop it and continue
 				if (0 < frame->frames_behind) {
 					dc1394_capture_enqueue(_camera, frame);
@@ -794,7 +790,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 			dc1394_capture_dequeue(_camera, DC1394_CAPTURE_POLICY_POLL, &frame);
 		}
 	}
-	
+		
 	[threadPool release];
 }
 

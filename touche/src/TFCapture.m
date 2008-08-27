@@ -71,7 +71,7 @@
 		_frameDeliveringThread = [[NSThread alloc] initWithTarget:self
 														 selector:@selector(_frameDeliveringThreadFunc)
 														   object:nil];
-		[_frameDeliveringThread start];
+		[_frameDeliveringThread start];		
 	}
 	
 	return YES;
@@ -128,24 +128,23 @@
 	
 	while (YES) {
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		
+				
 		CIImage* frame = [frameQueue dequeue];
-		
+				
 		if ([[NSThread currentThread] isCancelled]) {
 			[pool release];
 			break;
 		}
 		
-		//NSLog(@"delivering frame in thread\n");
-		
+		if (![frameQueue isEmpty])
+			continue;
+				
 		if ([frame isKindOfClass:[CIImage class]] && _delegateCapabilities.hasDidCaptureFrame)
 			[delegate capture:self didCaptureFrame:frame];
 		
 		[pool release];
 	}
-	
-	//NSLog(@"thread exiting...\n");
-	
+		
 	[frameQueue release];
 	
 	[outerPool release];

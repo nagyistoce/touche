@@ -27,6 +27,7 @@
 #import "TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.h"
 
 #import "TFIncludes.h"
+#import "TFThreadMessagingQueue.h"
 
 #define NUM_DMA_BUFFERS					(10)
 #define	SLEEP_ON_ERROR_INTERVAL			((NSTimeInterval)0.0015)
@@ -415,7 +416,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 										object:nil];
 	[_thread start];
 	
-	return YES;
+	return [super startCapturing:error];
 }
 
 - (BOOL)stopCapturing:(NSError**)error
@@ -440,11 +441,13 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	
 	[_thread release];
 	_thread = nil;
-		
+	
+	BOOL success = [super stopCapturing:error];
+				
 	if (nil != *error)
 		return NO;
 	
-	return YES;
+	return success;
 }
 
 - (void)_setupCapture:(NSValue*)errPointer
@@ -774,7 +777,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 						image = [CIImage imageWithCVImageBuffer:pixelBuffer];
 					
 		
-					[delegate capture:self didCaptureFrame:image];
+					[_frameQueue enqueue:image];
 				}
 						
 				dc1394_capture_enqueue(_camera, frame);

@@ -26,6 +26,12 @@
 #import "TFCapture.h"
 
 #import "TFIncludes.h"
+#import "TFThreadMessagingQueue.h"
+
+
+@interface TFCapture (PrivateMethods)
+- (void)_frameDeliveringThreadFunc;
+@end
 
 @implementation TFCapture
 
@@ -50,30 +56,44 @@
 }
 
 - (BOOL)isCapturing
-{
-	TFThrowMethodNotImplementedException();
-	
-	return NO;
+{	
+	return (nil != _frameQueue);
 }
 
 - (BOOL)startCapturing:(NSError**)error
-{
-	TFThrowMethodNotImplementedException();
-	
+{	
 	if (NULL != error)
 		*error = nil;
 	
-	return NO;
+	if (nil == _frameQueue && nil == _frameDeliveringThread) {
+		_frameQueue = [[TFThreadMessagingQueue alloc] init];
+		
+		_frameDeliveringThread = [[NSThread alloc] initWithTarget:self
+														 selector:@selector(_frameDeliveringThreadFunc)
+														   object:nil];
+		[_frameDeliveringThread start];
+	}
+	
+	return YES;
 }
 
 - (BOOL)stopCapturing:(NSError**)error
-{
-	TFThrowMethodNotImplementedException();
-	
+{	
 	if (NULL != error)
 		*error = nil;
 	
-	return NO;
+	if (nil != _frameQueue && nil != _frameDeliveringThread) {
+		[_frameDeliveringThread cancel];
+		[_frameDeliveringThread release];
+		_frameDeliveringThread = nil;
+		
+		// wake the delivering thread if necessary
+		[_frameQueue enqueue:[NSArray array]];
+		[_frameQueue release];
+		_frameQueue = nil;
+	}
+	
+	return YES;
 }
 
 - (CGSize)frameSize
@@ -98,6 +118,37 @@
 	TFThrowMethodNotImplementedException();
 	
 	return NO;
+}
+
+- (void)_frameDeliveringThreadFunc
+{
+	NSAutoreleasePool* outerPool = [[NSAutoreleasePool alloc] init];
+	
+	TFThreadMessagingQueue* frameQueue = [_frameQueue retain];
+	
+	while (YES) {
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		
+		CIImage* frame = [frameQueue dequeue];
+		
+		if ([[NSThread currentThread] isCancelled]) {
+			[pool release];
+			break;
+		}
+		
+		//NSLog(@"delivering frame in thread\n");
+		
+		if ([frame isKindOfClass:[CIImage class]] && _delegateCapabilities.hasDidCaptureFrame)
+			[delegate capture:self didCaptureFrame:frame];
+		
+		[pool release];
+	}
+	
+	//NSLog(@"thread exiting...\n");
+	
+	[frameQueue release];
+	
+	[outerPool release];
 }
 
 @end

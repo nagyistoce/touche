@@ -27,6 +27,8 @@
 
 #import "TFQTKitCapture.h"
 #import "TFIncludes.h"
+#import "TFThreadMessagingQueue.h"
+
 
 #define DEFAULT_LATENCY_FRAMEDROP_THRESHOLD		(0.5)
 
@@ -38,7 +40,7 @@
 @synthesize framedropLatencyThreshold;
 
 - (void)dealloc
-{
+{	
 	[self stopCapturing:NULL];
 	
 	QTCaptureDevice* device = [deviceInput device];
@@ -305,24 +307,32 @@
 
 - (BOOL)startCapturing:(NSError**)error
 {
+	BOOL success = YES;
+	
 	if (NULL != error)
 		*error = nil;
 
-	if (![session isRunning])
+	if (![session isRunning]) {
 		[session startRunning];
+		success = [super startCapturing:error];
+	}
 		
-	return YES;
+	return success;
 }
 
 - (BOOL)stopCapturing:(NSError**)error
 {
+	BOOL success = YES;
+	
 	if (NULL != error)
 		*error = nil;
 
-	if ([session isRunning])
+	if ([session isRunning]) {
 		[session stopRunning];
+		success = [super stopCapturing:error];
+	}
 	
-	return YES;
+	return success;
 }
 
 - (void)captureOutput:(QTCaptureOutput*)captureOutput didOutputVideoFrame:(CVImageBufferRef)videoFrame withSampleBuffer:(QTSampleBuffer *)sampleBuffer fromConnection:(QTCaptureConnection *)connection
@@ -345,7 +355,7 @@
 			else
 				image = [CIImage imageWithCVImageBuffer:videoFrame];
 			
-			[delegate capture:self didCaptureFrame:image];
+			[_frameQueue enqueue:image];
 		}
 	}
 }

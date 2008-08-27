@@ -102,7 +102,7 @@ static CIKernel*	tFCIContrastStretchFilterBoostKernel = nil;
 	[_areaMaxFilter setDefaults];
 	[_areaMinFilter setDefaults];
 	
-	_colorSpace = [CIImage screenColorSpace];
+	_colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
 	_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
 	_rowBytes = 16;
 	_imgBuffer = (float*)malloc(sizeof(float)*_rowBytes);
@@ -205,8 +205,11 @@ static CIKernel*	tFCIContrastStretchFilterBoostKernel = nil;
 																			rowBytes:&_rowBytes
 																			  buffer:(void*)_imgBuffer
 																		 renderOnCPU:YES];
-				
+								
 				float dx = _imgBuffer[0]-[minVect X], dy = _imgBuffer[1]-[minVect Y], dz = _imgBuffer[2]-[minVect Z];
+				
+				if (0 == dx || 0 == dy || 0 == dz)
+					return inputImage;
 				
 				CIVector* invDiffVect = [CIVector vectorWithX:1.0f/dx
 															Y:1.0f/dy

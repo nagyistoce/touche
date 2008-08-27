@@ -78,11 +78,11 @@
 	BOOL rv = NO;
 
 	if ([_lock tryLock]) {
-		if ([_lock condition] == 1) {
-			rv = YES;
-		}
+		NSInteger cond = [_lock condition];
+		rv = (cond == 0);
+		[_lock unlockWithCondition:cond];
 	}
-	
+		
 	return rv;
 }
 

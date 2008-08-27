@@ -25,10 +25,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class TFBlobInputSource;
-@class TFRGBA8888BlobDetector;
-@class TFBlobLabelizer;
-@class TFCamera2ScreenCoordinatesConverter;
+@class TFBlobInputSource, TFBlobLabelizer, TFCamera2ScreenCoordinatesConverter, TFThreadMessagingQueue;
 
 enum {
 	TFTrackingPipelineInputResolution160x120	=	1,
@@ -69,6 +66,9 @@ extern NSInteger TFTrackingPipelineInputResolutionHighest;
 	NSError*								_calibrationError;
 	
 	BOOL									_delegateHasDidFindBlobs;
+	
+	NSThread*								_processingThread;
+	TFThreadMessagingQueue*					_processingQueue;
 }
 
 @property (readonly) NSInteger inputMethod;

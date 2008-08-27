@@ -30,6 +30,7 @@
 #import "TFTrackingPipeline+LibDc1394InputAdditions.h"
 
 #import "TFIncludes.h"
+#import "TFThreadMessagingQueue.h"
 #import "TFScreenPreferencesController.h"
 #import "TFBlobQuicktimeKitInputSource.h"
 #import "TFFilterChain.h"
@@ -90,6 +91,7 @@ enum {
 - (NSString*)_trackingCalibrationKeyForResolution:(NSInteger)resKey andCaptureInputKey:(NSString*)captureInputKey andCoordinateConverterClassName:(NSString*)coordConverterName;
 - (void)_cacheBlobs:(NSArray*)blobs inField:(NSArray**)cacheField;
 - (void)_changeCaptureResolution:(NSInteger)sizeCode;
+- (void)_processBlobsThread;
 @end
 
 @implementation TFTrackingPipeline
@@ -762,6 +764,52 @@ enum {
 	return [NSString stringWithFormat:trackingCalibrationPrefKeyTemplate, resKey, captureInputKey, coordConverterName];
 }
 
+- (void)_processBlobsThread
+{
+	NSAutoreleasePool* outerPool = [[NSAutoreleasePool alloc] init];
+	
+	TFThreadMessagingQueue* processingQueue = [_processingQueue retain];
+	
+	while (YES) {
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		
+		NSArray* detectedBlobs = [processingQueue dequeue];
+		
+		if ([[NSThread currentThread] isCancelled]) {
+			[pool release];
+			break;
+		}
+		
+		if ([detectedBlobs isKindOfClass:[NSArray class]] && _delegateHasDidFindBlobs) {
+			@synchronized (self) {
+				NSArray* unmatchedBlobs = nil;
+				NSArray* blobs = [_blobLabelizer labelizeBlobs:detectedBlobs unmatchedBlobs:&unmatchedBlobs ignoringErrors:YES error:NULL];
+				
+				if ([blobs count] <= 0) {
+					[self _cacheBlobs:nil inField:&_currentUntransformedBlobs];
+				} else
+					[self _cacheBlobs:[[[NSArray alloc] initWithArray:blobs copyItems:YES] autorelease] inField:&_currentUntransformedBlobs];
+				
+				if ([blobs count] <= 0 && (nil == unmatchedBlobs || [unmatchedBlobs count] <= 0))
+					continue;
+				
+				if (transformBlobsToScreenCoordinates) {
+					[_coordConverter transformBlobsFromCameraToScreen:blobs errors:NULL];
+					[_coordConverter transformBlobsFromCameraToScreen:unmatchedBlobs errors:NULL];
+				}
+				
+				[delegate pipeline:self didFindBlobs:blobs unmatchedBlobs:unmatchedBlobs];
+			}
+		}
+		
+		[pool release];
+	}
+	
+	[processingQueue release];
+	
+	[outerPool release];
+}
+
 - (BOOL)isReady
 {
 	return [_blobInput isReady:nil];
@@ -775,8 +823,18 @@ enum {
 - (BOOL)startProcessing:(NSError**)error
 {
 	NSString* notReadyReason = nil;
-	if ([_blobInput isReady:&notReadyReason])
+	if ([_blobInput isReady:&notReadyReason]) {
+		if (nil == _processingQueue && nil == _processingThread) {
+			_processingQueue = [[TFThreadMessagingQueue alloc] init];
+			
+			_processingThread = [[NSThread alloc] initWithTarget:self
+														selector:@selector(_processBlobsThread)
+														  object:nil];
+			[_processingThread start];
+		}
+	
 		return [_blobInput startProcessing:error];
+	}
 	
 	if (NULL != error)
 		*error = [NSError errorWithDomain:TFErrorDomain
@@ -798,8 +856,20 @@ enum {
 
 - (BOOL)stopProcessing:(NSError**)error
 {
-	if ([self isProcessing])
+	if ([self isProcessing]) {
+		if (nil != _processingQueue && nil != _processingThread) {
+			[_processingThread cancel];
+			[_processingThread release];
+			_processingThread = nil;
+			
+			// wake the delivering thread if necessary
+			[_processingQueue enqueue:[NSArray array]];
+			[_processingQueue release];
+			_processingQueue = nil;
+		}
+	
 		return [_blobInput stopProcessing:error];
+	}
 	
 	return YES;
 }
@@ -928,27 +998,8 @@ errorReturn:
 
 - (void)blobInputSource:(TFBlobInputSource*)inputSource didDetectBlobs:(NSArray*)detectedBlobs
 {	
-	if (_blobInput == inputSource) {
-		@synchronized (self) {
-			NSArray* unmatchedBlobs = nil;
-			NSArray* blobs = [_blobLabelizer labelizeBlobs:detectedBlobs unmatchedBlobs:&unmatchedBlobs ignoringErrors:YES error:NULL];
-			
-			if ([blobs count] <= 0) {
-				[self _cacheBlobs:nil inField:&_currentUntransformedBlobs];
-			} else
-				[self _cacheBlobs:[[[NSArray alloc] initWithArray:blobs copyItems:YES] autorelease] inField:&_currentUntransformedBlobs];
-			
-			if ([blobs count] <= 0 && (nil == unmatchedBlobs || [unmatchedBlobs count] <= 0))
-				return;
-			
-			if (transformBlobsToScreenCoordinates) {
-				[_coordConverter transformBlobsFromCameraToScreen:blobs errors:NULL];
-				[_coordConverter transformBlobsFromCameraToScreen:unmatchedBlobs errors:NULL];
-			}
-					
-			if (_delegateHasDidFindBlobs)
-				[delegate pipeline:self didFindBlobs:blobs unmatchedBlobs:unmatchedBlobs];
-		}
+	if (_blobInput == inputSource && nil != detectedBlobs) {
+		[_processingQueue enqueue:detectedBlobs];
 	}
 }
 

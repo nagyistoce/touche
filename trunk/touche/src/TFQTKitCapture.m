@@ -344,19 +344,17 @@
 	if (hts > ihts + framedropLatencyThreshold)
 		return;
 
-	@synchronized(self) {
-		if (_delegateCapabilities.hasDidCaptureFrame) {
-			CIImage* image = nil;
-			
-			if (_delegateCapabilities.hasWantedCIImageColorSpace)
-				image = [CIImage imageWithCVImageBuffer:videoFrame
-												options:[NSDictionary dictionaryWithObject:(id)[delegate wantedCIImageColorSpaceForCapture:self]
-																					forKey:kCIImageColorSpace]];
-			else
-				image = [CIImage imageWithCVImageBuffer:videoFrame];
-			
-			[_frameQueue enqueue:image];
-		}
+	if (_delegateCapabilities.hasDidCaptureFrame) {
+		CIImage* image = nil;
+		
+		if (_delegateCapabilities.hasWantedCIImageColorSpace)
+			image = [CIImage imageWithCVImageBuffer:videoFrame
+											options:[NSDictionary dictionaryWithObject:(id)[delegate wantedCIImageColorSpaceForCapture:self]
+																				forKey:kCIImageColorSpace]];
+		else
+			image = [CIImage imageWithCVImageBuffer:videoFrame];
+		
+		[_frameQueue enqueue:image];
 	}
 }
 

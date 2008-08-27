@@ -26,6 +26,17 @@
 #import <Cocoa/Cocoa.h>
 
 
+/*	This class represents a blob input source. Subclasses should implement the
+ *	functions.
+ *
+ *	When blob are detected, they should be enqueued in _deliveryQueue and NOT delivered to the
+ *	delegate directly.
+ *
+ *	When overriding startProcessing: and stopProcessing:, be sure to call the super-implementation.
+ */
+
+@class TFThreadMessagingQueue;
+
 @interface TFBlobInputSource : NSObject {
 	id			delegate;
 	BOOL		blobTrackingEnabled;
@@ -33,6 +44,9 @@
 	
 	NSDate*		_lastCapturedFrame;
 	BOOL		_delegateHasDidDetectBlobs;
+	
+	NSThread*					_deliveryThread;
+	TFThreadMessagingQueue*		_deliveryQueue;
 }
 
 @property (nonatomic, assign) id delegate;

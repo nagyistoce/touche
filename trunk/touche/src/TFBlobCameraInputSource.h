@@ -28,9 +28,8 @@
 
 #import "TFBlobInputSource.h"
 
-@class TFBlobDetector;
-@class TFFilterChain;
-@class TFCapture;
+
+@class TFBlobDetector, TFFilterChain, TFCapture, TFThreadMessagingQueue;
 
 @interface TFBlobCameraInputSource : TFBlobInputSource {
 	TFFilterChain*		filterChain;
@@ -41,6 +40,9 @@
 	CGColorSpaceRef		_colorSpace;
 	CGColorSpaceRef		_workingColorSpace;
 	CGSize				_lastFrameSize;
+	
+	NSThread*					_processingThread;
+	TFThreadMessagingQueue*		_processingQueue;
 }
 
 @property (readonly) TFFilterChain* filterChain;

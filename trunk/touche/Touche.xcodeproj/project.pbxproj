@@ -743,8 +743,6 @@
 				6EED60D00E5ED9B800375CC0 /* TFTrackingDataReceiver.m */,
 				6EED61460E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.h */,
 				6EED61470E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.m */,
-				6EED615F0E5F135100375CC0 /* TFThreadMessagingQueue.h */,
-				6EED61600E5F135100375CC0 /* TFThreadMessagingQueue.m */,
 			);
 			name = "Client-Server Communication";
 			sourceTree = "<group>";
@@ -810,6 +808,8 @@
 				6E7DB4EA0DEC677800CF9556 /* TFError.m */,
 				6E07FB480DF00CB200FCB681 /* TFLocalization.h */,
 				6E07FBEE0DF01EA200FCB681 /* TFExceptions.h */,
+				6EED615F0E5F135100375CC0 /* TFThreadMessagingQueue.h */,
+				6EED61600E5F135100375CC0 /* TFThreadMessagingQueue.m */,
 			);
 			name = Misc;
 			sourceTree = "<group>";

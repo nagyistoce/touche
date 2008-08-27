@@ -23,10 +23,25 @@
 //
 //
 
+/*	This class represents a capture source. Subclasses should implement the
+ *	functions.
+ *
+ *	When a new frame is captured, it should be enqueued in _frameQueue and NOT delivered to the
+ *	delegate directly.
+ *
+ *	When overriding startCapturing: and stopCapturing:, be sure to call the super-implementation.
+ */
+
 #import <Cocoa/Cocoa.h>
+
+
+@class TFThreadMessagingQueue;
 
 @interface TFCapture : NSObject {
 	id		delegate;
+	
+	NSThread*							_frameDeliveringThread;
+	TFThreadMessagingQueue*				_frameQueue;
 	
 	struct {
 		unsigned int hasWantedCIImageColorSpace:1;

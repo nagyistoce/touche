@@ -28,6 +28,7 @@
 
 #import "TFCapture.h"
 
+
 @interface TFQTKitCapture : TFCapture {
 	QTCaptureSession*					session;
 	QTCaptureDeviceInput*				deviceInput;

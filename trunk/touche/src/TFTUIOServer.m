@@ -115,6 +115,7 @@
 - (id)initWithPort:(UInt16)port andLocalAddress:(NSString*)localAddress error:(NSError**)error
 {
 	if (nil != (self = [super initWithPort:0 andLocalAddress:nil error:error])) {
+		[_socket release];
 		_socket = [[TFIPUDPSocket alloc] init];
 		
 		if (![_socket open]) {

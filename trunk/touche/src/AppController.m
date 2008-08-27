@@ -537,6 +537,9 @@ enum {
 	} else {
 		[self _loadPipelineAsync];
 	}
+	
+	[doDistributor release];
+	[tuioDistributor release];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender

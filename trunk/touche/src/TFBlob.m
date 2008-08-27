@@ -60,6 +60,8 @@
 	center = nil;
 	[previousCenter release];
 	previousCenter = nil;
+	[acceleration release];
+	acceleration = nil;
 	[boundingBox release];
 	boundingBox = nil;
 	[edgeVertices release];
@@ -108,6 +110,7 @@
 		edgeVertices = [[NSArray alloc] init];
 	
 	previousCenter = [[TFBlobPoint alloc] init];
+	acceleration = [[TFBlobVector alloc] init];
 	label = [[TFBlobLabel alloc] init];
 	
 	isUpdate = NO;
@@ -126,6 +129,7 @@
 	
 	aCopy->center = [self.center copy];
 	aCopy->previousCenter = [self.previousCenter copy];
+	aCopy->acceleration = [self.acceleration copy];
 	aCopy->boundingBox = [self.boundingBox copy];
 	aCopy->edgeVertices = nil;
 	aCopy->edgeVertices = [[NSArray alloc] initWithArray:self.edgeVertices copyItems:YES];

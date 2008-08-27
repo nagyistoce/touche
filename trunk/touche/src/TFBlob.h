@@ -24,6 +24,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+
 @class TFBlobPoint;
 @class TFBlobBox;
 @class TFBlobLabel;

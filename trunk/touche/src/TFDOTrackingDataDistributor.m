@@ -114,7 +114,6 @@
 	
 	_isRunning = YES;
 	
-	_receivers = [[NSMutableDictionary alloc] init];
 	_heartbeatThread = [[NSThread alloc] initWithTarget:self
 											   selector:@selector(_pingClientsThread)
 												 object:nil];

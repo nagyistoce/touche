@@ -39,6 +39,7 @@
 - (void)addDistributor:(TFTrackingDataDistributor*)distributor;
 - (void)distributeTrackingDataForActiveBlobs:(NSArray*)activeBlobs inactiveBlobs:(NSArray*)inactiveBlobs;
 
+- (void)invalidate;
 - (void)stopAllDistributors;
 
 @end

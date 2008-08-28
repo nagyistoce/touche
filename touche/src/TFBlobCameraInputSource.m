@@ -37,6 +37,8 @@
 #import "TFThreadMessagingQueue.h"
 
 
+#define FRAME_PROCESSING_THREAD_PRIORITY	(0.9)
+
 @interface TFBlobCameraInputSource (NonPublicMethods)
 - (void)_resetBackgroundAcquisitionTiming;
 - (void)_clearBackgroundForSubtraction;
@@ -288,6 +290,8 @@
 	
 	TFThreadMessagingQueue* processingQueue = [_processingQueue retain];
 	
+	[NSThread setThreadPriority:FRAME_PROCESSING_THREAD_PRIORITY];
+	
 	while (YES) {
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		
@@ -298,11 +302,15 @@
 			break;
 		}
 		
-		if (![processingQueue isEmpty])
+		if (![processingQueue isEmpty]) {
+			[pool release];
 			continue;
+		}
 		
-		if (![self _shouldProcessThisFrame] || ![capturedFrame isKindOfClass:[CIImage class]])
+		if (![self _shouldProcessThisFrame] || ![capturedFrame isKindOfClass:[CIImage class]]) {
+			[pool release];
 			continue;
+		}
 		
 		@synchronized (self) {	
 			CGSize frameSize = [capturedFrame extent].size;
@@ -337,7 +345,8 @@
 				
 				if (_delegateHasDidDetectBlobs)
 					[delegate blobInputSource:self didDetectBlobs:[NSArray array]];
-				
+					
+				[pool release];
 				continue;
 			}
 			

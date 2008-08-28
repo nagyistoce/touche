@@ -892,9 +892,7 @@ enum {
 							 target:_pipelineSetupController];
 			c.delegate = self;
 			
-			[self performSelectorOnMainThread:@selector(_promoteViewToMainView:)
-								   withObject:[c view]
-								waitUntilDone:NO];
+			[self _promoteViewToMainView:[c view]];
 		}
 		
 		[_pipelineSetupController setTrackingInputStatusMessage:reason];

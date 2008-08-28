@@ -55,14 +55,8 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 
 - (void)dealloc
 {
-	[_thread cancel];
-	@synchronized(_threadLock) {
-		[_thread release];
-		_thread = nil;
-	}
-	
-	[_threadLock release];
-	_threadLock = nil;
+	if ([self isCapturing])
+		[self stopCapturing:NULL];
 
 	[self _freeCamera];
 
@@ -406,7 +400,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	[self performSelectorOnMainThread:@selector(_setupCapture:)
 						   withObject:[NSValue valueWithPointer:error]
 						waitUntilDone:YES];
-	
+		
 	if (nil != *error)
 		return NO;
 	
@@ -744,7 +738,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	@synchronized(_threadLock) {
 		while (![_thread isCancelled]) {
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		
+				
 			@synchronized(self) {
 				err = dc1394_capture_dequeue(_camera, DC1394_CAPTURE_POLICY_WAIT, &frame);
 				

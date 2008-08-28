@@ -936,8 +936,6 @@ errorReturn:
 	return NO;
 }
 
-// we're autoreleasing everything here because we might be called
-// from a released object's delegate methods...
 - (BOOL)unloadPipeline:(NSError**)error
 {
 	BOOL success = [self stopProcessing:error];
@@ -946,17 +944,17 @@ errorReturn:
 	
 	@synchronized (_blobInput) {
 		[_blobInput unloadWithError:NULL];
-		[_blobInput autorelease];
+		[_blobInput release];
 		_blobInput = nil;
 	}
 	
 	@synchronized (_blobLabelizer) {
-		[_blobLabelizer autorelease];
+		[_blobLabelizer release];
 		_blobLabelizer = nil;
 	}
 	
 	@synchronized (_coordConverter) {
-		[_coordConverter autorelease];
+		[_coordConverter release];
 		_coordConverter = nil;
 	}
 	

@@ -40,7 +40,7 @@ CGColorRef CGColorCreateFromNSColorAndColorspace(NSColor* color, CGColorSpaceRef
 	if (nil == devColor || nil == colorspace)
 		return nil;
 	
-	float c[4];
+	CGFloat c[4];
 	[devColor getRed:&c[0] green:&c[1] blue:&c[2] alpha:&c[3]];
 	
 	return CGColorCreate(colorspace, c);

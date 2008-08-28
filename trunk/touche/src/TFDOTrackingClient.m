@@ -130,10 +130,16 @@
 		return NO;
 	}
 	
-	[[_server connectionForProxy] setRequestTimeout:SERVER_REQUEST_TIMEOUT];
+	NSConnection* connection = [_server connectionForProxy];
+	[connection setRequestTimeout:SERVER_REQUEST_TIMEOUT];
+	[connection setReplyTimeout:SERVER_REQUEST_TIMEOUT];
+	[connection runInNewThread];
+	[connection removeRunLoop:[NSRunLoop currentRunLoop]];
+	
 	[_server setProtocolForProxy:@protocol(TFDOTrackingServerProtocol)];
 	
 	if (![_server registerClient:self withName:clientName error:error]) {
+		[connection invalidate];
 		[_server release];
 		_server = nil;
 		
@@ -154,8 +160,11 @@
 {
 	if (!self.isConnected)
 		return;
-	
+		
 	[_server unregisterClientWithName:_clientName];
+	
+	[[_server connectionForProxy] invalidate];
+	
 	[_server release];
 	_server = nil;
 	

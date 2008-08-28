@@ -89,10 +89,12 @@
 	else
 		serviceName = (NSString*)obj;
 	
-	_listenConnection = [[NSConnection alloc] init];
+	NSPort* listenPort = [NSMachPort port];
+	_listenConnection = [[NSConnection alloc] initWithReceivePort:listenPort sendPort:nil];
 	[_listenConnection setRootObject:self];
 	[_listenConnection setDelegate:self];
-	[_listenConnection enableMultipleThreads];
+	[_listenConnection runInNewThread];
+	[_listenConnection removeRunLoop:[NSRunLoop currentRunLoop]];
 	
 	if (![_listenConnection registerName:serviceName]) {
 		if (NULL != error)
@@ -131,6 +133,7 @@
 	[_heartbeatThread release];
 	_heartbeatThread = nil;
 	
+	[_listenConnection invalidate];
 	[_listenConnection release];
 	_listenConnection = nil;
 	
@@ -245,6 +248,16 @@
 }
 
 #pragma mark -
+#pragma mark NSConnection delegate
+
+- (BOOL)connection:(NSConnection*)parentConnection shouldMakeNewConnection:(NSConnection*)newConnnection
+{
+	NSLog(@"newConnection: %@\n", newConnnection);
+		
+	return YES;
+}
+
+#pragma mark -
 #pragma mark Implementation of TFTrackingServerProtocol
 
 - (BOOL)registerClient:(byref id)client withName:(bycopy NSString*)name error:(bycopy out NSError**)error
@@ -291,7 +304,7 @@
 
 		return NO;
 	}
-	
+		
 	[client setProtocolForProxy:@protocol(TFDOTrackingClientProtocol)];
 	[[client connectionForProxy] setRequestTimeout:CLIENT_REQUEST_TIMEOUT];
 	
@@ -299,7 +312,7 @@
 											 selector:@selector(_connectionDidDie:)
 												 name:NSConnectionDidDieNotification
 											   object:[client connectionForProxy]];
-		
+			
 	TFDOTrackingDataReceiver* receiver =
 			[[TFDOTrackingDataReceiver alloc] initWithClient:client];
 	receiver.owningDistributor = self;
@@ -307,10 +320,10 @@
 	@synchronized(_receivers) {
 		[_receivers setObject:receiver forKey:receiver.receiverID];
 	}
-	
+		
 	if ([delegate respondsToSelector:@selector(trackingDataDistributor:receiverDidConnect:)])
 		[delegate trackingDataDistributor:self receiverDidConnect:receiver];
-	
+		
 	[receiver release];
 		
 	return YES;

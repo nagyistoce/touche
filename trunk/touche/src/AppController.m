@@ -76,6 +76,7 @@ enum {
 };
 
 @interface AppController (NonPublicMethods)
+- (void)_addConnectedReceiver:(TFTrackingDataReceiver*)receiver;
 - (void)_removeDisconnectedReceiver:(TFTrackingDataReceiver*)receiver;
 - (void)_showCurrentMainView;
 - (void)_updateCurrentMainView;
@@ -398,6 +399,16 @@ enum {
 		_statusLabel.string = str;
 }
 
+- (void)_addConnectedReceiver:(TFTrackingDataReceiver*)receiver
+{
+	@synchronized (connectedClients) {
+		[[self mutableArrayValueForKey:@"connectedClients"] addObject:receiver];
+	}
+	
+	[self _updateCurrentMainView];
+	[self _updateStatusLabelForListView];
+}
+
 - (void)_removeDisconnectedReceiver:(TFTrackingDataReceiver*)receiver
 {
 	@synchronized (connectedClients) {
@@ -591,24 +602,25 @@ enum {
 - (void)trackingDataDistributor:(TFTrackingDataDistributor*)distributor
 			 receiverDidConnect:(TFTrackingDataReceiver*)receiver
 {
-	@synchronized (connectedClients) {
-		[[self mutableArrayValueForKey:@"connectedClients"] addObject:receiver];
-	}
-	
-	[self _updateCurrentMainView];
-	[self _updateStatusLabelForListView];
+	[self performSelectorOnMainThread:@selector(_addConnectedReceiver:)
+						   withObject:receiver
+						waitUntilDone:NO];
 }
 
 - (void)trackingDataDistributor:(TFTrackingDataDistributor*)distributor 
 				 receiverDidDie:(TFTrackingDataReceiver*)receiver
 {
-	[self _removeDisconnectedReceiver:receiver];
+	[self performSelectorOnMainThread:@selector(_removeDisconnectedReceiver:)
+						   withObject:receiver
+						waitUntilDone:NO];
 }
 
 - (void)trackingDataDistributor:(TFTrackingDataDistributor*)distributor
 		  receiverDidDisconnect:(TFTrackingDataReceiver*)receiver
 {
-	[self _removeDisconnectedReceiver:receiver];
+	[self performSelectorOnMainThread:@selector(_removeDisconnectedReceiver:)
+						   withObject:receiver
+						waitUntilDone:NO];
 }
 
 #pragma mark -

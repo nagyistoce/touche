@@ -1117,9 +1117,56 @@ CVAPI(void)  cvDeleteMoire( IplImage*  img );
 *                           Background/foreground segmentation                           *
 \****************************************************************************************/
 
-#define CV_BG_MODEL_FGD     0
-#define CV_BG_MODEL_MOG     1
-#define CV_BG_MODEL_FGD_SIMPLE   2
+/* We discriminate between foreground and background pixels
+ * by building and maintaining a model of the background.
+ * Any pixel which does not fit this model is then deemed
+ * to be foreground.
+ *
+ * At present we support two core background models,
+ * one of which has two variations:
+ *
+ *  o CV_BG_MODEL_FGD: latest and greatest algorithm, described in
+ *    
+ *	 Foreground Object Detection from Videos Containing Complex Background.
+ *	 Liyuan Li, Weimin Huang, Irene Y.H. Gu, and Qi Tian. 
+ *	 ACM MM2003 9p
+ *	 http://muq.org/~cynbe/bib/foreground-object-detection-from-videos-containing-complex-background.pdf
+ *
+ *  o CV_BG_MODEL_FGD_SIMPLE:
+ *       A code comment describes this as a simplified version of the above,
+ *       but the code is in fact currently identical. (Cynbe 2008-05-25)
+ *
+ *  o CV_BG_MODEL_MOG: "Mixture of Gaussians", older algorithm, described in
+ *
+ *       Moving target classification and tracking from real-time video.
+ *       A Lipton, H Fujijoshi, R Patil
+ *       Proceedings IEEE Workshop on Application of Computer Vision pp 8-14 1998
+ *       http://www.vision.cs.chubu.ac.jp/04/pdf/VSAM02.pdf
+ *
+ *       Learning patterns of activity using real-time tracking
+ *       C Stauffer and W Grimson  August 2000
+ *       IEEE Transactions on Pattern Analysis and Machine Intelligence 22(8):747-757
+ *       http://people.csail.mit.edu/people/stauffer/Home/_papers/vsam-pami-tracking.ps
+ *
+ * Additional background may be found on the Wiki page
+ *
+ *       http://opencvlibrary.sourceforge.net/VideoSurveillance
+ *
+ * which in particular recommends the Intel semi-popular overview article
+ *
+ *       Computer Vision Workload Analysis: Case Study of Video Surveillance Systems
+ *       Chen et al, Intel Technology Journal V09:02 , 2005 12p
+ *       http://developer.intel.com/technology/itj/2005/volume09issue02/art02_computer_vision/vol09_art02.pdf
+ *
+ * which has both a good overview of the blobtracker software in particular,
+ * and also many references to introductory (and advanced) papers on computer vision.
+ *
+ */
+
+
+#define CV_BG_MODEL_FGD		0
+#define CV_BG_MODEL_MOG		1			/* "Mixture of Gaussians".	*/
+#define CV_BG_MODEL_FGD_SIMPLE	2
 
 struct CvBGStatModel;
 
@@ -1172,11 +1219,9 @@ CVAPI(int)  cvChangeDetection( IplImage*  prev_frame,
 
 /*
   Interface of ACM MM2003 algorithm
-  (Liyuan Li, Weimin Huang, Irene Y.H. Gu, and Qi Tian. 
-  "Foreground Object Detection from Videos Containing Complex Background. ACM MM2003")
 */
 
-/* default paremeters of foreground detection algorithm */
+/* Default parameters of foreground detection algorithm: */
 #define  CV_BGFG_FGD_LC              128
 #define  CV_BGFG_FGD_N1C             15
 #define  CV_BGFG_FGD_N2C             25
@@ -1185,11 +1230,12 @@ CVAPI(int)  cvChangeDetection( IplImage*  prev_frame,
 #define  CV_BGFG_FGD_N1CC            25
 #define  CV_BGFG_FGD_N2CC            40
 
-/* BG reference image update parameter */
+/* Background reference image update parameter: */
 #define  CV_BGFG_FGD_ALPHA_1         0.1f
 
 /* stat model update parameter
-   0.002f ~ 1K frame(~45sec), 0.005 ~ 18sec (if 25fps and absolutely static BG) */
+ * 0.002f ~ 1K frame(~45sec), 0.005 ~ 18sec (if 25fps and absolutely static BG)
+ */
 #define  CV_BGFG_FGD_ALPHA_2         0.005f
 
 /* start value for alpha parameter (to fast initiate statistic model) */
@@ -1203,10 +1249,42 @@ CVAPI(int)  cvChangeDetection( IplImage*  prev_frame,
 
 #define  CV_BGFG_FGD_BG_UPDATE_TRESH 0.5f
 
+/* See the above-referenced Li/Huang/Gu/Tian paper
+ * for a full description of these background-model
+ * tuning parameters.
+ *
+ * Nomenclature:  'c'  == "color", a three-component red/green/blue vector.
+ *                         We use histograms of these to model the range of
+ *                         colors we've seen at a given background pixel.
+ *
+ *                'cc' == "color co-occurrence", a six-component vector giving
+ *                         RGB color for both this frame and preceding frame.
+ *                             We use histograms of these to model the range of
+ *                         color CHANGES we've seen at a given background pixel.
+ */
 typedef struct CvFGDStatModelParams
 {
-    int           Lc, N1c, N2c, Lcc, N1cc, N2cc, is_obj_without_holes, perform_morphing;
-    float         alpha1, alpha2, alpha3, delta, T, minArea;
+    int    Lc;			/* Quantized levels per 'color' component. Power of two, typically 32, 64 or 128.				*/
+    int    N1c;			/* Number of color vectors used to model normal background color variation at a given pixel.			*/
+    int    N2c;			/* Number of color vectors retained at given pixel.  Must be > N1c, typically ~ 5/3 of N1c.			*/
+				/* Used to allow the first N1c vectors to adapt over time to changing background.				*/
+
+    int    Lcc;			/* Quantized levels per 'color co-occurrence' component.  Power of two, typically 16, 32 or 64.			*/
+    int    N1cc;		/* Number of color co-occurrence vectors used to model normal background color variation at a given pixel.	*/
+    int    N2cc;		/* Number of color co-occurrence vectors retained at given pixel.  Must be > N1cc, typically ~ 5/3 of N1cc.	*/
+				/* Used to allow the first N1cc vectors to adapt over time to changing background.				*/
+
+    int    is_obj_without_holes;/* If TRUE we ignore holes within foreground blobs. Defaults to TRUE.						*/
+    int    perform_morphing;	/* Number of erode-dilate-erode foreground-blob cleanup iterations.						*/
+				/* These erase one-pixel junk blobs and merge almost-touching blobs. Default value is 1.			*/
+
+    float  alpha1;		/* How quickly we forget old background pixel values seen.  Typically set to 0.1  				*/
+    float  alpha2;		/* "Controls speed of feature learning". Depends on T. Typical value circa 0.005. 				*/
+    float  alpha3;		/* Alternate to alpha2, used (e.g.) for quicker initial convergence. Typical value 0.1.				*/
+
+    float  delta;		/* Affects color and color co-occurrence quantization, typically set to 2.					*/
+    float  T;			/* "A percentage value which determines when new features can be recognized as new background." (Typically 0.9).*/
+    float  minArea;		/* Discard foreground blobs whose bounding box is smaller than this threshold.					*/
 }
 CvFGDStatModelParams;
 
@@ -1253,10 +1331,14 @@ CVAPI(CvBGStatModel*) cvCreateFGDStatModel( IplImage* first_frame,
 
 /* 
    Interface of Gaussian mixture algorithm
-   (P. KadewTraKuPong and R. Bowden,
+
    "An improved adaptive background mixture model for real-time tracking with shadow detection"
-   in Proc. 2nd European Workshp on Advanced Video-Based Surveillance Systems, 2001.")
+   P. KadewTraKuPong and R. Bowden,
+   Proc. 2nd European Workshp on Advanced Video-Based Surveillance Systems, 2001."
+   http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/avbs01/avbs01.pdf
 */
+
+/* Note:  "MOG" == "Mixture Of Gaussians": */
 
 #define CV_BGFG_MOG_MAX_NGAUSSIANS 500
 

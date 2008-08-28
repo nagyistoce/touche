@@ -834,7 +834,9 @@ enum {
 {
 	if (_pipeline == pipeline) {
 		[self _ensurePipelineSetupControllerLoaded];
-		[_pipelineSetupController updateAfterPipelineReload];
+		[_pipelineSetupController performSelectorOnMainThread:@selector(updateAfterPipelineReload)
+												   withObject:nil
+												waitUntilDone:NO];
 	}
 }
 
@@ -843,7 +845,9 @@ enum {
 	if (_pipeline == pipeline) {
 		[self _ensurePipelineSetupControllerLoaded];
 		[_pipelineSetupController setTrackingInputStatusMessage:@""];
-		[_pipelineSetupController updateForNewPipelineSettings];
+		[_pipelineSetupController performSelectorOnMainThread:@selector(updateForNewPipelineSettings)
+												   withObject:nil
+												waitUntilDone:NO];
 
 		NSError* error;
 		if (![_pipeline startProcessing:&error] && AppStatusPipelineStartupFailed > _appStatus) {
@@ -888,7 +892,9 @@ enum {
 							 target:_pipelineSetupController];
 			c.delegate = self;
 			
-			[self _promoteViewToMainView:[c view]];
+			[self performSelectorOnMainThread:@selector(_promoteViewToMainView:)
+								   withObject:[c view]
+								waitUntilDone:NO];
 		}
 		
 		[_pipelineSetupController setTrackingInputStatusMessage:reason];
@@ -921,7 +927,9 @@ enum {
 {
 	if (_pipeline == pipeline) {
 		[self _ensurePipelineSetupControllerLoaded];
-		[_pipelineSetupController updateForNewPipelineSettings];
+		[_pipelineSetupController performSelectorOnMainThread:@selector(updateForNewPipelineSettings)
+												   withObject:nil
+												waitUntilDone:NO];
 		
 		if (AppStatusPipelineIntermittentError > _appStatus) {
 			_appStatus = AppStatusPipelineIntermittentError;
@@ -950,7 +958,9 @@ enum {
 - (void)pipelineDidBecomeAvailableAgain:(TFTrackingPipeline*)pipeline
 {
 	if (_pipeline == pipeline) {
-		[_pipelineSetupController updateForNewPipelineSettings];
+		[_pipelineSetupController performSelectorOnMainThread:@selector(updateForNewPipelineSettings)
+												   withObject:nil
+												waitUntilDone:NO];
 
 		if (AppStatusPipelineIntermittentError == _appStatus) {
 			_appStatus = AppStatusIsTracking;

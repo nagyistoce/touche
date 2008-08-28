@@ -329,6 +329,7 @@
 
 	if ([session isRunning]) {
 		[session stopRunning];
+		
 		success = [super stopCapturing:error];
 	}
 	

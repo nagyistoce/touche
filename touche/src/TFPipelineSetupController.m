@@ -154,8 +154,11 @@
 
 - (void)setTrackingInputStatusMessage:(NSString*)status
 {
-	if (nil != status)
-		[_statusLabel setStringValue:status];
+	if (nil != status) {
+		[_statusLabel performSelectorOnMainThread:@selector(setStringValue:)
+									   withObject:status
+									waitUntilDone:NO];
+	}
 }
 
 - (void)changeConfigurationViewForInputType:(NSInteger)inputType

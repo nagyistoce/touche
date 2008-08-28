@@ -141,17 +141,22 @@
 
 - (void)dealloc
 {
+	[super dealloc];
+}
+
+- (void)invalidate
+{
 	[_socketThread cancel];
 	[_socketThread release];
 	_socketThread = nil;
 	
-	@synchronized (_socket) {
-		[_socket close];
-		[_socket autorelease];
-		_socket = nil;
+	if (nil != _socket) {
+		@synchronized (_socket) {
+			[_socket close];
+			[_socket autorelease];
+			_socket = nil;
+		}
 	}
-
-	[super dealloc];
 }
 
 - (void)_socketThreadFunc

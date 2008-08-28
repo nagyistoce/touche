@@ -110,6 +110,7 @@ enum {
 	[_currentMainView release];
 	_currentMainView = nil;
 	
+	[_distributionCenter invalidate];
 	[_distributionCenter release];
 	_distributionCenter = nil;
 	
@@ -555,7 +556,7 @@ enum {
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender
 {
-	[_distributionCenter stopAllDistributors];
+	[_distributionCenter invalidate];
 
 	[_pipeline stopProcessing:NULL];
 	[_pipeline unloadPipeline:NULL];

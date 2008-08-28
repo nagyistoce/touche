@@ -56,18 +56,11 @@
 
 - (void)dealloc
 {
-	[_thread cancel];
-	// enqueue a dummy object to wake the thread
-	[_blobQueue enqueue:[NSArray array]];
-
 	[_distributors release];
 	_distributors = nil;
 	
 	[_blobQueue release];
 	_blobQueue = nil;
-	
-	[_thread release];
-	_thread = nil;
 	
 	[super dealloc];
 }
@@ -87,6 +80,18 @@
 	id inactiveB = (nil != inactiveBlobs) ? (id)inactiveBlobs : (id)[NSNull null];
 	
 	[_blobQueue enqueue:[NSArray arrayWithObjects:activeB, inactiveB, nil]];
+}
+
+- (void)invalidate
+{
+	[_thread cancel];
+	// enqueue a dummy object to wake the thread
+	[_blobQueue enqueue:[NSArray array]];
+	
+	[_thread release];
+	_thread = nil;
+	
+	[self stopAllDistributors];
 }
 
 - (void)stopAllDistributors

@@ -50,6 +50,8 @@
 - (id)initWithPort:(UInt16)port andLocalAddress:(NSString*)localAddress error:(NSError**)error;
 - (void)dealloc;
 
+- (void)invalidate;
+
 #pragma mark -
 #pragma mark TFIPDatagramSocket delegate
 

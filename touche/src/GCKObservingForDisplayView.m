@@ -52,7 +52,7 @@
 }
 
 - (void)_observeForDisplay
-{
+{	
 	if (_isObservingForDisplay)
 		return;
 	

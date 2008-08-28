@@ -36,9 +36,9 @@
 	return [[[[self class] alloc] init] autorelease];
 }
 
-+ (id)pointWithX:(float)xPos Y:(float)yPos
++ (id)pointWithX:(CGFloat)xPos Y:(CGFloat)yPos
 {
-	return [[[[self class] alloc] initWithX:xPos Y:yPos] autorelease];
+	return [[[self alloc] initWithX:xPos Y:yPos] autorelease];
 }
 
 - (id)init
@@ -46,7 +46,7 @@
 	return [self initWithX:0 Y:0];
 }
 
-- (id)initWithX:(float)xPos Y:(float)yPos
+- (id)initWithX:(CGFloat)xPos Y:(CGFloat)yPos
 {
 	if (!(self = [super init])) {
 		[self release];

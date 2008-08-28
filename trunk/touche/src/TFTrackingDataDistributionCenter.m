@@ -112,7 +112,6 @@
 		
 		if ([[NSThread currentThread] isCancelled]) {
 			[innerPool release];
-			[pool release];
 			break;
 		}
 		

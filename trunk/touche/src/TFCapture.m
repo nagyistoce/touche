@@ -136,8 +136,10 @@
 			break;
 		}
 		
-		if (![frameQueue isEmpty])
+		if (![frameQueue isEmpty]) {
+			[pool release];
 			continue;
+		}
 				
 		if ([frame isKindOfClass:[CIImage class]] && _delegateCapabilities.hasDidCaptureFrame)
 			[delegate capture:self didCaptureFrame:frame];

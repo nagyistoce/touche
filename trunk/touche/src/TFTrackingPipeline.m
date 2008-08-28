@@ -54,6 +54,8 @@
 #import "TFOpenCVContourBlobDetector.h"
 
 
+#define BLOB_PROCESSING_THREAD_PRIORITY	(1.0)
+
 @class TFTrackingPipelineView, TFBlobTrackingView;
 
 NSInteger TFTrackingPipelineInputResolutionLowest = 1;
@@ -770,6 +772,8 @@ enum {
 	
 	TFThreadMessagingQueue* processingQueue = [_processingQueue retain];
 	
+	[NSThread setThreadPriority:BLOB_PROCESSING_THREAD_PRIORITY];
+	
 	while (YES) {
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		
@@ -790,8 +794,10 @@ enum {
 				} else
 					[self _cacheBlobs:[[[NSArray alloc] initWithArray:blobs copyItems:YES] autorelease] inField:&_currentUntransformedBlobs];
 				
-				if ([blobs count] <= 0 && (nil == unmatchedBlobs || [unmatchedBlobs count] <= 0))
+				if ([blobs count] <= 0 && (nil == unmatchedBlobs || [unmatchedBlobs count] <= 0)) {
+					[pool release];
 					continue;
+				}
 				
 				if (transformBlobsToScreenCoordinates) {
 					[_coordConverter transformBlobsFromCameraToScreen:blobs errors:NULL];

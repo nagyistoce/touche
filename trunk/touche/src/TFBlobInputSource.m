@@ -214,8 +214,10 @@
 			break;
 		}
 		
-		if (![deliveryQueue isEmpty])
+		if (![deliveryQueue isEmpty]) {
+			[pool release];
 			continue;
+		}
 				
 		if ([blobs isKindOfClass:[NSArray class]] && _delegateHasDidDetectBlobs)
 			[delegate blobInputSource:self didDetectBlobs:blobs];

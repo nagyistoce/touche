@@ -36,6 +36,7 @@
 - (NSString*)stringRepresentation;
 - (void)attachObject:(id)anObject;
 - (void)attachObjects:(NSArray*)anArray;
+- (NSArray*)attachedObjects;
 
 // 4 methods
 

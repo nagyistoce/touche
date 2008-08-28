@@ -79,6 +79,9 @@
 	[_queue release];
 	_queue = nil;
 
+	NSConnection* clientConnection = [(id)client connectionForProxy];
+	[clientConnection invalidate];
+
 	[client release];
 	client = nil;
 	
@@ -106,6 +109,10 @@
 	
 	[_thread start];
 	
+	NSConnection* connection = [(id)client connectionForProxy];
+	[connection runInNewThread];
+	[connection removeRunLoop:[NSRunLoop currentRunLoop]];
+		
 	running = YES;
 	
 	return self;

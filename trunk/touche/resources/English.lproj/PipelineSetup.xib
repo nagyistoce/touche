@@ -433,10 +433,7 @@
 			<object class="NSUserDefaultsController" id="512091734">
 				<object class="NSMutableArray" key="NSDeclaredKeys">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>doSmartSubtraction_</string>
-					<string>doSmartSubtraction__TFCIBackgroundSubtractionFilter</string>
-					<string>doSmartSubtraction_TFCIBackgroundSubtractionFilter</string>
-					<string>smartSubtractionLuminanceThreshold_TFCIBackgroundSubtractionFilter</string>
+					<string>isEnabled_TFCIBackgroundSubtractionFilter</string>
 				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
@@ -2272,9 +2269,9 @@
 																		</object>
 																		<object class="NSMutableArray" key="dict.values">
 																			<bool key="EncodedWithXMLCoder">YES</bool>
-																			<real value="1.000000e+00"/>
-																			<integer value="1040"/>
-																			<real value="1.000000e+00"/>
+																			<reference ref="480689894"/>
+																			<reference ref="672447439"/>
+																			<reference ref="480689894"/>
 																			<string>#% bright</string>
 																			<reference ref="8"/>
 																			<string>#% bright</string>
@@ -8356,7 +8353,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<string key="label">enabled: values.doSmartSubtraction_TFCIBackgroundSubtractionFilter</string>
 						<reference key="source" ref="712979164"/>
 						<reference key="destination" ref="512091734"/>
-						<object class="NSNibBindingConnector" key="connector">
+						<object class="NSNibBindingConnector" key="connector" id="1673">
 							<reference key="NSSource" ref="712979164"/>
 							<reference key="NSDestination" ref="512091734"/>
 							<string key="NSLabel">enabled: values.doSmartSubtraction_TFCIBackgroundSubtractionFilter</string>
@@ -8404,7 +8401,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<string key="label">enabled: values.doSmartSubtraction_TFCIBackgroundSubtractionFilter</string>
 						<reference key="source" ref="257361633"/>
 						<reference key="destination" ref="512091734"/>
-						<object class="NSNibBindingConnector" key="connector">
+						<object class="NSNibBindingConnector" key="connector" id="1694">
 							<reference key="NSSource" ref="257361633"/>
 							<reference key="NSDestination" ref="512091734"/>
 							<string key="NSLabel">enabled: values.doSmartSubtraction_TFCIBackgroundSubtractionFilter</string>
@@ -8430,6 +8427,90 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 					</object>
 					<int key="connectionID">818</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: values.isEnabled_TFCIBackgroundSubtractionFilter</string>
+						<reference key="source" ref="912211966"/>
+						<reference key="destination" ref="512091734"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="912211966"/>
+							<reference key="NSDestination" ref="512091734"/>
+							<string key="NSLabel">enabled: values.isEnabled_TFCIBackgroundSubtractionFilter</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">values.isEnabled_TFCIBackgroundSubtractionFilter</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">819</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled2: values.isEnabled_TFCIBackgroundSubtractionFilter</string>
+						<reference key="source" ref="712979164"/>
+						<reference key="destination" ref="512091734"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="712979164"/>
+							<reference key="NSDestination" ref="512091734"/>
+							<string key="NSLabel">enabled2: values.isEnabled_TFCIBackgroundSubtractionFilter</string>
+							<string key="NSBinding">enabled2</string>
+							<string key="NSKeyPath">values.isEnabled_TFCIBackgroundSubtractionFilter</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSMutableArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<reference ref="7"/>
+									<reference ref="7"/>
+									<reference ref="7"/>
+									<reference ref="7"/>
+								</object>
+							</object>
+							<reference key="NSPreviousConnector" ref="1673"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">820</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled2: values.isEnabled_TFCIBackgroundSubtractionFilter</string>
+						<reference key="source" ref="257361633"/>
+						<reference key="destination" ref="512091734"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="257361633"/>
+							<reference key="NSDestination" ref="512091734"/>
+							<string key="NSLabel">enabled2: values.isEnabled_TFCIBackgroundSubtractionFilter</string>
+							<string key="NSBinding">enabled2</string>
+							<string key="NSKeyPath">values.isEnabled_TFCIBackgroundSubtractionFilter</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSMutableArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<reference ref="7"/>
+									<reference ref="7"/>
+									<reference ref="7"/>
+									<reference ref="7"/>
+								</object>
+							</object>
+							<reference key="NSPreviousConnector" ref="1694"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">821</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -11118,7 +11199,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>{{17, 608}, {680, 135}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{240, 790}, {680, 135}}</string>
-					<string>{{-73, 404}, {680, 292}}</string>
+					<string>{{18, 438}, {680, 292}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSMutableDictionary">
 						<string key="NS.key.0">ToolTip</string>
@@ -11900,7 +11981,7 @@ bGUgaW1hZ2UsIGJ1dCBsaWdodCBhcmVhcyBtb3JlIHN0cm9uZ2x5IHRoYW4gZGFya2VyIG9uZXM</str
 						<object class="IBToolTipAttribute" key="NS.object.0">
 							<string key="name">ToolTip</string>
 							<reference key="object" ref="712979164"/>
-							<string key="toolTip">Sets the minimum time that has to pass before a new background image is acquired, if no blobs are currently being tracked.</string>
+							<string key="toolTip">Sets the luminance threshold for the bright foreground pixels preservation feature.</string>
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -11913,8 +11994,9 @@ bGUgaW1hZ2UsIGJ1dCBsaWdodCBhcmVhcyBtb3JlIHN0cm9uZ2x5IHRoYW4gZGFya2VyIG9uZXM</str
 						<object class="IBToolTipAttribute" key="NS.object.0">
 							<string key="name">ToolTip</string>
 							<reference key="object" ref="912211966"/>
-							<string type="base64-UTF8" key="toolTip">SWYgY2hlY2tlZCwgVG91Y2jDqSB3aWxsIHBlcmlvZGljYWxseSB1cGRhdGUgdGhlIGJhY2tncm91bmQg
-cGljdHVyZSBpZiBubyBibG9icyBhcmUgY3VycmVudGx5IGJlaW5nIGRldGVjdGVkA</string>
+							<string type="base64-UTF8" key="toolTip">SWYgY2hlY2tlZCwgVG91Y2jDqSB3aWxsIHByZXNlcnZlIGJyaWdodCBhcmVhcyBpbiB0aGUgYmFja2dv
+dW5kLXN1YnRyYWN0ZWQgaW1hZ2UsIGlmIHRoZSBzdWJ0cmFjdGVkIHBpeGVscyBsaWUgYWJvdmUgdGhl
+IGdpdmVuIGx1bWluY2UgdGhyZXNob2xkLg</string>
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -11941,7 +12023,7 @@ cGljdHVyZSBpZiBubyBibG9icyBhcmUgY3VycmVudGx5IGJlaW5nIGRldGVjdGVkA</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">818</int>
+			<int key="maxID">821</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

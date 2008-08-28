@@ -251,9 +251,7 @@
 #pragma mark NSConnection delegate
 
 - (BOOL)connection:(NSConnection*)parentConnection shouldMakeNewConnection:(NSConnection*)newConnnection
-{
-	NSLog(@"newConnection: %@\n", newConnnection);
-		
+{		
 	return YES;
 }
 

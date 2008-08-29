@@ -40,6 +40,7 @@
 #define FRAME_PROCESSING_THREAD_PRIORITY	(0.9)
 
 @interface TFBlobCameraInputSource (NonPublicMethods)
+- (void)_clearDrawingContexts;
 - (void)_resetBackgroundAcquisitionTiming;
 - (void)_clearBackgroundForSubtraction;
 - (BOOL)_shouldProcessThisFrame;
@@ -72,6 +73,8 @@
 {
 	[self unloadWithError:nil];
 	
+	[self _clearDrawingContexts];
+		
 	[super dealloc];
 }
 
@@ -189,6 +192,8 @@
 		_workingColorSpace = NULL;
 	}
 	
+	[self _clearDrawingContexts];
+	
 	BOOL success = [self stopProcessing:error];
 	
 	return success;
@@ -200,6 +205,7 @@
 		*error = nil;
 
 	[self _resetBackgroundAcquisitionTiming];
+	[self _clearDrawingContexts];
 	
 	BOOL success = [[self captureObject] startCapturing:error];
 	
@@ -266,6 +272,17 @@
 	return img;
 }
 
+- (void)_clearDrawingContexts
+{
+	if (NULL != _bitmapContext) {
+		CGContextRelease(_bitmapContext);
+		_bitmapContext = NULL;
+	}
+	
+	[_ciContext release];
+	_ciContext = nil;
+}
+
 - (void)_updateBackgroundForSubtraction
 {
 	if ([filterChain isKindOfClass:[TFCameraInputFilterChain class]])
@@ -326,6 +343,8 @@
 				
 				_rowBytes = 0;
 				
+				[self _clearDrawingContexts];
+				
 				// if the frame size changed, we need to acquire a new BG image immediately!
 				[self _clearBackgroundForSubtraction];
 				[self _resetBackgroundAcquisitionTiming];
@@ -337,8 +356,13 @@
 				img = [filterChain apply:capturedFrame];
 				renderFiltersOnCPU =
 				[filterChain isKindOfClass:[TFCIFilterChain class]] ?
-				[(TFCIFilterChain*)filterChain renderOnCPU] : YES;
+					[(TFCIFilterChain*)filterChain renderOnCPU] : YES;
 			}
+			
+			if (_lastFrameRenderOnCPU != renderFiltersOnCPU)
+				[self _clearDrawingContexts];
+			
+			_lastFrameRenderOnCPU = renderFiltersOnCPU;
 			
 			if (!blobTrackingEnabled) {
 				[self _updateBackgroundForSubtraction];
@@ -355,6 +379,8 @@
 																workingColorSpace:_workingColorSpace
 																		 rowBytes:&_rowBytes
 																		   buffer:_imgBuffer
+																 cgContextPointer:&_bitmapContext
+																 ciContextPointer:&_ciContext
 																	  renderOnCPU:renderFiltersOnCPU];
 				
 				[(TFRGBA8888BlobDetector*)blobDetector setRGBA8888ImageBuffer:_imgBuffer
@@ -366,6 +392,8 @@
 													workingColorSpace:_workingColorSpace
 															 rowBytes:&_rowBytes
 															   buffer:_imgBuffer
+													 cgContextPointer:&_bitmapContext
+													 ciContextPointer:&_ciContext
 														  renderOnCPU:renderFiltersOnCPU];
 				
 				[(TFGrayscale8BlobDetector*)blobDetector setGrayscale8ImageBuffer:_imgBuffer

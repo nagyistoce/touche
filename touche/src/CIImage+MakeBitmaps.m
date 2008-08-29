@@ -30,8 +30,10 @@
 				   workingColorSpace:(CGColorSpaceRef)workingColorSpace
 						  bitmapInfo:(CGBitmapInfo)bitmapInfo
 					   bytesPerPixel:(NSUInteger)bytesPerPixel
-							rowBytes:(size_t *)rowBytes
+							rowBytes:(size_t*)rowBytes
 							  buffer:(void*)buffer
+					cgContextPointer:(CGContextRef*)cgContextPointer
+					ciContextPointer:(CIContext**)ciContextPointer
 						 renderOnCPU:(BOOL)renderOnCPU;
 @end
 
@@ -95,7 +97,24 @@
 												  rowBytes:(size_t *)rowBytes
 													buffer:(void*)buffer
 											   renderOnCPU:(BOOL)renderOnCPU
-{       		
+{
+	return [self createPremultipliedRGBA8888BitmapWithColorSpace:colorSpace
+											   workingColorSpace:workingColorSpace
+														rowBytes:rowBytes
+														  buffer:buffer
+												cgContextPointer:NULL
+												ciContextPointer:NULL
+													 renderOnCPU:renderOnCPU];
+}
+
+- (UInt32*)createPremultipliedRGBA8888BitmapWithColorSpace:(CGColorSpaceRef)colorSpace
+										 workingColorSpace:(CGColorSpaceRef)workingColorSpace
+												  rowBytes:(size_t *)rowBytes
+													buffer:(void*)buffer
+										  cgContextPointer:(CGContextRef*)cgContextPointer
+										  ciContextPointer:(CIContext**)ciContextPointer
+											   renderOnCPU:(BOOL)renderOnCPU
+{
 	BOOL shouldReleaseColorSpace = NO;
 	
 	if (nil == colorSpace) {
@@ -111,6 +130,8 @@
 											  bytesPerPixel:4
 												   rowBytes:rowBytes
 													 buffer:buffer
+										   cgContextPointer:cgContextPointer
+										   ciContextPointer:ciContextPointer
 												renderOnCPU:renderOnCPU];
 	
 	if (shouldReleaseColorSpace)
@@ -147,6 +168,23 @@
 												  rowBytes:(size_t *)rowBytes
 													buffer:(void*)buffer
 											   renderOnCPU:(BOOL)renderOnCPU
+{
+	return [self createPremultipliedRGBAFFFFBitmapWithColorSpace:colorSpace
+											   workingColorSpace:workingColorSpace
+														rowBytes:rowBytes
+														  buffer:buffer
+												cgContextPointer:NULL
+												ciContextPointer:NULL
+													 renderOnCPU:renderOnCPU];
+}
+
+- (float*)createPremultipliedRGBAFFFFBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
+										workingColorSpace:(CGColorSpaceRef)workingColorSpace
+												 rowBytes:(size_t *)rowBytes
+												   buffer:(void*)buffer
+										 cgContextPointer:(CGContextRef*)cgContextPointer
+										 ciContextPointer:(CIContext**)ciContextPointer
+											  renderOnCPU:(BOOL)renderOnCPU
 {       		
 	BOOL shouldReleaseColorSpace = NO;
 	
@@ -163,6 +201,8 @@
 											bytesPerPixel:16
 												 rowBytes:rowBytes
 												   buffer:buffer
+										 cgContextPointer:cgContextPointer
+										 ciContextPointer:ciContextPointer
 											  renderOnCPU:renderOnCPU];
 	
 	if (shouldReleaseColorSpace)
@@ -200,6 +240,23 @@
 									   buffer:(void*)buffer
 								  renderOnCPU:(BOOL)renderOnCPU
 {
+	return [self createGrayscaleBitmapWithColorSpace:colorSpace
+								   workingColorSpace:workingColorSpace
+											rowBytes:rowBytes
+											  buffer:buffer
+									cgContextPointer:NULL
+									ciContextPointer:NULL
+										 renderOnCPU:renderOnCPU];
+}
+
+- (UInt8*)createGrayscaleBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
+							workingColorSpace:(CGColorSpaceRef)workingColorSpace
+									 rowBytes:(size_t *)rowBytes
+									   buffer:(void*)buffer
+							 cgContextPointer:(CGContextRef*)cgContextPointer
+							 ciContextPointer:(CIContext**)ciContextPointer
+								  renderOnCPU:(BOOL)renderOnCPU
+{
 	BOOL shouldReleaseColorSpace = NO;
 	
 	if (nil == colorSpace) {
@@ -215,6 +272,8 @@
 											bytesPerPixel:1
 												 rowBytes:rowBytes
 												   buffer:buffer
+										 cgContextPointer:cgContextPointer
+										 ciContextPointer:ciContextPointer
 											  renderOnCPU:renderOnCPU];
 	
 	if (shouldReleaseColorSpace)
@@ -227,11 +286,15 @@
 				   workingColorSpace:(CGColorSpaceRef)workingColorSpace
 						  bitmapInfo:(CGBitmapInfo)bitmapInfo
 					   bytesPerPixel:(NSUInteger)bytesPerPixel
-							rowBytes:(size_t *)rowBytes
+							rowBytes:(size_t*)rowBytes
 							  buffer:(void*)buffer
+					cgContextPointer:(CGContextRef*)cgContextPointer
+					ciContextPointer:(CIContext**)ciContextPointer
 						 renderOnCPU:(BOOL)renderOnCPU
 {
 	BOOL shouldReleaseWorkingColorSpace = NO;
+	BOOL shouldReleaseCGContext = NO;
+	BOOL shouldReleaseCIContext = NO;
 	
 	if (nil == workingColorSpace) {
 		workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
@@ -266,20 +329,30 @@
 	if (NULL == bitmapData)
 		return NULL;
 	
-	cgContext = CGBitmapContextCreate(bitmapData, destWidth, destHeight, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo);
-	if (nil == cgContext)
-		return NULL;
+	if (NULL == cgContextPointer || NULL == *cgContextPointer) {
+		cgContext = CGBitmapContextCreate(bitmapData, destWidth, destHeight, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo);
+		if (nil == cgContext)
+			return NULL;
+	} else
+		cgContext = *cgContextPointer;
 	
-	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys: 
-							 (id)colorSpace,     kCIContextOutputColorSpace, 
-							 (id)workingColorSpace, kCIContextWorkingColorSpace,
-							 [NSNumber numberWithBool:renderOnCPU], kCIContextUseSoftwareRenderer,
-							 nil];
+	shouldReleaseCGContext = (NULL == cgContextPointer);
 	
-	ciContext = [CIContext contextWithCGContext:cgContext options:options];
+	if (NULL == ciContextPointer || nil == *ciContextPointer) {
+		NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys: 
+								 (id)colorSpace,     kCIContextOutputColorSpace, 
+								 (id)workingColorSpace, kCIContextWorkingColorSpace,
+								 [NSNumber numberWithBool:renderOnCPU], kCIContextUseSoftwareRenderer,
+								 nil];
+		
+		ciContext = [[CIContext contextWithCGContext:cgContext options:options] retain];
+		
+		if (nil == ciContext)
+			return NULL;
+	} else
+		ciContext = *ciContextPointer;
 	
-	if (nil == ciContext)
-		return NULL;
+	shouldReleaseCIContext = (NULL == ciContextPointer);
 	
 	CGContextClearRect(cgContext, zeroRect);
 	[ciContext drawImage:self atPoint: CGPointZero fromRect:extent];
@@ -288,7 +361,15 @@
 	if (NULL != rowBytes)
 		*rowBytes = CGBitmapContextGetBytesPerRow(cgContext);
 	
-	CGContextRelease(cgContext);
+	if (shouldReleaseCGContext)
+		CGContextRelease(cgContext);
+	else if (NULL != cgContextPointer)
+		*cgContextPointer = cgContext;
+	
+	if (shouldReleaseCIContext)
+		[ciContext release];
+	else if (NULL != ciContextPointer)
+		*ciContextPointer = ciContext;
 	
 	if (shouldReleaseWorkingColorSpace)
 		CGColorSpaceRelease(workingColorSpace);

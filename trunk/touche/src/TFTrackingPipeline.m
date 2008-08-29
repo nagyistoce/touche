@@ -435,6 +435,8 @@ enum {
 		NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
 		
 		NSNumber* cameraUid = [standardDefaults objectForKey:libDc1394CameraUniqueIdPrefKey];
+		if (![self libdc1394CameraConnectedWithGUID:cameraUid])
+			cameraUid = [self _defaultLibDc1394CameraUniqueID];
 		
 		CGSize frameSize = [self _sizeFromResolutionKey:
 							[[standardDefaults objectForKey:libdc1394CaptureCameraResolutionPrefKey] intValue]];
@@ -444,9 +446,9 @@ enum {
 		
 		NSDictionary* configurationDictionary =
 				[NSDictionary dictionaryWithObjectsAndKeys:
-					cameraUid, tfBlobLibDc1394InputSourceConfItemCameraUniqueID,
 					[NSNumber numberWithFloat:frameSize.width], tfBlobLibDc1394InputSourceConfItemCameraResolutionX,
 					[NSNumber numberWithFloat:frameSize.height], tfBlobLibDc1394InputSourceConfItemCameraResolutionY,
+					cameraUid, tfBlobLibDc1394InputSourceConfItemCameraUniqueID,
 					nil];
 		
 		TFBlobLibDc1394InputSource* dcInput = [[TFBlobLibDc1394InputSource alloc] init];
@@ -459,13 +461,18 @@ enum {
 	} else if (TFTrackingPipelineInputMethodQuickTimeKitCamera == inputMethod) {
 		NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
 		
+		NSString* cameraUniqueID = [standardDefaults objectForKey:qtCaptureDeviceUniqueIdPrefKey];
+		if (![self qtDeviceConnectedWithUniqueID:cameraUniqueID])
+			cameraUniqueID = [self _defaultQTVideoDeviceUniqueID];
+		
 		CGSize frameSize = [self _sizeFromResolutionKey:
 							[[standardDefaults objectForKey:qtCaptureCameraResolutionPrefKey] intValue]];
+		
 		NSDictionary* configurationDictionary =
 		[NSDictionary dictionaryWithObjectsAndKeys:
-		 [standardDefaults objectForKey:qtCaptureDeviceUniqueIdPrefKey], tfBlobQuicktimeKitInputSourceConfItemCameraUniqueID,
 		 [NSNumber numberWithFloat:frameSize.width], tfBlobQuicktimeKitInputSourceConfItemCameraResolutionX,
 		 [NSNumber numberWithFloat:frameSize.height], tfBlobQuicktimeKitInputSourceConfItemCameraResolutionY,
+		 cameraUniqueID, tfBlobQuicktimeKitInputSourceConfItemCameraUniqueID,
 		 nil];
 		
 		TFBlobQuicktimeKitInputSource* qtInput = [[TFBlobQuicktimeKitInputSource alloc] init];

@@ -378,7 +378,12 @@
 
 + (NSString*)defaultCaptureDeviceUniqueId
 {
-	return [[[self class] defaultCaptureDevice] uniqueID];
+	return [[self defaultCaptureDevice] uniqueID];
+}
+
++ (BOOL)deviceConnectedWithID:(NSString*)deviceID
+{
+	return [[QTCaptureDevice deviceWithUniqueID:deviceID] isConnected];
 }
 
 @end

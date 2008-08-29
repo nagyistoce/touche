@@ -881,6 +881,30 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	return [NSDictionary dictionaryWithDictionary:cameras];
 }
 
++ (BOOL)cameraConnectedWithGUID:(NSNumber*)guidNumber
+{
+	dc1394_t* dc = dc1394_new();
+	dc1394camera_list_t* list;
+	
+	if (DC1394_SUCCESS != dc1394_camera_enumerate(dc, &list)) {
+		dc1394_free(dc);
+		
+		return NO;
+	}
+	
+	dc1394_free(dc);
+	
+	unsigned long long guid = [guidNumber unsignedLongLongValue];
+	
+	int i;
+	for (i=0; i<list->num; i++) {
+		if (list->ids[i].guid == guid)
+			return YES;
+	}
+	
+	return NO;
+}
+
 + (NSNumber*)defaultCameraUniqueId
 {
 	dc1394_t* dc = dc1394_new();
@@ -1104,7 +1128,7 @@ errorReturn:
 	
 	NSMutableArray* modes = [NSMutableArray array];
 	int i;
-	for (i=0; i<list.num; i++) {
+	for (i=0; i<list.num; i++) {	
 		if (
 			(frameSize.width == 160.0f && frameSize.height == 120.0f &&
 			 DC1394_VIDEO_MODE_160x120_YUV444 == list.modes[i])			||

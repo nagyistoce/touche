@@ -44,6 +44,13 @@
 												  rowBytes:(size_t *)rowBytes
 													buffer:(void*)buffer
 											   renderOnCPU:(BOOL)renderOnCPU;
+- (UInt32*)createPremultipliedRGBA8888BitmapWithColorSpace:(CGColorSpaceRef)colorSpace
+										 workingColorSpace:(CGColorSpaceRef)workingColorSpace
+												  rowBytes:(size_t *)rowBytes
+													buffer:(void*)buffer
+										  cgContextPointer:(CGContextRef*)cgContextPointer
+										  ciContextPointer:(CIContext**)ciContextPointer
+											   renderOnCPU:(BOOL)renderOnCPU;
 
 - (float*)createPremultipliedRGBAFFFFBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
 												 rowBytes:(size_t *)rowBytes
@@ -57,6 +64,13 @@
 												 rowBytes:(size_t *)rowBytes
 												   buffer:(void*)buffer
 											  renderOnCPU:(BOOL)renderOnCPU;
+- (float*)createPremultipliedRGBAFFFFBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
+										workingColorSpace:(CGColorSpaceRef)workingColorSpace
+												 rowBytes:(size_t *)rowBytes
+												   buffer:(void*)buffer
+										 cgContextPointer:(CGContextRef*)cgContextPointer
+										 ciContextPointer:(CIContext**)ciContextPointer
+											  renderOnCPU:(BOOL)renderOnCPU;
 
 - (UInt8*)createGrayscaleBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
 									 rowBytes:(size_t *)rowBytes
@@ -69,6 +83,13 @@
 							workingColorSpace:(CGColorSpaceRef)workingColorSpace
 									 rowBytes:(size_t *)rowBytes
 									   buffer:(void*)buffer
+								  renderOnCPU:(BOOL)renderOnCPU;
+- (UInt8*)createGrayscaleBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
+							workingColorSpace:(CGColorSpaceRef)workingColorSpace
+									 rowBytes:(size_t *)rowBytes
+									   buffer:(void*)buffer
+							 cgContextPointer:(CGContextRef*)cgContextPointer
+							 ciContextPointer:(CIContext**)ciContextPointer
 								  renderOnCPU:(BOOL)renderOnCPU;
 
 @end

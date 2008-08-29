@@ -46,6 +46,16 @@ NSString* qtCaptureCameraResolutionPrefKey = @"qtCaptureCameraResolutionPrefKey"
 			stringForKey:qtCaptureDeviceUniqueIdPrefKey];
 }
 
+- (BOOL)qtDeviceConnectedWithUniqueID:(NSString*)deviceID
+{
+	BOOL connected = NO;
+	
+	if (nil != deviceID)
+		connected = [TFQTKitCapture deviceConnectedWithID:deviceID];
+	
+	return connected;
+}
+
 - (BOOL)_changeQTCaptureDeviceToDeviceWithUniqueId:(NSString*)uniqueId error:(NSError**)error
 {
 	@synchronized(_blobInput) {		

@@ -40,6 +40,7 @@ extern NSString* libdc1394CaptureCameraResolutionPrefKey;
 - (void)setLibDc1394Feature:(NSInteger)feature toValue:(float)val;
 - (NSNumber*)currentPreferencesLibDc1394CameraUUID;
 - (NSNumber*)_defaultLibDc1394CameraUniqueID;
+- (BOOL)libdc1394CameraConnectedWithGUID:(NSNumber*)guid;
 - (CGSize)_defaultResolutionForLibDc1394CameraWithUniqueId:(NSNumber*)uid;
 - (BOOL)_libDc1394CameraWithUniqueId:(NSNumber*)uid supportsResolution:(CGSize)resolution;
 - (BOOL)_changeLibDc1394CameraToCameraWithUniqueId:(NSNumber*)uniqueId error:(NSError**)error;

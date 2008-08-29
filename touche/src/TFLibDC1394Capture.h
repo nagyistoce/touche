@@ -70,6 +70,7 @@ enum {
 - (BOOL)setMinimumFramerate:(NSUInteger)frameRate;
 
 + (NSDictionary*)connectedCameraNamesAndUniqueIds;
++ (BOOL)cameraConnectedWithGUID:(NSNumber*)guidNumber;
 + (NSNumber*)defaultCameraUniqueId;
 + (CGSize)defaultResolutionForCameraWithUniqueId:(NSNumber*)uid;
 + (BOOL)cameraWithUniqueId:(NSNumber*)uid supportsResolution:(CGSize)resolution;

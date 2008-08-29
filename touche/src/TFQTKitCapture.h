@@ -54,5 +54,6 @@
 + (NSDictionary*)connectedDevicesNamesAndIds;
 + (QTCaptureDevice*)defaultCaptureDevice;
 + (NSString*)defaultCaptureDeviceUniqueId;
++ (BOOL)deviceConnectedWithID:(NSString*)deviceID;
 
 @end

@@ -32,6 +32,7 @@ extern NSString* qtCaptureCameraResolutionPrefKey;
 
 @interface TFTrackingPipeline (QTInputAddtions)
 - (NSString*)currentPreferencesQTDeviceUUID;
+- (BOOL)qtDeviceConnectedWithUniqueID:(NSString*)deviceID;
 - (NSString*)_defaultQTVideoDeviceUniqueID;
 - (BOOL)_changeQTCaptureDeviceToDeviceWithUniqueId:(NSString*)uniqueId error:(NSError**)error;
 @end

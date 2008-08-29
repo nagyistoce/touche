@@ -39,6 +39,11 @@ NSString* libdc1394CaptureCameraResolutionPrefKey = @"libdc1394CaptureCameraReso
 	return [TFLibDC1394Capture defaultCameraUniqueId];
 }
 
+- (BOOL)libdc1394CameraConnectedWithGUID:(NSNumber*)guid
+{
+	return [TFLibDC1394Capture cameraConnectedWithGUID:guid];
+}
+
 - (CGSize)_defaultResolutionForLibDc1394CameraWithUniqueId:(NSNumber*)uid
 {
 	return [TFLibDC1394Capture defaultResolutionForCameraWithUniqueId:uid];

@@ -84,5 +84,7 @@
 - (IBAction)showTrackingPreviewWindow:(id)sender;
 - (IBAction)startWizard:(id)sender;
 - (IBAction)welcomeViewDismissClicked:(id)sender;
+- (IBAction)openIssueTrackerWebpage:(id)sender;
+- (IBAction)openHomepage:(id)sender;
 
 @end

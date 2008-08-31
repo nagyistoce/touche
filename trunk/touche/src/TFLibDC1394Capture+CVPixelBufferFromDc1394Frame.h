@@ -30,8 +30,8 @@
 
 @interface TFLibDC1394Capture (CVPixelBufferFromDc1394Frame) 
 
-- (int)rankingForVideoMode:(dc1394video_mode_t)mode;
++ (int)rankingForVideoMode:(dc1394video_mode_t)mode;
 - (NSString*)dc1394ColorCodingToString:(dc1394color_coding_t)coding;
-- (CVPixelBufferRef)pixelBufferWithDc1394Frame:(dc1394video_frame_t*)frame error:(NSError**)error;
+- (CIImage*)ciImageWithDc1394Frame:(dc1394video_frame_t*)frame error:(NSError**)error;
 
 @end

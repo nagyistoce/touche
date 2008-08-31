@@ -43,6 +43,7 @@
 - (void)_setDisplayLinkForWindow:(NSWindow*)window;
 - (void)_setConfigurationViews:(NSArray*)views forInputKey:(NSInteger)inputKey;
 - (void)_setConfigurationViewAnimate:(NSView*)newView;
+- (void)_libdc1394CameraDidChange:(NSNotification*)notification;
 @end
 
 @implementation TFPipelineSetupController
@@ -57,6 +58,11 @@
 	[self loadWindow];
 	[self _setDefaults];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(_libdc1394CameraDidChange:)
+												 name:TFLibDc1394CameraDidChangeNotification
+											   object:nil];
+	
 	return self;
 }
 
@@ -64,6 +70,8 @@
 {
 	[_viewHeights release];
 	_viewHeights = nil;
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[super dealloc];
 }
@@ -301,6 +309,11 @@
 		[self performSelector:@selector(_setConfigurationViewAnimate:) withObject:newView afterDelay:0.01f];
 
 	[[_configurationBox animator] addSubview:newView];
+}
+
+- (void)_libdc1394CameraDidChange:(NSNotification*)notification
+{
+	[self updateForNewPipelineSettings];
 }
 
 #pragma mark -

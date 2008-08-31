@@ -27,6 +27,9 @@
 
 #import "TFTrackingPipeline.h"
 
+
+extern NSString* TFLibDc1394CameraDidChangeNotification;
+
 extern NSString* libDc1394CameraUniqueIdPrefKey;
 extern NSString* libdc1394CaptureCameraResolutionPrefKey;
 

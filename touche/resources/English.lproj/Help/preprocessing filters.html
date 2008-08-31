@@ -28,9 +28,12 @@ p.p3 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida 
 ul.ul1 {list-style-type: disc}
 </style>
 
-<p class="p1">Preprocessing filters are used in order to enhance the image and bring out the blobs created by your touches on the multitouch surface before the image is passed on to a thresholding operation. This is often necessary, especially if you don't keep your multitouch table in a dark room without any stray IR light, if your FTIR setup leaks IR light or if the blobs simply appear very to be rather weak.</p>
-<p class="p2"><img src="preprocessing%20filters.filters_preprocessing.jpg" alt="filters_preprocessing.jpg"></p>
+<p class="p1">Preprocessing filters are used in order to enhance the image and bring out the blobs created by your touches on the multitouch surface before the image is passed on to a thresholding operation. This is often necessary, especially if you don't keep your multitouch table in a dark room without any stray IR light, if your setup leaks IR light or if the blobs simply appear to be rather weak.</p>
+<p class="p2"><img src="preprocessing%20filters.filter_settings.jpg" alt="filter_settings.jpg"></p>
 <p class="p1">The following filters and options are available for preprocessing:</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Invert Colors</b></p>
+<p class="p1">Touché is designed to track bright blobs in front of a dark background. However, certain setups (such as some forms of DI multitouch tables) need to track dark blobs in front of a bright background. In this case, you can use the color inversion filter, so that dark blobs are turned into bright blobs, which can then be tracked by Touché's tracking pipeline.</p>
 <p class="p3"><br></p>
 <p class="p1"><b>Enable background subtraction</b></p>
 <p class="p1">Background subtraction is a powerful way to do away with stray IR light or other imperfections on your multitouch table that might otherwise lead to "wrong" touches being detected. A background image (i.e. a frame of your multitouch table with no touch on it) will be subtracted from every captured frame, removing any static imperfections and making your IR blobs stand out better.</p>
@@ -39,10 +42,16 @@ ul.ul1 {list-style-type: disc}
 <p class="p1">If you are using background subtraction, Touché will always capture a background image a few camera frames after the pipeline is started, no matter wether it currently recognizes blobs on the multitouch table. You want to have this checked if Touché picks up "wrong" blobs from your multitouch table immediately after you start the tracking pipeline.</p>
 <p class="p3"><b></b><br></p>
 <p class="p1"><b>Periodically update background image</b></p>
-<p class="p1">If you have background subtraction enabled and this box checked, Touché will periodically capture a new background image for the subtraction process. Only those camera frames are considered "background", that do not contain a blob that Touché has recognized as such. This is a useful option to let Touché adapt to changing conditions, such as clouds going away, and the sun causing more stray IR light, etc.</p>
+<p class="p1">If you have background subtraction enabled and this box checked, Touché will periodically capture a new background image for the subtraction process. Only those camera frames are considered "background", that do not contain a blob that Touché has recognized as such. This is a useful option to let Touché adapt to changing conditions, such as clouds going away, and the sun causing more stray IR light, etc.<span class="Apple-converted-space">&nbsp;</span></p>
 <p class="p3"><br></p>
 <p class="p1"><b>Minimum time between acquisition of background images</b></p>
 <p class="p1">If "Periodically update background image" is checked and background subtraction is enabled, this slider can be used to adjust the minimum amount of time Touché while let pass between the acquisition of two background frames. It's considered the minimum time because Touché will not snap a background image if it is currently detecting a blob, since this would cause the blob to be subtracted as well and consequently jeopardizing tracking stability. If the minimum time has passed, and a blob is currently tracked, Touché will snap a new background frame as soon as no blobs are being detected again. Adjusting the update time can be useful to improve background subtraction results.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Preserve brighter foreground features</b></p>
+<p class="p1">If your background image is very bright (such as during daylight), the contrast between your blobs and the background can be so low that the blobs almost disappear after the background has been subtracted. By enabling this feature, you can specify a luminance threshold, which will affect the background subtraction algorithm as follows: If, after the background has been subtracted, a pixel is less bright than the threshold, this pixel will be set to the background-subtracted value. If the pixel brightness is equal or larger than the threshold, the pixel will be set to the unmodified foreground value. This way, bright regions "survive" the background subtraction, without having the contrast destroyed.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Background subtraction foreground luminance threshold</b></p>
+<p class="p1">This is the threshold described in the previous paragraph ("Preserve brighter foreground features"). It is given in luminance units.</p>
 <p class="p3"><br></p>
 <p class="p1"><b>Blend acquired background images</b></p>
 <p class="p1">If you are using background subtraction and have the "Periodically update background image" option enabled, you can choose to blend a newly acquired background frame with the old one, rather than letting the new one replace the old one entirely. This is very useful in order not to let a single "bad" background image ruin the tracking performance.</p>

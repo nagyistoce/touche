@@ -49,6 +49,9 @@
 
 NSString* tFIsFirstRunPreferenceKey = @"tFIsFirstRunPreferenceKey";
 
+#define	HOMEPAGE_URL	(@"http://gkaindl.com/software/touche")
+#define	BUGS_URL		(@"http://code.google.com/p/touche/issues/list")
+
 #define InfoViewIdentifierMatches(view, ident)	([(view) respondsToSelector:@selector(controller)] && \
 												[[(id)(view) controller] isKindOfClass:[TFInfoViewController class]] && \
 												(NSUInteger)[(id)[(id)(view) controller] identifier] == (ident))
@@ -249,6 +252,16 @@ enum {
 {
 	_appStatus = AppStatusUninitialized;
 	[self _loadPipelineAsync];
+}
+
+- (IBAction)openIssueTrackerWebpage:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:BUGS_URL]];
+}
+
+- (IBAction)openHomepage:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:HOMEPAGE_URL]];
 }
 
 - (void)_ensurePipelineSetupControllerLoaded

@@ -129,9 +129,6 @@ NSString* tfBlobLibDc1394InputSourceConfItemCameraResolutionY = @"tfBlobLibDc139
 	if (![dcCapture setFrameSize:newSize error:error])
 		success = NO;
 	
-	if (success)
-		[dcCapture setMinimumFramerate:maximumFramesPerSecond];
-	
 	return success;
 }
 

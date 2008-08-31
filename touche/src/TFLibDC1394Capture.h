@@ -25,6 +25,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <dc1394/dc1394.h>
+#import <QuartzCore/QuartzCore.h>
 
 #import "TFCapture.h"
 
@@ -51,7 +52,10 @@ enum {
 	dc1394framerates_t	_frameratesForCurrentVideoMode;
 	dc1394framerate_t	_currentFrameRate;
 	
-	id					_threadLock;
+	id					_threadLock, _cameraLock;
+	
+	CVPixelBufferPoolRef	_pixelBufferPool;
+	BOOL					_pixelBufferPoolNeedsUpdating;
 }
 
 - (id)initWithCameraUniqueId:(NSNumber*)uid;

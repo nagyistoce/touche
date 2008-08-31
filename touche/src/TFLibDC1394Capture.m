@@ -26,11 +26,16 @@
 #import "TFLibDC1394Capture.h"
 #import "TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.h"
 
+#import <dc1394/macosx/capture.h>
+
 #import "TFIncludes.h"
 #import "TFThreadMessagingQueue.h"
 
 #define NUM_DMA_BUFFERS					(10)
 #define MAX_FEATURE_KEY					(4)
+#define SECONDS_IN_RUNLOOP				(1)
+
+static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
 
 static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 
@@ -40,6 +45,8 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 + (NSString*)_displayNameForCamera:(dc1394camera_t*)camera;
 - (dc1394feature_t)_featureFromKey:(NSInteger)featureKey;
 + (NSArray*)_supportedVideoModesForFrameSize:(CGSize)frameSize forCamera:(dc1394camera_t*)cam error:(NSError**)error;
++ (BOOL)_getFrameRatesForCamera:(dc1394camera_t*)cam atVideoMode:(dc1394video_mode_t)videoMode intoFramerates:(dc1394framerates_t*)frameRates;
++ (NSNumber*)_bestVideoModeForCamera:(dc1394camera_t*)cam frameSize:(CGSize)frameSize frameRate:(dc1394framerate_t*)frameRate error:(NSError**)error;
 - (NSArray*)_supportedVideoModesForFrameSize:(CGSize)frameSize error:(NSError**)error;
 - (void)_setupCapture:(NSValue*)errPointer;
 - (void)_stopCapture:(NSValue*)errPointer;
@@ -59,6 +66,12 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		[self stopCapturing:NULL];
 
 	[self _freeCamera];
+	
+	[_threadLock release];
+	_threadLock = nil;
+	
+	[_cameraLock release];
+	_cameraLock = nil;
 
 	if (NULL != _dc) {
 		dc1394_free(_dc);
@@ -122,15 +135,17 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		return nil;
 	}
 	
-	_currentFrameRate = DC1394_FRAMERATE_30;
+	_currentFrameRate = 0;
+	_pixelBufferPoolNeedsUpdating = YES;
+	
+	_threadLock = [[NSLock alloc] init];
+	_cameraLock = [[NSLock alloc] init];
 	
 	if (![self setCameraToCameraWithUniqueId:uid error:error]) {
 		[self release];
 		return nil;
 	}
 	
-	_threadLock = [[NSLock alloc] init];
-		
 	if (NULL != error)
 		*error = nil;
 	
@@ -148,7 +163,9 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	if (NULL != _camera) {
 		NSNumber* guid = [NSNumber numberWithUnsignedLongLong:_camera->guid];
 		
-		@synchronized(self) {
+		@synchronized(_cameraLock) {
+			dc1394_camera_reset(_camera);
+			dc1394_camera_set_power(_camera, DC1394_OFF);
 			dc1394_camera_free(_camera);
 			_camera = NULL;
 		}
@@ -168,8 +185,11 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		return YES;
 	
 	BOOL wasRunning = [self isCapturing];
+	BOOL hadCamera = (NULL != _camera);
+	CGSize frameSize;
 
-	if (NULL != _camera) {
+	if (hadCamera) {
+		frameSize = [self frameSize];
 		[self stopCapturing:NULL];
 		[self _freeCamera];
 	}
@@ -216,6 +236,18 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		return NO;
 	}
 	
+	dc1394_camera_reset(_camera);
+	dc1394_camera_set_power(_camera, DC1394_ON);
+	
+	// turn off the camera's ISO if it's running
+	dc1394_video_set_transmission(_camera, DC1394_OFF);
+	
+	// if the camera's currently set ISO speed is < 400MB/S, we set it to 400MB/S
+	dc1394speed_t isoSpeed;
+	dc1394_video_get_iso_speed(_camera, &isoSpeed);	
+	if (isoSpeed < DC1394_ISO_SPEED_400)
+		dc1394_video_set_iso_speed(_camera, DC1394_ISO_SPEED_400);
+	
 	int i;
 	for (i=0; i<=MAX_FEATURE_KEY; i++) {
 		dc1394feature_t currentFeature = [self _featureFromKey:i];
@@ -251,13 +283,17 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		[_allocatedTFLibDc1394CaptureObjects setObject:[NSValue valueWithPointer:self] forKey:uid];
 	}
 	
-	// try setting to the last known framerate if available...
-	dc1394_video_set_framerate(_camera, _currentFrameRate);
-	
 	// get the default video mode and supported framerates for this mode (no error if we fail here...)
 	dc1394_video_get_mode(_camera, &_currentVideoMode);
 	dc1394_video_get_supported_framerates(_camera, _currentVideoMode, &_frameratesForCurrentVideoMode);
 	dc1394_video_get_framerate(_camera, &_currentFrameRate);
+	
+	_pixelBufferPoolNeedsUpdating = YES;
+	
+	if (hadCamera) {
+		if (![self setFrameSize:frameSize error:NULL])
+			[self setFrameSize:[[self class] defaultResolutionForCameraWithUniqueId:uid] error:NULL];
+	}
 	
 	BOOL success = YES;
 	if (wasRunning)
@@ -393,22 +429,31 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		*error = nil;
 	else
 		error = &dummy;
-
-	if ([self isCapturing])
-		return YES;
 	
-	[self performSelectorOnMainThread:@selector(_setupCapture:)
-						   withObject:[NSValue valueWithPointer:error]
-						waitUntilDone:YES];
+	@synchronized(_cameraLock) {
+		if (nil != _thread || [self isCapturing])
+			return YES;
+	
+		_thread = [[NSThread alloc] initWithTarget:self
+										  selector:@selector(_videoCaptureThread)
+											object:nil];
+		[_thread start];
+	
+		[self performSelector:@selector(_setupCapture:)
+					 onThread:_thread
+				   withObject:[NSValue valueWithPointer:error]
+				waitUntilDone:YES];
 		
-	if (nil != *error)
-		return NO;
-	
-	_thread = [[NSThread alloc] initWithTarget:self
-									  selector:@selector(_videoCaptureThread)
-										object:nil];
-	[_thread start];
-	
+		if (nil != *error) {
+			[_thread cancel];
+			[_thread release];
+			_thread = nil;
+			
+			[*error autorelease];
+			return NO;
+		}
+	}
+		
 	return [super startCapturing:error];
 }
 
@@ -419,54 +464,72 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		*error = nil;
 	else
 		error = &dummy;
-	
-	if (![self isCapturing])
-		return YES;
-	
-	[_thread cancel];
 
-	// wait for the thread to exit
-	@synchronized (_threadLock) {
-		[self performSelectorOnMainThread:@selector(_stopCapture:)
-							   withObject:[NSValue valueWithPointer:error]
-							waitUntilDone:YES];
-	}
+	@synchronized(_cameraLock) {
+		if (nil == _thread || ![self isCapturing])
+			return YES;
 	
-	[_thread release];
-	_thread = nil;
+		[self performSelector:@selector(_stopCapture:)
+					 onThread:_thread
+				   withObject:[NSValue valueWithPointer:error]
+				waitUntilDone:YES];
+		
+		// wait for the thread to exit
+		@synchronized (_threadLock) {
+			[_thread release];
+			_thread = nil;
+		}
+	}
 	
 	BOOL success = [super stopCapturing:error];
 				
-	if (nil != *error)
+	if (nil != *error) {
+		[*error autorelease];
 		return NO;
-	
+	}
+		
 	return success;
 }
 
 - (void)_setupCapture:(NSValue*)errPointer
-{
+{	
 	NSError** error = [errPointer pointerValue];
 	
 	if (NULL != error)
 		*error = nil;
 
-	if (DC1394_SUCCESS != dc1394_capture_setup(_camera,
-											   NUM_DMA_BUFFERS,
-											   DC1394_CAPTURE_FLAGS_DEFAULT)) {
+	// just to be sure!
+	dc1394video_mode_t mode;
+	dc1394framerate_t framerate;
+	dc1394_video_get_mode(_camera, &mode);
+	dc1394_video_get_framerate(_camera, &framerate);
+	dc1394_video_set_mode(_camera, mode);
+	dc1394_video_set_framerate(_camera, mode);
+
+	dc1394_capture_schedule_with_runloop(_camera,
+										 [[NSRunLoop currentRunLoop] getCFRunLoop],
+										 kCFRunLoopDefaultMode);
+	dc1394_capture_set_callback(_camera, libdc1394_frame_callback, self);
+
+	dc1394error_t err;
+	err = dc1394_capture_setup(_camera,
+								NUM_DMA_BUFFERS,
+								DC1394_CAPTURE_FLAGS_DEFAULT | DC1394_CAPTURE_FLAGS_AUTO_ISO);
 		
+	if (err != DC1394_SUCCESS) {
 		if (NULL != error)
-			*error = [NSError errorWithDomain:TFErrorDomain
-										 code:TFErrorDc1394CaptureSetupFailed
-									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-											   TFLocalizedString(@"TFDc1394CaptureSetupErrorDesc", @"TFDc1394CaptureSetupErrorDesc"),
-												NSLocalizedDescriptionKey,
-											   TFLocalizedString(@"TFDc1394CaptureSetupErrorReason", @"TFDc1394CaptureSetupErrorReason"),
-												NSLocalizedFailureReasonErrorKey,
-											   TFLocalizedString(@"TFDc1394CaptureSetupErrorRecovery", @"TFDc1394CaptureSetupErrorRecovery"),
-												NSLocalizedRecoverySuggestionErrorKey,
-											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-												NSStringEncodingErrorKey,
-											   nil]];
+			*error = [[NSError errorWithDomain:TFErrorDomain
+										  code:TFErrorDc1394CaptureSetupFailed
+									  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+												TFLocalizedString(@"TFDc1394CaptureSetupErrorDesc", @"TFDc1394CaptureSetupErrorDesc"),
+													NSLocalizedDescriptionKey,
+												TFLocalizedString(@"TFDc1394CaptureSetupErrorReason", @"TFDc1394CaptureSetupErrorReason"),
+													NSLocalizedFailureReasonErrorKey,
+												TFLocalizedString(@"TFDc1394CaptureSetupErrorRecovery", @"TFDc1394CaptureSetupErrorRecovery"),
+													NSLocalizedRecoverySuggestionErrorKey,
+												[NSNumber numberWithInteger:NSUTF8StringEncoding],
+													NSStringEncodingErrorKey,
+												nil]] retain];
 		
 		return;
 	}
@@ -475,18 +538,18 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		dc1394_capture_stop(_camera);
 		
 		if (NULL != error)
-			*error = [NSError errorWithDomain:TFErrorDomain
-										 code:TFErrorDc1394SetTransmissionFailed
-									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-											   TFLocalizedString(@"TFDc1394SetTransmissionErrorDesc", @"TFDc1394SetTransmissionErrorDesc"),
-												NSLocalizedDescriptionKey,
-											   TFLocalizedString(@"TFDc1394SetTransmissionErrorReason", @"TFDc1394SetTransmissionErrorReason"),
-												NSLocalizedFailureReasonErrorKey,
-											   TFLocalizedString(@"TFDc1394SetTransmissionErrorRecovery", @"TFDc1394SetTransmissionErrorRecovery"),
-												NSLocalizedRecoverySuggestionErrorKey,
-											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-												NSStringEncodingErrorKey,
-											   nil]];
+			*error = [[NSError errorWithDomain:TFErrorDomain
+										  code:TFErrorDc1394SetTransmissionFailed
+									  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+												TFLocalizedString(@"TFDc1394SetTransmissionErrorDesc", @"TFDc1394SetTransmissionErrorDesc"),
+													NSLocalizedDescriptionKey,
+												TFLocalizedString(@"TFDc1394SetTransmissionErrorReason", @"TFDc1394SetTransmissionErrorReason"),
+													NSLocalizedFailureReasonErrorKey,
+												TFLocalizedString(@"TFDc1394SetTransmissionErrorRecovery", @"TFDc1394SetTransmissionErrorRecovery"),
+													NSLocalizedRecoverySuggestionErrorKey,
+												[NSNumber numberWithInteger:NSUTF8StringEncoding],
+													NSStringEncodingErrorKey,
+											   nil]] retain];
 		
 		return;
 	}
@@ -498,45 +561,47 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	
 	if (NULL != error)
 		*error = nil;
+		
+	[_thread cancel];
 	
 	dc1394error_t transmissionErr, captureErr;
-	@synchronized(self) {
-		transmissionErr = dc1394_video_set_transmission(_camera, DC1394_OFF);
-		captureErr = dc1394_capture_stop(_camera);
-	}
+	transmissionErr = dc1394_video_set_transmission(_camera, DC1394_OFF);
+	captureErr = dc1394_capture_stop(_camera);
 	
+	dc1394_iso_release_all(_camera);
+		
 	if (DC1394_SUCCESS != transmissionErr) {
 		if (NULL != error)
-			*error = [NSError errorWithDomain:TFErrorDomain
-										 code:TFErrorDc1394StopTransmissionFailed
-									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-											   TFLocalizedString(@"TFDc1394StopTransmissionErrorDesc", @"TFDc1394StopTransmissionErrorDesc"),
-												NSLocalizedDescriptionKey,
-											   TFLocalizedString(@"TFDc1394StopTransmissionErrorReason", @"TFDc1394StopTransmissionErrorReason"),
-												NSLocalizedFailureReasonErrorKey,
-											   TFLocalizedString(@"TFDc1394StopTransmissionErrorRecovery", @"TFDc1394StopTransmissionErrorRecovery"),
-												NSLocalizedRecoverySuggestionErrorKey,
-											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-												NSStringEncodingErrorKey,
-											   nil]];
+			*error = [[NSError errorWithDomain:TFErrorDomain
+										  code:TFErrorDc1394StopTransmissionFailed
+									  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+												TFLocalizedString(@"TFDc1394StopTransmissionErrorDesc", @"TFDc1394StopTransmissionErrorDesc"),
+													NSLocalizedDescriptionKey,
+												TFLocalizedString(@"TFDc1394StopTransmissionErrorReason", @"TFDc1394StopTransmissionErrorReason"),
+													NSLocalizedFailureReasonErrorKey,
+												TFLocalizedString(@"TFDc1394StopTransmissionErrorRecovery", @"TFDc1394StopTransmissionErrorRecovery"),
+													NSLocalizedRecoverySuggestionErrorKey,
+												[NSNumber numberWithInteger:NSUTF8StringEncoding],
+													NSStringEncodingErrorKey,
+											   nil]] retain];
 
 		return;
 	}
 	
 	if (DC1394_SUCCESS != captureErr) {
 		if (NULL != error)
-			*error = [NSError errorWithDomain:TFErrorDomain
-										 code:TFErrorDc1394StopCapturingFailed
-									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-											   TFLocalizedString(@"TFDc1394StopCapturingErrorDesc", @"TFDc1394StopCapturingErrorDesc"),
-												NSLocalizedDescriptionKey,
-											   TFLocalizedString(@"TFDc1394StopCapturingErrorReason", @"TFDc1394StopCapturingErrorReason"),
-												NSLocalizedFailureReasonErrorKey,
-											   TFLocalizedString(@"TFDc1394StopCapturingErrorRecovery", @"TFDc1394StopCapturingErrorRecovery"),
-												NSLocalizedRecoverySuggestionErrorKey,
-											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-												NSStringEncodingErrorKey,
-											   nil]];
+			*error = [[NSError errorWithDomain:TFErrorDomain
+										  code:TFErrorDc1394StopCapturingFailed
+									  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+												TFLocalizedString(@"TFDc1394StopCapturingErrorDesc", @"TFDc1394StopCapturingErrorDesc"),
+													NSLocalizedDescriptionKey,
+												TFLocalizedString(@"TFDc1394StopCapturingErrorReason", @"TFDc1394StopCapturingErrorReason"),
+													NSLocalizedFailureReasonErrorKey,
+												TFLocalizedString(@"TFDc1394StopCapturingErrorRecovery", @"TFDc1394StopCapturingErrorRecovery"),
+													NSLocalizedRecoverySuggestionErrorKey,
+												[NSNumber numberWithInteger:NSUTF8StringEncoding],
+													NSStringEncodingErrorKey,
+											   nil]] retain];
 		
 		return;
 	}
@@ -588,12 +653,13 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 
 - (BOOL)setFrameSize:(CGSize)size error:(NSError**)error
 {
-	NSArray* modes = [[self class] _supportedVideoModesForFrameSize:size
-														  forCamera:_camera
-															  error:error];
-	if (nil == modes)
-		return NO;
-	else if ([modes count] <= 0) {
+	dc1394framerate_t newFrameRate = _currentFrameRate;
+	NSNumber* videoMode = [[self class] _bestVideoModeForCamera:_camera
+													  frameSize:size
+													  frameRate:&newFrameRate
+														  error:error];
+
+	if (nil == videoMode) {
 		if (NULL != error)
 			*error = [NSError errorWithDomain:TFErrorDomain
 										 code:TFErrorDc1394ResolutionChangeFailed
@@ -611,22 +677,13 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 
 		return NO;
 	}
-		
-	int ranking = INT_MAX;
-	NSNumber* bestMode = nil;
-	for (NSNumber* mode in modes) {
-		if (nil == bestMode || ranking > [self rankingForVideoMode:[mode intValue]]) {
-			bestMode = mode;
-			ranking = [self rankingForVideoMode:[mode intValue]];
-		}
-	}
-
+			
 	BOOL wasRunning = [self isCapturing];
 	if (wasRunning)
 		if (![self stopCapturing:error])
 			return NO;
 
-	dc1394error_t err = dc1394_video_set_mode(_camera, [bestMode intValue]);
+	dc1394error_t err = dc1394_video_set_mode(_camera, [videoMode intValue]);
 	if (DC1394_SUCCESS != err) {
 		if (NULL != error)
 			*error = [NSError errorWithDomain:TFErrorDomain
@@ -646,12 +703,19 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		return NO;
 	}
 	
-	_currentVideoMode = [bestMode intValue];
+	_currentVideoMode = [videoMode intValue];
 	dc1394_video_get_supported_framerates(_camera, _currentVideoMode, &_frameratesForCurrentVideoMode);
+	
+	if (newFrameRate != _currentFrameRate) {
+		if (DC1394_SUCCESS != dc1394_video_set_framerate(_camera, newFrameRate)) {
+		} else
+			_currentFrameRate = newFrameRate;
+	}
+	
 	dc1394_video_get_framerate(_camera, &_currentFrameRate);
+	_pixelBufferPoolNeedsUpdating = YES;
 	
 	if (wasRunning) {
-		[NSThread sleepForTimeInterval:.5];
 		if (![self startCapturing:error])
 			return NO;
 	}
@@ -660,7 +724,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 }
 
 - (BOOL)setMinimumFramerate:(NSUInteger)frameRate
-{
+{	
 	if (NULL == _camera)
 		return NO;
 
@@ -682,38 +746,37 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	if (_currentFrameRate == minFPS)
 		return YES;
 	
-	// first, try finding a framerate that is equal or larger than minFPS
-	int j;
-	dc1394framerate_t selectedFPS = minFPS;
-	for (selectedFPS; selectedFPS <= DC1394_FRAMERATE_MAX; selectedFPS++)
-		for (j=0; j<_frameratesForCurrentVideoMode.num; j++)
-			if (selectedFPS == _frameratesForCurrentVideoMode.framerates[j]) {
-				if (_currentFrameRate == selectedFPS)
-					return YES;
-			
-				BOOL success = (DC1394_SUCCESS == dc1394_video_set_framerate(_camera, selectedFPS));
-				
-				if (success)
-					_currentFrameRate = selectedFPS;
-				
-				return success;
-			}
+	// try to find a video mode at the same resolution that offers minFPS or at least a better
+	// framerate than the current framerate
+	dc1394framerate_t betterFPS = minFPS;
+	NSNumber* betterVideoMode = [[self class] _bestVideoModeForCamera:_camera
+															frameSize:[self frameSize]
+															frameRate:&betterFPS
+																error:NULL];
 	
-	// ok, if we didn't find a framerate larger or equal, we search for smaller ones...
-	for (selectedFPS = minFPS-1; selectedFPS >= DC1394_FRAMERATE_MIN; selectedFPS--)
-		for (j=0; j<_frameratesForCurrentVideoMode.num; j++)
-			if (selectedFPS == _frameratesForCurrentVideoMode.framerates[j]) {
-				if (_currentFrameRate == selectedFPS)
-					return YES;
+	if (nil != betterVideoMode) {
+		if (betterFPS >= minFPS || (betterFPS < minFPS && _currentFrameRate < betterFPS)) {
+			BOOL wasRunning = [self isCapturing];
 			
-				BOOL success = (DC1394_SUCCESS == dc1394_video_set_framerate(_camera, selectedFPS));
-				
-				if (success)
-					_currentFrameRate = selectedFPS;
-				
-				return success;
-			}
-	
+			if (wasRunning)
+				[self stopCapturing:NULL];
+			
+			BOOL success = (DC1394_SUCCESS == dc1394_video_set_mode(_camera, [betterVideoMode intValue]));
+			if (success)
+				success = (DC1394_SUCCESS == dc1394_video_set_framerate(_camera, betterFPS));
+			
+			if (wasRunning)
+				[self startCapturing:NULL];
+						
+			if (success)
+				_currentFrameRate = betterFPS;
+			
+			_pixelBufferPoolNeedsUpdating = YES;
+			
+			return success;
+		}
+	}
+		
 	return NO;
 }
 
@@ -726,72 +789,12 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 						 supportsResolution:size];
 }
 
-- (void)_videoCaptureThread
+- (void)dispatchFrame:(dc1394video_frame_t*)frame
 {
-	dc1394error_t err;
-	dc1394video_frame_t* frame;
-	
-	NSAutoreleasePool* threadPool = [[NSAutoreleasePool alloc] init];
-
-	// while the thread is running, it locks itself. This way, we can find out when the thread has
-	// exited...
-	@synchronized(_threadLock) {
-		while (![_thread isCancelled]) {
-			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	CIImage* image = [self ciImageWithDc1394Frame:frame error:NULL];
 				
-			@synchronized(self) {
-				err = dc1394_capture_dequeue(_camera, DC1394_CAPTURE_POLICY_WAIT, &frame);
-				
-				if (DC1394_SUCCESS != err || NULL == frame) {
-					[pool release];
-					continue;
-				}
-				
-				// if this is not the most recent frame, drop it and continue
-				if (0 < frame->frames_behind) {
-					dc1394_capture_enqueue(_camera, frame);
-					[pool release];
-					continue;
-				}
-								
-				NSError* error;
-				CVPixelBufferRef pixelBuffer = [self pixelBufferWithDc1394Frame:frame error:&error];
-				
-				if (nil == pixelBuffer) {
-					[pool release];
-					continue;
-				}
-				
-				if (_delegateCapabilities.hasDidCaptureFrame) {
-					CIImage* image = nil;
-					
-					if (_delegateCapabilities.hasWantedCIImageColorSpace)
-						image = [CIImage imageWithCVImageBuffer:pixelBuffer
-														options:[NSDictionary dictionaryWithObject:(id)[delegate wantedCIImageColorSpaceForCapture:self]
-																							forKey:kCIImageColorSpace]];
-					else
-						image = [CIImage imageWithCVImageBuffer:pixelBuffer];
-					
-		
-					[_frameQueue enqueue:image];
-				}
-						
-				dc1394_capture_enqueue(_camera, frame);
-				CVPixelBufferRelease(pixelBuffer);
-			}
-			
-			[pool release];
-		}
-	
-		// flush the DMA buffers
-		dc1394_capture_dequeue(_camera, DC1394_CAPTURE_POLICY_POLL, &frame);
-		while (NULL != frame) {
-			dc1394_capture_enqueue(_camera, frame);
-			dc1394_capture_dequeue(_camera, DC1394_CAPTURE_POLICY_POLL, &frame);
-		}
-	}
-		
-	[threadPool release];
+	if (nil != image && _delegateCapabilities.hasDidCaptureFrame)
+			[_frameQueue enqueue:image];
 }
 
 - (dc1394feature_t)_featureFromKey:(NSInteger)featureKey
@@ -808,6 +811,24 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	}
 	
 	return 0;
+}
+
+- (void)_videoCaptureThread
+{
+	@synchronized(_threadLock) {
+		NSAutoreleasePool* threadPool = [[NSAutoreleasePool alloc] init];
+
+		do {
+			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+			[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:SECONDS_IN_RUNLOOP]];
+			[pool release];
+		} while (![[NSThread currentThread] isCancelled]);
+	
+		[_thread release];
+		_thread = nil;
+		
+		[threadPool release];
+	}
 }
 
 + (NSString*)_displayNameForCamera:(dc1394camera_t*)camera
@@ -1173,4 +1194,94 @@ errorReturn:
 	return nil;
 }
 
++ (BOOL)_getFrameRatesForCamera:(dc1394camera_t*)cam
+					atVideoMode:(dc1394video_mode_t)videoMode
+				 intoFramerates:(dc1394framerates_t*)frameRates
+{
+	return (DC1394_SUCCESS == dc1394_video_get_supported_framerates(cam, videoMode, frameRates));
+}
+
++ (NSNumber*)_fastestFrameRateForCamera:(dc1394camera_t*)cam videoMode:(dc1394video_mode_t)videoMode;
+{
+	NSNumber* fastestFrameRate = nil;
+	dc1394framerates_t frameRates;
+	
+	if ([self _getFrameRatesForCamera:cam atVideoMode:videoMode intoFramerates:&frameRates]) {
+		if (frameRates.num > 0) {
+			dc1394framerate_t bestRate = frameRates.framerates[0];
+			
+			int i;
+			for (i=0; i<frameRates.num; i++)
+				if (frameRates.framerates[i] > bestRate)
+					bestRate = frameRates.framerates[i];
+			
+			fastestFrameRate = [NSNumber numberWithInt:bestRate];
+		} 
+	}
+	
+	return fastestFrameRate;
+}
+
++ (NSNumber*)_bestVideoModeForCamera:(dc1394camera_t*)cam
+						   frameSize:(CGSize)frameSize
+						   frameRate:(dc1394framerate_t*)frameRate
+							   error:(NSError**)error
+{	
+	NSArray* modes = [[self class] _supportedVideoModesForFrameSize:frameSize
+														  forCamera:cam
+															  error:error];
+	if (nil == modes || 0 >= [modes count])
+		return nil;
+	
+	dc1394video_mode_t chosenVideoMode = [[modes objectAtIndex:0] intValue];
+	dc1394framerate_t chosenFrameRate = [[self _fastestFrameRateForCamera:cam videoMode:[[modes objectAtIndex:0] intValue]] intValue];
+	
+	int ranking = [self rankingForVideoMode:chosenVideoMode];
+	for (NSNumber* mode in modes) {
+		int thisRanking = [self rankingForVideoMode:[mode intValue]];
+		NSNumber* fastestFrameRate = [self _fastestFrameRateForCamera:cam videoMode:[mode intValue]];
+		
+		if (ranking < thisRanking || nil == fastestFrameRate)
+			continue;
+		
+		if ((ranking > thisRanking &&
+			 ((NULL == frameRate && [fastestFrameRate intValue] >= chosenFrameRate) ||
+			  (NULL != frameRate && ([fastestFrameRate intValue] >= *frameRate || [fastestFrameRate intValue] >= chosenFrameRate)))) ||
+			(NULL != frameRate && chosenFrameRate < *frameRate && [fastestFrameRate intValue] >= *frameRate)) {
+			ranking = thisRanking;
+			chosenVideoMode = [mode intValue];
+			chosenFrameRate = [fastestFrameRate intValue];
+		}
+	}
+	
+	if (NULL != frameRate)
+		*frameRate = chosenFrameRate;
+	
+	return [NSNumber numberWithInt:chosenVideoMode];
+}
+
 @end
+
+static void libdc1394_frame_callback(dc1394camera_t* c, void* data)
+{
+    dc1394video_frame_t* frame;
+	dc1394error_t err = dc1394_capture_dequeue(c, DC1394_CAPTURE_POLICY_POLL, &frame);
+	
+	if (DC1394_SUCCESS != err || NULL == frame)
+		return;
+	
+	// if this is not the most recent frame, drop it and continue
+	if (0 < frame->frames_behind) {
+		do {
+			dc1394_capture_enqueue(c, frame);
+			dc1394_capture_dequeue(c, DC1394_CAPTURE_POLICY_POLL, &frame);
+		} while (NULL != frame && 0 < frame->frames_behind);
+	}
+	
+	if (NULL != frame) {
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		[(TFLibDC1394Capture*)data dispatchFrame:frame];
+		dc1394_capture_enqueue(c, frame);
+		[pool release];
+	}
+}

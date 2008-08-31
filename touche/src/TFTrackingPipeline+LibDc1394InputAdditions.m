@@ -29,6 +29,8 @@
 #import "TFLibDC1394Capture.h"
 #import "TFBlobLibDc1394InputSource.h"
 
+NSString* TFLibDc1394CameraDidChangeNotification = @"TFLibDc1394CameraDidChangeNotification";
+
 NSString* libDc1394CameraUniqueIdPrefKey = @"libDc1394CameraUniqueIdPrefKey";
 NSString* libdc1394CaptureCameraResolutionPrefKey = @"libdc1394CaptureCameraResolutionPrefKey";
 
@@ -62,16 +64,26 @@ NSString* libdc1394CaptureCameraResolutionPrefKey = @"libdc1394CaptureCameraReso
 
 - (BOOL)_changeLibDc1394CameraToCameraWithUniqueId:(NSNumber*)uniqueId error:(NSError**)error
 {
+	TFLibDC1394Capture* dcCapture = nil;
+	BOOL success = NO;
+	
 	@synchronized(_blobInput) {		
 		if ([[_blobInput class] isEqual:[TFBlobLibDc1394InputSource class]]) {
-			TFLibDC1394Capture* dcCapture = ((TFBlobLibDc1394InputSource*)_blobInput).dcCapture;
+			dcCapture = ((TFBlobLibDc1394InputSource*)_blobInput).dcCapture;
 			
 			if (![dcCapture setCameraToCameraWithUniqueId:uniqueId error:error]) {
 				return NO;
 			}
 			
-			return YES;
+			success = YES;
 		}
+	}
+	
+	if (success) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:TFLibDc1394CameraDidChangeNotification
+															object:dcCapture];
+		
+		return YES;
 	}
 	
 	if (NULL != error)

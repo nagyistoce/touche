@@ -72,6 +72,11 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	
 	[_cameraLock release];
 	_cameraLock = nil;
+	
+	if (NULL != _pixelBufferPool) {
+		CVPixelBufferPoolRelease(_pixelBufferPool);
+		_pixelBufferPool = NULL;
+	}
 
 	if (NULL != _dc) {
 		dc1394_free(_dc);

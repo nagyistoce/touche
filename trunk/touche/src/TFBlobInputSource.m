@@ -29,7 +29,7 @@
 #import "TFThreadMessagingQueue.h"
 
 
-#define DEFAULT_FPS	((float)30.0f)
+#define DEFAULT_FPS	((float)35.0f)
 
 @interface TFBlobInputSource (NonPublicMethods)
 - (BOOL)_shouldProcessThisFrame;

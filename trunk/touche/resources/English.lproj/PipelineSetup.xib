@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="682"/>
+			<integer value="677"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -431,10 +431,6 @@
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
 			</object>
 			<object class="NSUserDefaultsController" id="512091734">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>isEnabled_TFCIBackgroundSubtractionFilter</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSWindowTemplate" id="71502887">
@@ -11964,7 +11960,7 @@ bGUgaW1hZ2UsIGJ1dCBsaWdodCBhcmVhcyBtb3JlIHN0cm9uZ2x5IHRoYW4gZGFya2VyIG9uZXM</str
 						<object class="IBToolTipAttribute" key="NS.object.0">
 							<string key="name">ToolTip</string>
 							<reference key="object" ref="861597255"/>
-							<string key="toolTip">If checked, background subtraction will be applied to video frames</string>
+							<string key="toolTip">If checked, the color values of each frame will be inverted.</string>
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

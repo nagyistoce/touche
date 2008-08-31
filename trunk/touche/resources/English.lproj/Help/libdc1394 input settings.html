@@ -44,6 +44,7 @@ ul.ul1 {list-style-type: disc}
 <p class="p1"><b>Maximum FPS</b></p>
 <p class="p1">Touché will try to process frames as soon as they are delivered by the camera, dropping frames only if it can't keep up with the camera's pace. Thusly, cameras with high framerates might cause Touché to use up most of the available CPU time, leaving little for the actual multitouch apps running next to the Touché tracker.</p>
 <p class="p1">Therefore, you can set a cap on the framerate. If the camera delivers frames at faster rates than this setting, Touché will start dropping frames in order to process no more frames per second than what you have selected here, saving CPU time.</p>
+<p class="p1">Note that Touché will automatically select the video mode that is most appropriate for the chosen resolution and framerate. For example, if your camera supports color capturing, say, 640x480 and up to 15fps, Touché will use this mode when a resoltion of 640x480 and a maximum FPS setting of less than 15 is chosen, but will automatically switch to another mode (for example, monochrome capturing) if the maximum FPS setting is raised above 15.</p>
 <p class="p3"><br></p>
 <p class="p1"><b>Minimum blob diameter</b></p>
 <p class="p1">You can specify a minimum size for the blobs that should be recognized and tracked. Any blobs that have a diameter below this threshold will be disregarded. This is useful in order to ignore stray white pixels or very small blobs that you do not intend to track.</p>

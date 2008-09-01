@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="generator" content="VoodooPad">
+	<title>Core Image filter settings</title>
+	<link rel="stylesheet" href="helpfiles_style.css" type="text/css" media="screen"/>
+</head>
+
+<body>
+	<div id="helpTopBar">
+		Core Image filter settings
+		<div id="homelink">
+			<a href="index.html" title="Touché Help">Touché Help</a>
+			| <a href="helpindex.html" title="Index">Index</a>
+		</div>
+	</div>
+	
+	<div id="wrapper">
+	   <h1>Core Image filter settings</h1>
+    
+	   <div class="main">
+	       <style type="text/css">
+p.p1 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande}
+p.p2 {margin: 0.0px 0.0px 9.0px 0.0px; text-align: center; line-height: 16.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande; min-height: 15.0px}
+ul.ul1 {list-style-type: disc}
+</style>
+
+<p class="p1">For some input sources (cameras), Touché offers various filters for preprocessing before a captured frame is passed to down the tracking pipeline. These filters can be helpful in order to get the best tracking results possible for your setup, since they can be used to minimize the effects of adverse factors such as stray IR light, weak blobs due to a not-so-perfect multitouch table or excessive camera noise.</p>
+<p class="p1">You can adjust the filter settings in the "Core Image Filter Settings" box in the <a href="tracking%20pipeline%20configuration.html">tracking pipeline configuration</a> window, which can be accessed via "Configure Tracking Pipeline..." in the "Setup" menu.</p>
+<p class="p1">Note that depending on your selected input source, filters may not be available.</p>
+<p class="p1">Also note that you can set the filter stage from which the preview video stream is taken (see "<a href="blob%20input%20method%20settings.html">Blob input method settings</a>" and "<a href="blob%20input%20preview%20window.html">Blob input preview window</a>").</p>
+<p class="p2"><img src="core%20image%20filter%20settings.filters_preprocessing.jpg" alt="filters_preprocessing.jpg"></p>
+<p class="p1">Note that the filters are applied in the same order as they appear in the left side of the Core Image filter settings box (from top to bottom), and from left to right in terms of tab groups.</p>
+<p class="p1">In order to keep the filter setup somewhat tidy, the various filters are distributed into 3 groups: Preprocessing, thresholding and postprocessing operations. For more information about the filters in each particular group, please refer to the following pages.</p>
+<ul class="ul1">
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="preprocessing%20filters.html">Preprocessing filters</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="thresholding%20filters.html">Thresholding filters</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="postprocessing%20filters.html">Postprocessing filters</a></li>
+</ul>
+<p class="p3"><br></p>
+<p class="p1"><b>Render filters on CPU</b></p>
+<p class="p1">Since getting a processed texture back from the GPU in order to pass it on for processing in the tracking pipeline is a very expensive operation in terms of performance, you can set Touché to compute the filters on the CPU instead. In 99% of cases, you want to have this option enabled.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Related topics</b></p>
+<ul class="ul1">
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="blob%20input%20method%20settings.html">Blob input method settings</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="blob%20input%20preview%20window.html">Blob input preview window</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="postprocessing%20filters.html">Postprocessing filters</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="preprocessing%20filters.html">Preprocessing filters</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="thresholding%20filters.html">Thresholding filters</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tracking%20pipeline%20configuration.html">Tracking pipeline configuration</a></li>
+</ul>
+
+	   </div>
+	</div>
+</body>
+</html>
+

@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="generator" content="VoodooPad">
+	<title>Adding a TUIO client</title>
+	<link rel="stylesheet" href="helpfiles_style.css" type="text/css" media="screen"/>
+</head>
+
+<body>
+	<div id="helpTopBar">
+		Adding a TUIO client
+		<div id="homelink">
+			<a href="index.html" title="Touché Help">Touché Help</a>
+			| <a href="helpindex.html" title="Index">Index</a>
+		</div>
+	</div>
+	
+	<div id="wrapper">
+	   <h1>Adding a TUIO client</h1>
+    
+	   <div class="main">
+	       <style type="text/css">
+p.p1 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande}
+p.p2 {margin: 0.0px 0.0px 9.0px 0.0px; text-align: center; line-height: 16.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande; min-height: 15.0px}
+ul.ul1 {list-style-type: disc}
+</style>
+
+<p class="p1"><a href="tuio.html">TUIO</a> works differently than the Touché Framework: Rather than clients requesting tracking data automatically, as when using the Touché Framework, TUIO clients are only listening for data, but do not actively request it. Therefore, you need to add TUIO tracking clients manually.</p>
+<p class="p1">To add a new TUIO tracking client, click "Add TUIO Client..." in the "Clients" menu.</p>
+<p class="p2"><img src="adding%20a%20tuio%20client.add_tuio_client.jpg" alt="add_tuio_client.jpg"></p>
+<p class="p1">In the panel, you need to specify a destination IP address (such as 127.0.0.1) or a destination host name (such as www.my-tuio-client.com) as well as a destination port (such as 3333). TUIO data will then be sent to this destination.</p>
+<p class="p1">In order to find out which port your TUIO client application is listening on, please consult the client's documentation or source code.</p>
+<p class="p1">Once you have specified the destination, click the "Add Client" button to add the TUIO client to the list of clients currently being served.</p>
+<p class="p1">If the destination data you have entered is not valid or if the client is already being served by Touché, this will be signaled by an error message. Otherwise, the window will close, and the new TUIO client will be added to the <a href="tracking%20client%20list.html">tracking client list</a>.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Related topics</b></p>
+<ul class="ul1">
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="quitting%20multitouch%20applications.html">Quitting multitouch applications</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tracking%20client%20list.html">Tracking client list</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tuio.html">TUIO</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tuio%20settings.html">TUIO settings</a></li>
+</ul>
+
+	   </div>
+	</div>
+</body>
+</html>
+

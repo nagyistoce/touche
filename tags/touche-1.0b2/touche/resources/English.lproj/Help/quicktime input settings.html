@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="generator" content="VoodooPad">
+	<title>Quicktime input settings</title>
+	<link rel="stylesheet" href="helpfiles_style.css" type="text/css" media="screen"/>
+</head>
+
+<body>
+	<div id="helpTopBar">
+		Quicktime input settings
+		<div id="homelink">
+			<a href="index.html" title="Touché Help">Touché Help</a>
+			| <a href="helpindex.html" title="Index">Index</a>
+		</div>
+	</div>
+	
+	<div id="wrapper">
+	   <h1>Quicktime input settings</h1>
+    
+	   <div class="main">
+	       <style type="text/css">
+p.p1 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande}
+p.p2 {margin: 0.0px 0.0px 9.0px 0.0px; text-align: center; line-height: 16.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 9.0px 0.0px; text-align: center; line-height: 16.0px; font: 12.0px Lucida Grande; min-height: 15.0px}
+p.p4 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande; min-height: 15.0px}
+ul.ul1 {list-style-type: disc}
+</style>
+
+<p class="p1">If QuickTime is selected as the input method, you can choose any currently connected QuickTime-compatible camera as a capture source. For alternative input methods, see "<a href="blob%20input%20method%20settings.html">Blob input method settings</a>".</p>
+<p class="p2"><img src="quicktime%20input%20settings.quicktime_settings.jpg" alt="quicktime_settings.jpg"></p>
+<p class="p1">The following settings are available:</p>
+<p class="p3"><br></p>
+<p class="p1"><b>QuickTime Capture Device</b></p>
+<p class="p1">This menu is used to choose the QuickTime-compatible video device that should be used for capturing. If you have multiple cameras connected, be sure to select the one you want to use here.</p>
+<p class="p1">If the selected camera is not available when Touché starts the tracking pipeline in the future, it will automatically fall back to the default video device. If no video device is connected at all, an error will be reported.</p>
+<p class="p4"><br></p>
+<p class="p1"><b>Capturing Resolution</b></p>
+<p class="p1">You can choose the resolution of frames captured by the camera here. Larger settings can provide for better tracking accuracy, but tend to be (a lot) slower than smaller settings. 320x240 is a good default choice for older Macs, whereas powerful Macs should also be doing fine with higher settings.</p>
+<p class="p1">Note that the resolutions selectable here do not necessarily correspond to the resolutions that your camera supports natively. QuickTime will automatically resample each frame to the selected size if the camera does not support the resolution natively.</p>
+<p class="p1">If you want to use your camera's native resolution, please have a look at your camera's manual in order to find out what the native resolution is.</p>
+<p class="p4"><br></p>
+<p class="p1"><b>Maximum FPS</b></p>
+<p class="p1">Touché will try to process frames as soon as they are delivered by the camera, dropping frames only if it can't keep up with the camera's pace. Thusly, cameras with high framerates might cause Touché to use up most of the available CPU time, leaving little for the actual multitouch apps running next to the Touché tracker.</p>
+<p class="p1">Therefore, you can set a cap on the framerate. If the camera delivers frames at faster rates than this setting, Touché will start dropping frames in order to process no more frames per second than what you have selected here, saving CPU time.</p>
+<p class="p4"><br></p>
+<p class="p1"><b>Minimum blob diameter</b></p>
+<p class="p1">You can specify a minimum size for the blobs that should be recognized and tracked. Any blobs that have a diameter below this threshold will be disregarded. This is useful in order to ignore stray white pixels or very small blobs that you do not intend to track.</p>
+<p class="p1">Note that this setting is given in percentage of the capture resolution in order to be independent from the actual resolution. As an example, if you have selected 1% here, Touché will only track blobs with diameters above 3.2 for 320x240, above 6.4 for 640x480, etc.</p>
+<p class="p4"><br></p>
+<p class="p1"><b>Enable blob tracking</b></p>
+<p class="p1">If this checkbox is unchecked, Touché will not deliver the frames to the tracker, but will still capture video data and apply filters. This is useful during the setup process, where you do not want to track blobs yet, while you are still fiddling with the filter settings.</p>
+<p class="p1">Be sure to have this checkbox checked before starting a multitouch app.</p>
+<p class="p4"><br></p>
+<p class="p1"><b>Related topics</b></p>
+<ul class="ul1">
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="core%20image%20filter%20settings.html">Core Image filter settings</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="supported%20input%20devices.html">Supported input devices</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tracking%20pipeline%20configuration.html">Tracking pipeline configuration</a></li>
+</ul>
+
+	   </div>
+	</div>
+</body>
+</html>
+

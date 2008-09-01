@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<meta name="copyright" content= "Creative Commons Attribution 2.0 Austria License" />
+	<meta name="author" content= "Georg Kaindl" />
+    <meta name="publisher" content="Georg Kaindl" />
+	<style type="text/css">
+		div#topSpacer, div#bottomSpacer {
+			display: block;
+		}
+		
+		body {
+			margin: 0;
+			padding: 0;
+			overflow-y: hidden;
+		}
+		
+		div#wrapper {
+			margin-top: 1px 0 1px 0;
+			overflow-y: hidden;
+			z-index: 1;
+		}
+		
+		a, a:visited {
+			color: #3995e1;
+			text-decoration: none;
+		}
+		
+		a:hover {
+			border-bottom: 1px dotted #3995e1;
+		}
+		
+		div#topBorder, div#bottomBorder {
+			margin: 0;
+			padding: 0;
+			display: block;
+			height: 1px;
+			background-color: #b7b7b7;
+			position: fixed;
+			top: 0px;
+			z-index: 2;
+		}
+		
+		div.clear {
+			clear: both;
+		}
+		
+		div#content {
+			font-family: "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
+			font-size: 11px;
+			text-align: left;
+			line-height: 1.5em;
+			margin: 0 1em 0 1em;
+			padding: 0 0 1.5em 0;
+		}
+		
+		div#content h1 {
+			font-size: 1.18em;
+			line-height: 1.26em;
+			font-weight: bold;
+			display: block;
+			clear:both;
+			padding-top: 1.26em;
+		}
+		
+		div#content div.credit {
+			margin-left: 1.5em;
+		}
+		
+		div#content div.credit + div.credit {
+			padding-top: 1.5em;
+			clear: both;
+		}
+		
+		div#content div.credit div.name, div#content div.credit div.name_sub {
+			float: left;
+			clear: left;
+		}
+		
+		div#content div.credit div.name_sub {
+			margin-left: 1.5em;
+			font-style: italic;
+			color: #aaa;
+		}
+		
+		div#content div.credit div.url {
+			float: right;
+			clear: right;
+		}
+	</style>
+	<script type="text/javascript">
+		var CreditsScroll = {
+			
+			/* CONFIGURATION HERE */
+			scrollPerTick : 1,
+			tickSpeed : 40,
+			webkitWindowWidth : 236,
+			webkitWindowHeight: 120,
+			
+			/* DON'T CHANGE ANYTHING BELOW THIS */
+			topSpacerHeight: 0,
+			bottomSpacerHeight: 0,
+			lastPos : -1,
+			scrollDiv : null,
+			topSpacerDiv : null,
+			bottomSpacerDiv : null,
+			scrollInterval : null,
+			setup : function () {
+				this.topSpacerHeight = this.webkitWindowHeight;
+				this.bottomSpacerHeight = this.webkitWindowHeight;
+							
+				this.topSpacerDivElement().style.height = this.topSpacerHeight + 'px';
+				this.bottomSpacerDivElement().style.height = this.bottomSpacerHeight + 'px';
+				this.scrollDivElement().style.width = this.webkitWindowWidth + 'px';
+				this.scrollDivElement().style.height = (this.webkitWindowHeight - 2) + 'px';
+				document.getElementById('topBorder').style.width = this.webkitWindowWidth + 'px';
+				document.getElementById('bottomBorder').style.width = this.webkitWindowWidth + 'px';
+				document.getElementById('bottomBorder').style.top = (this.webkitWindowHeight - 2) + 'px';
+				
+				this.reset();
+			},
+			reset : function () {
+				this.stopScroll();
+				window.scrollTo(0, 0);
+				this.lastPos = -1;
+			},
+			startScroll : function () {
+				if (null == this.scrollInterval) {					
+					var el = this.scrollDivElement();
+					el.style.overflowY = 'hidden';
+					
+					var t = this.topSpacerDivElement();
+					var curH = parseInt(t.style.height);
+					if (this.topSpacerHeight != curH) {
+						t.style.height = this.topSpacerHeight + 'px';
+						el.scrollTop = el.scrollTop + (this.topSpacerHeight-curH);
+					}
+					
+					var b = this.bottomSpacerDivElement();
+					curH = parseInt(b.style.height);
+					if (this.bottomSpacerHeight != curH)
+						b.style.height = this.bottomSpacerHeight + 'px';
+					
+					this.scrollInterval = setInterval(this.doScroll, this.tickSpeed);
+				}
+			},
+			stopScroll : function () {
+				if (null != this.scrollInterval) {
+					clearInterval(this.scrollInterval);
+					this.scrollInterval = null;
+					
+					var el = this.scrollDivElement();
+										
+					var t = this.topSpacerDivElement();
+					var offT = parseInt(t.style.height);
+										
+					if (el.scrollTop <= offT) {
+						t.style.height = (offT-el.scrollTop) + 'px';
+						el.scrollTop = 0;
+						offT = 0;
+					}
+
+					var offB = 0;
+					var b = this.bottomSpacerDivElement();
+					if (el.scrollTop+(this.webkitWindowHeight-2) < el.scrollHeight-parseInt(b.style.height)) {
+						b.style.height = '0px'
+					} else {
+						offB = ((el.scrollTop+(this.webkitWindowHeight-2)) - (el.scrollHeight-parseInt(b.style.height)));
+						b.style.height = offB + 'px';
+						offB = 5*el.scrollHeight;
+					}
+					
+					var nowTop = el.scrollTop;
+					if (offT != 0)
+						t.style.height = '0px';
+																									
+					el.style.overflowY = 'scroll';
+					el.scrollTop = nowTop-offT+offB;
+				}
+			},
+	 		doScroll : function () {
+				var div = CreditsScroll.scrollDivElement();
+				var cPos = div.scrollTop;
+				var newPos = 0;
+				if (cPos == CreditsScroll.lastPos)
+					newPos = 0;
+				else
+					newPos = cPos + CreditsScroll.scrollPerTick;
+						
+				CreditsScroll.lastPos = cPos;
+				div.scrollTop = newPos;
+			},
+			scrollDivElement : function () {
+				if (null == this.scrollDiv)
+					this.scrollDiv = document.getElementById('wrapper');
+				
+				return this.scrollDiv;
+			},
+			topSpacerDivElement : function () {
+				if (null == this.topSpacerDiv)
+					this.topSpacerDiv = document.getElementById('topSpacer');
+				
+				return this.topSpacerDiv;
+			},
+			bottomSpacerDivElement : function () {
+				if (null == this.bottomSpacerDiv)
+					this.bottomSpacerDiv = document.getElementById('bottomSpacer');
+				
+				return this.bottomSpacerDiv;
+			}
+		};
+	</script>
+</head>
+<body onload="CreditsScroll.setup(); CreditsScroll.startScroll();">
+	<div id="topBorder"></div>
+	<div id="bottomBorder"></div>
+	<div id="wrapper" onmouseover="CreditsScroll.stopScroll();" onmouseout="CreditsScroll.startScroll();">
+		<div id="topSpacer"></div>
+		<div id="content">
+			%@
+		</div>
+		<div id="bottomSpacer"></div>
+	</div>
+</body>
+</html>

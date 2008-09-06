@@ -1,6 +1,6 @@
 //
-//  TFBlob+TUIOMethods.m
-//  Touche
+//  TFBlob+TUIOOSCMethods.m
+//  Touché
 //
 //  Created by Georg Kaindl on 21/8/08.
 //
@@ -22,7 +22,7 @@
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "TFBlob+TUIOMethods.h"
+#import "TFBlob+TUIOOSCMethods.h"
 
 #import <BBOSC/BBOSCArgument.h>
 #import <BBOSC/BBOSCMessage.h>

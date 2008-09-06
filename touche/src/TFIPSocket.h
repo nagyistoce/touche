@@ -72,6 +72,10 @@ maxPendingConnections:(NSUInteger)maxPendingConnections;
 - (BOOL)getPeerName:(struct sockaddr_in *)sockAddr;
 - (BOOL)getSockName:(struct sockaddr_in *)sockAddr;
 
+// Convenience
+- (NSString*)getPeerNameString;
+- (NSString*)getSockNameString;
+
 - (size_t)availableBytes;
 - (int)receiveIntoBytes:(void*)bytes
 				 length:(size_t)length

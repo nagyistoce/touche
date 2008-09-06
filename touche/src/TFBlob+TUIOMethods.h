@@ -1,8 +1,8 @@
 //
-//  TFBlob+TUIOOSCMethods.h
+//  TFBlob+TUIOMethods.h
 //  Touché
 //
-//  Created by Georg Kaindl on 21/8/08.
+//  Created by Georg Kaindl on 7/9/08.
 //
 //  Copyright (C) 2008 Georg Kaindl
 //
@@ -27,11 +27,13 @@
 #import "TFBlob.h"
 
 
-@class BBOSCMessage, BBOSCArgument;
+@interface TFBlob (TUIOMethods)
 
-@interface TFBlob (TUIOOSCMethods)
-
-- (BBOSCArgument*)tuioAliveArgument;
-- (BBOSCMessage*)tuioSetMessageForCurrentState;
+- (void)getTuioDataForCurrentStateWithSessionID:(NSInteger*)sessionID
+									  positionX:(float*)xPos
+									  positionY:(float*)yPos
+										motionX:(float*)xDelta
+										motionY:(float*)yDelta
+								   acceleration:(float*)accel;
 
 @end

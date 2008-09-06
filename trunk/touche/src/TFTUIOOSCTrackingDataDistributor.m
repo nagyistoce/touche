@@ -57,6 +57,9 @@
 		_server.delegate = self;
 	}
 	
+	if (nil == _server)
+		return NO;
+	
 	return [super startDistributorWithObject:obj error:error];
 }
 

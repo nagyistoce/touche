@@ -327,7 +327,7 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 	return (getsockname(bsdSocket, (struct sockaddr*)sockAddr, &addressLength) >= 0);
 }
 
-- (NSString*)getPeerNameString
+- (NSString*)peerNameString
 {
 	NSString* str = nil;
 	struct sockaddr_in sockAddr;
@@ -338,7 +338,7 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 	return str;
 }
 
-- (NSString*)getSockNameString
+- (NSString*)sockNameString
 {
 	NSString* str = nil;
 	struct sockaddr_in sockAddr;

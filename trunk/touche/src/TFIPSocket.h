@@ -73,8 +73,8 @@ maxPendingConnections:(NSUInteger)maxPendingConnections;
 - (BOOL)getSockName:(struct sockaddr_in *)sockAddr;
 
 // Convenience
-- (NSString*)getPeerNameString;
-- (NSString*)getSockNameString;
+- (NSString*)peerNameString;
+- (NSString*)sockNameString;
 
 - (size_t)availableBytes;
 - (int)receiveIntoBytes:(void*)bytes

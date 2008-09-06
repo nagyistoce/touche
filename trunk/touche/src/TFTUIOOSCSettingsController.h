@@ -1,5 +1,5 @@
 //
-//  TFTUIOSettingsController.h
+//  TFTUIOOSCSettingsController.h
 //  Touché
 //
 //  Created by Georg Kaindl on 25/8/08.
@@ -27,7 +27,7 @@
 
 @class TFTUIOOSCTrackingDataDistributor;
 
-@interface TFTUIOSettingsController : NSWindowController {
+@interface TFTUIOOSCSettingsController : NSWindowController {
 	TFTUIOOSCTrackingDataDistributor*	distributor;
 	IBOutlet NSPanel*				_addClientPanel;
 	IBOutlet NSTextField*			_addClientHostField;

@@ -1,5 +1,5 @@
 //
-//  TFTUIOSettingsController.m
+//  TFTUIOOSCSettingsController.m
 //  Touché
 //
 //  Created by Georg Kaindl on 25/8/08.
@@ -22,7 +22,7 @@
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "TFTUIOSettingsController.h"
+#import "TFTUIOOSCSettingsController.h"
 
 #import "TFLocalization.h"
 #import "TFIPSocket.h"
@@ -34,11 +34,11 @@
 
 NSString* tFTUIOPixelsForMotionPreferenceKey = @"tFTUIOPixelsForMotion";
 
-@interface TFTUIOSettingsController (PrivateMethods)
+@interface TFTUIOOSCSettingsController (PrivateMethods)
 - (void)_addClientFromPanelThread;
 @end
 
-@implementation TFTUIOSettingsController
+@implementation TFTUIOOSCSettingsController
 
 @synthesize distributor;
 
@@ -59,7 +59,7 @@ NSString* tFTUIOPixelsForMotionPreferenceKey = @"tFTUIOPixelsForMotion";
 
 - (id)init
 {
-	if (nil != (self = [super initWithWindowNibName:@"TUIOSettings"])) {
+	if (nil != (self = [super initWithWindowNibName:@"TUIOOSCSettings"])) {
 		[self loadWindow];
 		
 		[[self window] setShowsResizeIndicator:NO];

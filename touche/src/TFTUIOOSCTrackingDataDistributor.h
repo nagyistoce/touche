@@ -24,23 +24,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "TFTrackingDataDistributor.h"
+#import "TFTUIOTrackingDataDistributor.h"
 
 
-@class TFTUIOOSCServer, TFTUIOOSCTrackingDataReceiver, TFThreadMessagingQueue, BBOSCPacket;
+@class TFTUIOOSCServer, TFTUIOOSCTrackingDataReceiver, BBOSCPacket;
 
-@interface TFTUIOOSCTrackingDataDistributor : TFTrackingDataDistributor {
-	float					motionThreshold;
-
+@interface TFTUIOOSCTrackingDataDistributor : TFTUIOTrackingDataDistributor {
 @protected
 	TFTUIOOSCServer*		_server;
-	NSThread*				_thread;
-	TFThreadMessagingQueue*	_queue;
-	
-	NSMutableDictionary*	_blobPositions;	// blob label => position
 }
-
-@property (nonatomic, assign) float motionThreshold;
 
 - (id)init;
 - (void)dealloc;
@@ -49,11 +41,14 @@
 - (void)stopDistributor;
 
 - (BOOL)canAskReceiversToQuit;
-- (void)distributeTrackingDataDictionary:(NSDictionary*)trackingDict;
 
 - (BOOL)addTUIOClientAtHost:(NSString*)host port:(UInt16)port error:(NSError**)error;
 - (void)removeTUIOClient:(TFTUIOOSCTrackingDataReceiver*)client;
 
 - (void)sendTUIOPacket:(BBOSCPacket*)packet toEndpoint:(NSData*)sockAddr;
+
+- (void)distributeTUIODataWithLivingTouches:(NSArray*)livingTouches
+							   movedTouches:(NSArray*)movedTouches
+								frameNumber:(NSUInteger)frameNumber;
 
 @end

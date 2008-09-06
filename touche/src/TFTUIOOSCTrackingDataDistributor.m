@@ -27,36 +27,16 @@
 #import <BBOSC/BBOSCPacket.h>
 #import <BBOSC/BBOSCBundle.h>
 
-#import "TFBlob.h"
-#import "TFBlobLabel.h"
-#import "TFBlobPoint.h"
 #import "TFThreadMessagingQueue.h"
 #import "TFTUIOOSCServer.h"
 #import "TFTUIOOSCTrackingDataReceiver.h"
 
 
-#define	DEFAULT_MOTION_THRESHOLD	(5.0f)
-
-@interface TFTUIOOSCTrackingDataDistributor (PrivateMethods)
-- (void)_distributionThread;
-@end
-
 @implementation TFTUIOOSCTrackingDataDistributor
-
-@synthesize motionThreshold;
 
 - (id)init
 {
 	if (nil != (self = [super init])) {
-		_blobPositions = [[NSMutableDictionary alloc] init];
-		_queue = [[TFThreadMessagingQueue alloc] init];
-		
-		_thread = [[NSThread alloc] initWithTarget:self
-										  selector:@selector(_distributionThread)
-											object:nil];
-		[_thread start];
-		
-		self.motionThreshold = DEFAULT_MOTION_THRESHOLD;
 	}
 	
 	return self;
@@ -64,48 +44,33 @@
 
 - (void)dealloc
 {
-	[_thread cancel];
-	
-	// queue a dummy to wake up the thread
-	[_queue enqueue:[NSDictionary dictionary]];
-	
-	[_thread release];
-	_thread = nil;
-	
-	[_queue release];
-	_queue = nil;
-	
 	[_server release];
 	_server = nil;
-	
-	[_blobPositions release];
-	_blobPositions = nil;
 	
 	[super dealloc];
 }
 
 - (BOOL)startDistributorWithObject:(id)obj error:(NSError**)error
-{
-	_server = [[TFTUIOOSCServer alloc] initWithPort:0 andLocalAddress:nil error:error];
-	_server.delegate = self;
+{	
+	if (nil == _server) {
+		_server = [[TFTUIOOSCServer alloc] initWithPort:0 andLocalAddress:nil error:error];
+		_server.delegate = self;
+	}
 	
-	return (nil != _server);
+	return [super startDistributorWithObject:obj error:error];
 }
 
 - (void)stopDistributor
 {
 	[_server release];
 	_server = nil;
+	
+	[super stopDistributor];
 }
 
 - (BOOL)canAskReceiversToQuit
 {
 	return YES;
-}
-
-- (void)distributeTrackingDataDictionary:(NSDictionary*)trackingDict
-{
-	[_queue enqueue:trackingDict];
 }
 
 - (BOOL)addTUIOClientAtHost:(NSString*)host port:(UInt16)port error:(NSError**)error
@@ -154,59 +119,18 @@
 		[_server sendOSCPacket:packet to:sockAddr];
 }
 
-- (void)_distributionThread
+- (void)distributeTUIODataWithLivingTouches:(NSArray*)livingTouches
+							   movedTouches:(NSArray*)movedTouches
+								frameNumber:(NSUInteger)frameNumber
 {
-	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-	NSDictionary *touches = nil;
-	NSUInteger frameSequenceNumber = 0;
+	BBOSCBundle* tuioBundle = [TFTUIOOSCServer tuioBundleForFrameNumber:frameNumber
+															activeBlobs:livingTouches
+															 movedBlobs:movedTouches];
 	
-	while (YES) {
-		NSAutoreleasePool* innerPool = [[NSAutoreleasePool alloc] init];
-		
-		touches = (NSDictionary*)[_queue dequeue];
-		
-		if ([[NSThread currentThread] isCancelled]) {
-			[innerPool release];
-			break;
-		}
-				
-		NSArray* newTouches = (NSArray*)[touches objectForKey:kToucheTrackingDistributorDataNewTouchesKey];
-		NSArray* updatedTouches = (NSArray*)[touches objectForKey:kToucheTrackingDistributorDataUpdatedTouchesKey];
-		
-		NSMutableArray* activeTouches = [NSMutableArray arrayWithArray:newTouches];
-		[activeTouches addObjectsFromArray:updatedTouches];
-		
-		NSMutableArray* movedTouches = [NSMutableArray array];
-		
-		[movedTouches addObjectsFromArray:newTouches];
-		for (TFBlob* blob in newTouches) {
-			[_blobPositions setObject:blob.center forKey:blob.label];
-		}
-		
-		float minDistance = self.motionThreshold;
-		for (TFBlob* blob in updatedTouches) {
-			TFBlobPoint* lastPosition = [_blobPositions objectForKey:blob.label];
-			if (minDistance <= [blob.center distanceFromBlobPoint:lastPosition]) {
-				[_blobPositions setObject:blob.center forKey:blob.label];
-				[movedTouches addObject:blob];
-			}
-		}
-				
-		BBOSCBundle* tuioBundle = [TFTUIOOSCServer tuioBundleForFrameNumber:frameSequenceNumber
-																activeBlobs:activeTouches
-																 movedBlobs:movedTouches];
-		
-		@synchronized (_receivers) {
-			for (TFTUIOOSCTrackingDataReceiver* receiver in [_receivers allValues])
-				[receiver consumeTrackingData:tuioBundle];
-		}
-		
-		frameSequenceNumber++;
-		
-		[innerPool release];
+	@synchronized (_receivers) {
+		for (TFTUIOOSCTrackingDataReceiver* receiver in [_receivers allValues])
+			[receiver consumeTrackingData:tuioBundle];
 	}
-	
-	[pool release];
 }
 
 @end

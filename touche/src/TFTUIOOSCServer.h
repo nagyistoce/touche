@@ -30,7 +30,7 @@
 @class TFTUIOOSCServer;
 
 @interface NSObject (TFTUIOOSCServerDelegate)
-- (void)tuioServer:(TFTUIOOSCServer*)server networkErrorDidOccur:(NSError*)error;
+- (void)tuioOscServer:(TFTUIOOSCServer*)server networkErrorDidOccur:(NSError*)error;
 @end
 
 @class BBOSCAddress, BBOSCBundle, BBOSCMessage, TFIPDatagramSocket, TFIPUDPSocket;

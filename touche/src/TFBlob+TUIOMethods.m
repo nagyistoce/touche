@@ -27,6 +27,7 @@
 #import <BBOSC/BBOSCArgument.h>
 #import <BBOSC/BBOSCMessage.h>
 
+#import "TFTUIOConstants.h"
 #import "TFScreenPreferencesController.h"
 #import "TFTUIOOSCServer.h"
 #import "TFBlobPoint.h"
@@ -43,7 +44,7 @@
 - (BBOSCMessage*)tuioSetMessageForCurrentState
 {
 	BBOSCMessage* setMsg = [BBOSCMessage messageWithBBOSCAddress:[TFTUIOOSCServer tuioProfileAddress]];
-	[setMsg attachArgument:[BBOSCArgument argumentWithString:@"set"]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithString:kTFTUIOSetArgumentName]];
 	
 	// s		sessionID, float
 	// x,y		position, float

@@ -62,6 +62,7 @@
 
 - (void)stopDistributor
 {
+	[_server invalidate];
 	[_server release];
 	_server = nil;
 	

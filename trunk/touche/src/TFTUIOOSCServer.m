@@ -32,7 +32,7 @@
 #import "TFTUIOConstants.h"
 #import "TFIPUDPSocket.h"
 #import "TFBlob.h"
-#import "TFBlob+TUIOMethods.h"
+#import "TFBlob+TUIOOSCMethods.h"
 
 
 #define SECONDS_IN_RUNLOOP		((NSTimeInterval)5.0)

@@ -27,13 +27,13 @@
 #import "TFTrackingDataDistributor.h"
 
 
-@class TFTUIOServer, TFTUIOTrackingDataReceiver, TFThreadMessagingQueue, BBOSCPacket;
+@class TFTUIOOSCServer, TFTUIOOSCTrackingDataReceiver, TFThreadMessagingQueue, BBOSCPacket;
 
 @interface TFTUIOTrackingDataDistributor : TFTrackingDataDistributor {
 	float					motionThreshold;
 
 @protected
-	TFTUIOServer*			_server;
+	TFTUIOOSCServer*		_server;
 	NSThread*				_thread;
 	TFThreadMessagingQueue*	_queue;
 	
@@ -52,7 +52,7 @@
 - (void)distributeTrackingDataDictionary:(NSDictionary*)trackingDict;
 
 - (BOOL)addTUIOClientAtHost:(NSString*)host port:(UInt16)port error:(NSError**)error;
-- (void)removeTUIOClient:(TFTUIOTrackingDataReceiver*)client;
+- (void)removeTUIOClient:(TFTUIOOSCTrackingDataReceiver*)client;
 
 - (void)sendTUIOPacket:(BBOSCPacket*)packet toEndpoint:(NSData*)sockAddr;
 

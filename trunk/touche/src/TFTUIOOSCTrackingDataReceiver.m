@@ -1,5 +1,5 @@
 //
-//  TFTUIOTrackingDataReceiver.m
+//  TFTUIOOSCTrackingDataReceiver.m
 //  Touché
 //
 //  Created by Georg Kaindl on 24/8/08.
@@ -22,7 +22,7 @@
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "TFTUIOTrackingDataReceiver.h"
+#import "TFTUIOOSCTrackingDataReceiver.h"
 
 #import <BBOSC/BBOSCPacket.h>
 
@@ -31,7 +31,7 @@
 #import "TFTUIOTrackingDataDistributor.h"
 
 
-@implementation TFTUIOTrackingDataReceiver
+@implementation TFTUIOOSCTrackingDataReceiver
 
 - (id)init
 {

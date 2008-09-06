@@ -29,13 +29,13 @@
 #import <BBOSC/BBOSCBundle.h>
 #import <BBOSC/BBOSCMessage.h>
 
+#import "TFTUIOConstants.h"
 #import "TFIPUDPSocket.h"
 #import "TFBlob.h"
 #import "TFBlob+TUIOMethods.h"
 
 
 #define SECONDS_IN_RUNLOOP		((NSTimeInterval)5.0)
-#define	TUIO_PROFILE_ADDRESS	(@"/tuio/2Dcur")
 
 @interface TFTUIOOSCServer (PrivateMethods)
 - (void)_socketThreadFunc;
@@ -48,7 +48,7 @@
 	static BBOSCAddress* tuioProfileAddress = nil;
 	
 	if (nil == tuioProfileAddress)
-		tuioProfileAddress = [[BBOSCAddress alloc] initWithString:TUIO_PROFILE_ADDRESS];
+		tuioProfileAddress = [[BBOSCAddress alloc] initWithString:kTFTUIOProfileAddressString];
 	
 	return [[tuioProfileAddress retain] autorelease];
 }
@@ -60,15 +60,10 @@
 	if (nil == sourceMsg) {
 		sourceMsg = [[BBOSCMessage alloc] initWithBBOSCAddress:[self tuioProfileAddress]];
 	
-		NSBundle* mainBundle = [NSBundle mainBundle];
-		NSString* name = [mainBundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-		if (nil != name) {
-			NSString* version = [mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-			if (nil != version)
-				name = [name stringByAppendingFormat:@" %@", version];
-			
-			[sourceMsg attachArgument:[BBOSCArgument argumentWithString:@"source"]];
-			[sourceMsg attachArgument:[BBOSCArgument argumentWithString:name]];
+		NSString* appName = TFTUIOConstantsSourceName();
+		if (nil != appName) {
+			[sourceMsg attachArgument:[BBOSCArgument argumentWithString:kTFTUIOSourceArgumentName]];
+			[sourceMsg attachArgument:[BBOSCArgument argumentWithString:appName]];
 		}
 	}
 	
@@ -78,7 +73,7 @@
 + (BBOSCMessage*)tuioFrameSequenceNumberMessageForFrameNumber:(NSInteger)frameNumber
 {
 	BBOSCMessage* fseqMessage = [BBOSCMessage messageWithBBOSCAddress:[self tuioProfileAddress]];
-	[fseqMessage attachArgument:[BBOSCArgument argumentWithString:@"fseq"]];
+	[fseqMessage attachArgument:[BBOSCArgument argumentWithString:kTFTUIOFrameSequenceNumberArgumentName]];
 	[fseqMessage attachArgument:[BBOSCArgument argumentWithInt:frameNumber]];
 	
 	return fseqMessage;
@@ -87,7 +82,7 @@
 + (BBOSCMessage*)tuioAliveMessageForBlobs:(NSArray*)blobs
 {
 	BBOSCMessage* aliveMessage = [BBOSCMessage messageWithBBOSCAddress:[self tuioProfileAddress]];
-	[aliveMessage attachArgument:[BBOSCArgument argumentWithString:@"alive"]];
+	[aliveMessage attachArgument:[BBOSCArgument argumentWithString:kTFTUIOAliveArgumentName]];
 	
 	for (TFBlob* blob in blobs)
 		[aliveMessage attachArgument:[blob tuioAliveArgument]];
@@ -182,8 +177,8 @@
 - (void)socketHadReadWriteError:(TFIPDatagramSocket*)socket
 {
 	// TODO: report that there was an error, i.e. provide a sensible NSError object
-	if ([delegate respondsToSelector:@selector(tuioServer:networkErrorDidOccur:)])
-		[delegate tuioServer:self networkErrorDidOccur:nil];
+	if ([delegate respondsToSelector:@selector(tuioOscServer:networkErrorDidOccur:)])
+		[delegate tuioOscServer:self networkErrorDidOccur:nil];
 }
 
 @end

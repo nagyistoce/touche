@@ -75,6 +75,28 @@
 	return success;
 }
 
++ (NSString*)stringFromIPAddress:(in_addr_t)addr
+{
+	struct in_addr inAddr;
+	inAddr.s_addr = addr;
+	
+	char* addrStr = inet_ntoa(inAddr);
+	return [NSString stringWithCString:addrStr encoding:NSASCIIStringEncoding];
+}
+
++ (NSString*)stringFromSocketAddress:(struct sockaddr_in*)sockAddr
+{
+	NSString* str = nil;
+	
+	if (NULL != sockAddr) {
+		str = [NSString stringWithFormat:@"%@:%u",
+					[self stringFromIPAddress:sockAddr->sin_addr.s_addr],
+					ntohs(sockAddr->sin_port)];
+	}
+	
+	return str;
+}
+
 - (id)init
 {
 	if (nil != (self = [super init])) {

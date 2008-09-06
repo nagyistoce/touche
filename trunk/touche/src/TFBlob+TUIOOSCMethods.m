@@ -27,14 +27,14 @@
 #import <BBOSC/BBOSCArgument.h>
 #import <BBOSC/BBOSCMessage.h>
 
+#import "TFBlob+TUIOMethods.h"
 #import "TFTUIOConstants.h"
 #import "TFScreenPreferencesController.h"
 #import "TFTUIOOSCServer.h"
-#import "TFBlobPoint.h"
 #import "TFBlobLabel.h"
 
 
-@implementation TFBlob (TUIOMethods)
+@implementation TFBlob (TUIOOSCMethods)
 
 - (BBOSCArgument*)tuioAliveArgument
 {
@@ -51,37 +51,22 @@
 	// X,Y		motion, float
 	// a		acceleration, float
 	
-	[setMsg attachArgument:[BBOSCArgument argumentWithInt:self.label.intLabel]];
+	NSInteger s;
+	float x, y, X, Y, a;
 	
-	NSSize screenSize = [[TFScreenPreferencesController screen] frame].size;
-	float xPos = self.center.x/screenSize.width;
-	// Touché uses Quartz-style coordinates with the origin at the bottom left,
-	// but TUIO has the origin in the upper left, meaning that we need to invert
-	// the y coordinate here.
-	float yPos = (1.0f - self.center.y/screenSize.height);
-	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:xPos]];
-	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:yPos]];
+	[self getTuioDataForCurrentStateWithSessionID:&s
+										positionX:&x
+										positionY:&y
+										  motionX:&X
+										  motionY:&Y
+									 acceleration:&a];
 	
-	if (self.isUpdate) {
-		NSTimeInterval secsSinceLast = self.createdAt - self.previousCreatedAt;
-		
-		float xDelta = ((self.center.x - self.previousCenter.x)/screenSize.width) / secsSinceLast;
-		// like the position, we need to invert the yDelta
-		float yDelta = -((self.center.y - self.previousCenter.y)/screenSize.height) / secsSinceLast;
-		[setMsg attachArgument:[BBOSCArgument argumentWithFloat:xDelta]];
-		[setMsg attachArgument:[BBOSCArgument argumentWithFloat:yDelta]];
-		
-		float xAccel = (self.acceleration.x/screenSize.width) / secsSinceLast;
-		// we don't need to invert y accel here, since we're just interested into the vec length anyway
-		float yAccel = (self.acceleration.y/screenSize.height) / secsSinceLast;
-		[setMsg attachArgument:[BBOSCArgument argumentWithFloat:hypot(xAccel, yAccel)]];
-	} else {
-		// if this blob is new (i.e. not an update), we set the motion vector and acceleration to 0.0.
-		BBOSCArgument* zeroArg = [BBOSCArgument argumentWithFloat:0.0f];
-		[setMsg attachArgument:zeroArg];	// xDelta
-		[setMsg attachArgument:zeroArg];	// yDelta
-		[setMsg attachArgument:zeroArg];	// acceleration
-	}
+	[setMsg attachArgument:[BBOSCArgument argumentWithInt:s]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:x]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:y]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:X]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:Y]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:a]];
 	
 	return setMsg;
 }

@@ -1,5 +1,5 @@
 //
-//  TFTUIOServer.h
+//  TFTUIOOSCServer.h
 //  Touché
 //
 //  Created by Georg Kaindl on 21/8/08.
@@ -27,15 +27,15 @@
 #import "TFOSCServer.h"
 
 
-@class TFTUIOServer;
+@class TFTUIOOSCServer;
 
-@interface NSObject (TFTUIOServerDelegate)
-- (void)tuioServer:(TFTUIOServer*)server networkErrorDidOccur:(NSError*)error;
+@interface NSObject (TFTUIOOSCServerDelegate)
+- (void)tuioServer:(TFTUIOOSCServer*)server networkErrorDidOccur:(NSError*)error;
 @end
 
 @class BBOSCAddress, BBOSCBundle, BBOSCMessage, TFIPDatagramSocket, TFIPUDPSocket;
 
-@interface TFTUIOServer : TFOSCServer {
+@interface TFTUIOOSCServer : TFOSCServer {
 	NSThread*		_socketThread;
 }
 

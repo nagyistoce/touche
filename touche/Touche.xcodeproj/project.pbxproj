@@ -55,6 +55,7 @@
 		6E6021EA0E07CD8500E83E18 /* TFCIGrayscalingFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6021E90E07CD8500E83E18 /* TFCIGrayscalingFilter.m */; };
 		6E6021F60E07D3B800E83E18 /* TFCIGrayscalingFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E6021F40E07D30D00E83E18 /* TFCIGrayscalingFilter.cikernel */; };
 		6E6ADAE50DD098F90078DD1B /* TFWizardController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6ADAE40DD098F90078DD1B /* TFWizardController.m */; };
+		6E6C8CF40E72AF030062EA15 /* TFTUIOOSCServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C8CF30E72AF030062EA15 /* TFTUIOOSCServer.m */; };
 		6E76BF080DCA0FAA00D30859 /* TFGrayscale8BlobDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E76BF070DCA0FAA00D30859 /* TFGrayscale8BlobDetector.m */; };
 		6E76BF120DCA12AE00D30859 /* TFOpenCVContourBlobDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E76BF110DCA12AE00D30859 /* TFOpenCVContourBlobDetector.m */; };
 		6E76BF190DCA140C00D30859 /* OpenCV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E76BF180DCA140C00D30859 /* OpenCV.framework */; };
@@ -178,7 +179,6 @@
 		6EED5EF50E5CE8F200375CC0 /* BBOSC.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */; };
 		6EED5FF00E5E048000375CC0 /* TFOSCServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5FEF0E5E048000375CC0 /* TFOSCServer.m */; };
 		6EED5FFC0E5E0AB000375CC0 /* TFBlob+TUIOMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5FFB0E5E0AB000375CC0 /* TFBlob+TUIOMethods.m */; };
-		6EED5FFF0E5E0D2800375CC0 /* TFTUIOServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5FFE0E5E0D2800375CC0 /* TFTUIOServer.m */; };
 		6EED60CB0E5ED7E000375CC0 /* TFTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED60CA0E5ED7E000375CC0 /* TFTrackingDataDistributor.m */; };
 		6EED60D10E5ED9B800375CC0 /* TFTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED60D00E5ED9B800375CC0 /* TFTrackingDataReceiver.m */; };
 		6EED60DC0E5EE64300375CC0 /* TFDOTrackingClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED60DB0E5EE64300375CC0 /* TFDOTrackingClient.m */; };
@@ -312,6 +312,8 @@
 		6E6021F40E07D30D00E83E18 /* TFCIGrayscalingFilter.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TFCIGrayscalingFilter.cikernel; sourceTree = "<group>"; };
 		6E6ADAE30DD098F90078DD1B /* TFWizardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFWizardController.h; sourceTree = "<group>"; };
 		6E6ADAE40DD098F90078DD1B /* TFWizardController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFWizardController.m; sourceTree = "<group>"; };
+		6E6C8CF20E72AF030062EA15 /* TFTUIOOSCServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOOSCServer.h; sourceTree = "<group>"; };
+		6E6C8CF30E72AF030062EA15 /* TFTUIOOSCServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOOSCServer.m; sourceTree = "<group>"; };
 		6E76BF060DCA0FAA00D30859 /* TFGrayscale8BlobDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFGrayscale8BlobDetector.h; sourceTree = "<group>"; };
 		6E76BF070DCA0FAA00D30859 /* TFGrayscale8BlobDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGrayscale8BlobDetector.m; sourceTree = "<group>"; };
 		6E76BF100DCA12AE00D30859 /* TFOpenCVContourBlobDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOpenCVContourBlobDetector.h; sourceTree = "<group>"; };
@@ -461,8 +463,6 @@
 		6EED5FEF0E5E048000375CC0 /* TFOSCServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOSCServer.m; sourceTree = "<group>"; };
 		6EED5FFA0E5E0AB000375CC0 /* TFBlob+TUIOMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFBlob+TUIOMethods.h"; sourceTree = "<group>"; };
 		6EED5FFB0E5E0AB000375CC0 /* TFBlob+TUIOMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFBlob+TUIOMethods.m"; sourceTree = "<group>"; };
-		6EED5FFD0E5E0D2800375CC0 /* TFTUIOServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOServer.h; sourceTree = "<group>"; };
-		6EED5FFE0E5E0D2800375CC0 /* TFTUIOServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOServer.m; sourceTree = "<group>"; };
 		6EED60C90E5ED7E000375CC0 /* TFTrackingDataDistributor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTrackingDataDistributor.h; sourceTree = "<group>"; };
 		6EED60CA0E5ED7E000375CC0 /* TFTrackingDataDistributor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTrackingDataDistributor.m; sourceTree = "<group>"; };
 		6EED60CF0E5ED9B800375CC0 /* TFTrackingDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTrackingDataReceiver.h; sourceTree = "<group>"; };
@@ -731,10 +731,14 @@
 		6E421F6E0D58CB440009839C /* Client-Server Communication */ = {
 			isa = PBXGroup;
 			children = (
+				6EED5FFA0E5E0AB000375CC0 /* TFBlob+TUIOMethods.h */,
+				6EED5FFB0E5E0AB000375CC0 /* TFBlob+TUIOMethods.m */,
 				6E2DC55C0E5991B000409C0E /* DO */,
 				6EED5F010E5DAF2300375CC0 /* OSC */,
 				6E2DC3DB0E5874D000409C0E /* TCPIP */,
-				6EED5FF90E5E07BA00375CC0 /* TUIO */,
+				6E6C8CF10E72AE490062EA15 /* TUIO */,
+				6EED5FF90E5E07BA00375CC0 /* TUIO (OSC) */,
+				6E6C8CF00E72AE370062EA15 /* TUIO (Flash XML Socket) */,
 				6EED60C90E5ED7E000375CC0 /* TFTrackingDataDistributor.h */,
 				6EED60CA0E5ED7E000375CC0 /* TFTrackingDataDistributor.m */,
 				6EED61420E5F0C3C00375CC0 /* TFTrackingDataDistributionCenter.h */,
@@ -812,6 +816,20 @@
 				6EED61600E5F135100375CC0 /* TFThreadMessagingQueue.m */,
 			);
 			name = Misc;
+			sourceTree = "<group>";
+		};
+		6E6C8CF00E72AE370062EA15 /* TUIO (Flash XML Socket) */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "TUIO (Flash XML Socket)";
+			sourceTree = "<group>";
+		};
+		6E6C8CF10E72AE490062EA15 /* TUIO */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = TUIO;
 			sourceTree = "<group>";
 		};
 		6E7C65940E2EA69A006B4D67 /* Xib */ = {
@@ -1135,19 +1153,17 @@
 			name = OSC;
 			sourceTree = "<group>";
 		};
-		6EED5FF90E5E07BA00375CC0 /* TUIO */ = {
+		6EED5FF90E5E07BA00375CC0 /* TUIO (OSC) */ = {
 			isa = PBXGroup;
 			children = (
-				6EED5FFA0E5E0AB000375CC0 /* TFBlob+TUIOMethods.h */,
-				6EED5FFB0E5E0AB000375CC0 /* TFBlob+TUIOMethods.m */,
-				6EED5FFD0E5E0D2800375CC0 /* TFTUIOServer.h */,
-				6EED5FFE0E5E0D2800375CC0 /* TFTUIOServer.m */,
+				6E6C8CF20E72AF030062EA15 /* TFTUIOOSCServer.h */,
+				6E6C8CF30E72AF030062EA15 /* TFTUIOOSCServer.m */,
 				6EF3C44D0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.h */,
 				6EF3C44E0E61BA2A00BF6B39 /* TFTUIOTrackingDataReceiver.m */,
 				6EF3C46D0E61C03300BF6B39 /* TFTUIOTrackingDataDistributor.h */,
 				6EF3C46E0E61C03300BF6B39 /* TFTUIOTrackingDataDistributor.m */,
 			);
-			name = TUIO;
+			name = "TUIO (OSC)";
 			sourceTree = "<group>";
 		};
 		6EF1309F0D32AC1D00D807B8 /* Controllers */ = {
@@ -1457,7 +1473,6 @@
 				6EED5D150E5C758500375CC0 /* TFIPUDPSocket.m in Sources */,
 				6EED5FF00E5E048000375CC0 /* TFOSCServer.m in Sources */,
 				6EED5FFC0E5E0AB000375CC0 /* TFBlob+TUIOMethods.m in Sources */,
-				6EED5FFF0E5E0D2800375CC0 /* TFTUIOServer.m in Sources */,
 				6EED60CB0E5ED7E000375CC0 /* TFTrackingDataDistributor.m in Sources */,
 				6EED60D10E5ED9B800375CC0 /* TFTrackingDataReceiver.m in Sources */,
 				6EED60DC0E5EE64300375CC0 /* TFDOTrackingClient.m in Sources */,
@@ -1471,6 +1486,7 @@
 				6EF3C46F0E61C03300BF6B39 /* TFTUIOTrackingDataDistributor.m in Sources */,
 				6E7ED5D60E621A1800ECAE8B /* TFTUIOSettingsController.m in Sources */,
 				6EAE6FD90E640C520083A4C7 /* TFCIColorInversionFilter.m in Sources */,
+				6E6C8CF40E72AF030062EA15 /* TFTUIOOSCServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

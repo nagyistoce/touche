@@ -1,5 +1,5 @@
 //
-//  TFTUIOServer.m
+//  TFTUIOOSCServer.m
 //  Touché
 //
 //  Created by Georg Kaindl on 21/8/08.
@@ -22,7 +22,7 @@
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "TFTUIOServer.h"
+#import "TFTUIOOSCServer.h"
 
 #import <BBOSC/BBOSCAddress.h>
 #import <BBOSC/BBOSCArgument.h>
@@ -37,11 +37,11 @@
 #define SECONDS_IN_RUNLOOP		((NSTimeInterval)5.0)
 #define	TUIO_PROFILE_ADDRESS	(@"/tuio/2Dcur")
 
-@interface TFTUIOServer (PrivateMethods)
+@interface TFTUIOOSCServer (PrivateMethods)
 - (void)_socketThreadFunc;
 @end
 
-@implementation TFTUIOServer
+@implementation TFTUIOOSCServer
 
 + (BBOSCAddress*)tuioProfileAddress
 {

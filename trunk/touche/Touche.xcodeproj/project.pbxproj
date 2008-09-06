@@ -163,6 +163,7 @@
 		6ECF819E0E72B223009433B3 /* TFTUIOOSCTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF819D0E72B223009433B3 /* TFTUIOOSCTrackingDataDistributor.m */; };
 		6ECF81B10E72B2D3009433B3 /* TFTUIOOSCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF81B00E72B2D3009433B3 /* TFTUIOOSCSettingsController.m */; };
 		6ECF81B50E72B362009433B3 /* TUIOOSCSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ECF81B30E72B362009433B3 /* TUIOOSCSettings.xib */; };
+		6ECF81BC0E72B93D009433B3 /* TFTUIOTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF81BB0E72B93D009433B3 /* TFTUIOTrackingDataDistributor.m */; };
 		6EE606A70DD9F5C40069A40E /* dc1394.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE606A60DD9F5C40069A40E /* dc1394.framework */; };
 		6EE606D40DD9F5C80069A40E /* dc1394.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE606A60DD9F5C40069A40E /* dc1394.framework */; };
 		6EE6077A0DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE607790DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m */; };
@@ -439,6 +440,8 @@
 		6ECF81AF0E72B2D3009433B3 /* TFTUIOOSCSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOOSCSettingsController.h; sourceTree = "<group>"; };
 		6ECF81B00E72B2D3009433B3 /* TFTUIOOSCSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOOSCSettingsController.m; sourceTree = "<group>"; };
 		6ECF81B40E72B362009433B3 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/TUIOOSCSettings.xib; sourceTree = "<group>"; };
+		6ECF81BA0E72B93D009433B3 /* TFTUIOTrackingDataDistributor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOTrackingDataDistributor.h; sourceTree = "<group>"; };
+		6ECF81BB0E72B93D009433B3 /* TFTUIOTrackingDataDistributor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOTrackingDataDistributor.m; sourceTree = "<group>"; };
 		6EE606A60DD9F5C40069A40E /* dc1394.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = dc1394.framework; path = frameworks/dc1394.framework; sourceTree = "<group>"; };
 		6EE607780DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.h"; sourceTree = "<group>"; };
 		6EE607790DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m"; sourceTree = "<group>"; };
@@ -828,6 +831,8 @@
 		6E6C8CF10E72AE490062EA15 /* TUIO */ = {
 			isa = PBXGroup;
 			children = (
+				6ECF81BA0E72B93D009433B3 /* TFTUIOTrackingDataDistributor.h */,
+				6ECF81BB0E72B93D009433B3 /* TFTUIOTrackingDataDistributor.m */,
 			);
 			name = TUIO;
 			sourceTree = "<group>";
@@ -1487,6 +1492,7 @@
 				6ECF81780E72B05E009433B3 /* TFTUIOOSCTrackingDataReceiver.m in Sources */,
 				6ECF819E0E72B223009433B3 /* TFTUIOOSCTrackingDataDistributor.m in Sources */,
 				6ECF81B10E72B2D3009433B3 /* TFTUIOOSCSettingsController.m in Sources */,
+				6ECF81BC0E72B93D009433B3 /* TFTUIOTrackingDataDistributor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

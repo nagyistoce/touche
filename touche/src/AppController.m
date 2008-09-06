@@ -42,7 +42,7 @@
 #import "TFTrackingDataReceiver.h"
 #import "TFTrackingDataDistributor.h"
 #import "TFDOTrackingDataDistributor.h"
-#import "TFTUIOSettingsController.h"
+#import "TFTUIOOSCSettingsController.h"
 #import "TFTUIOOSCTrackingDataDistributor.h"
 #import "TFTrackingDataDistributionCenter.h"
 
@@ -542,13 +542,13 @@ enum {
 	
 	TFTUIOOSCTrackingDataDistributor* tuioDistributor = [[TFTUIOOSCTrackingDataDistributor alloc] init];
 	[tuioDistributor startDistributorWithObject:nil error:NULL];
-	tuioDistributor.motionThreshold = [TFTUIOSettingsController pixelsForBlobMotion];
+	tuioDistributor.motionThreshold = [TFTUIOOSCSettingsController pixelsForBlobMotion];
 	
 	tuioDistributor.delegate = self;
 		
 	[_distributionCenter addDistributor:tuioDistributor];
 	
-	_tuioSettingsController = [[TFTUIOSettingsController alloc] init];
+	_tuioSettingsController = [[TFTUIOOSCSettingsController alloc] init];
 	_tuioSettingsController.distributor = tuioDistributor;
 	
 	_pipeline = [[TFTrackingPipeline sharedPipeline] retain];

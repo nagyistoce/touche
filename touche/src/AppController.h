@@ -37,7 +37,7 @@
 @class GCKIPhoneNavigationBarLabelView;
 @class TFWizardController;
 @class TFWizardView;
-@class TFTUIOSettingsController;
+@class TFTUIOOSCSettingsController;
 
 @interface AppController : NSWindowController {
 	IBOutlet GCKIPhoneNavigationBarView*		_statusBar;
@@ -66,7 +66,7 @@
 	TFAboutController*						_aboutController;
 	TFWizardController*						_wizardController;
 	
-	TFTUIOSettingsController*				_tuioSettingsController;
+	TFTUIOOSCSettingsController*			_tuioSettingsController;
 	
 	NSInteger								_appStatus;
 }

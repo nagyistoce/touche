@@ -43,6 +43,8 @@
 
 // name can be an IP address string or a DNS name.
 + (BOOL)resolveName:(NSString*)name intoAddress:(in_addr_t*)addrPtr;
++ (NSString*)stringFromIPAddress:(in_addr_t)addr;
++ (NSString*)stringFromSocketAddress:(struct sockaddr_in*)sockAddr;
 
 - (id)init;
 - (void)dealloc;

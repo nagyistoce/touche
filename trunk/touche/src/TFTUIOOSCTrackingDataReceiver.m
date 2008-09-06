@@ -28,7 +28,7 @@
 
 #import "TFIncludes.h"
 #import "TFLocalization.h"
-#import "TFTUIOTrackingDataDistributor.h"
+#import "TFTUIOOSCTrackingDataDistributor.h"
 
 
 @implementation TFTUIOOSCTrackingDataReceiver
@@ -91,7 +91,7 @@
 
 - (void)receiverShouldQuit
 {
-	TFTUIOTrackingDataDistributor* distributor = (TFTUIOTrackingDataDistributor*)self.owningDistributor;
+	TFTUIOOSCTrackingDataDistributor* distributor = (TFTUIOOSCTrackingDataDistributor*)self.owningDistributor;
 	[distributor removeTUIOClient:self];
 }
 
@@ -99,7 +99,7 @@
 - (void)consumeTrackingData:(id)trackingData
 {
 	if ([trackingData isKindOfClass:[BBOSCPacket class]]) {
-		TFTUIOTrackingDataDistributor* distributor = (TFTUIOTrackingDataDistributor*)self.owningDistributor;
+		TFTUIOOSCTrackingDataDistributor* distributor = (TFTUIOOSCTrackingDataDistributor*)self.owningDistributor;
 		[distributor sendTUIOPacket:trackingData toEndpoint:self->_peerSA];
 	}
 }

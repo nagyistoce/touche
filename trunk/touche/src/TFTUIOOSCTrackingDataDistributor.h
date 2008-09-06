@@ -1,5 +1,5 @@
 //
-//  TFTUIOTrackingDataDistributor.h
+//  TFTUIOOSCTrackingDataDistributor.h
 //  Touché
 //
 //  Created by Georg Kaindl on 24/8/08.
@@ -29,7 +29,7 @@
 
 @class TFTUIOOSCServer, TFTUIOOSCTrackingDataReceiver, TFThreadMessagingQueue, BBOSCPacket;
 
-@interface TFTUIOTrackingDataDistributor : TFTrackingDataDistributor {
+@interface TFTUIOOSCTrackingDataDistributor : TFTrackingDataDistributor {
 	float					motionThreshold;
 
 @protected

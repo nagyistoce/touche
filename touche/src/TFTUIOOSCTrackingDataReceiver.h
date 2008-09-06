@@ -1,5 +1,5 @@
 //
-//  TFTUIOTrackingDataReceiver.h
+//  TFTUIOOSCTrackingDataReceiver.h
 //  Touché
 //
 //  Created by Georg Kaindl on 24/8/08.
@@ -28,7 +28,7 @@
 #import "TFIPSocket.h"
 
 
-@interface TFTUIOTrackingDataReceiver : TFTrackingDataReceiver {
+@interface TFTUIOOSCTrackingDataReceiver : TFTrackingDataReceiver {
 	NSData*		_peerSA;
 }
 

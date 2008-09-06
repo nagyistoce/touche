@@ -31,8 +31,8 @@
 #import "TFBlobLabel.h"
 #import "TFBlobPoint.h"
 #import "TFThreadMessagingQueue.h"
-#import "TFTUIOServer.h"
-#import "TFTUIOTrackingDataReceiver.h"
+#import "TFTUIOOSCServer.h"
+#import "TFTUIOOSCTrackingDataReceiver.h"
 
 
 #define	DEFAULT_MOTION_THRESHOLD	(5.0f)
@@ -86,7 +86,7 @@
 
 - (BOOL)startDistributorWithObject:(id)obj error:(NSError**)error
 {
-	_server = [[TFTUIOServer alloc] initWithPort:0 andLocalAddress:nil error:error];
+	_server = [[TFTUIOOSCServer alloc] initWithPort:0 andLocalAddress:nil error:error];
 	_server.delegate = self;
 	
 	return (nil != _server);
@@ -111,7 +111,7 @@
 - (BOOL)addTUIOClientAtHost:(NSString*)host port:(UInt16)port error:(NSError**)error
 {
 	BOOL success = NO;
-	TFTUIOTrackingDataReceiver* receiver = [[TFTUIOTrackingDataReceiver alloc] initWithHost:host
+	TFTUIOOSCTrackingDataReceiver* receiver = [[TFTUIOOSCTrackingDataReceiver alloc] initWithHost:host
 																					   port:port
 																					  error:error];
 	
@@ -135,7 +135,7 @@
 	return success;
 }
 
-- (void)removeTUIOClient:(TFTUIOTrackingDataReceiver*)client
+- (void)removeTUIOClient:(TFTUIOOSCTrackingDataReceiver*)client
 {
 	if (client.owningDistributor == self && nil != [_receivers objectForKey:client.receiverID]) {
 		@synchronized (_receivers) {
@@ -192,12 +192,12 @@
 			}
 		}
 				
-		BBOSCBundle* tuioBundle = [TFTUIOServer tuioBundleForFrameNumber:frameSequenceNumber
-															 activeBlobs:activeTouches
-															  movedBlobs:movedTouches];
+		BBOSCBundle* tuioBundle = [TFTUIOOSCServer tuioBundleForFrameNumber:frameSequenceNumber
+																activeBlobs:activeTouches
+																 movedBlobs:movedTouches];
 		
 		@synchronized (_receivers) {
-			for (TFTUIOTrackingDataReceiver* receiver in [_receivers allValues])
+			for (TFTUIOOSCTrackingDataReceiver* receiver in [_receivers allValues])
 				[receiver consumeTrackingData:tuioBundle];
 		}
 		

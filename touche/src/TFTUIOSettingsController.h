@@ -25,10 +25,10 @@
 #import <Cocoa/Cocoa.h>
 
 
-@class TFTUIOTrackingDataDistributor;
+@class TFTUIOOSCTrackingDataDistributor;
 
 @interface TFTUIOSettingsController : NSWindowController {
-	TFTUIOTrackingDataDistributor*	distributor;
+	TFTUIOOSCTrackingDataDistributor*	distributor;
 	IBOutlet NSPanel*				_addClientPanel;
 	IBOutlet NSTextField*			_addClientHostField;
 	IBOutlet NSTextField*			_addClientPortField;
@@ -39,7 +39,7 @@
 	NSThread*						_addClientThread;
 }
 
-@property (nonatomic, retain) TFTUIOTrackingDataDistributor* distributor;
+@property (nonatomic, retain) TFTUIOOSCTrackingDataDistributor* distributor;
 
 + (float)pixelsForBlobMotion;
 + (void)bindPixelsForBlobMotionToObject:(id)object keyPath:(NSString*)keyPath;
@@ -47,7 +47,7 @@
 - (id)init;
 - (void)dealloc;
 
-- (void)setDistributor:(TFTUIOTrackingDataDistributor*)newDistributor;
+- (void)setDistributor:(TFTUIOOSCTrackingDataDistributor*)newDistributor;
 
 - (IBAction)showAddClientPanel:(id)sender;
 - (IBAction)addClientFromPanel:(id)sender;

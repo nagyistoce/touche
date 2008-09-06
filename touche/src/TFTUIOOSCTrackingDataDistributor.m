@@ -1,5 +1,5 @@
 //
-//  TFTUIOTrackingDataDistributor.m
+//  TFTUIOOSCTrackingDataDistributor.m
 //  Touché
 //
 //  Created by Georg Kaindl on 24/8/08.
@@ -22,7 +22,7 @@
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "TFTUIOTrackingDataDistributor.h"
+#import "TFTUIOOSCTrackingDataDistributor.h"
 
 #import <BBOSC/BBOSCPacket.h>
 #import <BBOSC/BBOSCBundle.h>
@@ -37,11 +37,11 @@
 
 #define	DEFAULT_MOTION_THRESHOLD	(5.0f)
 
-@interface TFTUIOTrackingDataDistributor (PrivateMethods)
+@interface TFTUIOOSCTrackingDataDistributor (PrivateMethods)
 - (void)_distributionThread;
 @end
 
-@implementation TFTUIOTrackingDataDistributor
+@implementation TFTUIOOSCTrackingDataDistributor
 
 @synthesize motionThreshold;
 

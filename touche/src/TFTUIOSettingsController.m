@@ -26,7 +26,7 @@
 
 #import "TFLocalization.h"
 #import "TFIPSocket.h"
-#import "TFTUIOTrackingDataDistributor.h"
+#import "TFTUIOOSCTrackingDataDistributor.h"
 
 
 #define	DEFAULT_HOST	(@"127.0.0.1")
@@ -79,7 +79,7 @@ NSString* tFTUIOPixelsForMotionPreferenceKey = @"tFTUIOPixelsForMotion";
 	[super dealloc];
 }
 
-- (void)setDistributor:(TFTUIOTrackingDataDistributor*)newDistributor
+- (void)setDistributor:(TFTUIOOSCTrackingDataDistributor*)newDistributor
 {
 	if (distributor != newDistributor) {
 		[distributor unbind:@"motionThreshold"];

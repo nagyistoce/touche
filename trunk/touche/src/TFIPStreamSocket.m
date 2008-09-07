@@ -412,6 +412,9 @@
 					[self handleDisconnection];
 			}
 		}
+	} else {
+		// if we got called, even though there's nothing to read, we've been disconnected
+		[self handleDisconnection];
 	}
 	
 	return success;

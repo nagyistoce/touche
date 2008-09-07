@@ -349,6 +349,28 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 	return str;
 }
 
+- (UInt16)peerPort
+{
+	UInt16 port = 0;
+	struct sockaddr_in sockAddr;
+	
+	if ([self getPeerName:&sockAddr])
+		port = ntohs(sockAddr.sin_port);
+	
+	return port;
+}
+
+- (UInt16)sockPort
+{
+	UInt16 port = 0;
+	struct sockaddr_in sockAddr;
+	
+	if ([self getSockName:&sockAddr])
+		port = ntohs(sockAddr.sin_port);
+	
+	return port;
+}
+
 - (int)lastErrorCode
 {
 	return _lastErrorCode;

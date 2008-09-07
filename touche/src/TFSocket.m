@@ -25,6 +25,7 @@
 #import "TFSocket.h"
 
 #import <fcntl.h>
+#import <signal.h>
 
 
 static void _tfSocketCallback(CFSocketRef socketRef,
@@ -40,6 +41,11 @@ static void _tfSocketCallback(CFSocketRef socketRef,
 + (id)socket
 {
 	return [[[self alloc] init] autorelease];
+}
+
++ (void)ignoreBrokenPipes
+{
+	signal(SIGPIPE, SIG_IGN);
 }
 
 - (id)init

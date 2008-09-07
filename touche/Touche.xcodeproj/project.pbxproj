@@ -171,7 +171,7 @@
 		6ECF845F0E733449009433B3 /* TFFlashXMLTUIOTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF845E0E733449009433B3 /* TFFlashXMLTUIOTrackingDataDistributor.m */; };
 		6ECF85000E733CA8009433B3 /* TFFlashXMLTUIOGeneration.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF84FF0E733CA8009433B3 /* TFFlashXMLTUIOGeneration.m */; };
 		6ECF85170E734879009433B3 /* TFBlob+TUIOMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF85160E734879009433B3 /* TFBlob+TUIOMethods.m */; };
-		6ECF86B20E740EC0009433B3 /* flash-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ECF86B10E740EC0009433B3 /* flash-image.png */; };
+		6ECF88400E7488FB009433B3 /* flash-image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6ECF883F0E7488FB009433B3 /* flash-image.jpg */; };
 		6EE606A70DD9F5C40069A40E /* dc1394.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE606A60DD9F5C40069A40E /* dc1394.framework */; };
 		6EE606D40DD9F5C80069A40E /* dc1394.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE606A60DD9F5C40069A40E /* dc1394.framework */; };
 		6EE6077A0DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE607790DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m */; };
@@ -463,7 +463,7 @@
 		6ECF84FF0E733CA8009433B3 /* TFFlashXMLTUIOGeneration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFFlashXMLTUIOGeneration.m; sourceTree = "<group>"; };
 		6ECF85150E734879009433B3 /* TFBlob+TUIOMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFBlob+TUIOMethods.h"; sourceTree = "<group>"; };
 		6ECF85160E734879009433B3 /* TFBlob+TUIOMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFBlob+TUIOMethods.m"; sourceTree = "<group>"; };
-		6ECF86B10E740EC0009433B3 /* flash-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "flash-image.png"; path = "images/flash-image.png"; sourceTree = "<group>"; };
+		6ECF883F0E7488FB009433B3 /* flash-image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "flash-image.jpg"; path = "images/flash-image.jpg"; sourceTree = "<group>"; };
 		6EE606A60DD9F5C40069A40E /* dc1394.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = dc1394.framework; path = frameworks/dc1394.framework; sourceTree = "<group>"; };
 		6EE607780DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.h"; sourceTree = "<group>"; };
 		6EE607790DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m"; sourceTree = "<group>"; };
@@ -653,7 +653,7 @@
 				6E7DB2BD0DEB76E700CF9556 /* AppIcon.icns */,
 				6ECA96690DD249D300A9ABE3 /* warningicon.tiff */,
 				6ECA96680DD249D300A9ABE3 /* erroricon.png */,
-				6ECF86B10E740EC0009433B3 /* flash-image.png */,
+				6ECF883F0E7488FB009433B3 /* flash-image.jpg */,
 				6EF3C4680E61BEE400BF6B39 /* tuio-image.png */,
 			);
 			name = Images;
@@ -1374,7 +1374,7 @@
 				6EF3C4690E61BEE400BF6B39 /* tuio-image.png in Resources */,
 				6E7ED6760E621F9200ECAE8B /* Help in Resources */,
 				6ECF81B50E72B362009433B3 /* TUIOOSCSettings.xib in Resources */,
-				6ECF86B20E740EC0009433B3 /* flash-image.png in Resources */,
+				6ECF88400E7488FB009433B3 /* flash-image.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

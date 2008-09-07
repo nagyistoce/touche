@@ -46,6 +46,7 @@
 "TFTouchTestControllerStartInfo"				= "Touch the screen to test your setup.\nHit 'Esc' to cancel.";
 
 "TFTUIOClientName"	= "%@:%d (TUIO/OSC/UDP)";
+"TFTUIOXMLFlashClientName"	= "%@ (TUIO/Flash XML-Socket)";
 
 "TFTUIOAddClientInvalidHost"		= "Host name could not be resolved.";
 "TFTUIOAddClientInvalidPort"		= "Port must be between 1 and 65535.";

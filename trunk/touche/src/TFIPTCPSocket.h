@@ -33,4 +33,6 @@
 - (id)init;
 - (void)dealloc;
 
+- (BOOL)setTCPNoDelay:(BOOL)onOrOff;
+
 @end

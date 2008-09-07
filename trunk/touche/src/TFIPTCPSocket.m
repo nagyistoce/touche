@@ -25,6 +25,7 @@
 #import "TFIPTCPSocket.h"
 
 #import <sys/socket.h>
+#import <netinet/tcp.h>
 
 
 @implementation TFIPTCPSocket
@@ -41,6 +42,12 @@
 - (void)dealloc
 {
 	[super dealloc];
+}
+
+- (BOOL)setTCPNoDelay:(BOOL)onOrOff
+{
+	int val = onOrOff ? 1 : 0;
+	return (setsockopt([self nativeSocketHandle], IPPROTO_TCP, TCP_NODELAY, &val, sizeof(val)) >= 0);
 }
 
 @end

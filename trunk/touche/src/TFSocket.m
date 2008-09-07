@@ -34,6 +34,11 @@ static void _tfSocketCallback(CFSocketRef socketRef,
 							  const void* data,
 							  void* context);
 
+@interface TFSocket (PrivateMethods)
+- (int)_flagsForSocket:(CFSocketNativeHandle)socket;
+- (BOOL)_setFlags:(int)flags forSocket:(CFSocketNativeHandle)socket;
+@end
+
 @implementation TFSocket
 
 @synthesize delegate;
@@ -132,9 +137,9 @@ static void _tfSocketCallback(CFSocketRef socketRef,
 	
 	CFOptionFlags socketCallbacks = (kCFSocketConnectCallBack | kCFSocketReadCallBack | kCFSocketWriteCallBack);
 	
-	int socketFlags = fcntl(socket, F_GETFL, 0);
+	int socketFlags = [self _flagsForSocket:socket];
 	if (socketFlags >= 0) {
-		if (fcntl(socket, F_SETFL, socketFlags | O_NONBLOCK) >= 0) {
+		if ([self _setFlags:(socketFlags | O_NONBLOCK) forSocket:socket]) {
 			_cfSocketRef = CFSocketCreateWithNative(kCFAllocatorDefault,
 													socket,
 													socketCallbacks,
@@ -152,6 +157,28 @@ static void _tfSocketCallback(CFSocketRef socketRef,
 	return success;
 }
 
+- (int)socketFlags
+{
+	return [self _flagsForSocket:[self nativeSocketHandle]];
+}
+
+- (BOOL)setSocketFlags:(int)flags
+{
+	return [self _setFlags:flags forSocket:[self nativeSocketHandle]];
+}
+
+- (BOOL)setSocketFlag:(int)flag
+{
+	int flags = [self socketFlags];
+	return [self setSocketFlags:(flags | flag)];
+}
+
+- (BOOL)unsetSocketFlag:(int)flag
+{
+	int flags = [self socketFlags];
+	return [self setSocketFlags:(flags & (~flag))];
+}
+
 - (void)handleConnectCallbackWithData:(const void*)data
 {
 	[self doesNotRecognizeSelector:_cmd];
@@ -166,6 +193,19 @@ static void _tfSocketCallback(CFSocketRef socketRef,
 {
 	[self doesNotRecognizeSelector:_cmd];
 }
+
+- (int)_flagsForSocket:(CFSocketNativeHandle)socket
+{
+	int flags = fcntl(socket, F_GETFL, 0);
+	
+	return (flags >= 0) ? flags : 0;
+}
+
+- (BOOL)_setFlags:(int)flags forSocket:(CFSocketNativeHandle)socket
+{
+	return (fcntl(socket, F_SETFL, flags) != -1);
+}
+
 
 @end
 

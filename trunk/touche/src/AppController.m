@@ -44,6 +44,7 @@
 #import "TFDOTrackingDataDistributor.h"
 #import "TFTUIOOSCSettingsController.h"
 #import "TFTUIOOSCTrackingDataDistributor.h"
+#import "TFFlashXMLTUIOTrackingDataDistributor.h"
 #import "TFTrackingDataDistributionCenter.h"
 
 
@@ -550,6 +551,12 @@ enum {
 	
 	_tuioSettingsController = [[TFTUIOOSCSettingsController alloc] init];
 	_tuioSettingsController.distributor = tuioDistributor;
+	
+	TFFlashXMLTUIOTrackingDataDistributor* flashDistributor = [[TFFlashXMLTUIOTrackingDataDistributor alloc] init];
+	[flashDistributor startDistributorWithObject:nil error:NULL];
+	flashDistributor.delegate = self;
+	
+	[_distributionCenter addDistributor:flashDistributor];
 	
 	_pipeline = [[TFTrackingPipeline sharedPipeline] retain];
 	_pipeline.delegate = self;

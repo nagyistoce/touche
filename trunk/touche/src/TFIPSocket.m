@@ -408,6 +408,11 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 	[self doesNotRecognizeSelector:_cmd];
 }
 
+- (void)handleConnectionFailed
+{
+	[self doesNotRecognizeSelector:_cmd];
+}
+
 - (void)handleDisconnection
 {
 	[self doesNotRecognizeSelector:_cmd];

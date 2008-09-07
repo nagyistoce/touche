@@ -93,6 +93,7 @@ maxPendingConnections:(NSUInteger)maxPendingConnections;
 // subclasses can override these for customized behavior
 - (void)handleAvailableData;
 - (void)handleConnectionEstablished;
+- (void)handleConnectionFailed;
 - (void)handleDisconnection;
 - (void)handleNewConnection;
 - (void)handleWritableState;

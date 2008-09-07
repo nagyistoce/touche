@@ -349,6 +349,28 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 	return str;
 }
 
+- (NSString*)peerHostString
+{
+	NSString* str = nil;
+	struct sockaddr_in sockAddr;
+	
+	if ([self getPeerName:&sockAddr])
+		str = [[self class] stringFromIPAddress:sockAddr.sin_addr.s_addr];
+	
+	return str;
+}
+
+- (NSString*)sockHostString
+{
+	NSString* str = nil;
+	struct sockaddr_in sockAddr;
+	
+	if ([self getSockName:&sockAddr])
+		str = [[self class] stringFromIPAddress:sockAddr.sin_addr.s_addr];
+	
+	return str;
+}
+
 - (UInt16)peerPort
 {
 	UInt16 port = 0;

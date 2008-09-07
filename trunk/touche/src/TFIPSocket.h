@@ -75,6 +75,8 @@ maxPendingConnections:(NSUInteger)maxPendingConnections;
 // Convenience
 - (NSString*)peerNameString;
 - (NSString*)sockNameString;
+- (NSString*)peerHostString;
+- (NSString*)sockHostString;
 - (UInt16)peerPort;
 - (UInt16)sockPort;
 

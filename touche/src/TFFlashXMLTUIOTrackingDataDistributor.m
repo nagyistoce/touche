@@ -93,6 +93,11 @@ NSString* kTFFlashXMLTUIOTrackingDataDistributorPort			= @"kTFFlashXMLTUIOTracki
 	[_server release];
 	_server = nil;
 	
+	@synchronized(_receivers) {
+		for (NSString* name in _receivers)
+			[self disconnectTUIOReceiver:[_receivers objectForKey:name] connectionDidDie:NO];
+	}
+	
 	[super stopDistributor];
 }
 

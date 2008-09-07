@@ -153,9 +153,6 @@
 	
 		for (NSString* name in _receivers)
 			[(TFDOTrackingDataReceiver*)[_receivers objectForKey:name] disconnectWithError:error];
-	
-		[_receivers release];
-		_receivers = nil;
 	}
 	
 	_isRunning = NO;

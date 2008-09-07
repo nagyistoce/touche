@@ -69,6 +69,11 @@
 	[_server release];
 	_server = nil;
 	
+	@synchronized(_receivers) {
+		for (NSString* name in _receivers)
+			[self removeTUIOClient:[_receivers objectForKey:name]];
+	}
+	
 	[super stopDistributor];
 }
 

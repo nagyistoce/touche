@@ -126,7 +126,7 @@
 	if (socketDescriptor < 0)
 		return nil;
 	
-	TFSocket* newSocket = [[TFIPStreamSocket alloc] _initWithConnectedNativeHandle:socketDescriptor];
+	TFSocket* newSocket = [[[self class] alloc] _initWithConnectedNativeHandle:socketDescriptor];
 	
 	if(nil == newSocket)
 		(void)close(socketDescriptor);

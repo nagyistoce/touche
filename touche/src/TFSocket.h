@@ -61,6 +61,11 @@
 - (BOOL)cfSocketCreated;
 - (CFSocketNativeHandle)nativeSocketHandle;
 
+- (int)socketFlags;
+- (BOOL)setSocketFlags:(int)flags;
+- (BOOL)setSocketFlag:(int)flag;
+- (BOOL)unsetSocketFlag:(int)flag;
+
 - (BOOL)scheduleOnCurrentRunLoop;
 - (BOOL)scheduleOnRunLoop:(NSRunLoop*)inRunLoop;
 - (void)unscheduleFromRunLoop;

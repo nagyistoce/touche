@@ -232,7 +232,10 @@
 
 - (void)sendString:(NSString*)string encoding:(NSStringEncoding)encoding toEndpoint:(NSData*)sockAddr
 {
-	[self sendData:[string dataUsingEncoding:encoding] toEndpoint:sockAddr];
+	const char* bytes = [string cStringUsingEncoding:encoding];
+	size_t len = strlen(bytes) + 1; // + 1, because we'll send the 0-termination too.
+		
+	[self sendData:[NSData dataWithBytes:bytes length:len] toEndpoint:sockAddr];
 }
 
 - (void)handleConnectCallbackWithData:(const void*)data

@@ -261,7 +261,10 @@
 
 - (void)writeString:(NSString*)string encoding:(NSStringEncoding)encoding
 {
-	[self writeData:[string dataUsingEncoding:encoding]];
+	const char* bytes = [string cStringUsingEncoding:encoding];
+	size_t len = strlen(bytes) + 1; // + 1, because we'll send the 0-termination too.
+	
+	[self writeData:[NSData dataWithBytes:bytes length:len]];
 }
 
 - (int)connectionErrorCode

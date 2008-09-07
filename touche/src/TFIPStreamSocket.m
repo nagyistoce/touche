@@ -67,6 +67,9 @@
 	_streamDelegateCapabilities.delegateHasConnectionTimeout =
 		[delegate respondsToSelector:@selector(socket:connectionAttemptDidTimeOutAfter:)];
 	
+	_streamDelegateCapabilities.delegateHasConnectionFailed =
+		[delegate respondsToSelector:@selector(socketConnectionAttemptFailed:)];
+	
 	_streamDelegateCapabilities.delegateHasGotDisconnected =
 		[delegate respondsToSelector:@selector(socketGotDisconnected:)];
 	
@@ -278,7 +281,7 @@
 	if (nil != data) {
 		_connectionErrorCode = *(int*)data;
 		_lastErrorCode = *(int*)data;
-		[self handleDisconnection];
+		[self handleConnectionFailed];
 	} else 
 		[self handleConnectionEstablished];
 }
@@ -318,6 +321,14 @@
 	
 	// Attempt to write any data that has already been added to our outgoing buffer
 	[self _writeToSocket];
+}
+
+- (void)handleConnectionFailed
+{
+	[self close];
+	
+	if (_streamDelegateCapabilities.delegateHasConnectionFailed)
+		[delegate socketConnectionAttemptFailed:self];
 }
 
 - (void)handleDisconnection

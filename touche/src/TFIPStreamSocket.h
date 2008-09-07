@@ -34,6 +34,7 @@
 @interface NSObject (TFIPStreamSocketDelegate)
 - (void)socket:(TFIPStreamSocket*)socket didAcceptConnectionWithSocket:(TFIPStreamSocket*)connectionSocket;
 - (void)socket:(TFIPStreamSocket*)socket connectionAttemptDidTimeOutAfter:(NSTimeInterval)timeInterval;
+- (void)socketConnectionAttemptFailed:(TFIPStreamSocket*)socket;
 - (void)socketDidEstablishConnection:(TFIPStreamSocket*)socket;
 - (void)socketGotDisconnected:(TFIPStreamSocket*)socket;
 @end
@@ -49,6 +50,7 @@
 	struct {
 		unsigned int delegateHasConnectionTimeout:1;
 		unsigned int delegateHasGotDisconnected:1;
+		unsigned int delegateHasConnectionFailed:1;
 		unsigned int delegateHasConnectionAccepted:1;
 		unsigned int delegateHasConnectionEstablished:1;
 	} _streamDelegateCapabilities;
@@ -98,6 +100,7 @@
 // subclasses can override these for customized behavior
 - (void)handleAvailableData;
 - (void)handleConnectionEstablished;
+- (void)handleConnectionFailed;
 - (void)handleDisconnection;
 - (void)handleNewConnection;
 - (void)handleWritableState;

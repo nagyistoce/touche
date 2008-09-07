@@ -50,6 +50,8 @@
 
 + (id)socket;
 
++ (void)ignoreBrokenPipes;
+
 - (id)init;
 - (void)dealloc;
 

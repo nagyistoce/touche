@@ -90,7 +90,14 @@
 
 - (void)distributeTrackingDataDictionary:(NSDictionary*)trackingDict
 {
-	[_queue enqueue:trackingDict];
+	BOOL hasReceivers = NO;
+	
+	@synchronized(_receivers) {
+		hasReceivers = [_receivers count] > 0;
+	}
+	
+	if (hasReceivers)
+		[_queue enqueue:trackingDict];
 }
 
 - (void)distributeTUIODataWithLivingTouches:(NSArray*)livingTouches
@@ -119,11 +126,15 @@
 		
 		NSArray* newTouches = (NSArray*)[touches objectForKey:kToucheTrackingDistributorDataNewTouchesKey];
 		NSArray* updatedTouches = (NSArray*)[touches objectForKey:kToucheTrackingDistributorDataUpdatedTouchesKey];
+		NSArray* endedTouches = (NSArray*)[touches objectForKey:kToucheTrackingDistributorDataEndedTouchesKey];
 		
 		NSMutableArray* activeTouches = [NSMutableArray arrayWithArray:newTouches];
 		[activeTouches addObjectsFromArray:updatedTouches];
 		
 		NSMutableArray* movedTouches = [NSMutableArray array];
+		
+		for (TFBlob* blob in endedTouches)
+			[_blobPositions removeObjectForKey:blob.label];
 		
 		[movedTouches addObjectsFromArray:newTouches];
 		for (TFBlob* blob in newTouches) {
@@ -133,7 +144,7 @@
 		float minDistance = self.motionThreshold;
 		for (TFBlob* blob in updatedTouches) {
 			TFBlobPoint* lastPosition = [_blobPositions objectForKey:blob.label];
-			if (minDistance <= [blob.center distanceFromBlobPoint:lastPosition]) {
+			if (nil == lastPosition || minDistance <= [blob.center distanceFromBlobPoint:lastPosition]) {
 				[_blobPositions setObject:blob.center forKey:blob.label];
 				[movedTouches addObject:blob];
 			}

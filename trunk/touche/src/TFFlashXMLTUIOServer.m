@@ -24,6 +24,8 @@
 
 #import "TFFlashXMLTUIOServer.h"
 
+#import "TFError.h"
+#import "TFLocalization.h"
 #import "TFIPTCPSocket.h"
 
 
@@ -55,9 +57,18 @@
 		_socket = [[TFIPTCPSocket alloc] init];
 		
 		if (![_socket listenAt:localAddress onPort:port]) {
-			// TODO: set error accordingly
+			if (NULL != error)
+				*error = [NSError errorWithDomain:TFErrorDomain
+											 code:TFErrorCouldNotCreateTUIOXMLFlashServer
+										 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+												   [NSString stringWithFormat:TFLocalizedString(@"TFTUIOXMLFlashServerListenSocketErrorDescription",
+																								@"TFTUIOXMLFlashServerListenSocketErrorDescription"),
+																									(nil != localAddress) ? localAddress : TFLocalizedString(@"TFTUIOXMLFlashServerAnyAddressName",
+																																							 @"TFTUIOXMLFlashServerAnyAddressName"),
+																									port],
+												   NSLocalizedDescriptionKey,
+												   nil]];
 			
-			[_socket release];
 			[self release];
 			return nil;
 		}

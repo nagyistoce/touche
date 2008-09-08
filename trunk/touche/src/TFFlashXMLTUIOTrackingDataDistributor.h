@@ -45,6 +45,8 @@ extern NSString* kTFFlashXMLTUIOTrackingDataDistributorPort;
 - (BOOL)startDistributorWithObject:(id)obj error:(NSError**)error;
 - (void)stopDistributor;
 
+- (BOOL)changeServerPortTo:(UInt16)port localAddress:(NSString*)address error:(NSError**)error;
+
 - (BOOL)canAskReceiversToQuit;
 
 - (void)disconnectTUIOReceiver:(TFFlashXMLTUIOTrackingDataReceiver*)receiver connectionDidDie:(BOOL)connectionDied;

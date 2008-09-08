@@ -45,6 +45,7 @@
 #import "TFTUIOOSCSettingsController.h"
 #import "TFTUIOOSCTrackingDataDistributor.h"
 #import "TFFlashXMLTUIOTrackingDataDistributor.h"
+#import "TFTUIOFlashXmlSettingsController.h"
 #import "TFTrackingDataDistributionCenter.h"
 
 
@@ -200,6 +201,11 @@ enum {
 - (IBAction)showTUIOSettings:(id)sender
 {
 	[_tuioSettingsController showWindow:sender];
+}
+
+- (IBAction)showTUIOFlashXmlSettings:(id)sender
+{
+	[_tuioFlashXmlSettingsController showWindow:sender];
 }
 
 - (IBAction)showMiscPrefs:(id)sender
@@ -552,11 +558,34 @@ enum {
 	_tuioSettingsController = [[TFTUIOOSCSettingsController alloc] init];
 	_tuioSettingsController.distributor = tuioDistributor;
 	
+	NSDictionary* flashXmlConfig = [NSDictionary dictionaryWithObjectsAndKeys:
+									[TFTUIOFlashXmlSettingsController serverAddress], kTFFlashXMLTUIOTrackingDataDistributorLocalAddress,
+									[NSNumber numberWithUnsignedShort:[TFTUIOFlashXmlSettingsController serverPort]], kTFFlashXMLTUIOTrackingDataDistributorPort,
+									nil];
 	TFFlashXMLTUIOTrackingDataDistributor* flashDistributor = [[TFFlashXMLTUIOTrackingDataDistributor alloc] init];
-	[flashDistributor startDistributorWithObject:nil error:NULL];
+	BOOL flashSuccess = [flashDistributor startDistributorWithObject:(id)flashXmlConfig error:NULL];
+	flashDistributor.motionThreshold = [TFTUIOFlashXmlSettingsController pixelsForBlobMotion];
 	flashDistributor.delegate = self;
 	
+	if (!flashSuccess) {
+		NSError* error = [NSError errorWithDomain:TFErrorDomain
+											 code:TFErrorUnknown userInfo:[NSDictionary dictionaryWithObject:
+																		   [NSString stringWithFormat:TFLocalizedString(@"TFFlashXMLServerCouldNotBeBoundInAppDidFinishLaunching",
+																														@"TFFlashXMLServerCouldNotBeBoundInAppDidFinishLaunching"),
+																														[[flashXmlConfig objectForKey:kTFFlashXMLTUIOTrackingDataDistributorPort] unsignedShortValue]]
+																							   forKey:NSLocalizedDescriptionKey]];
+			
+		[NSApp presentError:error
+			 modalForWindow:[self window]
+				   delegate:nil
+		 didPresentSelector:NULL
+				contextInfo:NULL];
+	}
+	
 	[_distributionCenter addDistributor:flashDistributor];
+	
+	_tuioFlashXmlSettingsController = [[TFTUIOFlashXmlSettingsController alloc] init];
+	_tuioFlashXmlSettingsController.distributor = flashDistributor;
 	
 	_pipeline = [[TFTrackingPipeline sharedPipeline] retain];
 	_pipeline.delegate = self;

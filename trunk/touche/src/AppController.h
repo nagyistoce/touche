@@ -38,6 +38,7 @@
 @class TFWizardController;
 @class TFWizardView;
 @class TFTUIOOSCSettingsController;
+@class TFTUIOFlashXmlSettingsController;
 
 @interface AppController : NSWindowController {
 	IBOutlet GCKIPhoneNavigationBarView*		_statusBar;
@@ -67,6 +68,7 @@
 	TFWizardController*						_wizardController;
 	
 	TFTUIOOSCSettingsController*			_tuioSettingsController;
+	TFTUIOFlashXmlSettingsController*		_tuioFlashXmlSettingsController;
 	
 	NSInteger								_appStatus;
 }
@@ -80,6 +82,7 @@
 - (IBAction)showScreenPrefs:(id)sender;
 - (IBAction)showTUIOAddClientPanel:(id)sender;
 - (IBAction)showTUIOSettings:(id)sender;
+- (IBAction)showTUIOFlashXmlSettings:(id)sender;
 - (IBAction)showMiscPrefs:(id)sender;
 - (IBAction)showTrackingPreviewWindow:(id)sender;
 - (IBAction)startWizard:(id)sender;

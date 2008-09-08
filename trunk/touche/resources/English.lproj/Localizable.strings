@@ -48,6 +48,12 @@
 "TFTUIOClientName"	= "%@:%d (TUIO/OSC/UDP)";
 "TFTUIOXMLFlashClientName"	= "%@ (TUIO/Flash XML-Socket)";
 
+"TFTUIOXMLFlashPortFormatError"	= "Please enter a number between 1 and 65535 as the server port.";
+
+"TFTUIOXMLFlashServerListenSocketErrorDescription" = "A TUIO/Flash XML-Socket server could not be instantiated at the TCP endpoint %@:%u.\n\nMost likely, this is because another process is already listening on this port.";
+"TFTUIOXMLFlashServerAnyAddressName" = "any";
+"TFFlashXMLServerCouldNotBeBoundInAppDidFinishLaunching" = "The TUIO/Flash XML-Socket could not be bound to port %u. Flash/XML-Socket output will not be available until a different server port is set in the \"TUIO/Flash XML Settings\" in the \"Setup\" menu.\n\nMost likely, the problem is that another application is already using this port. If so, quit this application and restart Touché.";
+
 "TFTUIOAddClientInvalidHost"		= "Host name could not be resolved.";
 "TFTUIOAddClientInvalidPort"		= "Port must be between 1 and 65535.";
 "TFTUIOAddClientAlreadyExists"		= "This client is already being served.";

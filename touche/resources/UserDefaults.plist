@@ -8,5 +8,11 @@
 	<false/>
 	<key>tFTUIOPixelsForMotion</key>
 	<real>5</real>
+	<key>tFTUIOFlashXmlPixelsForMotionThreshold</key>
+	<integer>5</integer>
+	<key>tFTUIOFlashXmlServerPort</key>
+	<integer>3000</integer>
+	<key>tFTUIOFlashXmlServerLocalAddressTag</key>
+	<integer>0</integer>
 </dict>
 </plist>

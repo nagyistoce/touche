@@ -65,6 +65,9 @@ NSString* kTFFlashXMLTUIOTrackingDataDistributorPort			= @"kTFFlashXMLTUIOTracki
 		
 		localAddress = [dict objectForKey:kTFFlashXMLTUIOTrackingDataDistributorLocalAddress];
 		portNum = [dict objectForKey:kTFFlashXMLTUIOTrackingDataDistributorPort];
+		
+		if ((NSString*)[NSNull null] == localAddress)
+			localAddress = nil;
 	}
 	
 	UInt16 port = (nil != portNum) ? [portNum unsignedShortValue] : DEFAULT_PORT;
@@ -99,6 +102,46 @@ NSString* kTFFlashXMLTUIOTrackingDataDistributorPort			= @"kTFFlashXMLTUIOTracki
 	}
 	
 	[super stopDistributor];
+}
+
+- (BOOL)changeServerPortTo:(UInt16)port localAddress:(NSString*)address error:(NSError**)error
+{
+	TFFlashXMLTUIOServer* newServer = nil;
+
+	if (_port == port) {
+		[_server invalidate];
+		[_server release];
+		_server = nil;
+		
+		[_localAddr release];
+		_localAddr = nil;
+	}
+	
+	newServer = [[TFFlashXMLTUIOServer alloc] initWithPort:port
+										   andLocalAddress:address
+													 error:error];
+	
+	if (nil != newServer) {
+		[_server invalidate];
+		[_server release];
+		_server = newServer;
+		
+		[_localAddr release];
+		_localAddr = [[_server sockHost] copy];
+		_port = [_server sockPort];
+		
+		_server.delegate = self;
+	}
+	
+	// if the server is nil now, try to set the previous settings again
+	if (nil == _server) {
+		_server = [[TFFlashXMLTUIOServer alloc] initWithPort:_port
+											 andLocalAddress:_localAddr
+													   error:NULL];
+		_server.delegate = self;
+	}
+	
+	return (nil != newServer);
 }
 
 - (BOOL)canAskReceiversToQuit

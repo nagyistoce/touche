@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="562"/>
+			<integer value="418"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -536,6 +536,14 @@
 								<object class="NSMenuItem" id="742172065">
 									<reference key="NSMenu" ref="740614258"/>
 									<string key="NSTitle">TUIO/OSC Settings...</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="940690404"/>
+									<reference key="NSMixedImage" ref="133917768"/>
+								</object>
+								<object class="NSMenuItem" id="1018361119">
+									<reference key="NSMenu" ref="740614258"/>
+									<string key="NSTitle">TUIO/Flash XML Settings...</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="940690404"/>
@@ -1507,6 +1515,14 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 					</object>
 					<int key="connectionID">575</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showTUIOFlashXmlSettings:</string>
+						<reference key="source" ref="124338352"/>
+						<reference key="destination" ref="1018361119"/>
+					</object>
+					<int key="connectionID">578</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1888,6 +1904,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 							<reference ref="788668751"/>
 							<reference ref="210670535"/>
 							<reference ref="742172065"/>
+							<reference ref="1018361119"/>
 						</object>
 						<reference key="parent" ref="818908737"/>
 					</object>
@@ -2300,6 +2317,11 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 						<reference key="object" ref="572005635"/>
 						<reference key="parent" ref="311565273"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">576</int>
+						<reference key="object" ref="1018361119"/>
+						<reference key="parent" ref="740614258"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -2468,6 +2490,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 					<string>571.IBPluginDependency</string>
 					<string>572.IBPluginDependency</string>
 					<string>573.IBPluginDependency</string>
+					<string>576.IBPluginDependency</string>
 					<string>92.IBPluginDependency</string>
 					<string>92.ImportedFromIB2</string>
 				</object>
@@ -2540,7 +2563,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{372, 568}, {271, 153}}</string>
+					<string>{{372, 548}, {271, 173}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{190, 133}, {295, 83}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2657,6 +2680,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 				</object>
 			</object>
@@ -2680,7 +2704,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">575</int>
+			<int key="maxID">578</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2699,6 +2723,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 							<string>showPipelineConfigurationWindow:</string>
 							<string>showScreenPrefs:</string>
 							<string>showTUIOAddClientPanel:</string>
+							<string>showTUIOFlashXmlSettings:</string>
 							<string>showTUIOSettings:</string>
 							<string>showTrackingPreviewWindow:</string>
 							<string>startCalibration:</string>
@@ -2708,6 +2733,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -2827,6 +2853,13 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">src/TFDOTrackingClient.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">src/TFFlashXMLTUIOServer.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

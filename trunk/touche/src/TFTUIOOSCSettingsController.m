@@ -60,9 +60,6 @@ NSString* tFTUIOPixelsForMotionPreferenceKey = @"tFTUIOPixelsForMotion";
 - (id)init
 {
 	if (nil != (self = [super initWithWindowNibName:@"TUIOOSCSettings"])) {
-		[self loadWindow];
-		
-		[[self window] setShowsResizeIndicator:NO];
 	}
 	
 	return self;
@@ -118,6 +115,11 @@ NSString* tFTUIOPixelsForMotionPreferenceKey = @"tFTUIOPixelsForMotion";
 		[_addClientErrorLabel setHidden:YES];
 		//[_addClientProgressIndicator startAnimation:sender];
 	}
+}
+
+- (void)windowDidLoad
+{
+	[[self window] setShowsResizeIndicator:NO];
 }
 
 - (void)_addClientFromPanelThread

@@ -52,4 +52,13 @@
 - (IBAction)showAddClientPanel:(id)sender;
 - (IBAction)addClientFromPanel:(id)sender;
 
+- (void)windowDidLoad;
+
+#pragma mark -
+#pragma mark NSWindow delegate
+
+- (NSSize)windowWillResize:(NSWindow*)sender toSize:(NSSize)frameSize;
+- (void)windowDidBecomeKey:(NSNotification*)notification;
+- (void)windowWillClose:(NSNotification*)notification;
+
 @end

@@ -183,21 +183,6 @@
 		_bottomLineColor = NULL;
 	}
 	
-	if (NULL != _bottomGradientTopColor) {
-		CGColorRelease(_bottomGradientTopColor);
-		_bottomGradientTopColor = NULL;
-	}
-	
-	if (NULL != _topGradientTopColor) {
-		CGColorRelease(_topGradientTopColor);
-		_topGradientTopColor = NULL;
-	}
-	
-	if (NULL != _topGradientBottomColor) {
-		CGColorRelease(_topGradientBottomColor);
-		_topGradientBottomColor = NULL;
-	}
-	
 	if (NULL != _topGradient) {
 		CGGradientRelease(_topGradient);
 		_topGradient = NULL;
@@ -214,27 +199,38 @@
 	[self _freeDerivedColors];
 	
 	_baseColorCG = CGColorCreateFromNSColor(baseColor);
-	_topLineColor = CGColorCreateFromRGBColorWithLABOffset(_baseColorCG, 30.f, 4.0f, 12.0f);
-	_bottomLineColor = CGColorCreateFromRGBColorWithLABOffset(_baseColorCG, -34.0f, 3.0f, 8.0);
-	_bottomGradientTopColor = CGColorCreateFromRGBColorWithLABOffset(_baseColorCG, 7.0f, 0.0f, 2.0f);
-	_topGradientTopColor = CGColorCreateFromRGBColorWithLABOffset(_baseColorCG, 21.0f, 3.0f, 8.0f);
-	_topGradientBottomColor = CGColorCreateFromRGBColorWithLABOffset(_baseColorCG, 9.0f, 1.0f, 3.0f);
 	
-	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGFloat lum = CGColorGetRGBLuminance(_baseColorCG);
+	CGFloat fact = 1.0 + 2.7*ABS(lum - .571959);
+	
+	_topLineColor = CGColorCreateFromRGBColorWithLABOffset(_baseColorCG, 23.935089f*fact, 0.284225f, 10.066342f);
+	_bottomLineColor = CGColorCreateFromRGBColorWithLABOffset(_baseColorCG, -38.742592f*fact, 0.638589f, 7.224721f);
+	
+	CGColorRef bottomGradientBottomColor =
+		CGColorCreateFromRGBColorWithLABOffset(_baseColorCG, -6.598526f*fact, 0.239372f, -2.725481f);
+	CGColorRef topGradientTopColor =
+		CGColorCreateFromRGBColorWithLABOffset(_baseColorCG, 14.817841f*fact, 0.402272f, 5.96925f);
+	CGColorRef topGradientBottomColor =
+		CGColorCreateFromRGBColorWithLABOffset(_baseColorCG, 2.278397f*fact, -0.200182f, 1.234698f);
+	
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
 	
 	_bottomGradient = CGGradientCreateWithColors(colorSpace,
-												(CFArrayRef)[NSArray arrayWithObjects:(NSObject*)_bottomGradientTopColor,
-																								(NSObject*)_baseColorCG,
-																								nil],
-												NULL);
+												 (CFArrayRef)[NSArray arrayWithObjects:(NSObject*)_baseColorCG,
+															  (NSObject*)bottomGradientBottomColor,
+															  nil],
+												 NULL);
 	
 	_topGradient = CGGradientCreateWithColors(colorSpace,
-											 (CFArrayRef)[NSArray arrayWithObjects:(NSObject*)_topGradientTopColor,
-																				   (NSObject*)_topGradientBottomColor,
-																				   nil],
-											 NULL);
+											  (CFArrayRef)[NSArray arrayWithObjects:(NSObject*)topGradientTopColor,
+														   (NSObject*)topGradientBottomColor,
+														   nil],
+											  NULL);
 	
 	CGColorSpaceRelease(colorSpace);
+	CGColorRelease(bottomGradientBottomColor);
+	CGColorRelease(topGradientTopColor);
+	CGColorRelease(topGradientBottomColor);
 }
 
 #pragma mark -

@@ -158,7 +158,7 @@ NSString* tFTouchViewTouchesAreAnimatedPreferenceKey = @"tFTouchViewTouchesAreAn
 
 + (NSColor*)_defaultColor
 {
-	return [NSColor colorWithCalibratedRed:.027f green:.553f blue:.839f alpha:1.0f];
+	return [NSColor colorWithCalibratedRed:.127f green:.653f blue:.939f alpha:1.0f];
 }
 
 - (void)_storeColorInPrefs:(NSColor*)color

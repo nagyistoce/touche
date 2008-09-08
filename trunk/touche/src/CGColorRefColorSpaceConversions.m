@@ -24,6 +24,19 @@
 
 #import "CGColorRefColorSpaceConversions.h"
 
+
+CGFloat CGColorGetRGBLuminance(CGColorRef color)
+{
+	CGFloat lum = 0.0f;
+	
+	if (NULL != color) {
+		const CGFloat* rgb = CGColorGetComponents(color);
+		lum = .3*rgb[0] + .59*rgb[1] + .11*rgb[2];
+	}
+	
+	return lum;
+}
+
 void CGColorGetLABComponentsForRGBColor(CGColorRef rgbColor, CGFloat* lab)
 {
 	const CGFloat* rgb = CGColorGetComponents(rgbColor);

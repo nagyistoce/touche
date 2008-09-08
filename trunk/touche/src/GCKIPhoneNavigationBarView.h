@@ -41,9 +41,6 @@ enum {
 	CGColorRef		_baseColorCG;
 	CGColorRef		_topLineColor;
 	CGColorRef		_bottomLineColor;
-	CGColorRef		_bottomGradientTopColor;
-	CGColorRef		_topGradientTopColor;
-	CGColorRef		_topGradientBottomColor;
 	CGGradientRef	_topGradient;
 	CGGradientRef	_bottomGradient;
 }

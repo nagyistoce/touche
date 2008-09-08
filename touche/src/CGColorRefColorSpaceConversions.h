@@ -24,6 +24,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+CGFloat CGColorGetRGBLuminance(CGColorRef color);
+
 void CGColorGetLABComponentsForRGBColor(CGColorRef rgbColor, CGFloat* lab);
 CGColorRef CGColorCreateRGBFromGenericLAB(CGFloat L, CGFloat a, CGFloat b, CGFloat alpha);
 CGColorRef CGColorCreateRGBfromGenericLABComponents(CGFloat* lab, CGFloat alpha);

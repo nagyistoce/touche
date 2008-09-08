@@ -181,8 +181,10 @@
 	socketAddress.sin_port = htons(inPort);
 	
 	result = bind(bsdSocket, (struct sockaddr*)&socketAddress, (socklen_t)sizeof(socketAddress));
-	if(result < 0)
+	if(result < 0) {
+		NSLog(@"errno: %d\n", errno);
 		return NO;
+	}
 	
 	_socketBound = YES;
 	
@@ -256,7 +258,7 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 	//   2) if it's neither address nor hostname, interpret it as local network interface
 	//   3) fail
 
-	if (![[self class] resolveName:name intoAddress:addrPtr]) {
+	if (![[self class] resolveName:name intoAddress:&addr]) {
 		struct ifreq ifr;
 		struct sockaddr_in *sin;
 		const char*	nameString = [name cStringUsingEncoding:NSASCIIStringEncoding];

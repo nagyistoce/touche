@@ -208,10 +208,10 @@
 		NSData* socketAddressData = [NSData dataWithBytes:(void*)&socketAddress length:sizeof(socketAddress)];
 		int socketError = CFSocketConnectToAddress(_cfSocketRef, (CFDataRef)socketAddressData, -1.0);
 		
-		success = (socketError != kCFSocketSuccess);
+		success = (kCFSocketSuccess == socketError);
 	}
 	
-	return YES;
+	return success;
 }
 
 - (BOOL)listenOnPort:(in_port_t)inPort

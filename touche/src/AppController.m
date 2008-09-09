@@ -546,6 +546,7 @@ enum {
 	doDistributor.delegate = self;
 	
 	[_distributionCenter addDistributor:doDistributor];
+	[doDistributor release];
 	
 	TFTUIOOSCTrackingDataDistributor* tuioDistributor = [[TFTUIOOSCTrackingDataDistributor alloc] init];
 	[tuioDistributor startDistributorWithObject:nil error:NULL];
@@ -557,6 +558,7 @@ enum {
 	
 	_tuioSettingsController = [[TFTUIOOSCSettingsController alloc] init];
 	_tuioSettingsController.distributor = tuioDistributor;
+	[tuioDistributor release];
 	
 	NSDictionary* flashXmlConfig = [NSDictionary dictionaryWithObjectsAndKeys:
 									[TFTUIOFlashXmlSettingsController serverAddress], kTFFlashXMLTUIOTrackingDataDistributorLocalAddress,
@@ -586,6 +588,7 @@ enum {
 	
 	_tuioFlashXmlSettingsController = [[TFTUIOFlashXmlSettingsController alloc] init];
 	_tuioFlashXmlSettingsController.distributor = flashDistributor;
+	[flashDistributor release];
 	
 	_pipeline = [[TFTrackingPipeline sharedPipeline] retain];
 	_pipeline.delegate = self;

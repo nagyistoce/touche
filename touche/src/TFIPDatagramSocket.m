@@ -99,7 +99,7 @@
 	size_t rv = 0;
 	
 	if (0 <= [_inQueue count]) {
-		NSMutableArray* packetQueue;
+		NSMutableArray* packetQueue = nil;
 		NSData* sA;
 		
 		if (NULL != sockAddr) {

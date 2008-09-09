@@ -176,7 +176,6 @@
 		6ECF885E0E7534AD009433B3 /* TFTUIOFlashXmlSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF885D0E7534AD009433B3 /* TFTUIOFlashXmlSettingsController.m */; };
 		6EE606A70DD9F5C40069A40E /* dc1394.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE606A60DD9F5C40069A40E /* dc1394.framework */; };
 		6EE606D40DD9F5C80069A40E /* dc1394.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE606A60DD9F5C40069A40E /* dc1394.framework */; };
-		6EE6077A0DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE607790DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m */; };
 		6EE608350DDC8AFC0069A40E /* TFBlobLibDc1394InputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE608340DDC8AFC0069A40E /* TFBlobLibDc1394InputSource.m */; };
 		6EE608CA0DDC9E540069A40E /* TFTrackingPipeline+LibDc1394InputAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE608C90DDC9E540069A40E /* TFTrackingPipeline+LibDc1394InputAdditions.m */; };
 		6EE60B630DDDDE090069A40E /* TFPipelineSetupController+LibDc1394Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60B620DDDDE090069A40E /* TFPipelineSetupController+LibDc1394Configuration.m */; };
@@ -186,6 +185,7 @@
 		6EE60D680DDF14FE0069A40E /* TFScreenPrefsMeasureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60D670DDF14FE0069A40E /* TFScreenPrefsMeasureView.m */; };
 		6EE60E5B0DDF2E350069A40E /* MiscPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EE60E590DDF2E350069A40E /* MiscPreferences.xib */; };
 		6EE60E9C0DDF2EFF0069A40E /* TFMiscPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60E9B0DDF2EFF0069A40E /* TFMiscPreferencesController.m */; };
+		6EEC22560E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEC22540E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */; };
 		6EED5D110E5C73CF00375CC0 /* TFIPTCPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5D100E5C73CF00375CC0 /* TFIPTCPSocket.m */; };
 		6EED5D150E5C758500375CC0 /* TFIPUDPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5D140E5C758500375CC0 /* TFIPUDPSocket.m */; };
 		6EED5EE70E5CE8E400375CC0 /* BBOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */; };
@@ -470,8 +470,6 @@
 		6ECF885C0E7534AD009433B3 /* TFTUIOFlashXmlSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOFlashXmlSettingsController.h; sourceTree = "<group>"; };
 		6ECF885D0E7534AD009433B3 /* TFTUIOFlashXmlSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOFlashXmlSettingsController.m; sourceTree = "<group>"; };
 		6EE606A60DD9F5C40069A40E /* dc1394.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = dc1394.framework; path = frameworks/dc1394.framework; sourceTree = "<group>"; };
-		6EE607780DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.h"; sourceTree = "<group>"; };
-		6EE607790DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m"; sourceTree = "<group>"; };
 		6EE608330DDC8AFC0069A40E /* TFBlobLibDc1394InputSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBlobLibDc1394InputSource.h; sourceTree = "<group>"; };
 		6EE608340DDC8AFC0069A40E /* TFBlobLibDc1394InputSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlobLibDc1394InputSource.m; sourceTree = "<group>"; };
 		6EE608C80DDC9E540069A40E /* TFTrackingPipeline+LibDc1394InputAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFTrackingPipeline+LibDc1394InputAdditions.h"; sourceTree = "<group>"; };
@@ -488,6 +486,8 @@
 		6EE60E5A0DDF2E350069A40E /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MiscPreferences.xib; sourceTree = "<group>"; };
 		6EE60E9A0DDF2EFF0069A40E /* TFMiscPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFMiscPreferencesController.h; sourceTree = "<group>"; };
 		6EE60E9B0DDF2EFF0069A40E /* TFMiscPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFMiscPreferencesController.m; sourceTree = "<group>"; };
+		6EEC22540E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFLibDC1394Capture+CIImageFromDc1394Frame.m"; sourceTree = "<group>"; };
+		6EEC22550E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFLibDC1394Capture+CIImageFromDc1394Frame.h"; sourceTree = "<group>"; };
 		6EED5D0F0E5C73CF00375CC0 /* TFIPTCPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPTCPSocket.h; sourceTree = "<group>"; };
 		6EED5D100E5C73CF00375CC0 /* TFIPTCPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPTCPSocket.m; sourceTree = "<group>"; };
 		6EED5D130E5C758500375CC0 /* TFIPUDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPUDPSocket.h; sourceTree = "<group>"; };
@@ -1180,8 +1180,8 @@
 			children = (
 				6EC4B1290DD9DBE30085D7B8 /* TFLibDC1394Capture.h */,
 				6EC4B12A0DD9DBE30085D7B8 /* TFLibDC1394Capture.m */,
-				6EE607780DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.h */,
-				6EE607790DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m */,
+				6EEC22550E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.h */,
+				6EEC22540E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */,
 			);
 			name = libdc1394;
 			sourceTree = "<group>";
@@ -1495,7 +1495,6 @@
 				6ECA956F0DD204E200A9ABE3 /* TFInfoView.m in Sources */,
 				6E06D15C0DD8557200B86D27 /* TFAboutController.m in Sources */,
 				6EC4B12B0DD9DBE30085D7B8 /* TFLibDC1394Capture.m in Sources */,
-				6EE6077A0DDC411E0069A40E /* TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m in Sources */,
 				6EE608350DDC8AFC0069A40E /* TFBlobLibDc1394InputSource.m in Sources */,
 				6EE608CA0DDC9E540069A40E /* TFTrackingPipeline+LibDc1394InputAdditions.m in Sources */,
 				6EE60B630DDDDE090069A40E /* TFPipelineSetupController+LibDc1394Configuration.m in Sources */,
@@ -1543,6 +1542,7 @@
 				6ECF85000E733CA8009433B3 /* TFFlashXMLTUIOGeneration.m in Sources */,
 				6ECF85170E734879009433B3 /* TFBlob+TUIOMethods.m in Sources */,
 				6ECF885E0E7534AD009433B3 /* TFTUIOFlashXmlSettingsController.m in Sources */,
+				6EEC22560E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

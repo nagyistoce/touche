@@ -93,7 +93,7 @@ NSString* TFFlashXMLTUIOAliveMessage(NSArray* blobs)
 
 NSString* TFFlashXMLTUIOFrameSequenceMessage(NSUInteger frameSequenceNumber)
 {
-	NSString* fseqMsg = nil;
+	static NSString* fseqMsg = nil;
 	
 	if (nil == fseqMsg)
 		fseqMsg = [[NSString alloc] initWithFormat:

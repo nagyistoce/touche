@@ -475,7 +475,8 @@ enum {
 		_wasProcessingBeforeBecomingUnavailable = _isProcessing;
 		_didBecomeUnavailable = YES;
 
-		[self stopProcessing:NULL];
+		if ([self isProcessing])
+			[self stopProcessing:NULL];
 
 		_state = TFBlobWiiRemoteInputSourceStateDiscovering;
 		

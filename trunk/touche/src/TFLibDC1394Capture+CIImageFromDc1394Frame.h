@@ -1,5 +1,5 @@
 //
-//  TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.h
+//  TFLibDC1394Capture+CIImageFromDc1394Frame.h
 //  Touché
 //
 //  Created by Georg Kaindl on 15/5/08.
@@ -28,7 +28,7 @@
 
 #import "TFLibDC1394Capture.h"
 
-@interface TFLibDC1394Capture (CVPixelBufferFromDc1394Frame) 
+@interface TFLibDC1394Capture (CIImageFromDc1394Frame) 
 
 + (int)rankingForVideoMode:(dc1394video_mode_t)mode;
 - (NSString*)dc1394ColorCodingToString:(dc1394color_coding_t)coding;

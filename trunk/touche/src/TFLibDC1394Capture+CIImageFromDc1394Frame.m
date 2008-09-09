@@ -1,5 +1,5 @@
 //
-//  TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.m
+//  TFLibDC1394Capture+CIImageFromDc1394Frame.m
 //  Touché
 //
 //  Created by Georg Kaindl on 15/5/08.
@@ -23,13 +23,13 @@
 //
 //
 
-#import "TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.h"
+#import "TFLibDC1394Capture+CIImageFromDc1394Frame.h"
 #import <QTKit/QTKit.h>
 #import <dc1394/dc1394.h>
 
 #import "TFIncludes.h"
 
-@implementation TFLibDC1394Capture (CVPixelBufferFromDc1394Frame)
+@implementation TFLibDC1394Capture (CIImageFromDc1394Frame)
 
 - (NSString*)dc1394ColorCodingToString:(dc1394color_coding_t)coding
 {

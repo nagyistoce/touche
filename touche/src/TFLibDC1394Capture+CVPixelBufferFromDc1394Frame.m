@@ -77,7 +77,7 @@
 		case DC1394_COLOR_CODING_YUV444:
 	//	case DC1394_COLOR_CODING_RGB8:
 		case DC1394_COLOR_CODING_RGB16:
-		case DC1394_COLOR_CODING_MONO16: {
+		case DC1394_COLOR_CODING_MONO16: {		
 			if ((DC1394_COLOR_CODING_MONO16 == frame->color_coding || DC1394_COLOR_CODING_RGB16 == frame->color_coding) &&
 				DC1394_TRUE == frame->little_endian) {
 				if (NULL != error)
@@ -151,28 +151,28 @@
 			// WARNING: conversion is NOT thread safe!
 			dc1394video_frame_t convertedFrame;						// it seems we need this for some formats, since CVPixelBuffer
 			static unsigned char* conversionScratchSpace = NULL;	// apparently doesn't convert some formats properly...
-			static unsigned int conversionScratchLength = 0;
+			static unsigned long long conversionScratchLength = 0;
 			
 			// these need conversion...
 			if (DC1394_COLOR_CODING_YUV444 == frame->color_coding || DC1394_COLOR_CODING_YUV411 == frame->color_coding) {
-				if (conversionScratchLength < 2*frame->allocated_image_bytes) {
+				if (conversionScratchLength < 2*frame->total_bytes) {
 					if (NULL == conversionScratchSpace)
-						conversionScratchSpace = malloc(2*frame->allocated_image_bytes);
+						conversionScratchSpace = malloc(2*frame->total_bytes*sizeof(UInt8));
 					else
-						conversionScratchSpace = realloc(conversionScratchSpace, 2*frame->allocated_image_bytes);
+						conversionScratchSpace = realloc(conversionScratchSpace, 2*frame->total_bytes*sizeof(UInt8));
 					
-					conversionScratchLength = 2*frame->allocated_image_bytes;
+					conversionScratchLength = 2*frame->total_bytes;
 				}
 			
 				memcpy(&convertedFrame, frame, sizeof(dc1394video_frame_t));
 				convertedFrame.image = conversionScratchSpace;
 				convertedFrame.allocated_image_bytes = conversionScratchLength;
-						
+										
 				convertedFrame.color_coding = DC1394_COLOR_CODING_YUV422;
 				convertedFrame.yuv_byte_order = DC1394_BYTE_ORDER_UYVY;
 						
 				dc1394_convert_frames(frame, &convertedFrame);
-				frame = &convertedFrame;
+				frame = &convertedFrame;				
 			}
 			
 			CVPixelBufferRef pixelBuffer = nil;

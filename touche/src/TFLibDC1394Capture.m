@@ -24,7 +24,7 @@
 //
 
 #import "TFLibDC1394Capture.h"
-#import "TFLibDC1394Capture+CVPixelBufferFromDc1394Frame.h"
+#import "TFLibDC1394Capture+CIImageFromDc1394Frame.h"
 
 #import <dc1394/macosx/capture.h>
 
@@ -982,6 +982,11 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 			goto errorReturn3;
 	}
 	
+	dc1394_camera_free(cam);
+	cam = NULL;
+	dc1394_free(dc);
+	dc = NULL;
+	
 	dc1394video_mode_t wantedModes[] = {
 		DC1394_VIDEO_MODE_320x240_YUV422,
 		DC1394_VIDEO_MODE_640x480_RGB8,
@@ -1013,9 +1018,6 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	for (i=0; i<numModes; i++) {
 		for (j=0; j<list.num; j++) {
 			if (wantedModes[i] == list.modes[j]) {
-				dc1394_camera_free(cam);
-				dc1394_free(dc);
-				
 				switch(list.modes[j]) {
 					case DC1394_VIDEO_MODE_320x240_YUV422:
 						return CGSizeMake(320.0f, 240.0f);
@@ -1112,6 +1114,7 @@ errorReturn:
 		*error = nil;
 	
 	dc1394_t* dc;
+	NSArray* retval = nil;
 	
 	dc = dc1394_new();
 	if (NULL == dc) {
@@ -1191,12 +1194,12 @@ errorReturn:
 		}
 	}
 	
-	return [NSArray arrayWithArray:modes];
+	retval = [NSArray arrayWithArray:modes];
 	
 errorReturn2:
 	dc1394_free(dc);
 errorReturn:
-	return nil;
+	return retval;
 }
 
 + (BOOL)_getFrameRatesForCamera:(dc1394camera_t*)cam
@@ -1269,11 +1272,14 @@ errorReturn:
 
 static void libdc1394_frame_callback(dc1394camera_t* c, void* data)
 {
-    dc1394video_frame_t* frame;
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	dc1394video_frame_t* frame;
 	dc1394error_t err = dc1394_capture_dequeue(c, DC1394_CAPTURE_POLICY_POLL, &frame);
 	
-	if (DC1394_SUCCESS != err || NULL == frame)
+	if (DC1394_SUCCESS != err || NULL == frame) {
+		[pool release];
 		return;
+	}
 	
 	// if this is not the most recent frame, drop it and continue
 	if (0 < frame->frames_behind) {
@@ -1284,9 +1290,9 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data)
 	}
 	
 	if (NULL != frame) {
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		[(TFLibDC1394Capture*)data dispatchFrame:frame];
 		dc1394_capture_enqueue(c, frame);
-		[pool release];
 	}
+	
+	[pool release];
 }

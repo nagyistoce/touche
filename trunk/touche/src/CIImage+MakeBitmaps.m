@@ -297,13 +297,12 @@
 	BOOL shouldReleaseCIContext = NO;
 	
 	if (nil == workingColorSpace) {
-		workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+		workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
 		shouldReleaseWorkingColorSpace = YES;
 	}
 
 	CGRect extent = [self extent];
-	CGRect zeroRect = {CGPointZero, extent.size};
-	
+			
 	if (CGRectIsInfinite(extent) || colorSpace == nil)
 		return NULL;
 	
@@ -333,6 +332,8 @@
 		cgContext = CGBitmapContextCreate(bitmapData, destWidth, destHeight, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo);
 		if (nil == cgContext)
 			return NULL;
+		
+		CGContextSetInterpolationQuality(cgContext, kCGInterpolationNone);
 	} else
 		cgContext = *cgContextPointer;
 	
@@ -344,7 +345,7 @@
 								 (id)workingColorSpace, kCIContextWorkingColorSpace,
 								 [NSNumber numberWithBool:renderOnCPU], kCIContextUseSoftwareRenderer,
 								 nil];
-		
+				
 		ciContext = [[CIContext contextWithCGContext:cgContext options:options] retain];
 		
 		if (nil == ciContext)
@@ -354,9 +355,10 @@
 	
 	shouldReleaseCIContext = (NULL == ciContextPointer);
 	
-	CGContextClearRect(cgContext, zeroRect);
+	CGContextSaveGState(cgContext);
 	[ciContext drawImage:self atPoint: CGPointZero fromRect:extent];
 	CGContextFlush(cgContext);
+	CGContextRestoreGState(cgContext);
 	
 	if (NULL != rowBytes)
 		*rowBytes = CGBitmapContextGetBytesPerRow(cgContext);

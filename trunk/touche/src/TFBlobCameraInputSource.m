@@ -154,8 +154,8 @@
 		_colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericGray);
 	}
 	
-	_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
-	
+	_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
+		
 	if (NULL != error)
 		*error = nil;
 	

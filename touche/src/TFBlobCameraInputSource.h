@@ -35,17 +35,17 @@
 	TFFilterChain*		filterChain;
 	TFBlobDetector*		blobDetector;
 		
-	void*				_imgBuffer;
-	size_t				_rowBytes;
 	CGColorSpaceRef		_colorSpace;
 	CGColorSpaceRef		_workingColorSpace;
-	CGContextRef		_bitmapContext;
-	CIContext*			_ciContext;
 	CGSize				_lastFrameSize;
 	BOOL				_lastFrameRenderOnCPU;
 	
 	NSThread*					_processingThread;
 	TFThreadMessagingQueue*		_processingQueue;
+	
+	NSMutableArray*				_freePixelBuffers;
+	NSThread*					_filteringThread;
+	TFThreadMessagingQueue*		_filteringQueue;
 }
 
 @property (readonly) TFFilterChain* filterChain;

@@ -159,7 +159,7 @@
 	[videoOut setPixelBufferAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
 											[NSNumber numberWithFloat:size.width], (id)kCVPixelBufferWidthKey,
                                             [NSNumber numberWithFloat:size.height], (id)kCVPixelBufferHeightKey,
-                                            [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32ARGB], (id)kCVPixelBufferPixelFormatTypeKey,
+                                           // [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32ARGB], (id)kCVPixelBufferPixelFormatTypeKey,
                                             nil]];
 	
 	if (wasRunning) {

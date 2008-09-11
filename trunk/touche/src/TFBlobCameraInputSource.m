@@ -213,6 +213,7 @@
 		success = [super startProcessing:error];
 	
 	if (success) {
+		BOOL startFilteringThread = NO;
 		if (nil == _filteringQueue && nil == _filteringThread) {
 			_filteringQueue = [[TFThreadMessagingQueue alloc] init];
 			
@@ -220,7 +221,7 @@
 													   selector:@selector(_filterAndDrawFramesThread)
 														 object:nil];
 			
-			[_filteringThread start];
+			startFilteringThread = YES;
 		}
 	
 		if (nil == _processingQueue && nil == _processingThread) {
@@ -229,8 +230,12 @@
 			_processingThread = [[NSThread alloc] initWithTarget:self
 														selector:@selector(_processPixelBuffersThread)
 														  object:nil];
+			
 			[_processingThread start];
 		}
+		
+		if (startFilteringThread)
+			[_filteringThread start];
 	}
 	
 	return success;

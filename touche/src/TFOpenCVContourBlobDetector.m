@@ -32,6 +32,7 @@
 #import "TFBlobSize.h"
 
 
+#define	MAX_BLOBS		(100)	// maximum amounts of blobs to track simultaneously
 #define	EXACT_TRACKING	(NO)
 
 @implementation TFOpenCVContourBlobDetector
@@ -119,6 +120,7 @@
 		//cvFindContours(_cvImg, storage, &contours, sizeof(CvContour), CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cvPoint(0,0));
 		cvFindContours(_cvImg, storage, &contours, sizeof(CvContour), CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, cvPoint(0,0));
 
+		int numContours = 0;
 		for (; contours != NULL; contours = contours->h_next) {
 			CGRect blobBox;
 			
@@ -173,6 +175,9 @@
 			blob.edgeVertices = [NSArray arrayWithArray:edgeVertices];
 			
 			[detectedBlobs addObject:blob];
+			
+			if (numContours++ > MAX_BLOBS)
+				break;
 		}
 		
 		cvReleaseMemStorage(&storage);

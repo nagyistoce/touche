@@ -99,9 +99,11 @@ static NSArray* tFCIBackgroundSubtractionFilters = nil;
 
 - (void)clearBackgroundImage
 {
-	[_backgroundAccumulator clear];
-	[_backgroundAccumulator release];
-	_backgroundAccumulator = nil;
+	@synchronized (self) {
+		[_backgroundAccumulator clear];
+		[_backgroundAccumulator release];
+		_backgroundAccumulator = nil;
+	}
 }
 
 + (void)initialize

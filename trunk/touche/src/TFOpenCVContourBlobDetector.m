@@ -31,6 +31,9 @@
 #import "TFBlobBox.h"
 #import "TFBlobSize.h"
 
+
+#define	EXACT_TRACKING	(NO)
+
 @implementation TFOpenCVContourBlobDetector
 
 @synthesize minimumBlobDiameter;
@@ -90,6 +93,12 @@
 		cvSetData(_cvImg, imgBuf, rowBytes);
 		
 		_blobsNotYetDetected = YES;
+		
+		/* char buf[100];
+		static int i = 0;
+		i++;
+		sprintf(buf, [[@"~/Desktop/img/img%d.bmp" stringByExpandingTildeInPath] UTF8String], i);
+		cvSaveImage(buf, _cvImg); */
 	}
 }
 
@@ -111,27 +120,47 @@
 		cvFindContours(_cvImg, storage, &contours, sizeof(CvContour), CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, cvPoint(0,0));
 
 		for (; contours != NULL; contours = contours->h_next) {
-			if (contours->total > 5)
-				box = cvFitEllipse2(contours);
-			else
-				box = cvMinAreaRect2(contours, storage);
+			CGRect blobBox;
 			
-			if (box.size.height < minimumBlobDiameter*(float)_width || box.size.width < minimumBlobDiameter*(float)_height)
-				continue;
-			
-			// OpenCV's boxes have a rotation angle, to in order to determine the actual bounding
-			// box, we need to apply this rotation in order to get the visible bounding box size.
-			CGRect boundingRect = CGRectMake(0.0, 0.0, box.size.width, box.size.height);
-			CGAffineTransform boxRotation = CGAffineTransformMakeRotation(box.angle*(M_PI/180.0));
-			CGRect rotatedBox = CGRectApplyAffineTransform(boundingRect, boxRotation);
-									
+			if (EXACT_TRACKING) {
+				if (contours->total > 5)
+					box = cvFitEllipse2(contours);
+				else
+					box = cvMinAreaRect2(contours, storage);
+				
+				if (box.size.height < minimumBlobDiameter*(float)_height || box.size.width < minimumBlobDiameter*(float)_width)
+					continue;
+				
+				// OpenCV's boxes have a rotation angle, to in order to determine the actual bounding
+				// box, we need to apply this rotation in order to get the visible bounding box size.
+				CGRect boundingRect = CGRectMake(box.center.x - box.size.width/2.0,
+												 box.center.y - box.size.height/2.0,
+												 box.size.width,
+												 box.size.height);
+				CGPoint boundingCenter = CGPointMake(CGRectGetMidX(boundingRect), CGRectGetMidY(boundingRect));
+				CGAffineTransform boxRotation = CGAffineTransformMakeTranslation(boundingCenter.x, 
+																				 boundingCenter.y);
+				boxRotation = CGAffineTransformRotate(boxRotation, box.angle*(M_PI/180.0));
+				boxRotation = CGAffineTransformTranslate(boxRotation, -boundingCenter.x, -boundingCenter.y);
+
+				blobBox = CGRectApplyAffineTransform(boundingRect, boxRotation);
+			} else {
+				CvRect bRect = cvBoundingRect(contours, 1);
+				
+				if (bRect.height < minimumBlobDiameter*(float)_height || bRect.width < minimumBlobDiameter*(float)_width)
+					continue;
+				
+				blobBox = CGRectMake(bRect.x, bRect.y, bRect.width, bRect.height);
+			}
+												
 			TFBlob* blob = [TFBlob blob];
-			blob.center.x					= box.center.x;
-			blob.center.y					= box.center.y;
-			blob.boundingBox.origin.x		= box.center.x - rotatedBox.size.width/2.0f;
-			blob.boundingBox.origin.y		= box.center.y - rotatedBox.size.height/2.0f;
-			blob.boundingBox.size.width		= rotatedBox.size.width;
-			blob.boundingBox.size.height	= rotatedBox.size.height;
+
+			blob.center.x					= CGRectGetMidX(blobBox);
+			blob.center.y					= CGRectGetMidY(blobBox);
+			blob.boundingBox.origin.x		= CGRectGetMinX(blobBox);
+			blob.boundingBox.origin.y		= CGRectGetMinY(blobBox);
+			blob.boundingBox.size.width		= CGRectGetWidth(blobBox);
+			blob.boundingBox.size.height	= CGRectGetHeight(blobBox);
 			
 			edgePoints = cvApproxPoly(contours, sizeof(CvContour), storage, CV_POLY_APPROX_DP, cvContourPerimeter(contours)*0.02, 0);
 			

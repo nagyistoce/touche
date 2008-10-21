@@ -139,7 +139,7 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 	if (nil == _ciContext) {
 		[[self openGLContext] makeCurrentContext];
 		
-		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+		CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
 		NSOpenGLPixelFormat* pixelFormat = [self pixelFormat];
 		if (nil == pixelFormat)
 			pixelFormat = [[self class] defaultPixelFormat];

@@ -129,6 +129,8 @@
 	
 	filterChain = cameraFilterChain;
 	
+	_filterChainIsCameraInputFilterChain = [filterChain isKindOfClass:[TFCameraInputFilterChain class]];
+	
 	// set up the blob detector
 	
 	TFOpenCVContourBlobDetector* opencvDetector = [[TFOpenCVContourBlobDetector alloc] init];
@@ -159,7 +161,7 @@
 		_colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericGray);
 	}
 	
-	_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
+	_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
 		
 	if (NULL != error)
 		*error = nil;
@@ -328,20 +330,26 @@
 
 - (void)_updateBackgroundForSubtraction
 {
-	if ([filterChain isKindOfClass:[TFCameraInputFilterChain class]])
-		[(TFCameraInputFilterChain*)filterChain updateBackgroundForSubtraction];
+	if (_filterChainIsCameraInputFilterChain)
+		@synchronized (filterChain) {
+			[(TFCameraInputFilterChain*)filterChain updateBackgroundForSubtraction];
+		}
 }
 
 - (void)_clearBackgroundForSubtraction
 {
-	if ([filterChain isKindOfClass:[TFCameraInputFilterChain class]])
-		[(TFCameraInputFilterChain*)filterChain clearBackground];
+	if (_filterChainIsCameraInputFilterChain)
+		@synchronized (filterChain) {
+			[(TFCameraInputFilterChain*)filterChain clearBackground];
+		}
 }
 
 - (void)_resetBackgroundAcquisitionTiming
 {
-	if ([filterChain isKindOfClass:[TFCameraInputFilterChain class]])
-		[(TFCameraInputFilterChain*)filterChain resetBackgroundAcquisitionTiming];
+	if (_filterChainIsCameraInputFilterChain)
+		@synchronized (filterChain) {
+			[(TFCameraInputFilterChain*)filterChain resetBackgroundAcquisitionTiming];
+		}
 }
 
 - (void)_filterAndDrawFramesThread
@@ -385,8 +393,8 @@
 		@synchronized(filterChain) {
 			img = [filterChain apply:capturedFrame];
 			renderFiltersOnCPU =
-			[filterChain isKindOfClass:[TFCIFilterChain class]] ?
-				[(TFCIFilterChain*)filterChain renderOnCPU] : YES;
+				[filterChain isKindOfClass:[TFCIFilterChain class]] ?
+					[(TFCIFilterChain*)filterChain renderOnCPU] : YES;
 		}
 		
 		if (_lastFrameRenderOnCPU != renderFiltersOnCPU)

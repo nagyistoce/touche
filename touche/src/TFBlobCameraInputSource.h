@@ -40,6 +40,8 @@
 	CGSize				_lastFrameSize;
 	BOOL				_lastFrameRenderOnCPU;
 	
+	BOOL				_filterChainIsCameraInputFilterChain;
+	
 	NSThread*					_processingThread;
 	TFThreadMessagingQueue*		_processingQueue;
 	

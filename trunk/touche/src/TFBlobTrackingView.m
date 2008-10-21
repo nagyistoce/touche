@@ -32,7 +32,13 @@
 #import "TFBlobSize.h"
 
 @interface TFBlobTrackingView (NonPublicMethods)
+- (void)_drawBlobBoundingRect:(CGRect)rect lineWidth:(CGFloat)lineWidth color:(NSColor*)color;
 - (void)_drawEllipse:(CGPoint)center size:(CGSize)size color:(NSColor*)color;
+- (void)_drawDigitalNumber:(NSUInteger)number
+				   atPoint:(CGPoint)p
+			 segmentLength:(CGFloat)segmentLength
+				   spacing:(CGFloat)spacing
+					 color:(NSColor*)color;
 @end
 
 @implementation TFBlobTrackingView
@@ -75,6 +81,29 @@
 	return self;
 }
 
+- (void)_drawBlobBoundingRect:(CGRect)rect lineWidth:(CGFloat)lineWidth color:(NSColor*)color
+{
+	CGFloat r, g, b, a;
+	r = a = b = 1.0f;	// default color is solid magenta
+	g = 0.0f;
+	
+	if (nil != color)
+		[color getRed:&r green:&g blue:&b alpha:&a];
+	
+	glColor4f(r, g, b, a);
+	glLineWidth(lineWidth);
+
+	glBegin(GL_LINE_LOOP);
+
+	glVertex2f(CGRectGetMinX(rect), CGRectGetMinY(rect));
+	glVertex2f(CGRectGetMinX(rect), CGRectGetMaxY(rect));
+	glVertex2f(CGRectGetMaxX(rect), CGRectGetMaxY(rect));
+	glVertex2f(CGRectGetMaxX(rect), CGRectGetMinY(rect));
+	
+	glEnd();
+}
+
+// not used at the moment
 - (void)_drawEllipse:(CGPoint)center size:(CGSize)size color:(NSColor*)color
 {
 	CGFloat r, g, b, a;
@@ -89,6 +118,7 @@
 	
 	glColor4f(r, g, b, a);
 	glBegin(GL_TRIANGLE_FAN);
+	//glBegin(GL_LINE_LOOP);
 	
 	NSUInteger i;
 	for (i=0; i < 360; i++)
@@ -96,8 +126,96 @@
 		float degInRad = i*(M_PI/180);
 		glVertex2f(center.x+cos(degInRad)*xRadius, center.y+sin(degInRad)*yRadius);
 	}
-	
+		
 	glEnd();
+}
+
+- (void)_drawDigitalNumber:(NSUInteger)number
+				   atPoint:(CGPoint)p
+			 segmentLength:(CGFloat)segmentLength
+				   spacing:(CGFloat)spacing
+					 color:(NSColor*)color
+{
+	static NSUInteger segments[10][7] = {
+		{1, 1, 1, 0, 1, 1, 1},		// 0
+		{0, 0, 1, 0, 0, 1, 0},		// 1
+		{1, 0, 1, 1, 1, 0, 1},		// 2
+		{1, 0, 1, 1, 0, 1, 1},		// 3
+		{0, 1, 1, 1, 0, 1, 0},		// 4
+		{1, 1, 0, 1, 0, 1, 1},		// 5
+		{1, 1, 0, 1, 1, 1, 1},		// 6
+		{1, 0, 1, 0, 0, 1, 0},		// 7
+		{1, 1, 1, 1, 1, 1, 1},		// 8
+		{1, 1, 1, 1, 0, 1, 0}		// 9
+	};
+	
+	CGFloat r, g, b, a;
+	r = a = b = 1.0f;	// default color is solid magenta
+	g = 0.0f;
+	
+	if (nil != color)
+		[color getRed:&r green:&g blue:&b alpha:&a];
+	
+	CGFloat lineWidth = MAX(1.0f, segmentLength/4.0f);
+		
+	glColor4f(r, g, b, a);
+	glLineWidth(lineWidth);
+	
+	int f = 1;
+	while (f*10 <= number)
+		f *= 10;
+	
+	while (f > 0) {
+		int x = number/f;
+		number -= x*f;
+		
+		NSUInteger* s = segments[x];
+		int i=0;
+		for (i; i<7; i++) {
+			if (s[i]) {
+				CGPoint s, e;
+			
+				switch(i) {
+					case 0:
+						s = CGPointMake(p.x, p.y - 2*segmentLength);
+						e = CGPointMake(p.x + segmentLength, p.y - 2*segmentLength);
+						break;
+					case 1:
+						s = CGPointMake(p.x, p.y - 2*segmentLength);
+						e = CGPointMake(p.x, p.y - segmentLength);
+						break;
+					case 2:
+						s = CGPointMake(p.x + segmentLength, p.y - 2*segmentLength);
+						e = CGPointMake(p.x + segmentLength, p.y - segmentLength);
+						break;
+					case 3:
+						s = CGPointMake(p.x, p.y - segmentLength);
+						e = CGPointMake(p.x + segmentLength, p.y - segmentLength);
+						break;
+					case 4:
+						s = CGPointMake(p.x, p.y - segmentLength);
+						e = CGPointMake(p.x, p.y);
+						break;
+					case 5:
+						s = CGPointMake(p.x + segmentLength, p.y - segmentLength);
+						e = CGPointMake(p.x + segmentLength, p.y);
+						break;
+					case 6:
+						s = CGPointMake(p.x, p.y);
+						e = CGPointMake(p.x + segmentLength, p.y);
+						break;
+				}
+			
+				glBegin(GL_LINES);
+					glVertex2f(s.x, s.y);
+					glVertex2f(e.x, e.y);
+				glEnd();
+			}
+		}
+		
+		p.x += segmentLength + spacing;
+		f /= 10;
+	}
 }
 
 - (void)_drawAdditionalOpenGLStuffWithOrigin:(CGPoint)origin pictureSize:(CGSize)pictureSize viewSize:(CGSize)viewSize
@@ -105,49 +223,36 @@
 	if (nil == blobs)
 		return;
 	
+	CGFloat lineWidth = ceil(MAX(1.0f, viewSize.width/320.0f));
+	CGFloat	numSegmentLength = ceil(viewSize.width/240.0f);
+	CGFloat numSpacing = ceil(numSegmentLength/2.0);
+	
 	for (TFBlob *blob in blobs) {
-		NSColor* color = nil;
-	
-		switch(blob.label.intLabel % 11) {
-			case 0:
-				color = [NSColor colorWithDeviceRed:0.0 green:1.0 blue:0.0 alpha:0.8];
-				break;
-			case 1:
-				color = [NSColor colorWithDeviceRed:1.0 green:0.0 blue:0.0 alpha:0.8];
-				break;
-			case 2:
-				color = [NSColor colorWithDeviceRed:0.0 green:0.0 blue:1.0 alpha:0.8];
-				break;
-			case 3:
-				color = [NSColor colorWithDeviceRed:1.0 green:1.0 blue:0.0 alpha:0.8];
-				break;
-			case 4:
-				color = [NSColor colorWithDeviceRed:0.0 green:1.0 blue:1.0 alpha:0.8];
-				break;
-			case 5:
-				color = [NSColor colorWithDeviceRed:.5 green:0.5 blue:1.0 alpha:0.8];
-				break;
-			case 6:
-				color = [NSColor colorWithDeviceRed:1.0 green:0.5 blue:.5 alpha:0.8];
-				break;
-			case 7:
-				color = [NSColor colorWithDeviceRed:.5 green:1.0 blue:.5 alpha:0.8];
-				break;
-			case 8:
-				color = [NSColor colorWithDeviceRed:.7 green:.7 blue:.7 alpha:0.8];
-				break;
-			case 9:
-				color = [NSColor colorWithDeviceRed:.4 green:.8 blue:.9 alpha:0.8];
-				break;
-			default:
-				color = [NSColor colorWithDeviceRed:1.0 green:0.0 blue:1.0 alpha:0.8];
-				break;
+		[self _drawBlobBoundingRect:CGRectMake(blob.boundingBox.origin.x,
+											   blob.boundingBox.origin.y,
+											   blob.boundingBox.size.width,
+											   blob.boundingBox.size.height)
+						  lineWidth:lineWidth
+							  color:nil];
+		
+		if (numSegmentLength >= 2.0f) {
+			int l = 0;
+			NSInteger intLabel = blob.label.intLabel;
+			do {
+				l++;
+				intLabel /= 10;
+			} while (intLabel > 0);
+			
+			CGPoint p = CGPointMake(blob.boundingBox.origin.x - (l-1)*numSpacing - l*numSegmentLength,
+									blob.boundingBox.origin.y - numSegmentLength);
+			
+			[self _drawDigitalNumber:blob.label.intLabel
+							 atPoint:p
+					   segmentLength:numSegmentLength
+							 spacing:numSpacing
+							   color:nil];
 		}
-	
-		[self _drawEllipse:CGPointMake(origin.x + blob.center.x, origin.y + blob.center.y)
-					  size:CGSizeMake(blob.boundingBox.size.width, blob.boundingBox.size.height)
-					  color:color];
-	}
+	}	
 }
 
 - (CVReturn)drawFrameForTimeStamp:(const CVTimeStamp*)timeStamp

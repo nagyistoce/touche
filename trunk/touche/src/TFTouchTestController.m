@@ -234,9 +234,11 @@
 		NSNumber* labelNumber = [NSNumber numberWithInt:[blob.label intLabel]];
 		NSColor* color = [self _claimFreeColorForBlobLabelNumber:labelNumber];
 		if (nil != color) {
-			[_touchView addTouchWithID:labelNumber
-							atPosition:CGPointMake(blob.center.x, blob.center.y)
-							 withColor:color];
+			@synchronized(_touchView) {
+				[_touchView addTouchWithID:labelNumber
+								atPosition:CGPointMake(blob.center.x, blob.center.y)
+								 withColor:color];
+			}
 		}
 	}
 	
@@ -248,8 +250,10 @@
 - (void)touchesDidUpdate:(NSSet*)touches viaClient:(TFDOTrackingClient*)client
 {
 	for (TFBlob* blob in touches) {
-		[_touchView moveTouchWithID:[NSNumber numberWithInt:[blob.label intLabel]]
-						 toPosition:CGPointMake(blob.center.x, blob.center.y)];
+		@synchronized(_touchView) {
+			[_touchView moveTouchWithID:[NSNumber numberWithInt:[blob.label intLabel]]
+							 toPosition:CGPointMake(blob.center.x, blob.center.y)];
+		}
 	}
 }
 
@@ -257,7 +261,9 @@
 {
 	for (TFBlob* blob in touches) {
 		NSNumber* labelNumber = [NSNumber numberWithInt:[blob.label intLabel]];
-		[_touchView removeTouchWithID:labelNumber];
+		@synchronized(_touchView) {
+			[_touchView removeTouchWithID:labelNumber];
+		}
 		[self _freeColorForBlobLabelNumber:labelNumber];
 	}
 		

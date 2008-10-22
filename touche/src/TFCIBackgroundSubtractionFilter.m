@@ -61,7 +61,9 @@ static NSArray* tFCIBackgroundSubtractionFilters = nil;
 	else
 		blendingRatio = newRatio;
 	
-	[_blendingFilter setValue:[NSNumber numberWithFloat:blendingRatio] forKey:@"inputRatio"];
+	@synchronized (self) {
+		[_blendingFilter setValue:[NSNumber numberWithFloat:blendingRatio] forKey:@"inputRatio"];
+	}
 }
 
 - (void)assignBackgroundImage:(CIImage*)newImage

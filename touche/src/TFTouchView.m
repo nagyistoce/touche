@@ -104,7 +104,7 @@
 
 - (void)addTouchWithID:(id)ID atPosition:(CGPoint)pos withColor:(NSColor*)color belowTouchWithID:(id)belowID
 {
-	if (nil != [_touches objectForKey:ID])
+	if (nil == ID || nil != [_touches objectForKey:ID])
 		return;
 	
 	CALayer* touchLayer = [CALayer layer];
@@ -212,7 +212,7 @@
 - (void)removeTouchWithID:(id)ID
 {
 	CALayer* touchLayer = [_touches objectForKey:ID];
-	
+		
 	if (nil != touchLayer) {
 		[touchLayer removeFromSuperlayer];
 		[_touches removeObjectForKey:ID];

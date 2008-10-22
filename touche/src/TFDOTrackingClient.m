@@ -266,20 +266,29 @@
 
 - (oneway void)touchesBegan:(bycopy in NSSet*)touches
 {
-	if (_delegateCapabilities.hasTouchesDidBegin)
-		[delegate touchesDidBegin:touches viaClient:self];
+	if (_delegateCapabilities.hasTouchesDidBegin) {
+		@synchronized (_server) {
+			[delegate touchesDidBegin:touches viaClient:self];
+		}
+	}
 }
 
 - (oneway void)touchesUpdated:(bycopy in NSSet*)touches
 {
-	if (_delegateCapabilities.hasTouchesDidUpdate)
-		[delegate touchesDidUpdate:touches viaClient:self];
+	if (_delegateCapabilities.hasTouchesDidUpdate) {
+		@synchronized (_server) {
+			[delegate touchesDidUpdate:touches viaClient:self];
+		}
+	}
 }
 
 - (oneway void)touchesEnded:(bycopy in NSSet*)touches
 {
-	if (_delegateCapabilities.hasTouchesDidEnd)
-		[delegate touchesDidEnd:touches viaClient:self];
+	if (_delegateCapabilities.hasTouchesDidEnd) {
+		@synchronized (_server) {
+			[delegate touchesDidEnd:touches viaClient:self];
+		}
+	}
 }
 
 - (BOOL)isAlive

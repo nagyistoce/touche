@@ -156,7 +156,11 @@
 	if (nil != color)
 		[color getRed:&r green:&g blue:&b alpha:&a];
 	
-	CGFloat lineWidth = MAX(1.0f, segmentLength/4.0f);
+	p.x = floor(p.x);
+	p.y = floor(p.y);
+	
+	segmentLength = MAX(2.0f, segmentLength);
+	CGFloat lineWidth = MAX(1.0f, floor(segmentLength));
 		
 	glColor4f(r, g, b, a);
 	glLineWidth(lineWidth);
@@ -224,7 +228,7 @@
 		return;
 	
 	CGFloat lineWidth = ceil(MAX(1.0f, viewSize.width/320.0f));
-	CGFloat	numSegmentLength = ceil(viewSize.width/240.0f);
+	CGFloat	numSegmentLength = ceil(viewSize.width/320.0f);
 	CGFloat numSpacing = ceil(numSegmentLength/2.0);
 	
 	for (TFBlob *blob in blobs) {

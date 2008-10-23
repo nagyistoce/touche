@@ -96,6 +96,8 @@
 		return nil;
 	}
 	
+	_sequenceNumber = 0;
+	
 	_queue = [[TFThreadMessagingQueue alloc] init];
 	_thread = [[NSThread alloc] initWithTarget:self
 									  selector:@selector(_forwardTouchesInThread)
@@ -165,17 +167,21 @@
 			break;
 		}
 		
-		NSArray* arr = (NSArray*)[touches objectForKey:kToucheTrackingDistributorDataEndedTouchesKey];
-		if (nil != arr)
-			[client touchesEnded:[NSSet setWithArray:arr]];
+		NSArray* beginningTouches =
+		(NSArray*)[touches objectForKey:kToucheTrackingDistributorDataNewTouchesKey];
 		
-		arr = (NSArray*)[touches objectForKey:kToucheTrackingDistributorDataNewTouchesKey];
-		if (nil != arr)
-			[client touchesBegan:[NSSet setWithArray:arr]];
+		NSArray* updatedTouches =
+		(NSArray*)[touches objectForKey:kToucheTrackingDistributorDataUpdatedTouchesKey];
 		
-		arr = (NSArray*)[touches objectForKey:kToucheTrackingDistributorDataUpdatedTouchesKey];
-		if (nil != arr)
-			[client touchesUpdated:[NSSet setWithArray:arr]];
+		NSArray* endedTouches =
+			(NSArray*)[touches objectForKey:kToucheTrackingDistributorDataEndedTouchesKey];
+		
+		
+		if (nil != beginningTouches || nil != updatedTouches || nil != endedTouches)
+			[client deliverBeginningTouches:beginningTouches
+							 updatedTouches:updatedTouches
+							   endedTouches:endedTouches
+							 sequenceNumber:_sequenceNumber++];
 		
 		[innerPool release];
 	}

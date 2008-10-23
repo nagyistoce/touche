@@ -36,6 +36,7 @@
 	TFDOTrackingClient*		client;
 	BOOL					running;
 
+	UInt64					_sequenceNumber;
 	TFThreadMessagingQueue*	_queue;
 	NSThread*				_thread;
 }

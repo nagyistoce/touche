@@ -92,6 +92,7 @@
 	
 	glColor4f(r, g, b, a);
 	glLineWidth(lineWidth);
+	glDisable(GL_LINE_SMOOTH);
 
 	glBegin(GL_LINE_LOOP);
 
@@ -100,7 +101,7 @@
 	glVertex2f(CGRectGetMaxX(rect), CGRectGetMaxY(rect));
 	glVertex2f(CGRectGetMaxX(rect), CGRectGetMinY(rect));
 	
-	glEnd();
+	glEnd();	
 }
 
 // not used at the moment
@@ -160,10 +161,11 @@
 	p.y = floor(p.y);
 	
 	segmentLength = MAX(2.0f, segmentLength);
-	CGFloat lineWidth = MAX(1.0f, floor(segmentLength));
-		
+	CGFloat lineWidth = 2.0f; //MAX(1.0f, floor(segmentLength));
+			
 	glColor4f(r, g, b, a);
 	glLineWidth(lineWidth);
+	glDisable(GL_LINE_SMOOTH);
 	
 	int f = 1;
 	while (f*10 <= number)
@@ -227,9 +229,9 @@
 	if (nil == blobs)
 		return;
 	
-	CGFloat lineWidth = ceil(MAX(1.0f, viewSize.width/320.0f));
-	CGFloat	numSegmentLength = ceil(viewSize.width/320.0f);
-	CGFloat numSpacing = ceil(numSegmentLength/2.0);
+	CGFloat lineWidth = MIN(2.0, ceil(MAX(1.0f, viewSize.width/320.0f)));
+	CGFloat	numSegmentLength = 2.0; //MIN(3.0, ceil(viewSize.width/320.0f));
+	CGFloat numSpacing = 1.0; //MIN(2.0, ceil(numSegmentLength/2.0));
 	
 	for (TFBlob *blob in blobs) {
 		[self _drawBlobBoundingRect:CGRectMake(blob.boundingBox.origin.x,
@@ -239,7 +241,7 @@
 						  lineWidth:lineWidth
 							  color:nil];
 		
-		if (numSegmentLength >= 2.0f) {
+		if (viewSize.width >= 320.0f) {
 			int l = 0;
 			NSInteger intLabel = blob.label.intLabel;
 			do {
@@ -254,7 +256,7 @@
 							 atPoint:p
 					   segmentLength:numSegmentLength
 							 spacing:numSpacing
-							   color:nil];
+							   color:nil];			
 		}
 	}	
 }

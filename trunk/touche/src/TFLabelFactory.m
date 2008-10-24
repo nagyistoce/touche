@@ -27,7 +27,12 @@
 #import "TFIncludes.h"
 #import "TFBlobLabel.h"
 
+
 #define		START_LABEL_AMOUNT	((NSUInteger)10)
+
+@interface TFLabelFactory (PrivateMethods)
+- (void)_reqeueFreedLabel:(TFBlobLabel*)label;
+@end
 
 @implementation TFLabelFactory
 
@@ -62,16 +67,18 @@
 {
 	TFBlobLabel* chosenLabel = nil;
 
-	if ([_freeLabels count] > 0) {
-		chosenLabel = [_freeLabels objectAtIndex:0];
-		[_usedLabels addObject:chosenLabel];
-		[_freeLabels removeObjectAtIndex:0];
-	} else {
-		// apparently, we ran out of labels, so we will create a new one...
-		chosenLabel = [TFBlobLabel labelWithInteger:_curLabelAmount];
-		_curLabelAmount++;
-		
-		[_usedLabels addObject:chosenLabel];
+	@synchronized (self) {
+		if ([_freeLabels count] > 0) {
+			chosenLabel = [_freeLabels objectAtIndex:0];
+			[_usedLabels addObject:chosenLabel];
+			[_freeLabels removeObjectAtIndex:0];
+		} else {
+			// apparently, we ran out of labels, so we will create a new one...
+			chosenLabel = [TFBlobLabel labelWithInteger:_curLabelAmount];
+			_curLabelAmount++;
+			
+			[_usedLabels addObject:chosenLabel];
+		}
 	}
 	
 	chosenLabel.isNew = YES;
@@ -84,10 +91,38 @@
 	if (nil == aLabel || [aLabel isNilLabel] || ![_usedLabels containsObject:aLabel])
 		return;
 	
-	[_freeLabels insertObject:aLabel atIndex:0];
-	[_usedLabels removeObject:aLabel];
+	@synchronized (self) {
+		[self _reqeueFreedLabel:aLabel];
+		[_usedLabels removeObject:aLabel];
+	}
 	
 	aLabel.isNew = NO;
+}
+
+- (void)_reqeueFreedLabel:(TFBlobLabel*)label
+{
+	// do a sorted insert into _freeLabels, using a binary insert.
+	NSInteger m, l, s, a = 0, b = [_freeLabels count], v = label.intLabel;
+	
+	// if _freeLabels is empty, simply insert;	
+	if (0 == b) {
+		[_freeLabels addObject:label];
+		return;
+	}
+	
+	b--;
+	
+	while (a <= b) {
+		m = (a+b)/2;
+		l = ((TFBlobLabel*)[_freeLabels objectAtIndex:m]).intLabel;
+		
+		if (v < l)
+			b = (m-1), s = 0;
+		else
+			a = (m+1), s = 1;
+	}
+		
+	[_freeLabels insertObject:label atIndex:m+s];
 }
 
 @end

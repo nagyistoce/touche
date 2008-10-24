@@ -231,7 +231,7 @@
 	
 	CGFloat lineWidth = MIN(2.0, ceil(MAX(1.0f, viewSize.width/320.0f)));
 	CGFloat	numSegmentLength = 2.0; //MIN(3.0, ceil(viewSize.width/320.0f));
-	CGFloat numSpacing = 1.0; //MIN(2.0, ceil(numSegmentLength/2.0));
+	CGFloat numSpacing = 2.0; //MIN(2.0, ceil(numSegmentLength/2.0));
 	
 	for (TFBlob *blob in blobs) {
 		[self _drawBlobBoundingRect:CGRectMake(blob.boundingBox.origin.x,

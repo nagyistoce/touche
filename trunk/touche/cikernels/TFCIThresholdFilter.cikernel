@@ -22,10 +22,10 @@
  *
  */
 
-kernel vec4 ThresholdReplace(sampler Image, __color LowColor, __color HighColor, float Threshold)
+kernel vec4 luminanceThreshold(sampler image, __color lowColor, __color highColor, float threshold)
 {	
-    vec4 pix = sample(Image, samplerCoord(Image));
+    vec4 pix = sample(image, samplerCoord(image));
 	float lum = dot(vec3(0.3, 0.59, 0.11), pix.rgb);
 	
-    return (lum >= Threshold) ? HighColor : LowColor;
+    return (lum >= threshold) ? highColor : lowColor;
 }

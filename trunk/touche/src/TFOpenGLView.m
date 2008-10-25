@@ -28,7 +28,6 @@
 #import <OpenGL/gl.h>
 
 #import "TFIncludes.h"
-#import "TFCILuminanceThresholdFilter.h"
 
 
 @interface TFOpenGLView (NonPublicMethods)

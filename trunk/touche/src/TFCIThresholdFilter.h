@@ -1,5 +1,5 @@
 //
-//  TFCILuminanceThresholdFilter.h
+//  TFCIThresholdFilter.h
 //  Touché
 //
 //  Created by Georg Kaindl on 14/12/07.
@@ -25,7 +25,7 @@
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface TFCILuminanceThresholdFilter : CIFilter {
+@interface TFCIThresholdFilter : CIFilter {
 	CIImage*		inputImage;
 	CIColor*		inputLowColor;
 	CIColor*		inputHighColor;

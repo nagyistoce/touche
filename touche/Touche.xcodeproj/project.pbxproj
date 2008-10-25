@@ -104,6 +104,8 @@
 		6E8BC45C0DE8742F006450C8 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E90B19A0D1ED84700A21C36 /* Accelerate.framework */; };
 		6E8BC45D0DE87436006450C8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC4D9940D1199E9008AB9CF /* QuartzCore.framework */; };
 		6E90B19B0D1ED84700A21C36 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E90B19A0D1ED84700A21C36 /* Accelerate.framework */; };
+		6E9279910EB3C78200C88BEC /* TFCIThresholdFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E9279900EB3C78200C88BEC /* TFCIThresholdFilter.cikernel */; };
+		6E9279940EB3C7AC00C88BEC /* TFCIThresholdFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9279930EB3C7AC00C88BEC /* TFCIThresholdFilter.m */; };
 		6E9355820DC0D6FC0048E1A3 /* NSImage-Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9355810DC0D6FC0048E1A3 /* NSImage-Extras.m */; };
 		6E937B150D9D66AC00B75112 /* TFFullscreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E937B140D9D66AC00B75112 /* TFFullscreenController.m */; };
 		6E937B200D9D726E00B75112 /* TFTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E937B1F0D9D726E00B75112 /* TFTouchView.m */; };
@@ -144,8 +146,6 @@
 		6EC4D9950D1199E9008AB9CF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC4D9940D1199E9008AB9CF /* QuartzCore.framework */; };
 		6EC4D99A0D119A19008AB9CF /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4D9990D119A19008AB9CF /* AppController.m */; };
 		6EC4D9F70D11AA39008AB9CF /* TFOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4D9F60D11AA39008AB9CF /* TFOpenGLView.m */; };
-		6EC4DBC10D12F58A008AB9CF /* TFCILuminanceThresholdFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DBC00D12F58A008AB9CF /* TFCILuminanceThresholdFilter.m */; };
-		6EC4DC1A0D1300BD008AB9CF /* TFCILuminanceThresholdFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6EC4DBC40D12FE63008AB9CF /* TFCILuminanceThresholdFilter.cikernel */; };
 		6EC4DC470D1439D9008AB9CF /* TFFilterChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DC460D1439D9008AB9CF /* TFFilterChain.m */; };
 		6EC4DC4B0D143B28008AB9CF /* TFCIFilterChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DC4A0D143B28008AB9CF /* TFCIFilterChain.m */; };
 		6EC4DC570D143D98008AB9CF /* TFCameraInputFilterChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DC560D143D98008AB9CF /* TFCameraInputFilterChain.m */; };
@@ -365,6 +365,9 @@
 		6E8BC3DC0DE86F39006450C8 /* TFLabeledTouchSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLabeledTouchSet.h; sourceTree = "<group>"; };
 		6E8BC3DD0DE86F39006450C8 /* TFLabeledTouchSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFLabeledTouchSet.m; sourceTree = "<group>"; };
 		6E90B19A0D1ED84700A21C36 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
+		6E9279900EB3C78200C88BEC /* TFCIThresholdFilter.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TFCIThresholdFilter.cikernel; sourceTree = "<group>"; };
+		6E9279920EB3C7AC00C88BEC /* TFCIThresholdFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIThresholdFilter.h; sourceTree = "<group>"; };
+		6E9279930EB3C7AC00C88BEC /* TFCIThresholdFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIThresholdFilter.m; sourceTree = "<group>"; };
 		6E9355800DC0D6FC0048E1A3 /* NSImage-Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage-Extras.h"; sourceTree = "<group>"; };
 		6E9355810DC0D6FC0048E1A3 /* NSImage-Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage-Extras.m"; sourceTree = "<group>"; };
 		6E937B130D9D66AC00B75112 /* TFFullscreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFFullscreenController.h; sourceTree = "<group>"; };
@@ -418,9 +421,6 @@
 		6EC4D9990D119A19008AB9CF /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		6EC4D9F50D11AA39008AB9CF /* TFOpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOpenGLView.h; sourceTree = "<group>"; };
 		6EC4D9F60D11AA39008AB9CF /* TFOpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOpenGLView.m; sourceTree = "<group>"; };
-		6EC4DBBF0D12F58A008AB9CF /* TFCILuminanceThresholdFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCILuminanceThresholdFilter.h; sourceTree = "<group>"; };
-		6EC4DBC00D12F58A008AB9CF /* TFCILuminanceThresholdFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCILuminanceThresholdFilter.m; sourceTree = "<group>"; };
-		6EC4DBC40D12FE63008AB9CF /* TFCILuminanceThresholdFilter.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TFCILuminanceThresholdFilter.cikernel; sourceTree = "<group>"; };
 		6EC4DC450D1439D9008AB9CF /* TFFilterChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFFilterChain.h; sourceTree = "<group>"; };
 		6EC4DC460D1439D9008AB9CF /* TFFilterChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFFilterChain.m; sourceTree = "<group>"; };
 		6EC4DC490D143B28008AB9CF /* TFCIFilterChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIFilterChain.h; sourceTree = "<group>"; };
@@ -1071,8 +1071,8 @@
 		6EC4DBBE0D12F561008AB9CF /* CIFilters */ = {
 			isa = PBXGroup;
 			children = (
-				6EC4DBBF0D12F58A008AB9CF /* TFCILuminanceThresholdFilter.h */,
-				6EC4DBC00D12F58A008AB9CF /* TFCILuminanceThresholdFilter.m */,
+				6E9279920EB3C7AC00C88BEC /* TFCIThresholdFilter.h */,
+				6E9279930EB3C7AC00C88BEC /* TFCIThresholdFilter.m */,
 				6E9862FB0D173E4D00B07124 /* TFCI1PixelBorderAroundImage.h */,
 				6E9862FC0D173E4D00B07124 /* TFCI1PixelBorderAroundImage.m */,
 				6E1D0DEC0D351F37005AB4DA /* TFCIBackgroundSubtractionFilter.h */,
@@ -1104,7 +1104,7 @@
 		6EC4DBC30D12FE4F008AB9CF /* CIKernels */ = {
 			isa = PBXGroup;
 			children = (
-				6EC4DBC40D12FE63008AB9CF /* TFCILuminanceThresholdFilter.cikernel */,
+				6E9279900EB3C78200C88BEC /* TFCIThresholdFilter.cikernel */,
 				6E9862FA0D173D5F00B07124 /* TFCI1PixelBorderAroundImage.cikernel */,
 				6E1D0DEF0D351F5A005AB4DA /* TFCIBackgroundSubtractionFilter.cikernel */,
 				6E81EB220D522C87003EA72C /* TFCIRatioImageBlendFilter.cikernel */,
@@ -1361,7 +1361,6 @@
 				6E81EB230D522CC0003EA72C /* TFCIRatioImageBlendFilter.cikernel in Resources */,
 				6E1D0E890D352638005AB4DA /* TFCIBackgroundSubtractionFilter.cikernel in Resources */,
 				6EB73B6A0D1749BA00D5984B /* TFCI1PixelBorderAroundImage.cikernel in Resources */,
-				6EC4DC1A0D1300BD008AB9CF /* TFCILuminanceThresholdFilter.cikernel in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				6EAD35070D2C4B9900C34A1A /* Localizable.strings in Resources */,
 				6ECA94D20DD1E9A000A9ABE3 /* UserDefaults.plist in Resources */,
@@ -1384,6 +1383,7 @@
 				6ECF81B50E72B362009433B3 /* TUIOOSCSettings.xib in Resources */,
 				6ECF88400E7488FB009433B3 /* flash-image.jpg in Resources */,
 				6ECF88470E75315C009433B3 /* TUIOFlashXMLSettings.xib in Resources */,
+				6E9279910EB3C78200C88BEC /* TFCIThresholdFilter.cikernel in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1441,7 +1441,6 @@
 			files = (
 				6EC4D99A0D119A19008AB9CF /* AppController.m in Sources */,
 				6EC4D9F70D11AA39008AB9CF /* TFOpenGLView.m in Sources */,
-				6EC4DBC10D12F58A008AB9CF /* TFCILuminanceThresholdFilter.m in Sources */,
 				6EC4DC470D1439D9008AB9CF /* TFFilterChain.m in Sources */,
 				6EC4DC4B0D143B28008AB9CF /* TFCIFilterChain.m in Sources */,
 				6EC4DC570D143D98008AB9CF /* TFCameraInputFilterChain.m in Sources */,
@@ -1543,6 +1542,7 @@
 				6ECF85170E734879009433B3 /* TFBlob+TUIOMethods.m in Sources */,
 				6ECF885E0E7534AD009433B3 /* TFTUIOFlashXmlSettingsController.m in Sources */,
 				6EEC22560E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */,
+				6E9279940EB3C7AC00C88BEC /* TFCIThresholdFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

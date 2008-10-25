@@ -26,7 +26,7 @@
 
 #import "TFIncludes.h"
 #import "TFCIColorInversionFilter.h"
-#import "TFCILuminanceThresholdFilter.h"
+#import "TFCIThresholdFilter.h"
 #import "TFCI1PixelBorderAroundImage.h"
 #import "TFCIBackgroundSubtractionFilter.h"
 #import "TFCIGaussianBlurFilter.h"
@@ -46,7 +46,7 @@
 {
 	// register our custom core image filters:
 	// this will call their +initialize method, which will do the registration
-	[TFCILuminanceThresholdFilter class];
+	[TFCIThresholdFilter class];
 	[TFCI1PixelBorderAroundImage class];
 	[TFCIBackgroundSubtractionFilter class];
 	[TFCIGaussianBlurFilter class];

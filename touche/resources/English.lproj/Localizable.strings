@@ -1,7 +1,7 @@
 "NotImplementedExceptionReason"		= "%1$@ is an abstract class and does not implement '%2$@'. Please use a subclass that implements this method!";
 "InitSentToSingletonError"			= "-init sent to %@ directly!";
 
-"LuminanceThresholdName"			= "Luminance-based Thresholding";
+"ThresholdName"						= "Thresholding filter (luminance or color distance)";
 "1PixelBorderFilterName"			= "1-pixel border around an image";
 "BackgroundSubtractionName"			= "Subtracts a backround from an image, ignoring alpha and capping each result pixel at 0,0,0";
 "RatioImageBlendFilterName"			= "Blends two pictures by combining according pixels from both with a given ratio.";

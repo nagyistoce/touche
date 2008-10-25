@@ -1,5 +1,5 @@
 //
-//  TFCILuminanceThresholdFilter.m
+//  TFCIThresholdFilter.m
 //  Touché
 //
 //  Created by Georg Kaindl on 14/12/07.
@@ -22,20 +22,20 @@
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "TFCILuminanceThresholdFilter.h"
+#import "TFCIThresholdFilter.h"
 
 #import "TFIncludes.h"
 
-static CIKernel*	tfLuminanceThresholdKernelFilter = nil;
+static CIKernel*	tfThresholdKernelFilter = nil;
 
-@implementation TFCILuminanceThresholdFilter
+@implementation TFCIThresholdFilter
 
 + (void)initialize
 {
-	[CIFilter registerFilterName:@"TFCILuminanceThresholdFilter"
+	[CIFilter registerFilterName:@"TFCIThresholdFilter"
 					 constructor:self
 				 classAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-						TFLocalizedString(@"LuminanceThresholdName", @"Luminance-based Thresholding"),
+						TFLocalizedString(@"ThresholdName", @"Thresholding filter (luminance or color distance)"),
 								  kCIAttributeFilterDisplayName,
 						[NSArray arrayWithObjects:
 							kCICategoryColorAdjustment, kCICategoryColorEffect,
@@ -59,14 +59,14 @@ static CIKernel*	tfLuminanceThresholdKernelFilter = nil;
 		return nil;
 	}
 
-	if (nil == tfLuminanceThresholdKernelFilter) {
+	if (nil == tfThresholdKernelFilter) {
 		NSString*	kernelCode = [NSString stringWithContentsOfFile:
 			[[NSBundle bundleForClass:[self class]]
-				pathForResource:@"TFCILuminanceThresholdFilter" ofType:@"cikernel"]];
+				pathForResource:@"TFCIThresholdFilter" ofType:@"cikernel"]];
 		
 		NSArray *kernels = [CIKernel kernelsWithString:kernelCode];
 		
-		tfLuminanceThresholdKernelFilter = [[kernels objectAtIndex:0] retain];
+		tfThresholdKernelFilter = [[kernels objectAtIndex:0] retain];
 	}
 	
 	return self;
@@ -111,7 +111,7 @@ static CIKernel*	tfLuminanceThresholdKernelFilter = nil;
 	CISampler *src = [CISampler samplerWithImage:inputImage options:
 						[NSDictionary dictionaryWithObjectsAndKeys:kCISamplerFilterNearest, kCISamplerFilterMode, nil]];
 	
-	return [self apply:tfLuminanceThresholdKernelFilter, src, inputLowColor, inputHighColor,
+	return [self apply:tfThresholdKernelFilter, src, inputLowColor, inputHighColor,
 					inputThreshold, kCIApplyOptionDefinition, [src definition], nil];
 }
 

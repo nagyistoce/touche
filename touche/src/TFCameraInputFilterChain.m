@@ -99,7 +99,7 @@
 	[self addFilter:filter];
 	
 	// This does the thresholding to get a binary image (background = black, blobs = white)
-	filter = [CIFilter filterWithName:@"TFCILuminanceThresholdFilter"];
+	filter = [CIFilter filterWithName:@"TFCIThresholdFilter"];
 	[filter setDefaults];
 	[self addFilter:filter];
 	

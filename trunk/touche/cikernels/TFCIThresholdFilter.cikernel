@@ -29,3 +29,11 @@ kernel vec4 luminanceThreshold(sampler image, __color lowColor, __color highColo
 	
     return (lum >= threshold) ? highColor : lowColor;
 }
+
+kernel vec4 colorDistanceThreshold(sampler image, __color lowColor, __color highColor, __color targetColor, float threshold)
+{	
+    vec4 pix = sample(image, samplerCoord(image));
+	float dist = distance(targetColor, pix);
+	
+    return (dist <= threshold) ? highColor : lowColor;
+}

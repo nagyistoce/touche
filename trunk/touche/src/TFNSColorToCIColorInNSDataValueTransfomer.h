@@ -1,10 +1,9 @@
 //
-//  TFCIThresholdFilter.h
-//  Touché
+//  TFNSColorToCIColorInNSDataValueTransfomer.h
+//  Touche
 //
-//  Created by Georg Kaindl on 14/12/07.
-//
-//  Copyright (C) 2007 Georg Kaindl
+//  Created by Georg Kaindl on 26/10/08.
+//  Copyright (C) 2008 Georg Kaindl
 //
 //  This file is part of Touché.
 //
@@ -23,27 +22,17 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <QuartzCore/QuartzCore.h>
 
 
-typedef enum {
-	TFCIThresholdFilterTypeLuminance = 0,
-	TFCIThresholdFilterTypeColorDistance
-} TFCIThresholdFilterType;
-
-#define	TFCIThresholdFilterTypeMin	(TFCIThresholdFilterTypeLuminance)
-#define	TFCIThresholdFilterTypeMax	(TFCIThresholdFilterTypeColorDistance)
-
-@interface TFCIThresholdFilter : CIFilter {
-	CIImage*		inputImage;
-	CIColor*		inputLowColor;
-	CIColor*		inputHighColor;
-	NSNumber*		inputMethodType;
-	
-	NSNumber*		inputLuminanceThreshold;
-	
-	CIColor*		inputTargetColor;
-	NSNumber*		inputColorDistanceThreshold;	
+@interface TFNSColorToCIColorInNSDataValueTransfomer : NSValueTransformer {
 }
+
++ (void)initialize;
+
++ (BOOL)allowsReverseTransformation;
++ (Class)transformedValueClass;
+
+- (id)transformedValue:(id)value;			// NSData -> CIColor -> NSColor
+- (id)reverseTransformedValue:(id)value;	// NSColor -> CIColor -> NSData
 
 @end

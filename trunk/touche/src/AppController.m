@@ -33,6 +33,7 @@
 #import "TFAboutController.h"
 #import "TFCalibrationController.h"
 #import "TFTouchTestController.h"
+#import	"TFNSColorToCIColorInNSDataValueTransfomer.h"
 #import "GCKIPhoneNavigationBarView.h"
 #import "GCKIPhoneNavigationBarLabelView.h"
 #import "TFWizardController.h"
@@ -100,6 +101,12 @@ enum {
 @implementation AppController
 
 @synthesize connectedClients;
+
++ (void)initialize
+{
+	// calls +initialize on our value transformers
+	[TFNSColorToCIColorInNSDataValueTransfomer class];
+}
 
 - (void)dealloc
 {

@@ -106,6 +106,7 @@
 		6E90B19B0D1ED84700A21C36 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E90B19A0D1ED84700A21C36 /* Accelerate.framework */; };
 		6E9279910EB3C78200C88BEC /* TFCIThresholdFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E9279900EB3C78200C88BEC /* TFCIThresholdFilter.cikernel */; };
 		6E9279940EB3C7AC00C88BEC /* TFCIThresholdFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9279930EB3C7AC00C88BEC /* TFCIThresholdFilter.m */; };
+		6E927A540EB526B900C88BEC /* TFNSColorToCIColorInNSDataValueTransfomer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E927A530EB526B900C88BEC /* TFNSColorToCIColorInNSDataValueTransfomer.m */; };
 		6E9355820DC0D6FC0048E1A3 /* NSImage-Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9355810DC0D6FC0048E1A3 /* NSImage-Extras.m */; };
 		6E937B150D9D66AC00B75112 /* TFFullscreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E937B140D9D66AC00B75112 /* TFFullscreenController.m */; };
 		6E937B200D9D726E00B75112 /* TFTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E937B1F0D9D726E00B75112 /* TFTouchView.m */; };
@@ -368,6 +369,8 @@
 		6E9279900EB3C78200C88BEC /* TFCIThresholdFilter.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TFCIThresholdFilter.cikernel; sourceTree = "<group>"; };
 		6E9279920EB3C7AC00C88BEC /* TFCIThresholdFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIThresholdFilter.h; sourceTree = "<group>"; };
 		6E9279930EB3C7AC00C88BEC /* TFCIThresholdFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIThresholdFilter.m; sourceTree = "<group>"; };
+		6E927A520EB526B900C88BEC /* TFNSColorToCIColorInNSDataValueTransfomer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFNSColorToCIColorInNSDataValueTransfomer.h; sourceTree = "<group>"; };
+		6E927A530EB526B900C88BEC /* TFNSColorToCIColorInNSDataValueTransfomer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFNSColorToCIColorInNSDataValueTransfomer.m; sourceTree = "<group>"; };
 		6E9355800DC0D6FC0048E1A3 /* NSImage-Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage-Extras.h"; sourceTree = "<group>"; };
 		6E9355810DC0D6FC0048E1A3 /* NSImage-Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage-Extras.m"; sourceTree = "<group>"; };
 		6E937B130D9D66AC00B75112 /* TFFullscreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFFullscreenController.h; sourceTree = "<group>"; };
@@ -833,6 +836,7 @@
 		6E6ADB910DD0A8530078DD1B /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				6E927A510EB5268A00C88BEC /* Value Transformers */,
 				6E07FBBB0DF013DC00FCB681 /* TFIncludes.h */,
 				6ECA94C90DD1E90E00A9ABE3 /* PreferencesStrings.h */,
 				6E7DB4BE0DEC588B00CF9556 /* TFError.h */,
@@ -987,6 +991,15 @@
 				6E8BC3DD0DE86F39006450C8 /* TFLabeledTouchSet.m */,
 			);
 			name = "Data Types";
+			sourceTree = "<group>";
+		};
+		6E927A510EB5268A00C88BEC /* Value Transformers */ = {
+			isa = PBXGroup;
+			children = (
+				6E927A520EB526B900C88BEC /* TFNSColorToCIColorInNSDataValueTransfomer.h */,
+				6E927A530EB526B900C88BEC /* TFNSColorToCIColorInNSDataValueTransfomer.m */,
+			);
+			name = "Value Transformers";
 			sourceTree = "<group>";
 		};
 		6E9394210DC7750E00D21ADC /* Third-Party Frameworks */ = {
@@ -1543,6 +1556,7 @@
 				6ECF885E0E7534AD009433B3 /* TFTUIOFlashXmlSettingsController.m in Sources */,
 				6EEC22560E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */,
 				6E9279940EB3C7AC00C88BEC /* TFCIThresholdFilter.m in Sources */,
+				6E927A540EB526B900C88BEC /* TFNSColorToCIColorInNSDataValueTransfomer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

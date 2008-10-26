@@ -35,6 +35,9 @@
 	NSString*	_clientName;
 	id			_server;
 	
+	UInt64					_expectedSequenceNumber;
+	NSMutableDictionary*	_orderingQueue;
+	
 	struct {
 		unsigned int hasDidGetDisconnected:1;
 		unsigned int hasServerConnectionDied:1;

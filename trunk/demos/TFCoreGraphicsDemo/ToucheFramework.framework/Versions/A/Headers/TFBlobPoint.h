@@ -33,9 +33,9 @@
 @property (assign) float y;
 
 + (id)point;
-+ (id)pointWithX:(float)xPos Y:(float)yPos;
++ (id)pointWithX:(CGFloat)xPos Y:(CGFloat)yPos;
 
-- (id)initWithX:(float)xPos Y:(float)yPos;
+- (id)initWithX:(CGFloat)xPos Y:(CGFloat)yPos;
 
 - (float)vectorLength;
 - (float)distanceFromBlobPoint:(TFBlobPoint*)otherPoint;

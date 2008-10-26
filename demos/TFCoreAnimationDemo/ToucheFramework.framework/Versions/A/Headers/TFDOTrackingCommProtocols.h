@@ -31,9 +31,10 @@
 - (oneway void)disconnectedByServerWithError:(bycopy in NSError*)error;
 - (bycopy NSDictionary*)clientInfo;
 - (oneway void)clientShouldQuit;
-- (oneway void)touchesBegan:(bycopy in NSSet*)touches;
-- (oneway void)touchesUpdated:(bycopy in NSSet*)touches;
-- (oneway void)touchesEnded:(bycopy in NSSet*)touches;
+- (oneway void)deliverBeginningTouches:(bycopy in NSArray*)beginningTouches
+						updatedTouches:(bycopy in NSArray*)updatedTouches
+						  endedTouches:(bycopy in NSArray*)endedTouches
+						sequenceNumber:(UInt64)sequenceNumber;
 
 @end
 

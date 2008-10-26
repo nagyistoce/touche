@@ -89,7 +89,9 @@ typedef enum {
 	TFErrorTrackingPipelinePipelineNotReady,
 	TFErrorTrackingPipelineInputMethodNeverCalibrated,
 	
-	TFErrorCouldNotEnterFullscreen
+	TFErrorCouldNotEnterFullscreen,
+	
+	TFErrorCouldNotCreateTUIOXMLFlashServer
 } TFErrorType;
 
 #define TFUnknownErrorObj	([NSError errorWithDomain:TFErrorDomain	\

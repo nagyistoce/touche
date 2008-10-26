@@ -26,7 +26,7 @@
 
 #import "TFIncludes.h"
 
-static CIKernel*	tfThresholdKernelFilter = nil;
+static NSArray*	tfThresholdKernelFilters = nil;
 
 @implementation TFCIThresholdFilter
 
@@ -59,14 +59,12 @@ static CIKernel*	tfThresholdKernelFilter = nil;
 		return nil;
 	}
 
-	if (nil == tfThresholdKernelFilter) {
+	if (nil == tfThresholdKernelFilters) {
 		NSString*	kernelCode = [NSString stringWithContentsOfFile:
 			[[NSBundle bundleForClass:[self class]]
 				pathForResource:@"TFCIThresholdFilter" ofType:@"cikernel"]];
 		
-		NSArray *kernels = [CIKernel kernelsWithString:kernelCode];
-		
-		tfThresholdKernelFilter = [[kernels objectAtIndex:0] retain];
+		tfThresholdKernelFilters = [[CIKernel kernelsWithString:kernelCode] retain];		
 	}
 	
 	return self;
@@ -85,7 +83,24 @@ static CIKernel*	tfThresholdKernelFilter = nil;
 		[NSDictionary dictionaryWithObjectsAndKeys:
 			 [CIImage class],					kCIAttributeClass,
 			 nil],								@"inputImage",
-	
+
+		[NSDictionary dictionaryWithObjectsAndKeys:
+		 [CIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0],	kCIAttributeDefault,
+		 nil],														@"inputLowColor",
+		
+		[NSDictionary dictionaryWithObjectsAndKeys:
+		 [CIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0],	kCIAttributeDefault,
+		 nil],														@"inputHighColor",
+
+		[NSDictionary dictionaryWithObjectsAndKeys:
+		 [NSNumber numberWithFloat:TFCIThresholdFilterTypeMin],	kCIAttributeMin,
+		 [NSNumber numberWithFloat:TFCIThresholdFilterTypeMax],	kCIAttributeMax,
+		 [NSNumber numberWithFloat:TFCIThresholdFilterTypeMin],	kCIAttributeSliderMin,
+		 [NSNumber numberWithFloat:TFCIThresholdFilterTypeMax],	kCIAttributeSliderMax,
+		 [NSNumber numberWithFloat:TFCIThresholdFilterTypeLuminance], kCIAttributeDefault,
+		 kCIAttributeTypeInteger,			kCIAttributeType,
+		 nil],								@"inputMethodType",
+
 		[NSDictionary dictionaryWithObjectsAndKeys:
 			[NSNumber numberWithDouble: 0.0],	kCIAttributeMin,
 			[NSNumber numberWithDouble: 1.0],	kCIAttributeMax,
@@ -93,26 +108,60 @@ static CIKernel*	tfThresholdKernelFilter = nil;
 			[NSNumber numberWithDouble: 1.0],	kCIAttributeSliderMax,
 			[NSNumber numberWithDouble: 0.8],	kCIAttributeDefault,
 			kCIAttributeTypeScalar,				kCIAttributeType,
-			nil],								@"inputThreshold",
-			
-		[NSDictionary dictionaryWithObjectsAndKeys:
-			[CIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0],	kCIAttributeDefault,
-			nil],														@"inputLowColor",
+			nil],								@"inputLuminanceThreshold",
 		
 		[NSDictionary dictionaryWithObjectsAndKeys:
-			[CIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0],	kCIAttributeDefault,
-			nil],														@"inputHighColor",
-	
+		 [CIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0],	kCIAttributeDefault,
+		 nil],														@"inputTargetColor",
+
+		[NSDictionary dictionaryWithObjectsAndKeys:
+		 [NSNumber numberWithDouble: 0.0],	kCIAttributeMin,
+		 [NSNumber numberWithDouble: 1.0],	kCIAttributeMax,
+		 [NSNumber numberWithDouble: 0.0],	kCIAttributeSliderMin,
+		 [NSNumber numberWithDouble: 1.0],	kCIAttributeSliderMax,
+		 [NSNumber numberWithDouble: 0.8],	kCIAttributeDefault,
+		 kCIAttributeTypeScalar,				kCIAttributeType,
+		 nil],								@"inputColorDistanceThreshold",
+		
 		nil];
 }
 
 - (CIImage*)outputImage
 {
+	TFCIThresholdFilterType filterType = [inputMethodType integerValue];
+	
+	if (TFCIThresholdFilterTypeMin > filterType || TFCIThresholdFilterTypeMax < filterType)
+		return inputImage;
+
 	CISampler *src = [CISampler samplerWithImage:inputImage options:
 						[NSDictionary dictionaryWithObjectsAndKeys:kCISamplerFilterNearest, kCISamplerFilterMode, nil]];
 	
-	return [self apply:tfThresholdKernelFilter, src, inputLowColor, inputHighColor,
-					inputThreshold, kCIApplyOptionDefinition, [src definition], nil];
+	CIImage* outputImage = inputImage;
+	
+	switch (filterType) {
+		case TFCIThresholdFilterTypeLuminance: {
+			CIKernel* kernel = [tfThresholdKernelFilters objectAtIndex:0];
+			
+			outputImage = [self apply:kernel, src, inputLowColor, inputHighColor,
+									inputLuminanceThreshold, kCIApplyOptionDefinition, [src definition], nil];
+			
+			break;
+		}
+		
+		case TFCIThresholdFilterTypeColorDistance: {
+			CIKernel* kernel = [tfThresholdKernelFilters objectAtIndex:1];
+			
+			// 1.7321 = sqrt(3) = the max. RGB distance possible
+			NSNumber* threshold = [NSNumber numberWithFloat:1.7321*[inputColorDistanceThreshold floatValue]];
+			
+			outputImage = [self apply:kernel, src, inputLowColor, inputHighColor, inputTargetColor,
+						   threshold, kCIApplyOptionDefinition, [src definition], nil];
+			
+			break;
+		}
+	}
+	
+	return outputImage;
 }
 
 @end

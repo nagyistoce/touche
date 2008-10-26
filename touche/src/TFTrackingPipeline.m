@@ -296,13 +296,31 @@ enum {
 	
 	for (NSString* path in paths) {
 		NSString* prefKey = [NSString stringWithFormat:@"%@_%@", path, [object className]];
+	
+		id defaultVal = [object valueForKeyPath:path];
+		
+		NSDictionary* bindingOptions = nil;
+		if (nil != defaultVal &&
+			![defaultVal isKindOfClass:[NSData class]] &&
+			![defaultVal isKindOfClass:[NSString class]] &&
+			![defaultVal isKindOfClass:[NSNumber class]] &&
+			![defaultVal isKindOfClass:[NSDate class]]) {
 			
-		[defaultValues setObject:[object valueForKeyPath:path] forKey:prefKey];
+			NSValueTransformer* keyedUnarchiveTransformer =
+				[NSValueTransformer valueTransformerForName:NSKeyedUnarchiveFromDataTransformerName];
+			
+			bindingOptions = [NSDictionary dictionaryWithObject:keyedUnarchiveTransformer
+														 forKey:NSValueTransformerBindingOption];
+			
+			defaultVal = [keyedUnarchiveTransformer reverseTransformedValue:defaultVal];			
+		}
+		
+		[defaultValues setObject:defaultVal forKey:prefKey];
 	
 		[object bind:path
 			toObject:defController
 		 withKeyPath:[NSString stringWithFormat:@"values.%@", prefKey]
-			 options:nil];
+			 options:bindingOptions];
 		
 		// since we're binding to the prefs anyway, the path is a unique key!
 		[_objectBindings setObject:object forKey:[path stringByAppendingString:[object className]]];
@@ -554,7 +572,12 @@ enum {
 						
 			for (CIFilter* filter in ((TFCameraInputFilterChain*)cameraInput.filterChain).filters) {
 				if ([filter isKindOfClass:[TFCIThresholdFilter class]])
-					[self _bindToPreferences:filter keyPaths:[NSArray arrayWithObject:@"inputThreshold"]];
+					[self _bindToPreferences:filter keyPaths:[NSArray arrayWithObjects:
+																@"inputMethodType",
+																@"inputLuminanceThreshold",
+																@"inputTargetColor",
+																@"inputColorDistanceThreshold",
+																nil]];
 				else if ([filter isKindOfClass:[TFCIColorInversionFilter class]])
 					[self _bindToPreferences:filter keyPaths:[NSArray arrayWithObjects:
 															  @"enabled",

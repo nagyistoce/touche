@@ -122,8 +122,8 @@
 	if (nil == serviceName)
 		serviceName = [NSString stringWithString:DEFAULT_SERVICE_NAME];
 
-	_server = [NSConnection rootProxyForConnectionWithRegisteredName:serviceName
-																host:serverName];
+	_server = [[NSConnection rootProxyForConnectionWithRegisteredName:serviceName
+																 host:serverName] retain];
 	
 	if (nil == _server) {
 		if (NULL != error)
@@ -176,6 +176,8 @@
 		
 	[_server unregisterClientWithName:_clientName];
 	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[[_server connectionForProxy] invalidate];
 	
 	[_server release];
@@ -184,10 +186,8 @@
 	[_clientName release];
 	_clientName = nil;
 	
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
 	connected = NO;
-	
+		
 	_expectedSequenceNumber = 0;
 	[_orderingQueue removeAllObjects];
 }

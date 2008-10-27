@@ -115,7 +115,9 @@
 	if (!isFullscreen)
 		return YES;
 	
-	[_fullscreenView exitFullScreenModeWithOptions:nil];
+	[_fullscreenView performSelectorOnMainThread:@selector(exitFullScreenModeWithOptions:)
+									  withObject:nil
+								   waitUntilDone:NO];
 	
 	if (_didHideMouseCursor) {
 		CGDisplayShowCursor([screen directDisplayID]);

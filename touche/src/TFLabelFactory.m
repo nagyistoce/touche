@@ -28,7 +28,7 @@
 #import "TFBlobLabel.h"
 
 
-#define		START_LABEL_AMOUNT	((NSUInteger)10)
+#define		START_LABEL_AMOUNT	((NSUInteger)20)
 
 @interface TFLabelFactory (PrivateMethods)
 - (void)_reqeueFreedLabel:(TFBlobLabel*)label;
@@ -58,7 +58,7 @@
 	
 	NSUInteger i;
 	for (i=0; i<_curLabelAmount; i++)
-		[_freeLabels addObject:[TFBlobLabel labelWithInteger:i]];
+		[_freeLabels addObject:[TFBlobLabel labelWithInteger:i+1]];
 				
 	return self;
 }

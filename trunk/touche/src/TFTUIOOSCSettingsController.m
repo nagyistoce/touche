@@ -89,7 +89,10 @@ NSString* tFTUIOPixelsForMotionPreferenceKey = @"tFTUIOPixelsForMotion";
 }
 
 - (IBAction)showAddClientPanel:(id)sender
-{
+{	
+	// load the nib file if necessary
+	(void)[self window];
+	
 	[_addClientPanel setShowsResizeIndicator:NO];
 	
 	if (!_addClientPanelShown) {

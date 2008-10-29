@@ -54,8 +54,8 @@
 	[deliveryThread release];
 	deliveryThread = nil;
 	
-	[_blobPositions release];
-	_blobPositions = nil;
+	[_previousBlobs release];
+	_previousBlobs = nil;
 	
 	[super dealloc];
 }
@@ -73,7 +73,7 @@
 	_expectedSequenceNumber = 0;
 	_orderingQueue = [[NSMutableDictionary alloc] init];
 	
-	_blobPositions = [[NSMutableDictionary alloc] init];
+	_previousBlobs = [[NSMutableDictionary alloc] init];
 		
 	return self;
 }
@@ -304,25 +304,25 @@
 		else {
 			if (nil != endedTouches)
 				for (TFBlob* blob in endedTouches)
-					[_blobPositions removeObjectForKey:blob.label];
+					[_previousBlobs removeObjectForKey:blob.label];
 			
 			if (nil != beginningTouches)
 				for (TFBlob* blob in beginningTouches)
-					[_blobPositions setObject:blob forKey:blob.label];
+					[_previousBlobs setObject:blob forKey:blob.label];
 			
 			if (nil != updatedTouches) {
 				NSMutableArray* filteredTouches = [NSMutableArray array];
 				
 				float minDist = self.minimumMotionDistanceForUpdate;
 				for (TFBlob* blob in updatedTouches) {
-					TFBlob* lastBlob = [_blobPositions objectForKey:blob.label];
+					TFBlob* lastBlob = [_previousBlobs objectForKey:blob.label];
 					TFBlobPoint* lastPosition = lastBlob.center;
 					
 					if (nil == lastPosition || minDist <= [blob.center distanceFromBlobPoint:lastPosition]) {
 						blob.previousCenter = lastPosition;
 						blob.previousCreatedAt = lastBlob.createdAt;
 						
-						[_blobPositions setObject:blob forKey:blob.label];
+						[_previousBlobs setObject:blob forKey:blob.label];
 						[filteredTouches addObject:blob];
 					}
 				}

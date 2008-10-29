@@ -12,17 +12,19 @@
 #import <ToucheFramework/ToucheFramework.h>
 
 #define MOTION_DISPLACEMENT_TO_ROTATION_ANGLE_DEGREES_FACTOR	(.3f)
-#define ROTATION_AREA_BORDER_CENTIMETER_WIDTH					(1.0f)
+#define ROTATION_AREA_BORDER_CENTIMETER_WIDTH					(3.0f)
+
+#define	TOUCH_INDICATOR_DIAMETER								(pixelsPerCentimeter*1.5);
 
 #define ZOOM_RECOGNIZER_ANGLE_TOLERANCE							(pi/4.0f)
-#define ZOOM_RECOGNIZER_MIN_PIXEL_DISTANCE						(pixelsPerCentimeter/6.0f)
-#define ZOOM_SCREEN_PIXELS_TO_SCALE_FACTOR						(pixelsPerCentimeter/5000.0f)
+#define ZOOM_RECOGNIZER_MIN_PIXEL_DISTANCE						(pixelsPerCentimeter/3.0f)
+#define ZOOM_SCREEN_PIXELS_TO_SCALE_FACTOR						(pixelsPerCentimeter/2500.0f)
 
 #define TAP_RECOGNIZER_MAX_TAP_TIME								((NSTimeInterval).5)
-#define TAP_RECOGNIZER_MAX_DISTANCE								(pixelsPerCentimeter*2.5f)
+#define TAP_RECOGNIZER_MAX_DISTANCE								(pixelsPerCentimeter*1.5f)
 
-#define	DOUBLE_TAP_ZOOMED_WIDTH									(pixelsPerCentimeter*20.0f)
-#define	DOUBLE_TAP_MINIMIZED_WIDTH								(pixelsPerCentimeter*4.0f)
+#define	DOUBLE_TAP_ZOOMED_WIDTH									(pixelsPerCentimeter*40.0f)
+#define	DOUBLE_TAP_MINIMIZED_WIDTH								(pixelsPerCentimeter*8.0f)
 
 // You can define your own enum's to use them in TFGestureInfo as either type or subtype, but
 // be sure to start at TFGestureTypeMax+1 in order not to conflict with the values defined by the
@@ -46,7 +48,7 @@ typedef enum {
 {
 	if (pixelsPerCentimeter != newVal) {
 		pixelsPerCentimeter = newVal;
-		_touchIndicatorLayer.indicatorDiameter = newVal;
+		_touchIndicatorLayer.indicatorDiameter = TOUCH_INDICATOR_DIAMETER;
 		_zoomRecognizer.minDistance = ZOOM_RECOGNIZER_MIN_PIXEL_DISTANCE;
 		_tapRecognizer.maxTapDistance = TAP_RECOGNIZER_MAX_DISTANCE;
 	}

@@ -48,15 +48,19 @@
 	// Get the pixels per centimeter
 	CGFloat ppcm = [_trackingClient screenPixelsPerCentimeter];
 	
+	// To prevent jitter, we don't want position updates to be delivered if they are less than a quarter of a centimeter
+	// away from the last position.
+	_trackingClient.minimumMotionDistanceForUpdate = ppcm*.25f;
+	
 	// Setting up our custom view
 	TFCADemoView* demoView = (TFCADemoView*)[self view];
 	[demoView setPixelsPerCentimeter:ppcm];
 	
 	// When placing our images, we just assume that they are wider than tall and that our screen has
 	// reasonable physical dimensions in centimeters...
-	[demoView addImageNamed:@"beach" withCenterAt:NSMakePoint(5*ppcm, 4*ppcm) scaledWidth:8*ppcm];
-	[demoView addImageNamed:@"desert" withCenterAt:NSMakePoint(5*ppcm, 11*ppcm) scaledWidth:8*ppcm];
-	[demoView addImageNamed:@"parrots" withCenterAt:NSMakePoint(14*ppcm, 4*ppcm) scaledWidth:8*ppcm];
+	[demoView addImageNamed:@"beach" withCenterAt:NSMakePoint(10*ppcm, 8*ppcm) scaledWidth:16*ppcm];
+	[demoView addImageNamed:@"desert" withCenterAt:NSMakePoint(10*ppcm, 22*ppcm) scaledWidth:16*ppcm];
+	[demoView addImageNamed:@"parrots" withCenterAt:NSMakePoint(28*ppcm, 8*ppcm) scaledWidth:16*ppcm];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender

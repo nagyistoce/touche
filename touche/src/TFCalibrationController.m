@@ -26,6 +26,7 @@
 #import "TFCalibrationController.h"
 
 #define TRACKINGCLIENT_NAME			(@"TFCalibrationController")
+#define	TOUCH_DIAMETER_CM			(2.0)
 #define CALIBRATION_MIN_BLOB_AGE	((NSTimeInterval).5)
 
 #import "TFIncludes.h"
@@ -105,8 +106,8 @@
 	isCalibrating = YES;
 	
 	CGFloat screenSizePerCentimeter = [_trackingClient screenPixelsPerCentimeter];
-	_touchView.touchSize = [NSValue valueWithSize:NSMakeSize(screenSizePerCentimeter*1.5,
-															 screenSizePerCentimeter*1.5f)];
+	_touchView.touchSize = [NSValue valueWithSize:NSMakeSize(screenSizePerCentimeter*TOUCH_DIAMETER_CM,
+															 screenSizePerCentimeter*TOUCH_DIAMETER_CM)];
 		
 	[_firstTouchLabel release];
 	_firstTouchLabel = nil;

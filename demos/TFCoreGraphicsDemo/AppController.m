@@ -11,6 +11,7 @@
 
 #define TRACKINGCLIENT_NAME			(@"TFCoreGraphicsDemo")
 #define	BRUSH_SIZE_IN_CENTIMETERS	(1.0f)
+#define	MIN_MOTION_FOR_UPDATE_IN_CM	(.5f)
 
 @implementation AppController
 
@@ -48,6 +49,9 @@
 	
 	// Get the pixels per centimeter
 	CGFloat ppcm = [_trackingClient screenPixelsPerCentimeter];
+	
+	// we don't need to re-paint any touch that moved for less than a threshold.
+	_trackingClient.minimumMotionDistanceForUpdate = MIN_MOTION_FOR_UPDATE_IN_CM*ppcm;
 	
 	// Set up our painting view
 	TFFingerPaintView* paintView = (TFFingerPaintView*)[self view];

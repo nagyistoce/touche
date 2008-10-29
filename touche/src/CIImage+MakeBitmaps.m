@@ -51,7 +51,7 @@
 	
 	CMCloseProfile(systemProfile);
 	
-	return colorSpace;
+	return (CGColorSpaceRef)[(id)colorSpace autorelease];
 }
 
 - (size_t)optimalRowBytesForWidth:(size_t)width bytesPerPixel:(size_t)bytesPerPixel
@@ -114,13 +114,9 @@
 										  cgContextPointer:(CGContextRef*)cgContextPointer
 										  ciContextPointer:(CIContext**)ciContextPointer
 											   renderOnCPU:(BOOL)renderOnCPU
-{
-	BOOL shouldReleaseColorSpace = NO;
-	
-	if (nil == colorSpace) {
+{	
+	if (nil == colorSpace)
 		colorSpace = [[self class] screenColorSpace];
-		shouldReleaseColorSpace = YES;
-	}
 	
 	CGBitmapInfo bitmapInfo = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Host;
 
@@ -133,9 +129,6 @@
 										   cgContextPointer:cgContextPointer
 										   ciContextPointer:ciContextPointer
 												renderOnCPU:renderOnCPU];
-	
-	if (shouldReleaseColorSpace)
-		CGColorSpaceRelease(colorSpace);
 	
 	return rv;
 }
@@ -185,13 +178,9 @@
 										 cgContextPointer:(CGContextRef*)cgContextPointer
 										 ciContextPointer:(CIContext**)ciContextPointer
 											  renderOnCPU:(BOOL)renderOnCPU
-{       		
-	BOOL shouldReleaseColorSpace = NO;
-	
-	if (nil == colorSpace) {
+{       			
+	if (nil == colorSpace)
 		colorSpace = [[self class] screenColorSpace];
-		shouldReleaseColorSpace = YES;
-	}
 	
 	CGBitmapInfo bitmapInfo = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Host | kCGBitmapFloatComponents;
 	
@@ -204,9 +193,6 @@
 										 cgContextPointer:cgContextPointer
 										 ciContextPointer:ciContextPointer
 											  renderOnCPU:renderOnCPU];
-	
-	if (shouldReleaseColorSpace)
-		CGColorSpaceRelease(colorSpace);
 	
 	return rv;
 }
@@ -295,6 +281,7 @@
 	BOOL shouldReleaseWorkingColorSpace = NO;
 	BOOL shouldReleaseCGContext = NO;
 	BOOL shouldReleaseCIContext = NO;
+	BOOL shouldReleaseBitmapDataOnError = NO;
 	
 	if (nil == workingColorSpace) {
 		workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
@@ -322,16 +309,24 @@
 	void *bitmapData;
 	if (NULL != buffer)
 		bitmapData = buffer;
-	else
+	else {
 		bitmapData = malloc(bytesPerRow*destHeight); /* caller has to free the memory if it's no longer needed! */
+		shouldReleaseBitmapDataOnError = YES;
+	}
 	
 	if (NULL == bitmapData)
-		return NULL;
+		goto errorReturn;
 	
 	if (NULL == cgContextPointer || NULL == *cgContextPointer) {
 		cgContext = CGBitmapContextCreate(bitmapData, destWidth, destHeight, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo);
-		if (nil == cgContext)
-			return NULL;
+		if (nil == cgContext) {
+			if (shouldReleaseBitmapDataOnError)
+				free(bitmapData);
+		
+			bitmapData = NULL;
+		
+			goto errorReturn;
+		}
 		
 		CGContextSetInterpolationQuality(cgContext, kCGInterpolationNone);
 	} else
@@ -348,8 +343,14 @@
 				
 		ciContext = [[CIContext contextWithCGContext:cgContext options:options] retain];
 		
-		if (nil == ciContext)
-			return NULL;
+		if (nil == ciContext) {
+			if (shouldReleaseBitmapDataOnError)
+				free(bitmapData);
+			
+			bitmapData = NULL;
+			
+			goto errorReturn;
+		}
 	} else
 		ciContext = *ciContextPointer;
 	
@@ -362,7 +363,8 @@
 	
 	if (NULL != rowBytes)
 		*rowBytes = CGBitmapContextGetBytesPerRow(cgContext);
-	
+
+errorReturn:
 	if (shouldReleaseCGContext)
 		CGContextRelease(cgContext);
 	else if (NULL != cgContextPointer)

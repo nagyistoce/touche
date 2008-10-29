@@ -228,7 +228,7 @@
 		case DC1394_COLOR_CODING_MONO8: {
 			CGColorSpaceRef colorSpace = nil;
 			CGBitmapInfo bitmapInfo = kCGImageAlphaNone;
-			size_t bitsPerComponent, bitsPerPixel;
+			size_t bitsPerComponent = 8, bitsPerPixel = 24;
 
 			switch (frame->color_coding) {
 				case DC1394_COLOR_CODING_RGB8: {

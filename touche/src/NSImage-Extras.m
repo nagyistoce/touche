@@ -12,7 +12,8 @@
 - (CGImageRef)cgImage
 {
 	NSData* data = [self TIFFRepresentation];
-	return CreateCGImageFromData(data);
+	
+	return (CGImageRef)[(id)CreateCGImageFromData(data) autorelease];
 }
 
 @end

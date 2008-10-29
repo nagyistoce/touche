@@ -54,7 +54,10 @@
 
 - (void)dealloc
 {
-	self.baseColor = nil;
+	[baseColor release];
+	baseColor = nil;
+	
+	[self _freeDerivedColors];
 
 	[super dealloc];
 }

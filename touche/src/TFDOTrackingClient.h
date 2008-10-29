@@ -32,6 +32,8 @@
 
 @protected
 	BOOL		connected;
+	NSThread*	deliveryThread;
+	
 	NSString*	_clientName;
 	id			_server;
 	
@@ -50,6 +52,7 @@
 }
 
 @property (assign) id delegate;
+@property (retain) NSThread* deliveryThread;
 @property (readonly, getter=isConnected) BOOL connected;
 
 - (void)setDelegate:(id)newDelegate;

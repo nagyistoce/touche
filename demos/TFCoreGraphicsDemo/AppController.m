@@ -36,6 +36,9 @@
 		[NSApp terminate:self];
 	}
 	
+	// make sure the delegate methods are called on the main thread, since we are drawing.
+	_trackingClient.deliveryThread = [NSThread mainThread];
+	
 	// Query the tracking client for the screen we should use for going fullscreen
 	NSScreen* theScreen = [_trackingClient screen];
 	

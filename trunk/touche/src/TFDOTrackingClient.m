@@ -33,14 +33,13 @@
 
 @interface TFDOTrackingClient (PrivateMethods)
 - (void)_connectionDidDie;
-- (void)_distributeBeginningTouches:(NSSet*)beginningTouches
-					 updatedTouches:(NSSet*)updatedTouches
-					   endedTouches:(NSSet*)endedTouches;
+- (void)_distributeTouches:(NSArray*)touchSets;
+- (void)_distributeTouchesOnPreferredThread:(NSArray*)touchSets;
 @end
 
 @implementation TFDOTrackingClient
 
-@synthesize delegate, connected;
+@synthesize delegate, connected, deliveryThread;
 
 - (void)dealloc
 {
@@ -49,6 +48,9 @@
 	
 	[_orderingQueue release];
 	_orderingQueue = nil;
+	
+	[deliveryThread release];
+	deliveryThread = nil;
 	
 	[super dealloc];
 }
@@ -59,6 +61,8 @@
 		[self release];
 		return nil;
 	}
+	
+	deliveryThread = nil;
 	
 	_expectedSequenceNumber = 0;
 	_orderingQueue = [[NSMutableDictionary alloc] init];
@@ -289,60 +293,56 @@
 	@synchronized(_server) {
 		if (_expectedSequenceNumber > sequenceNumber)
 			return;	// drop old duplicates
-		else if (_expectedSequenceNumber < sequenceNumber &&
-				 (sequenceNumber - _expectedSequenceNumber) < RESTART_AFTER_DROPPED_TOUCHES_THRESH) {
-			NSArray* el = [NSArray arrayWithObjects:
+		else {
+			NSArray* touchSets = [NSArray arrayWithObjects:
+						   (nil != endedTouches ? [NSSet setWithArray:endedTouches] : [NSNull null]),
 						   (nil != beginningTouches ? [NSSet setWithArray:beginningTouches] : [NSNull null]),
 						   (nil != updatedTouches ? [NSSet setWithArray:updatedTouches] : [NSNull null]),
-						   (nil != endedTouches ? [NSSet setWithArray:endedTouches] : [NSNull null]),
 						   nil];
-		
-			[_orderingQueue setObject:el forKey:[NSNumber numberWithUnsignedLongLong:sequenceNumber]];			
-		} else {
-			if (sequenceNumber != _expectedSequenceNumber) {
-				// apparently, a message was dropped and not just delivered late. we handle this by delivering
-				// all queued messages in order and then continuing as normal
-				
-				if ([_orderingQueue count] > 0) {
-					NSArray* sortedSequenceNumbers =
-						[[_orderingQueue allKeys] sortedArrayUsingSelector:@selector(compare:)];
+			
+			if (_expectedSequenceNumber < sequenceNumber &&
+				 (sequenceNumber - _expectedSequenceNumber) < RESTART_AFTER_DROPPED_TOUCHES_THRESH) {
+				[_orderingQueue setObject:touchSets forKey:[NSNumber numberWithUnsignedLongLong:sequenceNumber]];			
+			} else {
+				if (sequenceNumber != _expectedSequenceNumber) {
+					// apparently, a message was dropped and not just delivered late. we handle this by delivering
+					// all queued messages in order and then continuing as normal
 					
-					for (NSNumber* queuedSeqNum in sortedSequenceNumbers) {
-						if ([queuedSeqNum longLongValue] < sequenceNumber) {
-							NSArray* el = [[[_orderingQueue objectForKey:queuedSeqNum] retain] autorelease];
-							
-							[self _distributeBeginningTouches:[el objectAtIndex:0]
-											   updatedTouches:[el objectAtIndex:1]
-												 endedTouches:[el objectAtIndex:2]];
-							
-							[_orderingQueue removeObjectForKey:queuedSeqNum];
+					if ([_orderingQueue count] > 0) {
+						NSArray* sortedSequenceNumbers =
+							[[_orderingQueue allKeys] sortedArrayUsingSelector:@selector(compare:)];
+						
+						for (NSNumber* queuedSeqNum in sortedSequenceNumbers) {
+							if ([queuedSeqNum longLongValue] < sequenceNumber) {
+								NSArray* touchSets = [[[_orderingQueue objectForKey:queuedSeqNum] retain] autorelease];
+								
+								[self _distributeTouchesOnPreferredThread:touchSets];
+								
+								[_orderingQueue removeObjectForKey:queuedSeqNum];
+							}
 						}
 					}
+					
+					_expectedSequenceNumber = sequenceNumber;
 				}
-				
-				_expectedSequenceNumber = sequenceNumber;
-			}
-		
-			[self _distributeBeginningTouches:(nil != beginningTouches ? [NSSet setWithArray:beginningTouches] : nil)
-							   updatedTouches:(nil != updatedTouches ? [NSSet setWithArray:updatedTouches] : nil)
-								 endedTouches:(nil != endedTouches ? [NSSet setWithArray:endedTouches] : nil)];
 			
-			_expectedSequenceNumber++;
-			
-			while([_orderingQueue count] > 0) {
-				NSNumber* key = [NSNumber numberWithUnsignedLongLong:_expectedSequenceNumber];
-				NSArray* el = [[[_orderingQueue objectForKey:key] retain] autorelease];
-				
-				if (nil == el)
-					break;
-								
-				[self _distributeBeginningTouches:[el objectAtIndex:0]
-								   updatedTouches:[el objectAtIndex:1]
-									 endedTouches:[el objectAtIndex:2]];
-				
-				[_orderingQueue removeObjectForKey:key];
+				[self _distributeTouchesOnPreferredThread:touchSets];
 				
 				_expectedSequenceNumber++;
+				
+				while([_orderingQueue count] > 0) {
+					NSNumber* key = [NSNumber numberWithUnsignedLongLong:_expectedSequenceNumber];
+					NSArray* touchSets = [[[_orderingQueue objectForKey:key] retain] autorelease];
+					
+					if (nil == touchSets)
+						break;
+									
+					[self _distributeTouchesOnPreferredThread:touchSets];
+					
+					[_orderingQueue removeObjectForKey:key];
+					
+					_expectedSequenceNumber++;
+				}
 			}
 		}
 	}
@@ -359,10 +359,23 @@
 		[delegate client:self didGetDisconnectedWithError:error];
 }
 
-- (void)_distributeBeginningTouches:(NSSet*)beginningTouches
-					 updatedTouches:(NSSet*)updatedTouches
-					   endedTouches:(NSSet*)endedTouches
+- (void)_distributeTouchesOnPreferredThread:(NSArray*)touchSets
 {
+	if (nil == deliveryThread || [NSThread currentThread] == deliveryThread)
+		[self _distributeTouches:touchSets];
+	else
+		[self performSelector:@selector(_distributeTouches:)
+					 onThread:deliveryThread
+				   withObject:touchSets
+				waitUntilDone:YES];
+}
+
+- (void)_distributeTouches:(NSArray*)touchSets
+{
+	NSSet* endedTouches = [touchSets objectAtIndex:0];
+	NSSet* beginningTouches = [touchSets objectAtIndex:1];
+	NSSet* updatedTouches = [touchSets objectAtIndex:2];
+	
 	@synchronized(self) {
 		if (_delegateCapabilities.hasTouchesDidEnd && nil != endedTouches && [NSNull null] != (id)endedTouches)
 			[delegate touchesDidEnd:endedTouches

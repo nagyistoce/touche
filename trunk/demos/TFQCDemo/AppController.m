@@ -61,6 +61,9 @@ static const NSUInteger numFlares = 10;
 		[NSApp terminate:self];
 	}
 	
+	// make sure the delegate methods are called on the main thread, since we are drawing.
+	_trackingClient.deliveryThread = [NSThread mainThread];
+	
 	// Query the tracking client for the screen we should use for going fullscreen
 	NSScreen* theScreen = [_trackingClient screen];
 		
@@ -103,6 +106,8 @@ static const NSUInteger numFlares = 10;
 	
 	[qcView setValue:[NSNumber numberWithFloat:p.x] forInputKey:xKey];
 	[qcView setValue:[NSNumber numberWithFloat:p.y] forInputKey:yKey];
+	
+	NSLog(@"%@ %@\n", [NSThread mainThread], [NSThread currentThread]);
 }
 
 - (void)_positionFlare:(NSInteger)flare forTouch:(TFTouch*)touch

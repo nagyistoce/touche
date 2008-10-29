@@ -41,7 +41,7 @@
 	UInt64					_expectedSequenceNumber;
 	NSMutableDictionary*	_orderingQueue;
 	
-	NSMutableDictionary*	_blobPositions;	// blob label => position
+	NSMutableDictionary*	_blobPositions;	// blob label => blob
 	
 	struct {
 		unsigned int hasDidGetDisconnected:1;

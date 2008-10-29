@@ -308,16 +308,21 @@
 			
 			if (nil != beginningTouches)
 				for (TFBlob* blob in beginningTouches)
-					[_blobPositions setObject:blob.center forKey:blob.label];
+					[_blobPositions setObject:blob forKey:blob.label];
 			
 			if (nil != updatedTouches) {
 				NSMutableArray* filteredTouches = [NSMutableArray array];
 				
 				float minDist = self.minimumMotionDistanceForUpdate;
 				for (TFBlob* blob in updatedTouches) {
-					TFBlobPoint* lastPosition = [_blobPositions objectForKey:blob.label];
+					TFBlob* lastBlob = [_blobPositions objectForKey:blob.label];
+					TFBlobPoint* lastPosition = lastBlob.center;
+					
 					if (nil == lastPosition || minDist <= [blob.center distanceFromBlobPoint:lastPosition]) {
-						[_blobPositions setObject:blob.center forKey:blob.label];
+						blob.previousCenter = lastPosition;
+						blob.previousCreatedAt = lastBlob.createdAt;
+						
+						[_blobPositions setObject:blob forKey:blob.label];
 						[filteredTouches addObject:blob];
 					}
 				}

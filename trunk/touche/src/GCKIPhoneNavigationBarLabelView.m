@@ -47,12 +47,23 @@
 
 - (void)dealloc
 {
-	self.string = nil;
-	self.fontName = nil;
-	self.shadowSize = nil;
-	self.shadowColor = nil;
-	self.fontFillColor = nil;
-	self.fontStrokeColor = nil;
+	[string release];
+	string = nil;
+	
+	[fontName release];
+	fontName = nil;
+	
+	[shadowSize release];
+	shadowSize = nil;
+	
+	[shadowColor release];
+	shadowColor = nil;
+	
+	[fontFillColor release];
+	fontFillColor = nil;
+	
+	[fontStrokeColor release];
+	fontStrokeColor = nil;
 	
 	[super dealloc];
 }

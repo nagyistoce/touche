@@ -708,7 +708,10 @@ enum {
 		if (![_coordConverter loadSerializedCalibrationData:calibrationData error:error]) {
 			self.transformBlobsToScreenCoordinates = NO;
 			[_calibrationError release];
-			_calibrationError = [*error retain];
+			
+			if (NULL != error)
+				_calibrationError = [*error retain];
+			
 			_calibrationStatus = TFTrackingPipelineCalibrationRequired;
 		} else {
 			if (0 != matchDistance)

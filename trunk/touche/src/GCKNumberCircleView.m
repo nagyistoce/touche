@@ -49,13 +49,26 @@
 
 - (void)dealloc
 {
-	self.shadowSize = nil;
-	self.backgroundColor = nil;
-	self.circleFillColor = nil;
-	self.circleStrokeColor = nil;
-	self.fontStrokeColor = nil;
-	self.fontFillColor = nil;
-	self.shadowColor = nil;
+	[shadowSize release];
+	shadowSize = nil;
+	
+	[backgroundColor release];
+	backgroundColor = nil;
+	
+	[circleFillColor release];
+	circleFillColor = nil;
+	
+	[circleStrokeColor release];
+	circleStrokeColor = nil;
+	
+	[fontStrokeColor release];
+	fontStrokeColor = nil;
+	
+	[fontFillColor release];
+	fontFillColor = nil;
+	
+	[shadowColor release];
+	shadowColor = nil;
 	
 	[super dealloc];
 }

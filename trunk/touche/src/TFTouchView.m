@@ -57,8 +57,12 @@
 
 - (void)dealloc
 {
+	[touchSize release];
+	touchSize = nil;
+	
 	[_touches release];
 	_touches = nil;
+	
 	[_touchesLayer release];
 	_touchesLayer = nil;
 	
@@ -158,9 +162,7 @@
 	} else
 		[_touchesLayer addSublayer:touchLayer];
 		
-	[_touches setObject:touchLayer forKey:ID];
-		
-	CGImageRelease(cgImg);
+	[_touches setObject:touchLayer forKey:ID];		
 }
 
 - (void)animateTouchWithID:(id)ID toPosition:(CGPoint)pos

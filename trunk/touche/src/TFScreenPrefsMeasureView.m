@@ -34,7 +34,8 @@
 
 - (void)dealloc
 {
-	self.color = nil;
+	[color release];
+	color = nil;
 	
 	[super dealloc];
 }

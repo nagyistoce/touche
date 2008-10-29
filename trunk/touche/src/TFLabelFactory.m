@@ -102,7 +102,7 @@
 - (void)_reqeueFreedLabel:(TFBlobLabel*)label
 {
 	// do a sorted insert into _freeLabels, using a binary insert.
-	NSInteger m, l, s, a = 0, b = [_freeLabels count], v = label.intLabel;
+	NSInteger m = 0, l, s = 0, a = 0, b = [_freeLabels count], v = label.intLabel;
 	
 	// if _freeLabels is empty, simply insert;	
 	if (0 == b) {

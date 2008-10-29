@@ -99,6 +99,9 @@
 		return;
 	}
 	
+	// it's crucial here to receive updates for static blobs, too!
+	_trackingClient.minimumMotionDistanceForUpdate = 0.0;
+	
 	isCalibrating = YES;
 	
 	CGFloat screenSizePerCentimeter = [_trackingClient screenPixelsPerCentimeter];

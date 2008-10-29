@@ -27,6 +27,8 @@
 #import "TFIncludes.h"
 #import "NSScreen+Extras.h"
 #import "TFTrackingDataReceiver.h"
+#import "TFBlob.h"
+#import "TFBlobPoint.h"
 
 #define RESTART_AFTER_DROPPED_TOUCHES_THRESH		(5)
 #define SERVER_REQUEST_TIMEOUT						((NSTimeInterval)3.0)
@@ -39,7 +41,7 @@
 
 @implementation TFDOTrackingClient
 
-@synthesize delegate, connected, deliveryThread;
+@synthesize delegate, connected, minimumMotionDistanceForUpdate, deliveryThread;
 
 - (void)dealloc
 {
@@ -52,6 +54,9 @@
 	[deliveryThread release];
 	deliveryThread = nil;
 	
+	[_blobPositions release];
+	_blobPositions = nil;
+	
 	[super dealloc];
 }
 
@@ -63,9 +68,12 @@
 	}
 	
 	deliveryThread = nil;
+	minimumMotionDistanceForUpdate = 0.0;
 	
 	_expectedSequenceNumber = 0;
 	_orderingQueue = [[NSMutableDictionary alloc] init];
+	
+	_blobPositions = [[NSMutableDictionary alloc] init];
 		
 	return self;
 }
@@ -294,6 +302,29 @@
 		if (_expectedSequenceNumber > sequenceNumber)
 			return;	// drop old duplicates
 		else {
+			if (nil != endedTouches)
+				for (TFBlob* blob in endedTouches)
+					[_blobPositions removeObjectForKey:blob.label];
+			
+			if (nil != beginningTouches)
+				for (TFBlob* blob in beginningTouches)
+					[_blobPositions setObject:blob.center forKey:blob.label];
+			
+			if (nil != updatedTouches) {
+				NSMutableArray* filteredTouches = [NSMutableArray array];
+				
+				float minDist = self.minimumMotionDistanceForUpdate;
+				for (TFBlob* blob in updatedTouches) {
+					TFBlobPoint* lastPosition = [_blobPositions objectForKey:blob.label];
+					if (nil == lastPosition || minDist <= [blob.center distanceFromBlobPoint:lastPosition]) {
+						[_blobPositions setObject:blob.center forKey:blob.label];
+						[filteredTouches addObject:blob];
+					}
+				}
+				
+				updatedTouches = filteredTouches;
+			}
+			
 			NSArray* touchSets = [NSArray arrayWithObjects:
 						   (nil != endedTouches ? [NSSet setWithArray:endedTouches] : [NSNull null]),
 						   (nil != beginningTouches ? [NSSet setWithArray:beginningTouches] : [NSNull null]),

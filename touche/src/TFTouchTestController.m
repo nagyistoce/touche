@@ -80,6 +80,9 @@
 		return;
 	}
 	
+	// since this is the test app, we should be exact, not necessarily pretty.
+	_trackingClient.minimumMotionDistanceForUpdate = 0.0;
+	
 	_touchView.delegate = self;
 	
 	CGFloat screenSizePerCentimeter = [_trackingClient screenPixelsPerCentimeter];

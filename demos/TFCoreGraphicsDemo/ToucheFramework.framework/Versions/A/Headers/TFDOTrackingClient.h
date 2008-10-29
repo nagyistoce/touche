@@ -32,6 +32,7 @@
 
 @protected
 	BOOL		connected;
+	float		minimumMotionDistanceForUpdate;
 	NSThread*	deliveryThread;
 	
 	NSString*	_clientName;
@@ -39,6 +40,8 @@
 	
 	UInt64					_expectedSequenceNumber;
 	NSMutableDictionary*	_orderingQueue;
+	
+	NSMutableDictionary*	_blobPositions;	// blob label => position
 	
 	struct {
 		unsigned int hasDidGetDisconnected:1;
@@ -52,8 +55,9 @@
 }
 
 @property (assign) id delegate;
-@property (retain) NSThread* deliveryThread;
 @property (readonly, getter=isConnected) BOOL connected;
+@property (retain) NSThread* deliveryThread;
+@property (assign) float minimumMotionDistanceForUpdate;
 
 - (void)setDelegate:(id)newDelegate;
 

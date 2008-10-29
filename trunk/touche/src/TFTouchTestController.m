@@ -33,8 +33,9 @@
 #import "TFBlobPoint.h"
 
 #define TRACKINGCLIENT_NAME		(@"TFTouchTestController")
+#define	TOUCH_DIAMETER_CM		(2.0)
 #define TOUCH_DOWN_VOLUME		(1.0f)
-#define TOUCH_UP_VOLUME			(0.5f)
+#define TOUCH_UP_VOLUME			(0.7f)
 
 @interface TFTouchTestController (NonPublicMethods)
 - (NSColor*)_claimFreeColorForBlobLabelNumber:(NSNumber*)labelNumber;
@@ -86,8 +87,8 @@
 	_touchView.delegate = self;
 	
 	CGFloat screenSizePerCentimeter = [_trackingClient screenPixelsPerCentimeter];
-	_touchView.touchSize = [NSValue valueWithSize:NSMakeSize(screenSizePerCentimeter*1.5,
-															 screenSizePerCentimeter*1.5f)];
+	_touchView.touchSize = [NSValue valueWithSize:NSMakeSize(screenSizePerCentimeter*TOUCH_DIAMETER_CM,
+															 screenSizePerCentimeter*TOUCH_DIAMETER_CM)];
 	
 	isRunning = YES;
 	

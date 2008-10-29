@@ -12,6 +12,11 @@
 #define X_POS_KEY			(@"xPos%d")
 #define Y_POS_KEY			(@"yPos%d")
 
+#define	MAX_PARTICLE_SIZE		(pixelsPerCentimeter/660.0f)
+#define	MIN_PARTICLE_SIZE		(pixelsPerCentimeter/1240.0f)
+#define	MAX_PARTICLE_VELOCITY	(pixelsPerCentimeter/30.0f)
+#define	MIN_PARTICLE_VELOCITY	(pixelsPerCentimeter/-30.0f)
+
 static const NSUInteger numFlares = 10;
 
 @interface AppController (PrivateMethods)
@@ -69,7 +74,7 @@ static const NSUInteger numFlares = 10;
 		
 	// Store the screen size, since we will need it later
 	_screenSize = [theScreen frame].size;
-	CGFloat ppcm = [_trackingClient screenPixelsPerCentimeter];
+	CGFloat pixelsPerCentimeter = [_trackingClient screenPixelsPerCentimeter];
 	
 	// Now let's go fullscreen with our QCView
 	self.hidesMouseCursor = ([[NSScreen screens] count] <= 1);
@@ -79,10 +84,10 @@ static const NSUInteger numFlares = 10;
 	[qcView startRendering];
 	
 	// Now we'll set some size values based on the screen size and screen resolution we got from the server.
-	[qcView setValue:[NSNumber numberWithFloat:(ppcm/1500.0f)] forInputKey:@"maxParticleSize"];
-	[qcView setValue:[NSNumber numberWithFloat:(ppcm/2800.0f)] forInputKey:@"minParticleSize"];
-	[qcView setValue:[NSNumber numberWithFloat:(ppcm/70.0f)] forInputKey:@"maxParticleVelocity"];
-	[qcView setValue:[NSNumber numberWithFloat:-(ppcm/70.0f)] forInputKey:@"minParticleVelocity"];
+	[qcView setValue:[NSNumber numberWithFloat:MAX_PARTICLE_SIZE] forInputKey:@"maxParticleSize"];
+	[qcView setValue:[NSNumber numberWithFloat:MIN_PARTICLE_SIZE] forInputKey:@"minParticleSize"];
+	[qcView setValue:[NSNumber numberWithFloat:MAX_PARTICLE_VELOCITY] forInputKey:@"maxParticleVelocity"];
+	[qcView setValue:[NSNumber numberWithFloat:MIN_PARTICLE_VELOCITY] forInputKey:@"minParticleVelocity"];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender

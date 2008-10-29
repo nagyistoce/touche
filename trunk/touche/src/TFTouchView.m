@@ -226,7 +226,7 @@
 	textLayer.name = @"textLayer";
 	textLayer.string = text;
 	textLayer.font = @"Lucida-Grande";
-	textLayer.fontSize = [touchSize sizeValue].height/2.0f;
+	textLayer.fontSize = [touchSize sizeValue].height/1.5f;
 	textLayer.alignmentMode = kCAAlignmentCenter;
 	textLayer.foregroundColor = CGColorGetConstantColor(kCGColorWhite);
 	textLayer.delegate = self;

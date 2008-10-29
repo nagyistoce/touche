@@ -46,6 +46,7 @@
 
 - (void)setBrushSize:(CGFloat)size
 {
+	brushSize = size;
 	CGContextSetLineWidth(_context, size);
 }
 

@@ -30,6 +30,6 @@
 	NSViewController*		controller;
 }
 
-@property (nonatomic, assign) NSViewController* controller;
+@property (nonatomic, retain) NSViewController* controller;
 
 @end

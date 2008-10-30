@@ -33,6 +33,9 @@
 
 - (void)dealloc
 {
+	[controller release];
+	controller = nil;
+	
 	[super dealloc];
 }
 

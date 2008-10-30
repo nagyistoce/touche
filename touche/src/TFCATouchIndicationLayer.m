@@ -56,7 +56,7 @@
 	[_touches release];
 	_touches = nil;
 	
-	CGColorRelease((CGColorRef)indicatorColor);
+	[(id)indicatorColor release];
 	indicatorColor = nil;
 	
 	[super dealloc];

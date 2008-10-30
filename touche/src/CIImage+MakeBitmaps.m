@@ -278,6 +278,11 @@
 					ciContextPointer:(CIContext**)ciContextPointer
 						 renderOnCPU:(BOOL)renderOnCPU
 {
+	CGContextRef cgContext = NULL;
+	CIContext* ciContext = nil;
+	size_t bitsPerComponent = (bitmapInfo & kCGBitmapFloatComponents) ? 32 : 8;
+	size_t bytesPerRow;
+	
 	BOOL shouldReleaseWorkingColorSpace = NO;
 	BOOL shouldReleaseCGContext = NO;
 	BOOL shouldReleaseCIContext = NO;
@@ -287,19 +292,14 @@
 		workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
 		shouldReleaseWorkingColorSpace = YES;
 	}
-
+	
 	CGRect extent = [self extent];
 			
 	if (CGRectIsInfinite(extent) || colorSpace == nil)
-		return NULL;
+		goto errorReturn;
 	
 	size_t destWidth = (size_t)extent.size.width;
 	size_t destHeight = (size_t)extent.size.height;
-	
-	CGContextRef cgContext = NULL;
-	CIContext* ciContext = nil;
-	size_t bitsPerComponent = (bitmapInfo & kCGBitmapFloatComponents) ? 32 : 8;
-	size_t bytesPerRow;
 	
 	if (NULL != rowBytes && *rowBytes > 0)
 		bytesPerRow = *rowBytes;
@@ -317,6 +317,7 @@
 	if (NULL == bitmapData)
 		goto errorReturn;
 	
+	shouldReleaseCGContext = (NULL == cgContextPointer || NULL == *cgContextPointer);
 	if (NULL == cgContextPointer || NULL == *cgContextPointer) {
 		cgContext = CGBitmapContextCreate(bitmapData, destWidth, destHeight, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo);
 		if (nil == cgContext) {
@@ -331,8 +332,6 @@
 		CGContextSetInterpolationQuality(cgContext, kCGInterpolationNone);
 	} else
 		cgContext = *cgContextPointer;
-	
-	shouldReleaseCGContext = (NULL == cgContextPointer);
 	
 	if (NULL == ciContextPointer || nil == *ciContextPointer) {
 		NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys: 
@@ -354,6 +353,7 @@
 	} else
 		ciContext = *ciContextPointer;
 	
+	shouldReleaseCGContext = (NULL == cgContextPointer);
 	shouldReleaseCIContext = (NULL == ciContextPointer);
 	
 	CGContextSaveGState(cgContext);
@@ -365,10 +365,10 @@
 		*rowBytes = CGBitmapContextGetBytesPerRow(cgContext);
 
 errorReturn:
-	if (shouldReleaseCGContext)
-		CGContextRelease(cgContext);
-	else if (NULL != cgContextPointer)
+	if (!shouldReleaseCGContext && NULL != cgContextPointer)
 		*cgContextPointer = cgContext;
+	else if (NULL != cgContext)
+		CGContextRelease(cgContext);
 	
 	if (shouldReleaseCIContext)
 		[ciContext release];

@@ -346,8 +346,14 @@ enum {
 	else
 		[[_hostView animator] addSubview:view];
 	
+	// prevent a retain-loop
+	if (_currentMainView != view && [_currentMainView isKindOfClass:[TFInfoView class]]) {
+		((TFInfoView*)_currentMainView).controller = nil;
+	}
+	
+	[view retain];
 	[_currentMainView release];
-	_currentMainView = [view retain];
+	_currentMainView = view;
 	
 	NSString* newStr = nil;
 	if (view == _wizardView)
@@ -510,6 +516,7 @@ enum {
 			c.delegate = self;
 			
 			[self _promoteViewToMainView:[c view]];
+			[c release];
 		}
 		
 		if (nil != [error localizedFailureReason])
@@ -699,6 +706,7 @@ enum {
 			c.delegate = self;
 			
 			[self _promoteViewToMainView:[c view]];
+			[c release];
 		}
 		
 		_appStatus = AppStatusIsTracking;
@@ -724,6 +732,7 @@ enum {
 			c.identifier = InfoViewIdentifierCalibrationCanceledWithError;
 			c.delegate = self;
 			[self _promoteViewToMainView:[c view]];
+			[c release];
 		}
 		
 		_appStatus = AppStatusIsTracking;
@@ -748,6 +757,7 @@ enum {
 				c.delegate = self;
 				
 				[self _promoteViewToMainView:[c view]];
+				[c release];
 			}
 			
 			_appStatus = AppStatusIsTracking;
@@ -767,6 +777,7 @@ enum {
 				c.delegate = self;
 				
 				[self _promoteViewToMainView:[c view]];
+				[c release];
 			}
 			
 			_appStatus = AppStatusIsTracking;
@@ -796,6 +807,7 @@ enum {
 			c.delegate = self;
 			
 			[self _promoteViewToMainView:[c view]];
+			[c release];
 		}
 	}
 }
@@ -817,6 +829,7 @@ enum {
 			c.delegate = self;
 			
 			[self _promoteViewToMainView:[c view]];
+			[c release];
 		}
 	}
 }
@@ -861,6 +874,7 @@ enum {
 		c.delegate = self;
 		
 		[self _promoteViewToMainView:[c view]];
+		[c release];
 	}
 }
 
@@ -884,6 +898,7 @@ enum {
 		c.delegate = self;
 		
 		[self _promoteViewToMainView:[c view]];
+		[c release];
 	}
 }
 
@@ -922,6 +937,7 @@ enum {
 			c.delegate = self;
 			
 			[self _promoteViewToMainView:[c view]];
+			[c release];
 		} else if (AppStatusPipelineReady >= _appStatus || [_wizardController isRunning]) {
 			[self _showCurrentMainView];
 			
@@ -950,6 +966,7 @@ enum {
 			c.delegate = self;
 			
 			[self _promoteViewToMainView:[c view]];
+			[c release];
 		}
 		
 		[_pipelineSetupController setTrackingInputStatusMessage:reason];
@@ -974,6 +991,7 @@ enum {
 			c.delegate = self;
 			
 			[self _promoteViewToMainView:[c view]];
+			[c release];
 		}
 	}
 }
@@ -1001,6 +1019,7 @@ enum {
 			c.delegate = self;
 			
 			[self _promoteViewToMainView:[c view]];
+			[c release];
 		}
 		
 		if (nil != [error localizedFailureReason])

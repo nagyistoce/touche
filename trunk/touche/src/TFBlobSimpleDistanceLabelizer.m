@@ -29,6 +29,7 @@
 #import "TFBlobLabel.h"
 #import "TFBlobPoint.h"
 #import "TFLabelFactory.h"
+#import "TFTrackingPipeline.h"
 
 #define INITIAL_SCRATCH_SIZE		(6*100)
 #define	DEFAULT_LOOKBACK_FRAMES		(0)
@@ -47,7 +48,7 @@ NSString* TFBlobSimpleDistanceLabelizerFrameCountKey		= @"TFBlobSimpleDistanceLa
 
 @implementation TFBlobSimpleDistanceLabelizer
 
-@synthesize lookbackFrames;
+@synthesize lookbackFrames, maxDistanceForMatch;
 
 - (void)dealloc
 {	
@@ -77,6 +78,7 @@ NSString* TFBlobSimpleDistanceLabelizerFrameCountKey		= @"TFBlobSimpleDistanceLa
 	_previousBlobs = [[NSMutableDictionary alloc] init];
 	
 	self.lookbackFrames = DEFAULT_LOOKBACK_FRAMES;
+	maxDistanceForMatch = 0.08f;
 	
 	_scratchSize = INITIAL_SCRATCH_SIZE;
 	_scratchSpace = (float*)malloc(sizeof(float)*_scratchSize);
@@ -168,6 +170,11 @@ NSString* TFBlobSimpleDistanceLabelizerFrameCountKey		= @"TFBlobSimpleDistanceLa
 				numCombinations);
 	vDSP_vsorti(C, IC, NULL, numCombinations, 1);
 	
+	static TFTrackingPipeline* pipeline = nil;
+	if (nil == pipeline)
+		pipeline = [TFTrackingPipeline sharedPipeline];
+	float maxDist = [pipeline currentCaptureResolution].width*maxDistanceForMatch;
+	
 	NSUInteger curBlob, curOldBlob;
 	NSUInteger numMatchedBlobs			= 0;
 	NSUInteger numBlobsToMatch			= MIN(numBlobs, numOldBlobs);
@@ -175,6 +182,12 @@ NSString* TFBlobSimpleDistanceLabelizerFrameCountKey		= @"TFBlobSimpleDistanceLa
 	memset(oldBlobMatched, (char)NO, sizeof(BOOL)*numOldBlobs);
 	memset(newBlobMatched, (char)NO, sizeof(BOOL)*numBlobs);
 	for (i=0; i<numCombinations; i++) {
+		float distance = C[IC[i]];
+		
+		// if the distance is already above our threshold, don't match any more blobs
+		if (distance > maxDist)
+			break;
+		
 		curOldBlob	= IC[i]%numOldBlobs;
 		curBlob		= IC[i]/numOldBlobs;
 		

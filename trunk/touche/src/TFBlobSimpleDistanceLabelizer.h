@@ -29,6 +29,7 @@
 
 @interface TFBlobSimpleDistanceLabelizer : TFBlobLabelizer {
 	NSUInteger				lookbackFrames;
+	float					maxDistanceForMatch;
 
 	NSMutableDictionary*	_previousBlobs;
 	float*					_scratchSpace;
@@ -37,5 +38,6 @@
 }
 
 @property (nonatomic, assign) NSUInteger lookbackFrames;
+@property (nonatomic, assign) float maxDistanceForMatch;
 
 @end

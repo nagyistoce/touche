@@ -81,7 +81,6 @@ enum {
 - (void)_bindToPreferences:(id)object keyPaths:(NSArray*)paths;
 - (void)_checkAndReportCalibrationProblemsToDelegate:(BOOL)isResolutionChange;
 - (void)_unbindFromPreferences:(BOOL)alsoUnbindSelf;
-- (CGSize)_currentCaptureResolution;
 - (NSData*)_closestCalibrationDataFromPreferences:(NSInteger*)distanceFromPerfectMatch;
 - (NSString*)_prefKeyPartForCurrentInputMethod;
 - (NSString*)_prefKeyForCalibrationDataOfCurrentInputSettings;
@@ -340,11 +339,6 @@ enum {
 	}
 }
 
-- (CGSize)_currentCaptureResolution
-{
-	return [_blobInput currentCaptureResolution];
-}
-
 - (NSInteger)_resolutionKeyFromCGSize:(CGSize)size
 {
 	if (size.width == 160.0f && size.height == 120.0f)
@@ -439,7 +433,7 @@ enum {
 
 - (NSString*)_prefKeyForCalibrationDataOfCurrentInputSettings
 {
-	NSInteger captureResolutionKey = [self _resolutionKeyFromCGSize:[self _currentCaptureResolution]];
+	NSInteger captureResolutionKey = [self _resolutionKeyFromCGSize:[self currentCaptureResolution]];
 	NSString* calibrationPrefKey = [self _trackingCalibrationKeyForResolution:captureResolutionKey
 														   andCaptureInputKey:[self _prefKeyPartForCurrentInputMethod]
 											  andCoordinateConverterClassName:[_coordConverter className]];
@@ -650,7 +644,10 @@ enum {
 		return NO;
 	}
 	
-	[self _bindToPreferences:distanceLabelizer keyPaths:[NSArray arrayWithObjects:@"lookbackFrames", nil]];
+	[self _bindToPreferences:distanceLabelizer keyPaths:[NSArray arrayWithObjects:
+															@"lookbackFrames",
+															@"maxDistanceForMatch",
+														nil]];
 	
 	_blobLabelizer = distanceLabelizer;
 	
@@ -746,7 +743,7 @@ enum {
 
 - (NSData*)_closestCalibrationDataFromPreferences:(NSInteger*)distanceFromPerfectMatch
 {
-	NSInteger i, currentCaptureKey = [self _resolutionKeyFromCGSize:[self _currentCaptureResolution]];
+	NSInteger i, currentCaptureKey = [self _resolutionKeyFromCGSize:[self currentCaptureResolution]];
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
 	NSInteger currentMatchDistance = NSIntegerMax;
 	NSData* currentData = nil;
@@ -847,6 +844,11 @@ enum {
 	[processingQueue release];
 	
 	[outerPool release];
+}
+
+- (CGSize)currentCaptureResolution
+{
+	return [_blobInput currentCaptureResolution];
 }
 
 - (BOOL)isReady

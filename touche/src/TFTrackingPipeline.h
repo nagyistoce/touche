@@ -97,6 +97,8 @@ extern NSInteger TFTrackingPipelineInputResolutionHighest;
 
 - (BOOL)currentInputMethodSupportsFilterStages;
 
+- (CGSize)currentCaptureResolution;
+
 @end
 
 @interface NSObject (TFTrackingPipelineDelegate)

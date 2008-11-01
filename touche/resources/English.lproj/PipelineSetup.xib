@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="852"/>
+			<integer value="683"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -432,6 +432,10 @@
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
 			</object>
 			<object class="NSUserDefaultsController" id="512091734">
+				<object class="NSMutableArray" key="NSDeclaredKeys">
+					<bool key="EncodedWithXMLCoder">YES</bool>
+					<string>inputMethodType_TFCIThresholdFilter</string>
+				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSWindowTemplate" id="71502887">
@@ -2001,7 +2005,7 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="770787616">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">45</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3398,13 +3402,13 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 														<object class="NSButton" id="438928870">
 															<reference key="NSNextResponder" ref="724162819"/>
 															<int key="NSvFlags">268</int>
-															<string key="NSFrame">{{14, 172}, {132, 18}}</string>
+															<string key="NSFrame">{{14, 172}, {133, 18}}</string>
 															<reference key="NSSuperview" ref="724162819"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="NSButtonCell" key="NSCell" id="209350821">
 																<int key="NSCellFlags">-2080244224</int>
 																<int key="NSCellFlags2">131072</int>
-																<string key="NSContents">Convert to grayscale</string>
+																<string key="NSContents">Convert to Grayscale</string>
 																<reference key="NSSupport" ref="26"/>
 																<reference key="NSControlView" ref="438928870"/>
 																<int key="NSButtonFlags">1211912703</int>
@@ -6563,10 +6567,11 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					</object>
 				</object>
 				<string key="NSFrameSize">{680, 292}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="830953166">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -6809,7 +6814,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					</object>
 				</object>
 				<string key="NSFrameSize">{680, 90}</string>
-				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="266534142">
@@ -9095,6 +9099,94 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 					</object>
 					<int key="connectionID">861</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: values.inputMethodType_TFCIThresholdFilter</string>
+						<reference key="source" ref="607636850"/>
+						<reference key="destination" ref="512091734"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="607636850"/>
+							<reference key="NSDestination" ref="512091734"/>
+							<string key="NSLabel">enabled: values.inputMethodType_TFCIThresholdFilter</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">values.inputMethodType_TFCIThresholdFilter</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSNegateBoolean</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">863</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: values.inputMethodType_TFCIThresholdFilter</string>
+						<reference key="source" ref="753366844"/>
+						<reference key="destination" ref="512091734"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="753366844"/>
+							<reference key="NSDestination" ref="512091734"/>
+							<string key="NSLabel">enabled: values.inputMethodType_TFCIThresholdFilter</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">values.inputMethodType_TFCIThresholdFilter</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSNegateBoolean</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">865</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: values.inputMethodType_TFCIThresholdFilter</string>
+						<reference key="source" ref="855782915"/>
+						<reference key="destination" ref="512091734"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="855782915"/>
+							<reference key="NSDestination" ref="512091734"/>
+							<string key="NSLabel">enabled: values.inputMethodType_TFCIThresholdFilter</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">values.inputMethodType_TFCIThresholdFilter</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">866</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: values.inputMethodType_TFCIThresholdFilter</string>
+						<reference key="source" ref="163436829"/>
+						<reference key="destination" ref="512091734"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="163436829"/>
+							<reference key="NSDestination" ref="512091734"/>
+							<string key="NSLabel">enabled: values.inputMethodType_TFCIThresholdFilter</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">values.inputMethodType_TFCIThresholdFilter</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">867</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: values.inputMethodType_TFCIThresholdFilter</string>
+						<reference key="source" ref="550571150"/>
+						<reference key="destination" ref="512091734"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="550571150"/>
+							<reference key="NSDestination" ref="512091734"/>
+							<string key="NSLabel">enabled: values.inputMethodType_TFCIThresholdFilter</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">values.inputMethodType_TFCIThresholdFilter</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">868</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -11963,7 +12055,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>{{17, 608}, {680, 135}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{240, 790}, {680, 135}}</string>
-					<string>{{169, 476}, {680, 292}}</string>
+					<string>{{74, 301}, {680, 292}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSMutableDictionary">
 						<string key="NS.key.0">ToolTip</string>
@@ -12161,7 +12253,7 @@ YmxlZC4</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{73, 590}, {680, 90}}</string>
+					<string>{{5, 590}, {680, 90}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSMutableDictionary">
@@ -12818,7 +12910,7 @@ IGdpdmVuIGx1bWluY2UgdGhyZXNob2xkLg</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">861</int>
+			<int key="maxID">868</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

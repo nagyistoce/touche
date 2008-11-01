@@ -52,6 +52,8 @@
 - (IBAction)changeServerInterfaceSetting:(id)sender;
 - (IBAction)changeServerPort:(id)sender;
 
+- (IBAction)openFlashOptions:(id)sender;
+
 #pragma mark -
 #pragma mark NSWindow delegate
 

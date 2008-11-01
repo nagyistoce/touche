@@ -29,6 +29,8 @@
 #import "TFFlashXMLTUIOTrackingDataDistributor.h"
 
 
+#define	FLASH_OPTIONS_URL	(@"http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html")
+
 NSString* tFTUIOFlashXmlPixelsForMotionThresholdKey = @"tFTUIOFlashXmlPixelsForMotionThreshold";
 NSString* tFTUIOFlashXmlServerPortKey = @"tFTUIOFlashXmlServerPort";
 NSString* tFTUIOFlashXmlServerLocalAddressTagKey = @"tFTUIOFlashXmlServerLocalAddressTag";
@@ -139,6 +141,11 @@ NSString* tFTUIOFlashXmlServerLocalAddressTagKey = @"tFTUIOFlashXmlServerLocalAd
 		} else 
 			[standardDefaults setInteger:newPort forKey:tFTUIOFlashXmlServerPortKey];
 	}
+}
+
+- (IBAction)openFlashOptions:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:FLASH_OPTIONS_URL]];
 }
 
 + (NSString*)_localAddressForTag:(NSInteger)tag

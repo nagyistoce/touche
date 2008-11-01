@@ -29,7 +29,7 @@ ul.ul1 {list-style-type: disc}
 </style>
 
 <p class="p1">Touché supports output of <a href="tuio.html">TUIO</a> data via Flash/XML-Sockets, as is being used by the AS3 demo applications in the <a href="http://code.google.com/p/touchlib/">touchlib</a> package. There are some settings available that pertain to TUIO/Flash XML-Socket output, which can be accessed by clicking "TUIO/Flash XML Settings..." in the "Setup" menu.</p>
-<p class="p2"><img src="tuio_flash%20xml-socket%20settings.flash_xml_config.jpg" alt="flash_xml_config.jpg"></p>
+<p class="p2"><img src="tuio_flash%20xml-socket%20settings.tuio_flash_xml_settings.jpg" alt="tuio_flash_xml_settings.jpg"></p>
 <p class="p1">The following settings are available:</p>
 <p class="p3"><br></p>
 <p class="p1"><b>Server Port</b></p>
@@ -40,6 +40,11 @@ ul.ul1 {list-style-type: disc}
 <p class="p3"><br></p>
 <p class="p1"><b>Pixel motion offset to trigger a TUIO "Cursor Moved" message</b></p>
 <p class="p1"><a href="tuio.html">TUIO</a> reduces network usage by transmitting state information only for touches that have moved. With this setting, you can determine the amount of screen pixels that a touch must be moved in order for the <a href="tuio.html">TUIO</a> data distributor to recognize the touch as "being moved". The larger the setting, the more a touch as to be moved before an update is sent to the client, reducing bandwidth, but potentially making the motion appear jerky. Lower settings use more network bandwidth, but may appear smoother. The default value is 5 pixels.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Open Flash Global Security Options...</b></p>
+<p class="p1">Flash applications run within a sandboxed environment which prevents them from accessing most of your hardware features. This is a security feature, because Flash content is often embedded into websites that you do not necessarily "trust".</p>
+<p class="p1">Therefore, it is important to mark your Flash multitouch applications as "trusted", so that they can access the network to connect to Touché. This is done by adding the folder(s) in which you keep the Flash applications to the trusted folders in Flash's Global Security Options.</p>
+<p class="p1">Clicking this button opens the Flash Global Security Options, where you can edit the trusted folders list. Alternatively, you can simply click this link to open the <a href="http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html">Flash Global Security Options</a>.</p>
 <p class="p3"><br></p>
 <p class="p1"><b>Related topics</b></p>
 <ul class="ul1">

@@ -28,12 +28,12 @@ p.p3 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida 
 ul.ul1 {list-style-type: disc}
 </style>
 
-<p class="p1">The thresholding filters are used to convert the preprocessed video frames into a binary image (either "black" or "white" on every pixel) which can then be passed on to postprocessing before being fed into the blob tracking stage. In the ideal case, the whole video frame should be black after the thresholding, except for the blobs, which should be white.</p>
-<p class="p2"><img src="thresholding%20filters.filters_thresholding.jpg" alt="filters_thresholding.jpg"></p>
+<p class="p1">The thresholding filters are used to convert the preprocessed video frames into a binary image (either "black" or "white" on every pixel) which can then be passed on to postprocessing before being fed into the blob tracking stage. In the ideal case, the whole video frame should be black after the thresholding, except for the touch contact points, which should be white.</p>
+<p class="p2"><img src="thresholding%20filters.thresholding_settings.jpg" alt="thresholding_settings.jpg"></p>
 <p class="p1">Thresholding is a crucial step in the pipeline and is strongly affected by how the image looks after the preprocessing stage: If the blobs are too weak or if there's too much bright noise, it might be hard to threshold the picture in a meaningful way. In this case, it's advisable to go back to the preprocessing stage and play with the settings in order to get a better picture, or to try to enhance the thresholded picture in the postprocessing stage.</p>
 <p class="p1">The following filters and options are available in the thresholding stage:</p>
 <p class="p3"><br></p>
-<p class="p1"><b>Convert to grayscale</b></p>
+<p class="p1"><b>Convert to Grayscale</b></p>
 <p class="p1">Color information can be used to reduce image noise while converting the picture to grayscale. This is possible because the infrared camera doesn't have a notion of color anyway, so discarding the color information does not introduce any information loss. The idea is to discard color in a way that color noise goes away, while the bright, white blobs will be kept.</p>
 <p class="p1">While this filter works very well to reduce overall color noise, it is especially suitable to get rid of color noise amplified by the contrast enhancement process of the preprocessing stage. If contrast enhancement generates lots of color artifacts for you, give this filter a try!</p>
 <p class="p3"><br></p>
@@ -41,9 +41,22 @@ ul.ul1 {list-style-type: disc}
 <p class="p1">If "Convert to grayscale" is enabled, one of the three options <b>Minimum RGB channel, Product of RGB channels </b>or<b> Product² of RGB channels</b> has to be selected. This is the type of operation used to compute a grayscale value from the color channel intensities.</p>
 <p class="p1">"Minimum RGB channel" will set a pixel's grayscale intensity to the minimum of the three color channels, "Product of RGB channels" will set the grayscale intensity to the product of the the three channels, and "Product² of RGB channels" will set it to the square of the product. All three operations emphasize those pixels in which all three color channels are high (i.e. the white pixels), but the strength of this effect is lowest with the "Minimum RGB channel" setting and highest with the "Product² of RGB channels" setting.</p>
 <p class="p3"><br></p>
-<p class="p1"><b>Blob luminance threshold</b></p>
-<p class="p1">The blob tracker operates on binary images, where each pixel is either "On" (white) or "Off" (black). The color or grayscale image on which the previous filters operate is transformed into a binary image by applying a luminance threshold to each pixel. Every pixel whose luminance falls below the threshold is set to "Off" (black), all other pixels are set to "On" (white).</p>
+<p class="p1"><b>Threshold based on...</b></p>
+<p class="p1">Touché supports two different algorithms to threshold frames into binary images. The "Luminance" option uses a threshold for pixel luminance values (in the perceptive sense) to determine which pixels are on or off. The "Distance From Color" algorithm thresholds pixels based on the Euclidian distance of its RGB color value from a given reference color.</p>
+<p class="p1">Thusly, luminance-based thresholding is most robust if your blobs are significantly brighter than the background, whereas color-based thresholding is preferable if your blobs are not necessarily brighter than the background, but have a distinct color.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Luminance Threshold</b></p>
+<p class="p1">This setting governs the threshold for luminance-based thresholding. Every pixel whose luminance falls below the threshold is set to "Off" (black), all other pixels are set to "On" (white). E.g., a setting of 70% would mean that exactly those pixels are set to "On", whose luminance value is above or equal to 70% of the maximum brightness representable in the given color space (the maximum brightness being "pure white").</p>
 <p class="p1">Setting this slider to a position where any touches on the multitouch surface are preserved, but all other pixels are set to black would be the ideal case. Try fiddling with this slider until you can generate an image with as little "wrong" pixels as possible and where the touch blobs are preserved.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Distance From Color - Color</b></p>
+<p class="p1">This option sets the color for the "Color Distance" thresholding function. You can choose any color that you might want to track, e.g. the color of your blobs.</p>
+<p class="p1">A smart way to set this color appropriately is to use MacOS X's color chooser dialog's "Eye Dropper" tool to grab the color to track directly from the input preview window (see "<a href="blob%20input%20preview%20window.html">Blob input preview window</a>").</p>
+<p class="p1">Note that the colorspace for this color is a generic RGB colorspace.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Color Distance Threshold</b></p>
+<p class="p1">If "Distance From Color" is selected as thresholding algorithm, this setting governs the maximum color distance with which "On" pixels are determined, e.g. if this option is set to 10%, exactly those pixels are set to "On" whose color value differs by less than or equal 10% of the maximum difference between any two colors in the color space (this maximum distance corresponds to the distance between white and black).</p>
+<p class="p1">For example, if the chosen color is yellow, a higher setting might include orange and/or red pixels, whereas a lower setting will restrict the pixels to different shades or hues. At 0%, only pixels of exactly the given color are matched.</p>
 <p class="p3"><br></p>
 <p class="p1"><b>Related topics</b></p>
 <ul class="ul1">

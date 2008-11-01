@@ -1,0 +1,322 @@
+"NotImplementedExceptionReason"		= "%1$@ is an abstract class and does not implement '%2$@'. Please use a subclass that implements this method!";
+"InitSentToSingletonError"			= "-init sent to %@ directly!";
+
+"ThresholdName"						= "Thresholding filter (luminance or color distance)";
+"1PixelBorderFilterName"			= "1-pixel border around an image";
+"BackgroundSubtractionName"			= "Subtracts a backround from an image, ignoring alpha and capping each result pixel at 0,0,0";
+"RatioImageBlendFilterName"			= "Blends two pictures by combining according pixels from both with a given ratio.";
+"GaussianFilterName"				= "Gaussian Blur";
+"ColorInvertFilterName"				= "Color Inversion";
+"ContrastStretchFilterName"			= "Contrast Stretch";
+"GrayscalingFilterName"				= "Grayscale from Component Operation";
+"3x3ErosionName"					= "Morphological erosion with a 3x3 pixel shape";
+"3x3DilationName"					= "Morphological dilation with a 3x3 pixel shape";
+"3x3OpenName"						= "Morphological open with a 3x3 pixel shape";
+"3x3CloseName"						= "Morphological close with a 3x3 pixel shape";
+
+"WiiRemoteNotYetInitialized"		= "Wii Remote support has not been initialized yet. Please try again later!";
+"WiiRemoteDiscovering"				= "A Wii Remote needs to be connected.\n\nPlease hold down the 1 and 2 buttons simultaneously in order to have your Wii Remote be discovered!";
+"WiiRemoteConnecting"				= "A connection with the Wii Remote is currently being establied. Please try again later!";
+
+"UnknownDV1394CameraWithVendor"		= "Unknown camera (%s)";
+
+"ScreenTitle"						= "Screen %d (%d x %d)";
+"PixelsMeasureLabel"				= "%1$.2f cm (%2$.1f pixels/cm) — %3$.4f inch (%4$.1f pixels/inch)";
+
+"AboutVersionString"				= "Version %@";
+"Version"							= "Version";
+"unknown"							= "unknown";
+
+"NoClientsConnected"				= "No Clients";
+"OneClientConnected"				= "Serving One Client";
+"XClientsConntected"				= "Serving %d Clients";
+
+"TellClientToQuit"					= "Quit Client";
+
+"Setup Assistant"					= "Setup Assistant";
+"Welcome to Touché"					= "Welcome to Touché";
+"StatusLabelInfo"					= "Notification";
+"StatusLabelWarning"				= "Attention";
+"StatusLabelError"					= "Error";
+
+"TFCalibrationControllerHumandReadableName"		= "Touché Calibration Tool";
+"TFCalibrationControllerStartInfo"				= "Touch the white dot to calibrate.\nHit 'Esc' to cancel.";
+
+"TFTouchTestControllerHumandReadableName"		= "Touché Touch Test Application";
+"TFTouchTestControllerStartInfo"				= "Touch the screen to test your setup.\nHit 'Esc' to cancel.";
+
+"TFTUIOClientName"	= "%@:%d (TUIO/OSC/UDP)";
+"TFTUIOXMLFlashClientName"	= "%@ (TUIO/Flash XML-Socket)";
+
+"TFTUIOXMLFlashPortFormatError"	= "Please enter a number between 1 and 65535 as the server port.";
+
+"TFTUIOXMLFlashServerListenSocketErrorDescription" = "A TUIO/Flash XML-Socket server could not be instantiated at the TCP endpoint %@:%u.\n\nMost likely, this is because another process is already listening on this port.";
+"TFTUIOXMLFlashServerAnyAddressName" = "any";
+"TFFlashXMLServerCouldNotBeBoundInAppDidFinishLaunching" = "The TUIO/Flash XML-Socket could not be bound to port %u. Flash/XML-Socket output will not be available until a different server port is set in the \"TUIO/Flash XML Settings\" in the \"Setup\" menu.\n\nMost likely, the problem is that another application is already using this port. If so, quit this application and restart Touché.";
+
+"TFTUIOAddClientInvalidHost"		= "Host name could not be resolved.";
+"TFTUIOAddClientInvalidPort"		= "Port must be between 1 and 65535.";
+"TFTUIOAddClientAlreadyExists"		= "This client is already being served.";
+
+"SetUpScreen"						= "Set up screen";
+"ConfigurePipeline"					= "Configure pipeline";
+"Calibrate"							= "Calibrate";
+"CalibrateAgain"					= "Calibrate again";
+"ReloadPipeline"					= "Reload pipeline";
+
+"TrackingPipelineNotReady"			= "Tracking pipeline not ready";
+"CalibrationNecessary"				= "Calibration necessary";
+"CalibrationRecommended"			= "Calibration recommended";
+"PipelineStartupFailed"				= "Starting the pipeline failed!";
+"PipelineWontBecomeReady"			= "Pipeline initialization failed!";
+"CalibrationCanceled"				= "Calibration canceled!";
+"CalibrationCanceledWithError"		= "An error occurred during calibration!";
+"CalibrationSuccessful"				= "Calibration successful!";
+"CalibrationInvalidData"			= "Calibration yielded invalid data!";
+"TouchTestError"					= "Problem loading test app!";
+"TouchTestStartAgain"				= "Try test again";
+"TouchTestDone"						= "Test application finished!";
+"TouchTestStartAgainNoError"		= "Run test again";
+"PipelineLoadingFailed"				= "Error loading pipeline!";
+"TrackingPipelineStalled"			= "Tracking pipeline stalled!";
+
+"CalibrationCanceledDescription"			= "Since you have canceled the calibration process, no new calibration data has been set.\n\nIf your setup hasn't been calibrated properly before, this means that the camera to screen conversion will not take place at all. It is heavily recommended to calibrate the setup before using it!";
+"CalibrationCanceledWithErrorDescription"	= "Please try calibrating again!";
+"CalibrationSuccessfulDescription"			= "Your calibration data has been saved successfully!\n\nThe tracking pipeline will now use this calibration data for the camera to screen coordinate conversion.";
+"CalibrationInvalidDataDescription"			= "Your calibration data has not been saved. Please try calibrating again!";
+
+"TouchTestErrorDescription"					= "Please try running the test application again!";
+"TouchTestDoneDescription"					= "Hopefully the touch test helped you discover that your setup is working fine!\n\nIf you were experiencing trouble such as blobs not being detected reliably or the camera to screen coordinate conversion not working properly, please modify your settings in the \"Setup\" menu or calibrate again.";
+
+"CalibrationRecommendedDescription"		= "You have changed the pipeline settings in a way that a new calibration is recommended, but not absolutely necessary.\n\nIf you can spare the minute to do a new calibration, it is heavily recommended for the best tracking results, but you can safely skip it for now if you are in a hurry!";
+"PipelineStartupFailedSolution"			= "Please check your configuration settings in the \"Setup\" menu and try restarting the pipeline.";
+"CalibrationFailedWithErrorSolution"	= "As a solution, simply calibrate your setup (again!). If you don't calibrate now, you the touch points will be delivered to your applications in camera coordinates rather than screen coordinates!";
+"PipelineWontBecomeReadySolution"		= "Please check your configuration settings in the \"Setup\" menu and try restarting the pipeline";
+"PipelineLoadingFailureSolution"		= "Please rectify the problem and try restarting the pipeline!";
+"PipelineStalledSolution"				= "Please rectify the problem and/or re-configure the pipeline!";
+
+"TFWizardControllerStepSetupFTIRTableTitle"		= "Set up your optical multitouch table";
+"TFWizardControllerStepSetupScreenTitle"		= "Set up the screen";
+"TFWizardControllerStepConnectCameraTitle"		= "Prepare your camera";
+"TFWizardControllerStepConfigurePipelineTitle"	= "Configure the tracking pipeline";
+"TFWizardControllerStepCalibrateTitle"			= "Calibrate your setup";
+"TFWizardControllerStepTestTitle"				= "Test your setup";
+"TFWizardControllerStepFinishedTitle"			= "You're done. Enjoy!";
+"TFWizardControllerStepSetupCameraTitle"		= "Position the camera";
+
+"TFWizardControllerStepSetupFTIRTableDescription"		= "Before you can start configuring the tracker, you have to get your multitouch table up and running. Make sure that you are getting nice, well-defined blobs when touching the table.\n\nIf you don't have a multitouch table yet, you'll have to build one :-)";
+"TFWizardControllerStepSetupScreenDescription"			= "First, please choose the screen you want to use for multitouch applications. This can be a screen other than the main screen of your Mac.\n\nAdditionally, you will have to measure a line on the screen, so that Touché can determine how much your projection screen \"blows up\" the image. This way, applications can be rendered in the most optimized way on your setup.";
+"TFWizardControllerStepConnectCameraDescription"		= "Touché supports either Quicktime-compatible webcams (modded for IR vision), FireWire cameras (via libdc1394) or Wii Remotes as blob input devices.\n\nIf you are using a webcam, now is the time to connect it.\n\nIf you are using a Wii Remote, keep it ready for the next step.";
+"TFWizardControllerStepConfigurePipelineDescription"	= "Now comes the difficult part. You'll have to configure the tracking pipeline for your preferred input device.\n\nThere are lots of options to tweak in order to get good results, so it's a good idea to familiarize yourself with them. Especially adjust the luminance threshold.\n\nIf you need to track dark blobs in front of a bright background, enable the color inversion filter.";
+"TFWizardControllerStepCalibrateDescription"			= "With your tracking pipeline set up, you need to calibrate the camera-to-screen coordinate converter.\n\nTo do so, simply run the calibration routine and be sure to touch each individual calibration point perfectly in the center, then lift your finger off the surface.\n\nYou can hit \"Escape\" at any time to cancel the calibration process.";
+"TFWizardControllerStepTestDescription"					= "Your tracking pipeline should be working awesomely by now. Test it with a simple application that tracks your fingers as you touch the surface. Hit \"Escape\" to quit it.\n\nIf it doesn't work too well by now, don't fret: You can tweak every configuration setting again in the \"Setup\" menu. You can also launch this assistant again there.";
+"TFWizardControllerStepFinishedDescription"				= "That's it, the setup process is complete. Now is a good time to familiarize yourself with the API to get started writing your own multitouch apps!\n\nYou can tweak each configuration item again in the \"Setup\" menu.\n\nOne more thing: Obviously, Touché's tracker is not limited to tracking only infrared blobs on optical multitouch tables: Use your imagination! You can also mod the source code for even more fun!";
+"TFWizardControllerStepSetupCameraDescription"			= "Please position the camera or Wii Remote so that it can capture a good view of the blobs as you touch the surface.\n\nTry to get as big and clear of a picture as possible. It's not so much important that the camera isn't skewed or rotated, though, since this will be taken care of by the camera to screen coordinate conversion.";
+
+"TFUnknownErrorDesc"									= "An unknown error occurred.";
+"TFUnknownErrorReason"									= "No additional information about this error is available.";
+"TFUnknownErrorRecovery"								= "You should not be seeing an unknown error like this. Please file a bug report.";
+
+"TFClientServerConnectionRefusedErrorDesc"				= "The application could not connect to the Touché tracking server.";
+"TFClientServerConnectionRefusedErrorReason"			= "Trying to connect to the Touché tracking server yielded a (nil) object. Therefore, the connection has failed.";
+"TFClientServerConnectionRefusedErrorRecovery"			= "Please make sure that the Touché tracking server is running and configured properly.";
+
+"TFClientServerNameRegistrationErrorDesc"				= "The application failed to register itself with the Touché tracking server.";
+"TFClientServerNameRegistrationErrorReason"				= "The tracking server did not allow this application to register with the name \"%@\" and closed the connection.";
+"TFClientServerNameRegistrationErrorRecovery"			= "Please make sure that the Touché tracking server is running properly and that no other application is currently registered with the name \"%@\".";
+
+"TFClientUnexpectedlyDisconnectedErrorDesc"				= "The Touché tracking server unexpectedly disconnected this application.";
+"TFClientUnexpectedlyDisconnectedErrorReason"			= "The application was suddenly disconnected from the tracking server due to a server-internal problem.";
+"TFClientUnexpectedlyDisconnectedErrorRecovery"			= "Please make sure that the tracking server is running and didn't shut down unexpectedly or crash.";
+
+"TFServerIsAlreadyRunningErrorDesc"						= "The server object could not be started because it is already running.";
+"TFServerIsAlreadyRunningErrorReason"					= "Due to the server object already running, it could not be started.";
+"TFServerIsAlreadyRunningErrorRecovery"					= "Since the server object is already running, you might be able to use it without taking any further actions.";
+
+"TFClientDisconnectedSinceServerWasStoppedErrorDesc"	= "The application was disconnected by the Touché tracking server.";
+"TFClientDisconnectedSinceServerWasStoppedErrorReason"	= "Since the tracking server was stopped, the application was disconnected unexpectedly.";
+"TFClientDisconnectedSinceServerWasStoppedErrorRecovery"= "Please make sure that the tracking server is running (or restart the tracking server application) before trying to connect again.";
+
+"TFClientRegisteredWithInvalidArgsErrorDesc"			= "The registration at the Touché tracking server failed.";
+"TFClientRegisteredWithInvalidArgsErrorReason"			= "Due to invalid supplied arguments, the registration at the server could not be completed: Either the client object or the unique name was nil.";
+"TFClientRegisteredWithInvalidArgsErrorRecovery"		= "Please check your application's code to ensure that it is not trying to register with the server using a nil unique name.";
+
+"TFWiiRemoteDiscoveryCreationErrorDesc"					= "Discovering Wii Remotes failed.";
+"TFWiiRemoteDiscoveryCreationErrorReason"				= "Due to an internal error, it was not possible to set up the discovery of Wii Remotes.";
+"TFWiiRemoteDiscoveryCreationErrorRecovery"				= "Please make sure that your Mac is equipped with a Bluetooth module and that Bluetooth is enabled.";
+
+"TFWiiRemoteDiscoveryStartupErrorDesc"					= "Discovering Wii Remotes failed.";
+"TFWiiRemoteDiscoveryStartupErrorReason"				= "Due to an internal error with code %d, the discovery process of Wii Remotes could not be started.";
+"TFWiiRemoteDiscoveryStartupErrorRecovery"				= "Please make sure that your Mac is equipped with a Bluetooth module and that Bluetooth is enabled.";
+
+"TFWiiRemoteStartProcessingErrorDesc"					= "The Wii Remote capture could not be started.";
+"TFWiiRemoteStartProcessingErrorReason"					= "Starting the Wii Remote's infrared camera failed: %@";
+"TFWiiRemoteStartProcessingErrorRecovery"				= "Please make sure that the Touché tracker is configured properly and that the Wii Remote has been discovered successfully.";
+
+"TFWiiRemoteResolutionChangeErrorDesc"					= "Changing the Wii Remote's capture resolution failed!";
+"TFWiiRemoteResolutionChangeErrorReason"				= "The Wii Remote does not supported changing the camera resolution, since it always captures at 1024x768.";
+"TFWiiRemoteResolutionChangeErrorRecovery"				= "Please do not attempt to change the Wii Remote's capture resolution.";
+
+"TFWiiRemoteDiscoveryErrorDesc"							= "An error occured while scanning for Wii Remotes.";
+"TFWiiRemoteDiscoveryErrorReason"						= "Discovering Wii Remotes failed due to an internal error with the Wii Remote framework (error code %d).";
+"TFWiiRemoteDiscoveryErrorRecovery"						= "Please make sure that your Mac supports Bluetooth and that Bluetooth is enabled. If you are getting this error often, also try removing the Wii Remote from the \"Bluetooth\" pane in \"System Preferences\".";
+
+"TFWiiRemoteDisconnectedErrorDesc"						= "The Wii Remote suddenly became unavailable.";
+"TFWiiRemoteDisconnectedErrorReason"					= "Due to a sudden disconnection, the Wii Remote has become unavailable and tracking data is no longer being processed.";
+"TFWiiRemoteDisconnectedErrorRecovery"					= "Please reconnect the Wii Remote by holding down the 1 and 2 buttons simultaneously. Also, make sure that the Bluetooth module is not getting deactivated while the tracker is running.";
+
+"TFSimpleDistanceLabelizerMemoryErrorDesc"				= "The blob labelizer is out of memory.";
+"TFSimpleDistanceLabelizerMemoryErrorReason"			= "Due to a shortage of memory, the blob labelizer failed to allocate the space necessary for this processing pass.";
+"TFSimpleDistanceLabelizerMemoryErrorRecovery"			= "Please close any unneeded applications and/or install additional RAM.";
+
+"TFQTKitCreationFromUIDErrorDesc"						= "Creating the QuickTime capture device failed.";
+"TFQTKitCreationFromUIDErrorReason"						= "The QuickTime capture device with unique ID (%@) could not be created.";
+"TFQTKitCreationFromUIDErrorRecovery"					= "Please make sure that the QuickTime device is connected and powered on before retrying to open it.";
+
+"TFQTKitCaptureDeviceSetToNilErrorDesc"					= "It was attempted to set the QuickTime device to a (nil) object.";
+"TFQTKitCaptureDeviceSetToNilErrorReason"				= "While trying to change the QuickTime device, it was discovered that the new device is (nil).";
+"TFQTKitCaptureDeviceSetToNilErrorRecovery"				= "Please do not attempt to set the capture device to (nil). Also, please do not disconnect QuickTime devices while the tracker is running.";
+
+"TFQTKitDeviceInputCreationErrorDesc"					= "Failed to set up the QuickTime capture device.";
+"TFQTKitDeviceInputCreationErrorReason"					= "Due to an internal error, the specified QuickTime capture device could not be set up.";
+"TFQTKitDeviceInputCreationErrorRecovery"				= "Please make sure not to disconnect QuickTime devices while the tracker is running or trying to open devices that are not connected and powered on.";
+
+"TFQTKitDeviceWithUIDNotFoundErrorDesc"					= "No QuickTime device was found for the given ID.";
+"TFQTKitDeviceWithUIDNotFoundErrorReason"				= "The unique ID (%@) does not correspond to any QuickTime device that is currently connected.";
+"TFQTKitDeviceWithUIDNotFoundErrorRecovery"				= "Please make sure that the QuickTime device is plugged in and powered on before retrying to open it.";
+
+"TFDc1394NoDeviceErrorDesc"								= "No IIDC-compatible device was found.";
+"TFDc1394NoDeviceErrorReason"							= "A suitable capture device could not be set up because no IIDC-capable device was found.";
+"TFDc1394NoDeviceErrorRecovery"							= "Please connect an IIDC-compatible FireWire camera.";
+
+"TFDc1394LibInstantiationFailedErrorDesc"				= "Failed to initialize lidc1394.";
+"TFDc1394LibInstantiationFailedErrorReason"				= "Due to an internal error, libdc1394 could not be initialized.";
+"TFDc1394LibInstantiationFailedErrorRecovery"			= "Please make sure that your Mac supports FireWire.";
+
+"TFDc1394CameraInUseErrorDesc"							= "The IIDC camera is already in use.";
+"TFDc1394CameraInUseErrorReason"						= "The specified IIDC camera could not be opened because it is already in use.";
+"TFDc1394CameraInUseErrorRecovery"						= "Please ensure that no other application is currently using the camera, and that the tracker itself isn't already using it either.";
+
+"TFDc1394CameraCreationErrorDesc"						= "Opening the IIDC camera failed.";
+"TFDc1394CameraCreationErrorReason"						= "The specified IIDC camera could not be opened due to an internal error.";
+"TFDc1394CameraCreationErrorRecovery"					= "Please make sure that your Mac supports FireWire, that no other application is currently using the camera and that sufficient bandwidth is available on the FireWire bus.";
+
+"TFDc1394CaptureSetupErrorDesc"							= "Setting up the IIDC capturing failed.";
+"TFDc1394CaptureSetupErrorReason"						= "Due to an internal error, the specified camera could not be set up for capturing.";
+"TFDc1394CaptureSetupErrorRecovery"						= "Please make sure that your Mac supports FireWire and that there is sufficient bandwidth available on the FireWire bus.";
+
+"TFDc1394SetTransmissionErrorDesc"						= "Setting up the DMA transmission for capturing failed.";
+"TFDc1394SetTransmissionErrorReason"					= "Due to an internal error, the IIDC camera could not be set up to transmit frame data via DMA.";
+"TFDc1394SetTransmissionErrorRecovery"					= "Please make sure that your Mac supports FireWire and that there is sufficient bandwidth available on the FireWire bus.";
+
+"TFDc1394StopTransmissionErrorDesc"						= "Stopping the DMA frame transfer failed.";
+"TFDc1394StopTransmissionErrorReason"					= "Due to an internal error, the IIDC camera could not be stopped from sending frame data via DMA.";
+"TFDc1394StopTransmissionErrorRecovery"					= "Please make sure not to disconnect the camera while it is active or tamper with its settings from an external application.";
+
+"TFDc1394StopCapturingErrorDesc"						= "Stopping the IIDC capturing failed.";
+"TFDc1394StopCapturingErrorReason"						= "Due to an internal error, the IIDC capture could not be stopped.";
+"TFDc1394StopCapturingErrorRecovery"					= "Please make sure not to tamper with the camera settings from an external application while the tracker is running.";
+
+"TFDc1394ResolutionChangeErrorDesc"						= "Changing the IIDC camera's resolution failed.";
+"TFDc1394ResolutionChangeErrorReason"					= "The IIDC camera does not support the resolution %1$.0fx%2$.0f.";
+"TFDc1394ResolutionChangeErrorRecovery"					= "Please do not attempt to change an IIDC camera's frame size to a resolution it does not support.";
+
+"TFDc1394ResolutionChangeInternalErrorDesc"				= "Changing the IIDC camera's resolution failed.";
+"TFDc1394ResolutionChangeInternalErrorReason"			= "Due to an internal error, the resolution could not be changed to %1$.0fx%2$.0f.";
+"TFDc1394ResolutionChangeInternalErrorRecovery"			= "Please make sure that the camera physically supports the chosen resolution. Also, please do not tamper with the camera using external applications while it is in use by the tracker.";
+
+"TFDc1394GettingVideoModesErrorDesc"					= "Getting the IIDC camera's supported video modes failed.";
+"TFDc1394GettingVideoModesErrorReason"					= "Due to an internal error, the video modes and resolutions supported by the IIDC camera could not be acquired.";
+"TFDc1394GettingVideoModesErrorRecovery"				= "Please make sure that your camera conforms to the IIDC spec and that it is not being tampered with via external applications while the tracker is running.";
+
+"TFDc1394LittleEndianVideoUnsupportedErrorDesc"			= "Little Endian image data encoding is not supported.";
+"TFDc1394LittleEndianVideoUnsupportedErrorReason"		= "The QuickTime APIs used internally do not support little-endian byte order for multi-byte (color) intensity data.";
+"TFDc1394LittleEndianVideoUnsupportedErrorRecovery"		= "Please choose another video mode for your IIDC camera.";
+
+"TFDc1394PixelBufferCreationErrorDesc"					= "Pixel buffer creation failed.";
+"TFDc1394PixelBufferCreationErrorReason"				= "Due to an internal error, the IIDC capture frame could not be converted to a Core Video pixel buffer.";
+"TFDc1394PixelBufferCreationErrorRecovery"				= "Please make sure that your camera is IIDC-compaible and supports capturing with the settings you have chosen.";
+
+"TFDc1394PixelBufferCreationErrorDesc"					= "The pixel format of the IIDC frame is not supported.";
+"TFDc1394PixelBufferCreationErrorReason"				= "The pixel format with which the frame was captured by the IIDC camera is not supported by Core Video.";
+"TFDc1394PixelBufferCreationErrorRecovery"				= "Please choose another video mode for the IIDC camera.";
+
+"TFInputSourceArgumentsErrorDesc"						= "The blob input source was loaded with invalid arguments.";
+"TFInputSourceArgumentsErrorReason"						= "The arguments supplied to the loadWithConfiguration:error: method of the blob input source are invalid.";
+"TFInputSourceArgumentsErrorRecovery"					= "This is an internal error you shouldn't be seeing. Please file a bug report.";
+
+"TFCameraInputSourceCIFilterChainCreationErrorDesc"		= "The filter chain could not be created.";
+"TFCameraInputSourceCIFilterChainCreationErrorReason"	= "The setup of the Core Image filter chain could not be completed.";
+"TFCameraInputSourceCIFilterChainCreationErrorRecovery"	= "Please make sure that your Mac's graphics hardware supports Core Image.";
+
+"TFCameraInputSourceOpenCVDetectorCreationErrorDesc"	= "The blob detector could not be created.";
+"TFCameraInputSourceOpenCVDetectorCreationErrorReason"	= "Due to an internal error, the OpenCV-based blob detector could not be created.";
+"TFCameraInputSourceOpenCVDetectorCreationErrorRecovery"= "Please make sure that your Mac is not suffering from RAM shortage.";
+
+"TFCam2ScreenInvalidCalibrationDataErrorDesc"			= "The calibration data is invalid.";
+"TFCam2ScreenInvalidCalibrationDataErrorReason"			= "The given calibration data did not pass the internal consistency checks.";
+"TFCam2ScreenInvalidCalibrationDataErrorRecovery"		= "Please recalibrate your setup.";
+
+"TFCam2ScreenNilCalibrationPointsErrorDesc"				= "Nil calibration point array passed to coordinate converter.";
+"TFCam2ScreenNilCalibrationPointsErrorReason"			= "The calibration point array passed to the coordinate converter was nil, so a calibration could not take place.";
+"TFCam2ScreenNilCalibrationPointsErrorRecovery"			= "This is an internal error that you shouldn't be seeing. Please file a bug report.";
+
+"TFCam2ScreenCalibrationPointsAmountErrorDesc"			= "The amount of points in the calibration point array is invalid.";
+"TFCam2ScreenCalibrationPointsAmountErrorReason"		= "The amount of points in the given calibration point array does not match the expected amount of points.";
+"TFCam2ScreenCalibrationPointsAmountErrorRecovery"		= "This is an internal error that you shouldn't be seeing. Please file a bug report.";
+
+"TFCam2ScreenCalibrationPointNotCalibratedErrorDesc"	= "A calibration point is not calibrated!";
+"TFCam2ScreenCalibrationPointNotCalibratedErrorReason"	= "The calibration point at screen coordinates (%1$.0f, %2$.0f) does not have its corresponding camera coordinates set!";
+"TFCam2ScreenCalibrationPointNotCalibratedErrorRecovery"= "This is an internal error that you shouldn't be seeing. Please file a bug report.";
+
+"TFCam2ScreenCalibrationPointInvalidScreenCoordsErrorDesc"		= "A calibration point has invalid screen coordinates.";
+"TFCam2ScreenCalibrationPointInvalidScreenCoordsErrorReason"	= "The calibration point at screen coordinates (%1$.0f, %2$.0f) falls outside the expected screen rectangle.";
+"TFCam2ScreenCalibrationPointInvalidScreenCoordsErrorRecovery"	= "This is an internal error that you shouldn't be seeing. Please file a bug report.";
+
+"TFCam2ScreenCalibrationPointContainedTwiceErrorDesc"		= "A calibration point was contained twice.";
+"TFCam2ScreenCalibrationPointContainedTwiceErrorReason"		= "The calibration point at screen coordinates (%1$.0f, %2$.0f) was contained twice in the calibration point array. This could be caused by the \"calibration points per axis\" setting being too high, so that the camera can't distinguish between calibration points anymore.";
+"TFCam2ScreenCalibrationPointContainedTwiceErrorRecovery"	= "Please try calibrating again, using fewer calibration points per axis.";
+
+"TFCam2ScreenCalibrationPointMissingErrorDesc"			= "A calibration point is missing.";
+"TFCam2ScreenCalibrationPointMissingErrorReason"		= "The calibration point with screen coordinates (%1$.0f, %2$.0f) is missing from the calibration point array.";
+"TFCam2ScreenCalibrationPointMissingErrorRecovery"		= "This is an internal error that you shouldn't be seeing. Please file a bug report.";
+
+"TFInverseTextureCam2ScreenInternalErrorDesc"			= "An internal error happened while tranforming a point.";
+"TFInverseTextureCam2ScreenInternalErrorReason"			= "Due to the blob being outside of the calibrated area, invalid calibration data or another internal error, the blob point at camera coordinates (%1$.0f, %2$.0f) could not be transformed to screen coordinates.";
+"TFInverseTextureCam2ScreenInternalErrorRecovery"		= "Please calibrate your setup again.";
+
+"TFTrackingPipelineInputIsNotQTSourceErrorDesc"			= "The input source is not a QuickTime Kit source.";
+"TFTrackingPipelineInputIsNotQTSourceErrorReason"		= "The operation could not be completed because the input source is not a QuickTime Kit input source.";
+"TFTrackingPipelineInputIsNotQTSourceErrorRecovery"		= "This is an internal error that you shouldn't be seeing. Please file a bug report.";
+
+"TFTrackingPipelineInputIsNotLibDc1394SourceErrorDesc"		= "The input source is not a libdc1394 source.";
+"TFTrackingPipelineInputIsNotLibDc1394SourceErrorReason"	= "The operation could not be completed because the input source is not a libdc1394 input source.";
+"TFTrackingPipelineInputIsNotLibDc1394SourceErrorRecovery"	= "This is an internal error that you shouldn't be seeing. Please file a bug report.";
+
+"TFTrackingPipelineInputMethodUnknownErrorDesc"			= "The chosen input method is not supported.";
+"TFTrackingPipelineInputMethodUnknownErrorReason"		= "Due to an internal error, the identifier for the blob input method is %d, which is not a known identifier.";
+"TFTrackingPipelineInputMethodUnknownErrorRecovery"		= "This is an internal error that you shouldn't be seeing. Please file a bug report.";
+
+"TFTrackingPipelineBlobInputCreationFailedErrorDesc"	= "The blob input source could not be created.";
+"TFTrackingPipelineBlobInputCreationFailedErrorReason"	= "Due to an internal error, the chosen blob input source could not be created.";
+"TFTrackingPipelineBlobInputCreationFailedErrorRecovery"= "This is an internal error that you shouldn't be seeing. Please file a bug report.";
+
+"TFTrackingPipelineBlobLabelizerCreationFailedErrorDesc"	= "The blob labelizer could not be created.";
+"TFTrackingPipelineBlobLabelizerCreationFailedErrorReason"	= "Due to an internal error, the chosen blob labelizer could not be created.";
+"TFTrackingPipelineBlobLabelizerCreationFailedErrorRecovery"= "This is an internal error that you shouldn't be seeing. Please file a bug report.";
+
+"TFTrackingPipelineCam2ScreenConverterCreationFailedErrorDesc"		= "The camera-to-screen coordinate converter could not be created.";
+"TFTrackingPipelineCam2ScreenConverterCreationFailedErrorReason"	= "Due to an internal error, the chosen camera-to-screen coordinate converter could not be created.";
+"TFTrackingPipelineCam2ScreenConverterCreationFailedErrorRecovery"	= "This is an internal error that you shouldn't be seeing. Please file a bug report.";
+
+"TFTrackingPipelineNotReadyErrorDesc"					= "The tracking pipeline is not ready.";
+"TFTrackingPipelineNotReadyErrorReason"					= "At the moment, the tracking pipeline is not yet ready: %@";
+"TFTrackingPipelineNotReadyErrorRecovery"				= "Please follow the instructions and try starting the pipeline again.";
+
+"TFCouldNotEnterFullscreenErrorDesc"					= "Could not enter fullscreen mode.";
+"TFCouldNotEnterFullscreenErrorReason"					= "Switching into fullscreen mode failed because the screen could not be captured.";
+"TFCouldNotEnterFullscreenErrorRecovery"				= "Please make sure that no other applications have currently captured the screen and try again.";
+
+"TFTrackingPipelineInputMethodNeverCalibratedErrorDesc"		= "The chosen input method has never been calibrated.";
+"TFTrackingPipelineInputMethodNeverCalibratedErrorReason"	= "The camera-to-screen coordinate converter could not be started because your setup has never been calibrated for the currently selected input method.\n\nTherefore, the touch data will be delivered in camera coordinates.";
+"TFTrackingPipelineInputMethodNeverCalibratedErrorRecovery"	= "To solve this issue, please calibrate your setup now.";

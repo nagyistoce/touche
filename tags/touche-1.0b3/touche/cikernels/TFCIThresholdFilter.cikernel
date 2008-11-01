@@ -1,0 +1,39 @@
+/*
+ *  TFCIThresholdFilter.cikernel
+ *
+ *  Created by Georg Kaindl on 14/12/07.
+ *
+ *  Copyright (C) 2007 Georg Kaindl
+ *
+ *  This file is part of Touché.
+ *
+ *  Touché is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of
+ *  the License, or (at your option) any later version.
+ *
+ *  Touché is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with Touché. If not, see <http: *www.gnu.org/licenses/>.
+ *
+ */
+
+kernel vec4 luminanceThreshold(sampler image, __color lowColor, __color highColor, float threshold)
+{	
+    vec4 pix = sample(image, samplerCoord(image));
+	float lum = dot(vec3(0.3, 0.59, 0.11), pix.rgb);
+	
+    return (lum >= threshold) ? highColor : lowColor;
+}
+
+kernel vec4 colorDistanceThreshold(sampler image, __color lowColor, __color highColor, __color targetColor, float threshold)
+{	
+    vec4 pix = sample(image, samplerCoord(image));
+	float dist = distance(targetColor, pix);
+	
+    return (dist <= threshold) ? highColor : lowColor;
+}

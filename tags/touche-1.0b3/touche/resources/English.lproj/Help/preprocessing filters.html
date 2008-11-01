@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="generator" content="VoodooPad">
+	<title>Preprocessing filters</title>
+	<link rel="stylesheet" href="helpfiles_style.css" type="text/css" media="screen"/>
+</head>
+
+<body>
+	<div id="helpTopBar">
+		Preprocessing filters
+		<div id="homelink">
+			<a href="index.html" title="Touché Help">Touché Help</a>
+			| <a href="helpindex.html" title="Index">Index</a>
+		</div>
+	</div>
+	
+	<div id="wrapper">
+	   <h1>Preprocessing filters</h1>
+    
+	   <div class="main">
+	       <style type="text/css">
+p.p1 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande}
+p.p2 {margin: 0.0px 0.0px 9.0px 0.0px; text-align: center; line-height: 16.0px; font: 12.0px Helvetica}
+p.p3 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande; min-height: 15.0px}
+ul.ul1 {list-style-type: disc}
+</style>
+
+<p class="p1">Preprocessing filters are used in order to enhance the image and bring out the blobs created by your touches on the multitouch surface before the image is passed on to a thresholding operation. This is often necessary, especially if you don't keep your multitouch table in a dark room without any stray IR light, if your setup leaks IR light or if the blobs simply appear to be rather weak.</p>
+<p class="p2"><img src="preprocessing%20filters.filter_settings.jpg" alt="filter_settings.jpg"></p>
+<p class="p1">The following filters and options are available for preprocessing:</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Invert Colors</b></p>
+<p class="p1">Touché is designed to track bright blobs in front of a dark background. However, certain setups (such as some forms of DI multitouch tables) need to track dark blobs in front of a bright background. In this case, you can use the color inversion filter, so that dark blobs are turned into bright blobs, which can then be tracked by Touché's tracking pipeline.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Enable background subtraction</b></p>
+<p class="p1">Background subtraction is a powerful way to do away with stray IR light or other imperfections on your multitouch table that might otherwise lead to "wrong" touches being detected. A background image (i.e. a frame of your multitouch table with no touch on it) will be subtracted from every captured frame, removing any static imperfections and making your IR blobs stand out better.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Always snap background after startup</b></p>
+<p class="p1">If you are using background subtraction, Touché will always capture a background image a few camera frames after the pipeline is started, no matter wether it currently recognizes blobs on the multitouch table. You want to have this checked if Touché picks up "wrong" blobs from your multitouch table immediately after you start the tracking pipeline.</p>
+<p class="p3"><b></b><br></p>
+<p class="p1"><b>Periodically update background image</b></p>
+<p class="p1">If you have background subtraction enabled and this box checked, Touché will periodically capture a new background image for the subtraction process. Only those camera frames are considered "background", that do not contain a blob that Touché has recognized as such. This is a useful option to let Touché adapt to changing conditions, such as clouds going away, and the sun causing more stray IR light, etc.<span class="Apple-converted-space">&nbsp;</span></p>
+<p class="p3"><br></p>
+<p class="p1"><b>Minimum time between acquisition of background images</b></p>
+<p class="p1">If "Periodically update background image" is checked and background subtraction is enabled, this slider can be used to adjust the minimum amount of time Touché while let pass between the acquisition of two background frames. It's considered the minimum time because Touché will not snap a background image if it is currently detecting a blob, since this would cause the blob to be subtracted as well and consequently jeopardizing tracking stability. If the minimum time has passed, and a blob is currently tracked, Touché will snap a new background frame as soon as no blobs are being detected again. Adjusting the update time can be useful to improve background subtraction results.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Preserve brighter foreground features</b></p>
+<p class="p1">If your background image is very bright (such as during daylight), the contrast between your blobs and the background can be so low that the blobs almost disappear after the background has been subtracted. By enabling this feature, you can specify a luminance threshold, which will affect the background subtraction algorithm as follows: If, after the background has been subtracted, a pixel is less bright than the threshold, this pixel will be set to the background-subtracted value. If the pixel brightness is equal or larger than the threshold, the pixel will be set to the unmodified foreground value. This way, bright regions "survive" the background subtraction, without having the contrast destroyed.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Background subtraction foreground luminance threshold</b></p>
+<p class="p1">This is the threshold described in the previous paragraph ("Preserve brighter foreground features"). It is given in luminance units.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Blend acquired background images</b></p>
+<p class="p1">If you are using background subtraction and have the "Periodically update background image" option enabled, you can choose to blend a newly acquired background frame with the old one, rather than letting the new one replace the old one entirely. This is very useful in order not to let a single "bad" background image ruin the tracking performance.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Blending ratio between old and new background image</b></p>
+<p class="p1">If "Blend acquired background images" is enabled, this slider controls the ratio between the old and new background image during the blending operation. This setting can also be seen as the relative weight given to each image. If the ratio goes towards the new image, the background will change faster, whereas if it's going towards the old image, the background will be more stable and less sensitive to "bad" background frames. You can play with this option in order to optimize your results.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Gaussian blur</b></p>
+<p class="p1">You can apply a Gaussian filter kernel onto the image in order to reduce noise or other image artifacts that are detrimental to good tracking results. This is just your plain standard Gaussian blur filter, nothing fancy.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Gaussian blur radius</b></p>
+<p class="p1">If the Gaussian blur filter is enabled, you can adjust the blur radius with this slider. The more you move the slider to the right and increase the blur pixel radius, the more the captured video frames will be blurred.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Enhance contrast</b></p>
+<p class="p1">You can enhance the contrast of the video frames in order to make the blobs stand out better. There are two different enhancement algorithms to choose between, each with specific properties. This filter can be extremely useful to make weak blobs stand out well, but will also introduce (more accurately: amplify) camera noise.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Type (for "Enhance contrast")</b></p>
+<p class="p1">You can choose between two different types of contrast enhancement, "Stretch" and "Boost".</p>
+<p class="p1">Contrast stretching is a filter operation in which the lowest intensity (per color channel) in an image is mapped to the lowest possible intensity for this channel, whereas the highest channel intensity in the image is mapped to the highest possible intensity. All other intensity values are interpolated between the two extrema. Thusly, the overall contrast of the image can be vastly increased if the original image didn't already have a high contrast level. However, since the full contrast range is always used, contrast stretching will maximize image noise introduced by your camera if no bright area (i.e. a blob) is in the video frame.</p>
+<p class="p1">Contrast boosting is a specialized filter operation that amplifies the brightness levels of all pixels in the image, but is biased towards brighter areas, meaning that areas that are already brighter than the rest of the image will be amplified in a more extreme manner than dark areas. This can greatly increase the contrast between blobs created by touches and the background, without amplifying camera noise too much. However, there is no guarantee that the whole intensity spectrum is used or that no clipping towards the high end of the spectrum will occur.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Contrast boost strength</b></p>
+<p class="p1">If contrast enhancement is enabled and the "Boost" type is selected, this slider governs the strength of the intensity amplification. The more the slider is moved to the right, the more the intensity levels in the image will be amplified.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Compute min/max intensity on CPU</b></p>
+<p class="p1">If the filters are rendered on the CPU ("Render filters on CPU" is checked), the contrast stretch filter performance can be improved by checking this box: It will make the filter evaluate the minimum and maximum intensity on the CPU and pass it on to the contrast stretch filter as values rather than textures. Consequently, lots of texture lookups can be omitted (that would otherwise be used to get the intensity extrema). However, if "Render filters on CPU" is not checked (and filters are rendered on the GPU instead), this option would introduce a huge performance penalty, so it's advisable to only keep it checked if filters are rendered on the CPU anyway.</p>
+<p class="p1">Note that this feature only applies to the contrast operation type "Stretch", not "Boost", for which the performance is always optimal.</p>
+<p class="p3"><br></p>
+<p class="p1"><b>Related topics</b></p>
+<ul class="ul1">
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="postprocessing%20filters.html">Postprocessing filters</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="thresholding%20filters.html">Thresholding filters</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tracking%20pipeline%20configuration.html">Tracking pipeline configuration</a></li>
+</ul>
+
+	   </div>
+	</div>
+</body>
+</html>
+

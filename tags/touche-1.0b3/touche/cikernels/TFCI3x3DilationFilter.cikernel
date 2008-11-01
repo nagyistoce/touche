@@ -1,0 +1,61 @@
+/*
+ *  TFCI3x3DilationFilter.cikernel
+ *
+ *  Created by Georg Kaindl on 10/06/08.
+ *
+ *  Copyright (C) 2008 Georg Kaindl
+ *
+ *  This file is part of Touché.
+ *
+ *  Touché is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of
+ *  the License, or (at your option) any later version.
+ *
+ *  Touché is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with Touché. If not, see <http: *www.gnu.org/licenses/>.
+ *
+ */
+
+kernel vec4 dilateWith3x3ShapeSquare(sampler Image)
+{
+	vec2 coords = samplerCoord(Image);
+	vec4 pixel = sample(Image, coords);
+	vec4 sumShape =	any(greaterThan(pixel.rgb, vec3(0.5, 0.5, 0.5))) ? pixel :
+						(pixel +
+						sample(Image, coords + vec2(-1.0, -1.0)) +
+						sample(Image, coords + vec2(0.0, -1.0)) +
+						sample(Image, coords + vec2(1.0, -1.0)) +
+						sample(Image, coords + vec2(-1.0, 0.0)) +
+						sample(Image, coords + vec2(1.0, 0.0)) +
+						sample(Image, coords + vec2(-1.0, 1.0)) +
+						sample(Image, coords + vec2(0.0, 1.0)) +
+						sample(Image, coords + vec2(1.0, 1.0)));
+
+	bvec3 allSet = greaterThan(sumShape.rgb, vec3(0.5, 0.5, 0.5));
+	vec4 pixVal = any(allSet) ? vec4(1.0, 1.0, 1.0, 1.0) : vec4(0.0, 0.0, 0.0, 1.0);
+	
+	return pixVal;
+}
+
+kernel vec4 dilateWith3x3ShapeCross(sampler Image)
+{
+	vec2 coords = samplerCoord(Image);
+	vec4 pixel = sample(Image, coords);
+	vec4 sumShape =	any(greaterThan(pixel.rgb, vec3(0.5, 0.5, 0.5))) ? pixel :
+						(pixel +
+						sample(Image, coords + vec2(0.0, -1.0)) +
+						sample(Image, coords + vec2(-1.0, 0.0)) +
+						sample(Image, coords + vec2(1.0, 0.0)) +
+						sample(Image, coords + vec2(0.0, 1.0)));
+
+	bvec3 allSet = greaterThan(sumShape.rgb, vec3(0.5, 0.5, 0.5));
+	vec4 pixVal = any(allSet) ? vec4(1.0, 1.0, 1.0, 1.0) : vec4(0.0, 0.0, 0.0, 1.0);
+	
+	return pixVal;
+}

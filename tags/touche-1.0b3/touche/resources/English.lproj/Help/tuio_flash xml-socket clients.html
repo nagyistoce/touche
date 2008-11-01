@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="generator" content="VoodooPad">
+	<title>TUIO/Flash XML-Socket clients</title>
+	<link rel="stylesheet" href="helpfiles_style.css" type="text/css" media="screen"/>
+</head>
+
+<body>
+	<div id="helpTopBar">
+		TUIO/Flash XML-Socket clients
+		<div id="homelink">
+			<a href="index.html" title="Touché Help">Touché Help</a>
+			| <a href="helpindex.html" title="Index">Index</a>
+		</div>
+	</div>
+	
+	<div id="wrapper">
+	   <h1>TUIO/Flash XML-Socket clients</h1>
+    
+	   <div class="main">
+	       <style type="text/css">
+p.p1 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande}
+p.p2 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande; color: #ff0000; min-height: 15.0px}
+p.p3 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande; color: #ff0000}
+p.p4 {margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande; min-height: 15.0px}
+ul.ul1 {list-style-type: disc}
+</style>
+
+<p class="p1">Flash/AS3 is a popular platform to develop multitouch applications with. The <a href="http://code.google.com/p/touchlib/">touchlib</a> project includes a parser for the <a href="tuio.html">TUIO</a> protocol, which is translated from OSC to Flash XML-Sockets using the open-source tool <a href="http://www.benchun.net/flosc/">flosc</a>.</p>
+<p class="p1">However, Touché can natively output tracking data in the same format that flosc translates TUIO data into, allowing you to use Flash clients without needing to use flosc.</p>
+<p class="p1">When starting a Flash application, it can connect to the XML-Socket server provided by Touché, which will then deliver tracking data to the application. Per default, the XML-Socket server listens on port 3000, but this can be changed in the <a href="tuio_flash%20xml-socket%20settings.html">TUIO/Flash XML-Socket settings</a>.</p>
+<p class="p1">XML-Socket clients show up in the <a href="tracking%20client%20list.html">tracking client list</a> just like proper Touché framework clients do.</p>
+<p class="p2"><b></b><br></p>
+<p class="p3"><b>IMPORTANT NOTICE</b></p>
+<p class="p1">It is crucial that the folder(s) containing your Flash multitouch applications is marked as trusted in Flash's Global Security Options, so that they can connect to Touché. For more information on this, see "<a href="tuio_flash%20xml-socket%20settings.html">TUIO/Flash XML-Socket settings</a>".</p>
+<p class="p4"><br></p>
+<p class="p1"><b>Related topics</b></p>
+<ul class="ul1">
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tracking%20client%20list.html">Tracking client list</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tuio.html">TUIO</a></li>
+<li style="margin: 0.0px 0.0px 9.0px 0.0px; line-height: 16.0px; font: 12.0px Lucida Grande"><a href="tuio_flash%20xml-socket%20settings.html">TUIO/Flash XML-Socket Settings</a></li>
+</ul>
+
+	   </div>
+	</div>
+</body>
+</html>
+

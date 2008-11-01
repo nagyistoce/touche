@@ -119,7 +119,7 @@ static NSArray*	tfThresholdKernelFilters = nil;
 		 [NSNumber numberWithDouble: 1.0],	kCIAttributeMax,
 		 [NSNumber numberWithDouble: 0.0],	kCIAttributeSliderMin,
 		 [NSNumber numberWithDouble: 1.0],	kCIAttributeSliderMax,
-		 [NSNumber numberWithDouble: 0.8],	kCIAttributeDefault,
+		 [NSNumber numberWithDouble: 0.1],	kCIAttributeDefault,
 		 kCIAttributeTypeScalar,				kCIAttributeType,
 		 nil],								@"inputColorDistanceThreshold",
 		

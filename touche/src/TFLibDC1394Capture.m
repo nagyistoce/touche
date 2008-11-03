@@ -813,6 +813,8 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 			return DC1394_FEATURE_GAIN;
 		case TFLibDC1394CaptureFeatureShutter:
 			return DC1394_FEATURE_SHUTTER;
+		case TFLibDC1394CaptureFeatureExposure:
+			return DC1394_FEATURE_EXPOSURE;
 	}
 	
 	return 0;

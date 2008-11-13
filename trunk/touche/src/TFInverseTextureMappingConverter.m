@@ -580,7 +580,7 @@ returnVal:
 	
 	triangleNumber = [self _findTriangleForPoint:P inMesh:_cameraVertices barycentricUinto:&u Vinto:&v];
 		
-	if (triangleNumber < 0) {		
+	if (triangleNumber < 0 || _numTriangles <= triangleNumber) {		
 		if (NULL != error)
 			*error = [NSError errorWithDomain:TFErrorDomain
 										 code:TFErrorInverseTextureCam2ScreenInternalError
@@ -603,6 +603,25 @@ returnVal:
 			
 	float *sA, *sB, *sC;
 	[self _pointsForTriangle:triangleNumber fromMesh:_screenVertices intoA:&sA B:&sB C:&sC];
+	
+	if (NULL == sA || NULL == sB || NULL == sC) {
+		if (NULL != error)
+			*error = [NSError errorWithDomain:TFErrorDomain
+										 code:TFErrorInverseTextureCam2ScreenInternalError
+									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+											   TFLocalizedString(@"TFInverseTextureCam2ScreenInternalErrorDesc", @"TFInverseTextureCam2ScreenInternalErrorDesc"),
+											   NSLocalizedDescriptionKey,
+											   [NSString stringWithFormat:TFLocalizedString(@"TFInverseTextureCam2ScreenInternalErrorReason", @"TFInverseTextureCam2ScreenInternalErrorReason"),
+												point.x, point.y],
+											   NSLocalizedFailureReasonErrorKey,
+											   TFLocalizedString(@"TFInverseTextureCam2ScreenInternalErrorRecovery", @"TFInverseTextureCam2ScreenInternalErrorRecovery"),
+											   NSLocalizedRecoverySuggestionErrorKey,
+											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
+											   NSStringEncodingErrorKey,
+											   nil]];
+		
+		return NO;
+	}
 	
 	float transformedX = (sA[0]*u) + (sB[0]*v) + (sC[0]*t);
 	float transformedY = (sA[1]*u) + (sB[1]*v) + (sC[1]*t);

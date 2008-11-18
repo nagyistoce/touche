@@ -257,7 +257,7 @@
 - (void)_setConfigurationViews:(NSArray*)views forInputKey:(NSInteger)inputKey
 {	
 	NSNumber* heightNum = [_viewHeights objectForKey:[NSNumber numberWithInteger:inputKey]];
-	float height = 0.0f;
+	float height = 15.0f; // top spacing
 	
 	if (nil == heightNum) {
 		for (NSView* view in views)
@@ -284,15 +284,20 @@
 	}
 	
 	NSSize newSize = NSMakeSize(_emptyConfigurationWindowSize.width, _emptyConfigurationWindowSize.height + height);
+	newSize.height = MIN(newSize.height, 700);
     NSRect oldFrame = [[self window] frame];
 	
+	// hack: the -20 is an estimate for the width of the vertical scrollbar
+	NSSize boxSize = NSMakeSize(_emptyConfigurationWindowSize.width - 20, height);
+	[_configurationBox setFrameSize:boxSize];
+		
 	int newY = oldFrame.origin.y + oldFrame.size.height - newSize.height;
 	[[self window] setFrame:NSMakeRect(oldFrame.origin.x, newY, newSize.width, newSize.height)
 					display:YES
 					animate:YES];
 	/* [[[self window] animator] setFrame:NSMakeRect(oldFrame.origin.x, newY, newSize.width, newSize.height)
 							   display:YES]; */
-	
+							   	
 	if ([[self window] isVisible]) {
 		[_configurationBox setWantsLayer:YES];
 		[self performSelector:@selector(_setConfigurationViewAnimate:) withObject:newView afterDelay:0.01f];
@@ -300,6 +305,8 @@
 		[_configurationBox addSubview:newView];
 	}
 	
+	[[_configurationBox superview] scrollPoint:NSMakePoint(0, height)];
+			
 	[newView release];
 }
 

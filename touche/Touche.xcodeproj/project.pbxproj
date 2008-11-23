@@ -151,6 +151,7 @@
 		6EC4DC4B0D143B28008AB9CF /* TFCIFilterChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DC4A0D143B28008AB9CF /* TFCIFilterChain.m */; };
 		6EC4DC570D143D98008AB9CF /* TFCameraInputFilterChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DC560D143D98008AB9CF /* TFCameraInputFilterChain.m */; };
 		6EC4DDB80D144EA7008AB9CF /* CIImage+MakeBitmaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DDB70D144EA7008AB9CF /* CIImage+MakeBitmaps.m */; };
+		6EC632CF0ED9A2170094958E /* GCKGradientOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC632CE0ED9A2170094958E /* GCKGradientOverlayView.m */; };
 		6EC86AD20D11D72200664F81 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD10D11D72200664F81 /* GLUT.framework */; };
 		6EC86AD60D11D73000664F81 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD50D11D73000664F81 /* QuickTime.framework */; };
 		6EC86ADA0D11D74900664F81 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD90D11D74900664F81 /* OpenGL.framework */; };
@@ -432,6 +433,8 @@
 		6EC4DC560D143D98008AB9CF /* TFCameraInputFilterChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCameraInputFilterChain.m; sourceTree = "<group>"; };
 		6EC4DDB60D144EA7008AB9CF /* CIImage+MakeBitmaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIImage+MakeBitmaps.h"; sourceTree = "<group>"; };
 		6EC4DDB70D144EA7008AB9CF /* CIImage+MakeBitmaps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CIImage+MakeBitmaps.m"; sourceTree = "<group>"; };
+		6EC632CD0ED9A2170094958E /* GCKGradientOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCKGradientOverlayView.h; sourceTree = "<group>"; };
+		6EC632CE0ED9A2170094958E /* GCKGradientOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCKGradientOverlayView.m; sourceTree = "<group>"; };
 		6EC86AD10D11D72200664F81 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = /System/Library/Frameworks/GLUT.framework; sourceTree = "<absolute>"; };
 		6EC86AD50D11D73000664F81 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
 		6EC86AD90D11D74900664F81 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
@@ -1036,6 +1039,8 @@
 				6E997F440DD084EE0034264B /* GCKNumberCircleView.m */,
 				6ECA93FB0DD1D91200A9ABE3 /* GCKPlatinumView.h */,
 				6ECA93FC0DD1D91200A9ABE3 /* GCKPlatinumView.m */,
+				6EC632CD0ED9A2170094958E /* GCKGradientOverlayView.h */,
+				6EC632CE0ED9A2170094958E /* GCKGradientOverlayView.m */,
 			);
 			name = "General Views";
 			sourceTree = "<group>";
@@ -1557,6 +1562,7 @@
 				6EEC22560E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */,
 				6E9279940EB3C7AC00C88BEC /* TFCIThresholdFilter.m in Sources */,
 				6E927A540EB526B900C88BEC /* TFNSColorToCIColorInNSDataValueTransfomer.m in Sources */,
+				6EC632CF0ED9A2170094958E /* GCKGradientOverlayView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

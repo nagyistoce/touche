@@ -93,7 +93,10 @@
 	if (nil == _viewHeights)
 		_viewHeights = [[NSMutableDictionary alloc] init];
 	
+	// hack: using the size of the empty window minus a hard-coded offset, which is dependent on the size
+	// of the scrollview in the xib file
 	_emptyConfigurationWindowSize = [[self window] frame].size;
+	_emptyConfigurationWindowSize.height -= 100.0;
 	
 	[self changeConfigurationViewForInputType:[TFTrackingPipeline sharedPipeline].inputMethod];
 	
@@ -283,8 +286,14 @@
 		curPos += [view frame].size.height;
 	}
 	
+	// size the window so that it still fits nicely on screen
+	NSScreen* screen = [[self window] screen];
+	if (nil == screen)
+		screen = [NSScreen mainScreen];
+	NSRect screenFrame = [screen visibleFrame];
+	
 	NSSize newSize = NSMakeSize(_emptyConfigurationWindowSize.width, _emptyConfigurationWindowSize.height + height);
-	newSize.height = MIN(newSize.height, 700);
+	newSize.height = MIN(newSize.height, screenFrame.size.height);
     NSRect oldFrame = [[self window] frame];
 	
 	// hack: the -20 is an estimate for the width of the vertical scrollbar

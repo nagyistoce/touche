@@ -476,7 +476,7 @@
 						<object class="NSCustomView" id="410670269">
 							<reference key="NSNextResponder" ref="1070506067"/>
 							<int key="NSvFlags">266</int>
-							<string key="NSFrame">{{0, 85}, {668, 15}}</string>
+							<string key="NSFrame">{{0, 85}, {669, 15}}</string>
 							<reference key="NSSuperview" ref="1070506067"/>
 							<bool key="NSViewIsLayerTreeHost">YES</bool>
 							<string key="NSClassName">GCKGradientOverlayView</string>
@@ -484,7 +484,7 @@
 						<object class="NSCustomView" id="312277231">
 							<reference key="NSNextResponder" ref="1070506067"/>
 							<int key="NSvFlags">290</int>
-							<string key="NSFrameSize">{668, 15}</string>
+							<string key="NSFrameSize">{669, 15}</string>
 							<reference key="NSSuperview" ref="1070506067"/>
 							<bool key="NSViewIsLayerTreeHost">YES</bool>
 							<string key="NSClassName">GCKGradientOverlayView</string>

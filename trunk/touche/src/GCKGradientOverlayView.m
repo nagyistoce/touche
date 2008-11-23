@@ -38,14 +38,24 @@
 - (void)drawRect:(NSRect)rect
 {
 	if (nil == _gradient)
-		_gradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithDeviceWhite:0.91 alpha:1.0]
-												  endingColor:[NSColor colorWithDeviceWhite:0.91 alpha:0.1]];
+		_gradient = [[NSGradient alloc] initWithStartingColor:[NSColor colorWithDeviceWhite:1.0 alpha:1.0]
+												  endingColor:[NSColor colorWithDeviceWhite:1.0 alpha:0.1]];
 
+	NSRect bounds = [self bounds];
 	NSRect superBounds = [[self superview] bounds];
 	NSRect frame = [self frame];
 	CGFloat angle = (frame.origin.y >= superBounds.size.height/2.0) ? -90.0 : 90.0;
 	
-	[_gradient drawInRect:[self bounds] angle:angle];
+	NSGraphicsContext* context = [NSGraphicsContext currentContext];
+	[context saveGraphicsState];
+	
+	[[NSColor windowBackgroundColor] set];
+	[NSBezierPath fillRect:bounds];
+	
+	[context setCompositingOperation:NSCompositeDestinationAtop];
+	[_gradient drawInRect:bounds angle:angle];
+	
+	[context restoreGraphicsState];
 }
 
 @end

@@ -33,6 +33,8 @@
 
 	NSMutableDictionary*	_touches;
 	CALayer*				_touchesLayer;
+	
+	NSMutableDictionary*	_cachedTouchImages;	// color -> image
 }
 
 @property (assign) CGFloat touchAnimationSpeed;

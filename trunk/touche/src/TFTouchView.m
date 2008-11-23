@@ -66,6 +66,9 @@
 	[_touchesLayer release];
 	_touchesLayer = nil;
 	
+	[_cachedTouchImages release];
+	_cachedTouchImages = nil;
+	
 	[super dealloc];
 }
 
@@ -78,6 +81,7 @@
 		[_touches release];
 		
 	_touches = [[NSMutableDictionary alloc] init];
+	_cachedTouchImages = [[NSMutableDictionary alloc] init];
 	
 	CALayer* rootLayer = [CALayer layer];
 	
@@ -94,6 +98,17 @@
 	_touchesLayer.frame = rootLayer.frame;
 	
 	[rootLayer addSublayer:_touchesLayer];
+}
+
+- (void)setTouchSize:(NSValue*)newSize
+{
+	if (nil == touchSize || ![newSize isEqualToValue:touchSize]) {
+		[newSize retain];
+		[touchSize release];
+		touchSize = newSize;
+		
+		[_cachedTouchImages removeAllObjects];
+	}
 }
 
 - (void)addTouchWithID:(id)ID atPosition:(CGPoint)pos
@@ -144,11 +159,19 @@
 		[touchLayer addAnimation:pulseAnimation forKey:@"pulseAnimation"];
 	}
 	
-	NSImage* img = [self _touchImageWithSize:NSSizeToCGSize([touchSize sizeValue]) andColor:color];
-	CGImageRef cgImg = [img cgImage];
+	NSSize tSize = [touchSize sizeValue];
 	
+	CGImageRef cgImg = (CGImageRef)[_cachedTouchImages objectForKey:color];
+	
+	if (NULL == cgImg) {
+		NSImage* img = [self _touchImageWithSize:NSSizeToCGSize(tSize) andColor:color];
+		cgImg = [img cgImage];
+				
+		[_cachedTouchImages setObject:(id)cgImg forKey:color];
+	}
+		
 	touchLayer.name = @"touchImage";
-	touchLayer.bounds = CGRectMake(0.0f, 0.0f, 100.0f, 100.0f);
+	touchLayer.bounds = CGRectMake(0.0f, 0.0f, tSize.width, tSize.height);
 	touchLayer.contents = (id)cgImg;
 	touchLayer.contentsGravity = kCAGravityCenter;
 	touchLayer.position = pos;

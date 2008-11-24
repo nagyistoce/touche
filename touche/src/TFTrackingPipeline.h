@@ -99,6 +99,8 @@ extern NSInteger TFTrackingPipelineInputResolutionHighest;
 
 - (CGSize)currentCaptureResolution;
 
+- (void)handleDisplayParametersChange;
+
 @end
 
 @interface NSObject (TFTrackingPipelineDelegate)

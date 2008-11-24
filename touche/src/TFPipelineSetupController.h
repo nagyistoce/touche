@@ -63,6 +63,7 @@
 	IBOutlet NSButton*				libDc1394BrightnessAutoBox;
 	IBOutlet NSButton*				libDc1394ExposureAutoBox;
 
+	CGFloat							_currentConfigurationBoxHeight;
 	CGFloat							_previewWindowVideoAspectRatio;
 	NSSize							_previewWindowBordersAroundVideoView;
 	NSSize							_emptyConfigurationWindowSize;
@@ -74,5 +75,6 @@
 - (void)setTrackingInputStatusMessage:(NSString*)status;
 - (void)updateAfterPipelineReload;
 - (void)updateForNewPipelineSettings;
+- (void)handleDisplayParametersChange;
 
 @end

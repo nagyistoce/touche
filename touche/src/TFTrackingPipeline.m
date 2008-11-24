@@ -93,6 +93,7 @@ enum {
 - (void)_cacheBlobs:(NSArray*)blobs inField:(NSArray**)cacheField;
 - (void)_changeCaptureResolution:(NSInteger)sizeCode;
 - (void)_processBlobsThread;
+- (BOOL)_updateCoordinateConverterOnResolutionChange;
 @end
 
 @implementation TFTrackingPipeline
@@ -397,25 +398,36 @@ enum {
 {
 	CGSize newSize = [self _sizeFromResolutionKey:sizeCode];
 	
-	NSError *error;
+	NSError *error = nil;
 	
 	if (![_blobInput changeCaptureResolution:newSize error:&error]) {
 		// TODO: inform the user that changing the resolution failed, via delegate
 	}
 		
+	[self _updateCoordinateConverterOnResolutionChange];
+}
+
+// TODO: inform about errors, e.g. via a delegate
+- (BOOL)_updateCoordinateConverterOnResolutionChange
+{
 	if (_coordConverter != nil) {
+		NSError* error = nil;
+		
 		// first, we need to unbind all bindings to this coordinate converter
 		NSArray* keyPaths = [_objectBindings allKeysForObject:_coordConverter];
 		for (NSString* keyPath in keyPaths)
 			[_coordConverter unbind:[keyPath stringByReplacingOccurrencesOfString:[_coordConverter className]
 																	   withString:@""]];
-
+		
 		if (![self _setupCoordinateConverter:&error])  {
 			// TODO: inform the user that changing the resolution failed, via delegate
+			return NO;
 		}
 		
 		[self _checkAndReportCalibrationProblemsToDelegate:YES];
 	}
+	
+	return YES;
 }
 
 - (NSString*)_prefKeyPartForCurrentInputMethod
@@ -658,10 +670,7 @@ enum {
 }
 
 - (BOOL)_setupCoordinateConverter:(NSError**)error
-{
-	[_coordConverter release];
-	_coordConverter = nil;
-
+{	
 	NSScreen *screen = [TFScreenPreferencesController screen];
 	NSRect screenFrame = [screen frame];
 
@@ -691,8 +700,13 @@ enum {
 														  @"calibrationPointsPerAxis",
 														  nil]];
 	
+	TFCamera2ScreenCoordinatesConverter* oldConverter = _coordConverter;
+	
 	_coordConverter = inverseTMConverter;
 	_coordConverter.delegate = self;
+	
+	[oldConverter release];
+	oldConverter = nil;
 	
 	[self _bindToPreferences:_coordConverter keyPaths:[NSArray arrayWithObjects:
 													   @"transformsBoundingBox",
@@ -1030,6 +1044,13 @@ errorReturn:
 	}
 	
 	return YES;
+}
+
+- (void)handleDisplayParametersChange
+{
+	NSSize newScreenSize = [[TFScreenPreferencesController screen] frame].size;
+	if (_coordConverter.screenWidth != newScreenSize.width || _coordConverter.screenHeight != newScreenSize.height)
+		[self _updateCoordinateConverterOnResolutionChange];
 }
 
 #pragma mark -

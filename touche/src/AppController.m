@@ -634,6 +634,16 @@ enum {
     return NO;
 }
 
+- (void)applicationDidChangeScreenParameters:(NSNotification *)notification
+{
+	[[TFTrackingPipeline sharedPipeline] performSelector:@selector(handleDisplayParametersChange)
+											  withObject:nil
+											  afterDelay:.5];
+	[_pipelineSetupController performSelector:@selector(handleDisplayParametersChange)
+								   withObject:nil
+								   afterDelay:.5];	
+}
+
 #pragma mark -
 #pragma mark NSWindow delegate
 

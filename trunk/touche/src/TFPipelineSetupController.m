@@ -44,6 +44,7 @@
 - (void)_setConfigurationViews:(NSArray*)views forInputKey:(NSInteger)inputKey;
 - (void)_setConfigurationViewAnimate:(NSView*)newView;
 - (void)_libdc1394CameraDidChange:(NSNotification*)notification;
+- (void)_adaptConfigurationWindowSizeWithMaxHeight:(CGFloat)height;
 @end
 
 @implementation TFPipelineSetupController
@@ -232,6 +233,11 @@
 	[_largePreviewFilterStageSelection setEnabled:supportsFilters];
 }
 
+- (void)handleDisplayParametersChange
+{
+	[self _adaptConfigurationWindowSizeWithMaxHeight:_currentConfigurationBoxHeight];
+}
+
 - (void)_updateResolutionPopup:(NSPopUpButton*)popup
 {
 	TFTrackingPipeline* pipeline = [TFTrackingPipeline sharedPipeline];
@@ -286,26 +292,7 @@
 		curPos += [view frame].size.height;
 	}
 	
-	// size the window so that it still fits nicely on screen
-	NSScreen* screen = [[self window] screen];
-	if (nil == screen)
-		screen = [NSScreen mainScreen];
-	NSRect screenFrame = [screen visibleFrame];
-	
-	NSSize newSize = NSMakeSize(_emptyConfigurationWindowSize.width, _emptyConfigurationWindowSize.height + height);
-	newSize.height = MIN(newSize.height, screenFrame.size.height);
-    NSRect oldFrame = [[self window] frame];
-	
-	// hack: the -20 is an estimate for the width of the vertical scrollbar
-	NSSize boxSize = NSMakeSize(_emptyConfigurationWindowSize.width - 20, height);
-	[_configurationBox setFrameSize:boxSize];
-		
-	int newY = oldFrame.origin.y + oldFrame.size.height - newSize.height;
-	[[self window] setFrame:NSMakeRect(oldFrame.origin.x, newY, newSize.width, newSize.height)
-					display:YES
-					animate:YES];
-	/* [[[self window] animator] setFrame:NSMakeRect(oldFrame.origin.x, newY, newSize.width, newSize.height)
-							   display:YES]; */
+	[self _adaptConfigurationWindowSizeWithMaxHeight:height];
 							   	
 	if ([[self window] isVisible]) {
 		[_configurationBox setWantsLayer:YES];
@@ -313,10 +300,10 @@
 	} else {
 		[_configurationBox addSubview:newView];
 	}
-	
-	[[_configurationBox superview] scrollPoint:NSMakePoint(0, height)];
-			
+				
 	[newView release];
+	
+	_currentConfigurationBoxHeight = height;
 }
 
 - (void)_setConfigurationViewAnimate:(NSView*)newView
@@ -330,6 +317,32 @@
 - (void)_libdc1394CameraDidChange:(NSNotification*)notification
 {
 	[self updateForNewPipelineSettings];
+}
+
+- (void)_adaptConfigurationWindowSizeWithMaxHeight:(CGFloat)height
+{
+	// size the window so that it still fits nicely on screen
+	NSScreen* screen = [[self window] screen];
+	if (nil == screen)
+		screen = [NSScreen mainScreen];
+	NSRect screenFrame = [screen visibleFrame];
+	
+	NSSize newSize = NSMakeSize(_emptyConfigurationWindowSize.width, _emptyConfigurationWindowSize.height + height);
+	newSize.height = MIN(newSize.height, screenFrame.size.height);
+    NSRect oldFrame = [[self window] frame];
+	
+	// hack: the -20 is an estimate for the width of the vertical scrollbar
+	NSSize boxSize = NSMakeSize(_emptyConfigurationWindowSize.width - 20, height);
+	[_configurationBox setFrameSize:boxSize];
+	
+	int newY = oldFrame.origin.y + oldFrame.size.height - newSize.height;
+	[[self window] setFrame:NSMakeRect(oldFrame.origin.x, newY, newSize.width, newSize.height)
+					display:YES
+					animate:YES];
+	/* [[[self window] animator] setFrame:NSMakeRect(oldFrame.origin.x, newY, newSize.width, newSize.height)
+	 display:YES]; */
+	
+	[[_configurationBox superview] scrollPoint:NSMakePoint(0, height)];
 }
 
 #pragma mark -

@@ -141,6 +141,10 @@
 "TFClientRegisteredWithInvalidArgsErrorReason"			= "Due to invalid supplied arguments, the registration at the server could not be completed: Either the client object or the unique name was nil.";
 "TFClientRegisteredWithInvalidArgsErrorRecovery"		= "Please check your application's code to ensure that it is not trying to register with the server using a nil unique name.";
 
+"TFErrorWiiRemoteDiscoveryThrewExceptionErrorDesc"		= "Wii Remote Discovery Exception.";
+"TFErrorWiiRemoteDiscoveryThrewExceptionErrorReason"	= "An exception occurred while trying to set up the Wii Remote Discovery process. The following exception reason was provided by MacOS X:\n\n\"%@\".";
+"TFErrorWiiRemoteDiscoveryThrewExceptionErrorRecovery"	= "Please make sure that your Mac is equipped with a Bluetooth module and that Bluetooth is enabled.";
+
 "TFWiiRemoteDiscoveryCreationErrorDesc"					= "Discovering Wii Remotes failed.";
 "TFWiiRemoteDiscoveryCreationErrorReason"				= "Due to an internal error, it was not possible to set up the discovery of Wii Remotes.";
 "TFWiiRemoteDiscoveryCreationErrorRecovery"				= "Please make sure that your Mac is equipped with a Bluetooth module and that Bluetooth is enabled.";

@@ -121,7 +121,26 @@ enum {
 	if (NULL != error)
 		*error = nil;
 
-	_wiiDiscovery = [[WiiRemoteDiscovery alloc] init];
+	@try {
+		_wiiDiscovery = [[WiiRemoteDiscovery alloc] init];
+	}
+	@catch (NSException* e) {
+		if (NULL != error)
+			*error = [NSError errorWithDomain:TFErrorDomain
+										 code:TFErrorWiiRemoteDiscoveryThrewException
+									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+											   TFLocalizedString(@"TFErrorWiiRemoteDiscoveryThrewExceptionErrorDesc", @"TFErrorWiiRemoteDiscoveryThrewExceptionErrorDesc"),
+											   NSLocalizedDescriptionKey,
+											   [NSString stringWithFormat:TFLocalizedString(@"TFErrorWiiRemoteDiscoveryThrewExceptionErrorReason", @"TFErrorWiiRemoteDiscoveryThrewExceptionErrorReason"), [e reason]],
+											   NSLocalizedFailureReasonErrorKey,
+											   TFLocalizedString(@"TFErrorWiiRemoteDiscoveryThrewExceptionErrorRecovery", @"TFErrorWiiRemoteDiscoveryThrewExceptionErrorRecovery"),
+											   NSLocalizedRecoverySuggestionErrorKey,
+											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
+											   NSStringEncodingErrorKey,
+											   nil]];
+		
+		return NO;
+	}
 	
 	if (nil == _wiiDiscovery) {
 		if (NULL != error)

@@ -37,6 +37,7 @@ typedef enum {
 	TFErrorClientDisconnectedSinceServerWasStopped,
 	TFErrorClientRegisteredWithInvalidArguments,
 	
+	TFErrorWiiRemoteDiscoveryThrewException,
 	TFErrorWiiRemoteDiscoveryCreationFailed,
 	TFErrorWiiRemoteDiscoveryStartupFailed,
 	TFErrorWiiRemoteDiscoveryFailed,

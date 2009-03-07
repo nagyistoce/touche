@@ -28,6 +28,13 @@
 
 @implementation NSScreen (GCKExtras)
 
+#if defined(WINDOWS)
+- (NSDictionary*)deviceDescription
+{
+	return nil;
+}
+#endif
+
 + (NSScreen*)screenWithDisplayID:(CGDirectDisplayID)displayID
 {
 	for (NSScreen* s in [NSScreen screens]) {

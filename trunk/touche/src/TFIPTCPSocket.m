@@ -24,8 +24,12 @@
 
 #import "TFIPTCPSocket.h"
 
+#if !defined(WINDOWS)
 #import <sys/socket.h>
 #import <netinet/tcp.h>
+#else
+#import <winsock.h>
+#endif
 
 
 @implementation TFIPTCPSocket
@@ -46,7 +50,11 @@
 
 - (BOOL)setTCPNoDelay:(BOOL)onOrOff
 {
+#if defined(WINDOWS)
+	char val = onOrOff ? 1 : 0;
+#else
 	int val = onOrOff ? 1 : 0;
+#endif
 	return (setsockopt([self nativeSocketHandle], IPPROTO_TCP, TCP_NODELAY, &val, sizeof(val)) >= 0);
 }
 

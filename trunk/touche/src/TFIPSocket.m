@@ -24,15 +24,20 @@
 
 #import "TFIPSocket.h"
 
+#if !defined(WINDOWS)
 #import <arpa/inet.h>
-#import <sys/socket.h>
-#import <sys/time.h>
-#import <sys/ioctl.h>
-#import <net/if.h>
-#import <fcntl.h>
 #import <netdb.h>
-#import <unistd.h>
+#import <net/if.h>
 #import <net/route.h>
+#import <sys/socket.h>
+#import <sys/ioctl.h>
+#else
+#import <winsock.h>
+#endif
+
+#import <sys/time.h>
+#import <fcntl.h>
+#import <unistd.h>
 #import <errno.h>
 
 
@@ -63,7 +68,7 @@
 		if(NULL != hostEntity) {
 			struct sockaddr_in	sAddr;
 			
-			bcopy((char*)hostEntity->h_addr, (char*)&sAddr.sin_addr, hostEntity->h_length);
+			memcpy((char*)hostEntity->h_addr, (char*)&sAddr.sin_addr, hostEntity->h_length);
 			addr = sAddr.sin_addr.s_addr;
 			success = YES;
 		}
@@ -81,7 +86,11 @@
 	inAddr.s_addr = addr;
 	
 	char* addrStr = inet_ntoa(inAddr);
+#if defined(WINDOWS)
+	return [NSString stringWithCString:addrStr];
+#else
 	return [NSString stringWithCString:addrStr encoding:NSASCIIStringEncoding];
+#endif
 }
 
 + (NSString*)stringFromSocketAddress:(struct sockaddr_in*)sockAddr
@@ -143,10 +152,10 @@
 {
 	if(![self cfSocketCreated]) {
 		CFSocketNativeHandle bsdSocket = socket(AF_INET, (int)_sockType, 0);
-		
+				
 		if(bsdSocket < 0)
 			return NO;
-		
+				
 		if (![self createCFSocketWithNativeHandle:bsdSocket]) {
 			(void)close(bsdSocket);
 			
@@ -167,7 +176,11 @@
 		return NO;
 	
 	// Set SO_REUSEADDR so we can reuse the address immediately
+#if defined(WINDOWS)
+	char socketOptionFlag = 1;
+#else
 	int socketOptionFlag = 1;
+#endif
 	int result = setsockopt(bsdSocket, SOL_SOCKET, SO_REUSEADDR, &socketOptionFlag,
 							(socklen_t)sizeof(socketOptionFlag));
 	
@@ -175,7 +188,7 @@
 		return NO;
 	
 	struct sockaddr_in socketAddress;
-	bzero(&socketAddress, sizeof(socketAddress));
+	memset(&socketAddress, 0, sizeof(socketAddress));
 	socketAddress.sin_family = PF_INET;
 	socketAddress.sin_addr.s_addr = inAddr;
 	socketAddress.sin_port = htons(inPort);
@@ -198,7 +211,7 @@
 	if([self cfSocketCreated] && (![self isConnected] || ![self isConnectionOriented]) && ![self isListening]) {
 		struct sockaddr_in socketAddress;
 	
-		bzero(&socketAddress, sizeof(socketAddress));
+		memset(&socketAddress, 0, sizeof(socketAddress));
 		socketAddress.sin_addr.s_addr = addr;
 		socketAddress.sin_family = PF_INET;
 		socketAddress.sin_port = htons(port);
@@ -259,11 +272,14 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 	//   3) fail
 
 	if (![[self class] resolveName:name intoAddress:&addr]) {
+#if defined(WINDOWS)
+			return NO;
+#else
 		struct ifreq ifr;
 		struct sockaddr_in *sin;
 		const char*	nameString = [name cStringUsingEncoding:NSASCIIStringEncoding];
 		
-		bzero(&ifr, sizeof(struct ifreq));
+		memset(&ifr, 0, sizeof(struct ifreq));
 		strncpy(ifr.ifr_name, nameString, sizeof(ifr.ifr_name));
 		
 		sin = (struct sockaddr_in *)&ifr.ifr_addr;
@@ -275,6 +291,7 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 		*sin = *((struct sockaddr_in*)&ifr.ifr_addr);
 		
 		addr = sin->sin_addr.s_addr;
+#endif
 	}
 	
 	if (NULL != addrPtr)
@@ -435,9 +452,14 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 	CFSocketNativeHandle bsdSocket = [self nativeSocketHandle];
 	if (bsdSocket < 0)
 		return NO;
-	
+
+#if defined(WINDOWS)
+	u_long bytesAvailable = 0;
+	if (ioctlsocket(bsdSocket, FIONREAD, &bytesAvailable) == SOCKET_ERROR) {
+#else
 	size_t bytesAvailable = 0;
 	if (ioctl(bsdSocket, FIONREAD, &bytesAvailable) == -1) {
+#endif
 		if (errno == EINVAL)
 			bytesAvailable = -1;
 		else
@@ -492,6 +514,7 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 		sockLen = sizeof(struct sockaddr_in);
 	
 	int amountSent = sendto(bsdSocket, bytes, length, 0, (const struct sockaddr*)sockAddr, sockLen);
+	
 	if (length == amountSent) {
 		// We managed to write the entire outgoing buffer to the socket
 		// Disable the write callback for now since we don't need to know when we are writable again for now
@@ -513,7 +536,7 @@ maxPendingConnections:(NSUInteger)maxPendingConnections
 		
 		_lastErrorCode = errno;
 	}
-	
+		
 	return amountSent;
 }
 

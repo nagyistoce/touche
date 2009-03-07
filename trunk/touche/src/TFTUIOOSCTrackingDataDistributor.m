@@ -70,7 +70,7 @@
 	_server = nil;
 	
 	@synchronized(_receivers) {
-		for (NSString* name in _receivers)
+		for (NSString* name in [_receivers allKeys])
 			[self removeTUIOClient:[_receivers objectForKey:name]];
 	}
 	

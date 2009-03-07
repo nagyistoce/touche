@@ -27,6 +27,9 @@
 #import <fcntl.h>
 #import <signal.h>
 
+#if defined(WINDOWS)
+#import <winsock.h>
+#endif
 
 static void _tfSocketCallback(CFSocketRef socketRef,
 							  CFSocketCallBackType callbackType,
@@ -50,7 +53,9 @@ static void _tfSocketCallback(CFSocketRef socketRef,
 
 + (void)ignoreBrokenPipes
 {
+#if !defined(WINDOWS)
 	signal(SIGPIPE, SIG_IGN);
+#endif
 }
 
 - (id)init
@@ -95,7 +100,7 @@ static void _tfSocketCallback(CFSocketRef socketRef,
 	if(![self cfSocketCreated] || NULL != _cfRunLoopSourceRef)
 		return NO;
 	
-	CFRunLoopRef runloop = [inRunLoop getCFRunLoop];
+	CFRunLoopRef runloop = (CFRunLoopRef)[inRunLoop getCFRunLoop];
 	if(NULL == runloop)
 		return NO;
 	
@@ -132,19 +137,25 @@ static void _tfSocketCallback(CFSocketRef socketRef,
 	BOOL success = NO;
 	
 	CFSocketContext socketContext;
-	bzero(&socketContext, sizeof(socketContext));
+	memset(&socketContext, 0, sizeof(socketContext));
 	socketContext.info = self;
 	
-	CFOptionFlags socketCallbacks = (kCFSocketConnectCallBack | kCFSocketReadCallBack | kCFSocketWriteCallBack);
+	CFOptionFlags socketCallbacks = (kCFSocketConnectCallBack | kCFSocketReadCallBack);
 	
 	int socketFlags = [self _flagsForSocket:socket];
 	if (socketFlags >= 0) {
+#if defined(WINDOWS)
+		unsigned long iMode=1;
+		if (SOCKET_ERROR != ioctlsocket(socket, FIONBIO, &iMode)) {
+#else
 		if ([self _setFlags:(socketFlags | O_NONBLOCK) forSocket:socket]) {
+#endif
 			_cfSocketRef = CFSocketCreateWithNative(kCFAllocatorDefault,
 													socket,
 													socketCallbacks,
 													&_tfSocketCallback,
 													&socketContext);
+
 			if (NULL != _cfSocketRef) {
 				CFOptionFlags socketOptions = kCFSocketAutomaticallyReenableReadCallBack;
 				CFSocketSetSocketFlags(_cfSocketRef, socketOptions);
@@ -196,14 +207,22 @@ static void _tfSocketCallback(CFSocketRef socketRef,
 
 - (int)_flagsForSocket:(CFSocketNativeHandle)socket
 {
+#if defined(WINDOWS)
+	return 0;
+#else
 	int flags = fcntl(socket, F_GETFL, 0);
 	
 	return (flags >= 0) ? flags : 0;
+#endif
 }
 
 - (BOOL)_setFlags:(int)flags forSocket:(CFSocketNativeHandle)socket
 {
+#if defined(WINDOWS)
+	return NO;
+#else
 	return (fcntl(socket, F_SETFL, flags) != -1);
+#endif
 }
 
 

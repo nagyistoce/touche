@@ -26,7 +26,11 @@
 
 #import "TFIPSocket.h"
 
+#if !defined(WINDOWS)
 #import <netinet/in.h>
+#else
+#import <winsock.h>
+#endif
 
 
 @class TFIPStreamSocket;

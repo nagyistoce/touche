@@ -171,7 +171,7 @@
 	
 	if (0 < length) {
 		size_t amountToRead = MIN(length, [self availableBytes]);
-		void* buf = alloca(amountToRead);
+		unsigned char buf[amountToRead];
 		
 		if (NULL != buf) {
 			size_t amountRead = [self recvfrom:buf length:amountToRead endpoint:sockAddr];
@@ -279,7 +279,7 @@
 	
 	if (availableBytes > 0) {
 		struct sockaddr_in sockAddr;
-		void* bytes = alloca(availableBytes);
+		unsigned char bytes[availableBytes];
 		
 		if (NULL != bytes) {
 			int bytesRead = [self receiveIntoBytes:bytes
@@ -324,7 +324,7 @@
 		int amountSent = [self sendBytes:[outBuffer bytes]
 								  length:[outBuffer length]
 							  toSockAddr:(const struct sockaddr_in*)[sA bytes]];
-		
+				
 		if (0 <= amountSent) {
 			success = YES;
 			

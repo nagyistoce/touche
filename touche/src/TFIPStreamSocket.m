@@ -309,7 +309,7 @@
 	NSUInteger curDataLen = [_inBuffer length];
 	
 	(void)[self _readFromSocket];
-	
+
 	if ([_inBuffer length] > curDataLen && _delegateCapabilities.delegateHasDataAvailable)
 		[delegate socket:self dataIsAvailableWithLength:[_inBuffer length]];
 }
@@ -392,7 +392,7 @@
 	size_t availableBytes = [self availableBytes];
 	
 	if (availableBytes > 0) {
-		void* bytes = alloca(availableBytes);
+		unsigned char bytes[availableBytes];
 		
 		if (NULL != bytes) {
 			int bytesRead = [self receiveIntoBytes:bytes

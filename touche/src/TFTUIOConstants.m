@@ -39,14 +39,21 @@ NSString* TFTUIOConstantsSourceName()
 	if (nil == appName) {
 		NSBundle* mainBundle = [NSBundle mainBundle];
 		NSString* name = [mainBundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+		if (nil == name)
+			name = [mainBundle objectForInfoDictionaryKey:@"CFBundleName"];
+		if (nil == name)
+			name = @"<unknown>";
 		if (nil != name) {
 			NSString* version = [mainBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+			if (nil == version)
+				version = [mainBundle objectForInfoDictionaryKey:@"CFBundleVersion"];
 			if (nil != version)
 				name = [name stringByAppendingFormat:@" %@", version];
 		}
-		
+				
 		if (nil != name)
-			appName = [name retain];
+			appName = [[NSString alloc] initWithData:[name dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES]
+											encoding:NSASCIIStringEncoding];
 	}
 	
 	return appName;

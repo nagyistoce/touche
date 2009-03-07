@@ -56,7 +56,11 @@ static CGFloat tFScreenPreferencesControllerMeasureInPixels = DEFAULT_MEASURE_WI
 + (void)initialize
 {
 	NSDictionary *defaultPrefs = [NSDictionary dictionaryWithObjectsAndKeys:
+#if defined(WINDOWS)
+								  [NSNumber numberWithInteger:0],
+#else
 								  [NSNumber numberWithInteger:[[NSScreen mainScreen] directDisplayID]],
+#endif
 								  tFScreenPreferencesControllerOutputScreenPrefKey,
 								  [NSNumber numberWithFloat:DEFAULT_MEASURE_WIDTH_IN_CENTIMETERS],
 								  tFScreenPreferencesControllerOutputScreenResolutionPrefKey,
@@ -95,6 +99,9 @@ static CGFloat tFScreenPreferencesControllerMeasureInPixels = DEFAULT_MEASURE_WI
 
 + (NSScreen*)screen
 {
+#if defined(WINDOWS)
+	return [NSScreen mainScreen];
+#else
 	NSNumber* displayID = [[NSUserDefaults standardUserDefaults] objectForKey:tFScreenPreferencesControllerOutputScreenPrefKey];
 	NSScreen* screen = [NSScreen screenWithDisplayID:[displayID integerValue]];
 	
@@ -102,6 +109,7 @@ static CGFloat tFScreenPreferencesControllerMeasureInPixels = DEFAULT_MEASURE_WI
 		screen = [NSScreen mainScreen];
 	
 	return screen;
+#endif
 }
 
 + (CGFloat)screenPixelsPerCentimeter
@@ -137,6 +145,7 @@ static CGFloat tFScreenPreferencesControllerMeasureInPixels = DEFAULT_MEASURE_WI
 
 - (void)_populateScreenPopup
 {
+#if !defined(WINDOWS)
 	NSMenu* menu = [screenPopup menu];
 	
 	for (NSMenuItem* item in [menu itemArray])
@@ -160,6 +169,7 @@ static CGFloat tFScreenPreferencesControllerMeasureInPixels = DEFAULT_MEASURE_WI
 		[item release];
 		i++;
 	}
+#endif
 }
 
 @end

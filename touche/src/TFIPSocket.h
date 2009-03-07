@@ -24,7 +24,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+#if defined(WINDOWS)
+#import <winsock.h>
+#else
 #import <netinet/in.h>
+#endif
 
 #import "TFSocket.h"
 

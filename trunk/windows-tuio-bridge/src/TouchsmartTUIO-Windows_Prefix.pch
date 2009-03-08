@@ -1,0 +1,64 @@
+//
+// Prefix header for all source files of the 'TouchsmartTUIO-Windows' target in the 'TouchsmartTUIO' project
+//
+
+#import <Foundation/Foundation.h>
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+	
+	#define	APP_ERROR_DOMAIN	@"TouchsmartTUIO"
+	
+	#ifndef UInt16
+		#define	UInt16	unsigned short
+	#endif
+	
+	#ifndef UInt32
+		#define	UInt32	unsigned long
+	#endif
+	
+	#ifndef UInt64
+		#define	UInt64	unsigned long long
+	#endif
+	
+	// for NSSwappedFloat
+	#define v floatWord
+	
+	#define	kCFRunLoopDefaultMode	((CFStringRef)NSDefaultRunLoopMode)
+	
+	#define	CGDirectDisplayID	unsigned int
+	
+	#define	in_addr_t	unsigned long
+	#define	in_port_t	unsigned short
+	#define	socklen_t	unsigned int
+	
+	#define	EWOULDBLOCK	WSAEWOULDBLOCK
+	#define	ECONNREFUSED	WSAECONNREFUSED
+	
+	#define inet_aton(str, i)	(0 != ((i)->s_addr = inet_addr((str))) ? 1 : 0)
+	
+	#define ntohl htonl
+	
+	// NSUserDefault's integerForKey seems to be broken in cocotron, so we use a macro as a workaround
+	#define IntegerPrefKey(defaults, key)	([[(defaults) objectForKey:(key)] intValue])
+	// the same goes for floatForKey
+	#define FloatPrefKey(defaults, key)		([[(defaults) objectForKey:(key)] floatValue])
+	
+	// cocotron doesn't implement cStringUsingEncoding:
+	// this is so ugly I could puke, but genius at the same time :-)
+	#define cStringUsingEncoding	cString]; [(id)nil cStringUsingEncoding
+	
+	// cocotron doesn't have getCFRunLoop in NSRunLoop, but since my hack-implementation of CFRunLoop
+	// is based on NSRunLoop, this hack should work
+	#define getCFRunLoop	self
+	
+	// cocotron doesn't implment CFRelease, but since everything is based on Foundation classes,
+	// this macro fixes this
+	#define	CFRelease(obj)	([(id)obj release])
+	
+	#if !defined(bool)
+	#define bool Boolean
+	#endif
+	
+	int close(int fd);
+#endif

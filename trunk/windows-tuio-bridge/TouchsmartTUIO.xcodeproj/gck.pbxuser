@@ -28,7 +28,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					484,
+					320,
 					20,
 					48,
 					43,
@@ -67,8 +67,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 258160635;
-			PBXWorkspaceStateSaveDate = 258160635;
+			PBXPerProjectTemplateStateSaveDate = 258240621;
+			PBXWorkspaceStateSaveDate = 258240621;
 		};
 		perUserProjectItems = {
 			6E242C7D0F5D9CA00005BB0E /* PBXTextBookmark */ = 6E242C7D0F5D9CA00005BB0E /* PBXTextBookmark */;
@@ -108,12 +108,9 @@
 			6E25B5630F63383C001B7064 /* PBXTextBookmark */ = 6E25B5630F63383C001B7064 /* PBXTextBookmark */;
 			6E25B5640F63383C001B7064 /* PBXTextBookmark */ = 6E25B5640F63383C001B7064 /* PBXTextBookmark */;
 			6E25B5650F63383C001B7064 /* PlistBookmark */ = 6E25B5650F63383C001B7064 /* PlistBookmark */;
-			6E25B5660F63383C001B7064 /* PlistBookmark */ = 6E25B5660F63383C001B7064 /* PlistBookmark */;
 			6E25B5670F63383C001B7064 /* PBXTextBookmark */ = 6E25B5670F63383C001B7064 /* PBXTextBookmark */;
-			6E25B5680F63383C001B7064 /* PlistBookmark */ = 6E25B5680F63383C001B7064 /* PlistBookmark */;
-			6E25B5690F63383C001B7064 /* PBXTextBookmark */ = 6E25B5690F63383C001B7064 /* PBXTextBookmark */;
-			6E25B56A0F63383C001B7064 /* PlistBookmark */ = 6E25B56A0F63383C001B7064 /* PlistBookmark */;
 			6E25B56B0F63383C001B7064 /* PlistBookmark */ = 6E25B56B0F63383C001B7064 /* PlistBookmark */;
+			6E25B5820F6470A7001B7064 /* PlistBookmark */ = 6E25B5820F6470A7001B7064 /* PlistBookmark */;
 			6E8464540F556BB100E145FB /* PBXTextBookmark */ = 6E8464540F556BB100E145FB /* PBXTextBookmark */;
 			6E8464560F556BB100E145FB /* PBXTextBookmark */ = 6E8464560F556BB100E145FB /* PBXTextBookmark */;
 			6E8464570F556BB100E145FB /* PBXTextBookmark */ = 6E8464570F556BB100E145FB /* PBXTextBookmark */;
@@ -563,17 +560,6 @@
 		rLen = 0;
 		rLoc = 2147483647;
 	};
-	6E25B5660F63383C001B7064 /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 6E8465100F5578C900E145FB /* UserDefaults.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-		);
-		name = "/Users/gck/HOME/studium/diplomarbeit/multitouch-project/development/code/Touché SVN/windows-tuio-bridge/resources/UserDefaults.plist";
-		rLen = 0;
-		rLoc = 2147483647;
-	};
 	6E25B5670F63383C001B7064 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 6E8463D20F556A6800E145FB /* TFIPSocket.h */;
@@ -584,7 +570,7 @@
 		vrLen = 849;
 		vrLoc = 666;
 	};
-	6E25B5680F63383C001B7064 /* PlistBookmark */ = {
+	6E25B56B0F63383C001B7064 /* PlistBookmark */ = {
 		isa = PlistBookmark;
 		fRef = 6E8465100F5578C900E145FB /* UserDefaults.plist */;
 		fallbackIsa = PBXBookmark;
@@ -595,28 +581,7 @@
 		rLen = 0;
 		rLoc = 2147483647;
 	};
-	6E25B5690F63383C001B7064 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 089C165DFE840E0CC02AAC07 /* English */;
-		name = "InfoPlist.strings: 4";
-		rLen = 0;
-		rLoc = 96;
-		rType = 0;
-		vrLen = 96;
-		vrLoc = 0;
-	};
-	6E25B56A0F63383C001B7064 /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 8D1107310486CEB800E47090 /* Info.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-		);
-		name = "/Users/gck/HOME/studium/diplomarbeit/multitouch-project/development/code/Touché SVN/windows-tuio-bridge/resources/Info.plist";
-		rLen = 0;
-		rLoc = 2147483647;
-	};
-	6E25B56B0F63383C001B7064 /* PlistBookmark */ = {
+	6E25B5820F6470A7001B7064 /* PlistBookmark */ = {
 		isa = PlistBookmark;
 		fRef = 6E8465100F5578C900E145FB /* UserDefaults.plist */;
 		fallbackIsa = PBXBookmark;

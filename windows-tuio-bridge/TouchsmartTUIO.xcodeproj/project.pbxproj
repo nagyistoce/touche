@@ -614,7 +614,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework AppKit -framework Cocoa -destination \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"\n\ncp \"$SOURCE_ROOT\"/nextwindow/dll/NWMultiTouch.dll \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"";
+			shellScript = "/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework AppKit -framework Cocoa -destination \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"\n\ncp \"$SOURCE_ROOT\"/nextwindow/dll/NWMultiTouch.dll \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"\n\ncp \"$SOURCE_ROOT\"/resources/README.txt \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"/../../";
 		};
 /* End PBXShellScriptBuildPhase section */
 

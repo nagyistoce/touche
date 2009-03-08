@@ -1,0 +1,13 @@
+//
+// Prefix header for all source files of the 'TouchsmartTUIO' target in the 'TouchsmartTUIO' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+	
+	#define	APP_ERROR_DOMAIN	@"TouchsmartTUIO"
+	
+	// NSUserDefault's integerForKey seems to be broken in cocotron, so we use a macro as a workaround
+	#define IntegerPrefKey(defaults, key)	([(defaults) integerForKey:(key)])
+	#define FloatPrefKey(defaults, key)		([(defaults) floatForKey:(key)])
+#endif

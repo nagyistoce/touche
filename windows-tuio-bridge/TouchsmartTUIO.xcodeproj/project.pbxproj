@@ -1,0 +1,946 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		6E84641B0F556A6800E145FB /* TFSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D10F556A6800E145FB /* TFSocket.m */; };
+		6E84641C0F556A6800E145FB /* TFIPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D30F556A6800E145FB /* TFIPSocket.m */; };
+		6E84641D0F556A6800E145FB /* TFIPDatagramSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D50F556A6800E145FB /* TFIPDatagramSocket.m */; };
+		6E84641E0F556A6800E145FB /* TFIPStreamSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D70F556A6800E145FB /* TFIPStreamSocket.m */; };
+		6E84641F0F556A6800E145FB /* TFIPTCPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D90F556A6800E145FB /* TFIPTCPSocket.m */; };
+		6E8464200F556A6800E145FB /* TFIPUDPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463DB0F556A6800E145FB /* TFIPUDPSocket.m */; };
+		6E8464210F556A6800E145FB /* TFOSCServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463DE0F556A6800E145FB /* TFOSCServer.m */; };
+		6E8464220F556A6800E145FB /* TFTrackingDataReceiverInfoDictKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463E00F556A6800E145FB /* TFTrackingDataReceiverInfoDictKeys.m */; };
+		6E8464230F556A6800E145FB /* TFTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463E10F556A6800E145FB /* TFTrackingDataDistributor.m */; };
+		6E8464240F556A6800E145FB /* TFTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463E30F556A6800E145FB /* TFTrackingDataReceiver.m */; };
+		6E8464250F556A6800E145FB /* TFTrackingDataDistributionCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463E50F556A6800E145FB /* TFTrackingDataDistributionCenter.m */; };
+		6E8464260F556A6800E145FB /* TFTUIOConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463E80F556A6800E145FB /* TFTUIOConstants.m */; };
+		6E8464270F556A6800E145FB /* TFTUIOFlashXmlSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463EA0F556A6800E145FB /* TFTUIOFlashXmlSettingsController.m */; };
+		6E8464280F556A6800E145FB /* TFTUIOOSCServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463EC0F556A6800E145FB /* TFTUIOOSCServer.m */; };
+		6E8464290F556A6800E145FB /* TFTUIOOSCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463ED0F556A6800E145FB /* TFTUIOOSCSettingsController.m */; };
+		6E84642A0F556A6800E145FB /* TFTUIOOSCTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463EF0F556A6800E145FB /* TFTUIOOSCTrackingDataDistributor.m */; };
+		6E84642B0F556A6800E145FB /* TFTUIOOSCTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463F10F556A6800E145FB /* TFTUIOOSCTrackingDataReceiver.m */; };
+		6E84642C0F556A6800E145FB /* TFTUIOTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463F30F556A6800E145FB /* TFTUIOTrackingDataDistributor.m */; };
+		6E84642D0F556A6800E145FB /* TFBlob+TUIOMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463F60F556A6800E145FB /* TFBlob+TUIOMethods.m */; };
+		6E84642E0F556A6800E145FB /* TFBlob+TUIOOSCMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463F80F556A6800E145FB /* TFBlob+TUIOOSCMethods.m */; };
+		6E84642F0F556A6800E145FB /* TFFlashXMLTUIOGeneration.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463FA0F556A6800E145FB /* TFFlashXMLTUIOGeneration.m */; };
+		6E8464300F556A6800E145FB /* TFFlashXMLTUIOServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463FC0F556A6800E145FB /* TFFlashXMLTUIOServer.m */; };
+		6E8464310F556A6800E145FB /* TFFlashXMLTUIOTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463FE0F556A6800E145FB /* TFFlashXMLTUIOTrackingDataDistributor.m */; };
+		6E8464320F556A6800E145FB /* TFFlashXMLTUIOTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464000F556A6800E145FB /* TFFlashXMLTUIOTrackingDataReceiver.m */; };
+		6E8464340F556A6800E145FB /* TFBlobLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464050F556A6800E145FB /* TFBlobLabel.m */; };
+		6E8464350F556A6800E145FB /* TFBlobPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464070F556A6800E145FB /* TFBlobPoint.m */; };
+		6E8464360F556A6800E145FB /* TFBlobSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464090F556A6800E145FB /* TFBlobSize.m */; };
+		6E8464370F556A6800E145FB /* TFBlobBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E84640B0F556A6800E145FB /* TFBlobBox.m */; };
+		6E8464380F556A6800E145FB /* TFBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E84640D0F556A6800E145FB /* TFBlob.m */; };
+		6E8464390F556A6800E145FB /* NSScreen+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464100F556A6800E145FB /* NSScreen+Extras.m */; };
+		6E84643A0F556A6800E145FB /* TFLabelFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464110F556A6800E145FB /* TFLabelFactory.m */; };
+		6E84643B0F556A6800E145FB /* TFBlobLabelizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464140F556A6800E145FB /* TFBlobLabelizer.m */; };
+		6E84643C0F556A6800E145FB /* TFScreenPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464160F556A6800E145FB /* TFScreenPreferencesController.m */; };
+		6E84643D0F556A6800E145FB /* TFThreadMessagingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464180F556A6800E145FB /* TFThreadMessagingQueue.m */; };
+		6E84643E0F556A6800E145FB /* TFError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464190F556A6800E145FB /* TFError.m */; };
+		6E84646C0F556C7200E145FB /* BBOSCAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464650F556C7200E145FB /* BBOSCAddress.m */; };
+		6E84646D0F556C7200E145FB /* BBOSCArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464670F556C7200E145FB /* BBOSCArgument.m */; };
+		6E84646E0F556C7200E145FB /* BBOSCBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464690F556C7200E145FB /* BBOSCBundle.m */; };
+		6E84646F0F556C7200E145FB /* BBOSCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E84646B0F556C7200E145FB /* BBOSCMessage.m */; };
+		6E8464760F556C8E00E145FB /* BBOSCPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464740F556C8E00E145FB /* BBOSCPacket.m */; };
+		6E84649A0F55704400E145FB /* BBOSCDataUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464980F55704400E145FB /* BBOSCDataUtilities.m */; };
+		6E8464BE0F55722F00E145FB /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E8464BC0F55722F00E145FB /* Preferences.xib */; };
+		6E8464C10F55725200E145FB /* TSPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464BF0F55725200E145FB /* TSPreferencesController.m */; };
+		6E8464DB0F5573D700E145FB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6E8464DA0F5573D700E145FB /* Localizable.strings */; };
+		6E8464DF0F55744400E145FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464DE0F55744400E145FB /* AppDelegate.m */; };
+		6E8465110F5578C900E145FB /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E8465100F5578C900E145FB /* UserDefaults.plist */; };
+		6E8465340F557D0500E145FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		6E8465350F557D0500E145FB /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		6E8465360F557D0500E145FB /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E8464BC0F55722F00E145FB /* Preferences.xib */; };
+		6E8465370F557D0500E145FB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6E8464DA0F5573D700E145FB /* Localizable.strings */; };
+		6E8465380F557D0500E145FB /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E8465100F5578C900E145FB /* UserDefaults.plist */; };
+		6E84653A0F557D0500E145FB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		6E8465410F557D0500E145FB /* TFOSCServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463DE0F556A6800E145FB /* TFOSCServer.m */; };
+		6E8465420F557D0500E145FB /* TFTrackingDataReceiverInfoDictKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463E00F556A6800E145FB /* TFTrackingDataReceiverInfoDictKeys.m */; };
+		6E8465430F557D0500E145FB /* TFTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463E10F556A6800E145FB /* TFTrackingDataDistributor.m */; };
+		6E8465440F557D0500E145FB /* TFTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463E30F556A6800E145FB /* TFTrackingDataReceiver.m */; };
+		6E8465450F557D0500E145FB /* TFTrackingDataDistributionCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463E50F556A6800E145FB /* TFTrackingDataDistributionCenter.m */; };
+		6E8465460F557D0500E145FB /* TFTUIOConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463E80F556A6800E145FB /* TFTUIOConstants.m */; };
+		6E8465470F557D0500E145FB /* TFTUIOFlashXmlSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463EA0F556A6800E145FB /* TFTUIOFlashXmlSettingsController.m */; };
+		6E8465480F557D0500E145FB /* TFTUIOOSCServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463EC0F556A6800E145FB /* TFTUIOOSCServer.m */; };
+		6E8465490F557D0500E145FB /* TFTUIOOSCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463ED0F556A6800E145FB /* TFTUIOOSCSettingsController.m */; };
+		6E84654A0F557D0500E145FB /* TFTUIOOSCTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463EF0F556A6800E145FB /* TFTUIOOSCTrackingDataDistributor.m */; };
+		6E84654B0F557D0500E145FB /* TFTUIOOSCTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463F10F556A6800E145FB /* TFTUIOOSCTrackingDataReceiver.m */; };
+		6E84654C0F557D0500E145FB /* TFTUIOTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463F30F556A6800E145FB /* TFTUIOTrackingDataDistributor.m */; };
+		6E84654D0F557D0500E145FB /* TFBlob+TUIOMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463F60F556A6800E145FB /* TFBlob+TUIOMethods.m */; };
+		6E84654E0F557D0500E145FB /* TFBlob+TUIOOSCMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463F80F556A6800E145FB /* TFBlob+TUIOOSCMethods.m */; };
+		6E84654F0F557D0500E145FB /* TFFlashXMLTUIOGeneration.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463FA0F556A6800E145FB /* TFFlashXMLTUIOGeneration.m */; };
+		6E8465500F557D0500E145FB /* TFFlashXMLTUIOServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463FC0F556A6800E145FB /* TFFlashXMLTUIOServer.m */; };
+		6E8465510F557D0500E145FB /* TFFlashXMLTUIOTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463FE0F556A6800E145FB /* TFFlashXMLTUIOTrackingDataDistributor.m */; };
+		6E8465520F557D0500E145FB /* TFFlashXMLTUIOTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464000F556A6800E145FB /* TFFlashXMLTUIOTrackingDataReceiver.m */; };
+		6E8465540F557D0500E145FB /* TFBlobLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464050F556A6800E145FB /* TFBlobLabel.m */; };
+		6E8465550F557D0500E145FB /* TFBlobPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464070F556A6800E145FB /* TFBlobPoint.m */; };
+		6E8465560F557D0500E145FB /* TFBlobSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464090F556A6800E145FB /* TFBlobSize.m */; };
+		6E8465570F557D0500E145FB /* TFBlobBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E84640B0F556A6800E145FB /* TFBlobBox.m */; };
+		6E8465580F557D0500E145FB /* TFBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E84640D0F556A6800E145FB /* TFBlob.m */; };
+		6E8465590F557D0500E145FB /* NSScreen+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464100F556A6800E145FB /* NSScreen+Extras.m */; };
+		6E84655A0F557D0500E145FB /* TFLabelFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464110F556A6800E145FB /* TFLabelFactory.m */; };
+		6E84655B0F557D0500E145FB /* TFBlobLabelizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464140F556A6800E145FB /* TFBlobLabelizer.m */; };
+		6E84655C0F557D0500E145FB /* TFScreenPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464160F556A6800E145FB /* TFScreenPreferencesController.m */; };
+		6E84655D0F557D0500E145FB /* TFThreadMessagingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464180F556A6800E145FB /* TFThreadMessagingQueue.m */; };
+		6E84655E0F557D0500E145FB /* TFError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464190F556A6800E145FB /* TFError.m */; };
+		6E84655F0F557D0500E145FB /* BBOSCAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464650F556C7200E145FB /* BBOSCAddress.m */; };
+		6E8465600F557D0500E145FB /* BBOSCArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464670F556C7200E145FB /* BBOSCArgument.m */; };
+		6E8465610F557D0500E145FB /* BBOSCBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464690F556C7200E145FB /* BBOSCBundle.m */; };
+		6E8465620F557D0500E145FB /* BBOSCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E84646B0F556C7200E145FB /* BBOSCMessage.m */; };
+		6E8465630F557D0500E145FB /* BBOSCPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464740F556C8E00E145FB /* BBOSCPacket.m */; };
+		6E8465640F557D0500E145FB /* BBOSCDataUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464980F55704400E145FB /* BBOSCDataUtilities.m */; };
+		6E8465650F557D0500E145FB /* TSPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464BF0F55725200E145FB /* TSPreferencesController.m */; };
+		6E8465660F557D0500E145FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8464DE0F55744400E145FB /* AppDelegate.m */; };
+		6E8465680F557D0500E145FB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		6E8467BE0F558B3200E145FB /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
+		6E84684C0F558DA900E145FB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E84684B0F558DA900E145FB /* Foundation.framework */; };
+		6E84684D0F558DA900E145FB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E84684B0F558DA900E145FB /* Foundation.framework */; };
+		6E84685F0F558EB600E145FB /* TFIPDatagramSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D50F556A6800E145FB /* TFIPDatagramSocket.m */; };
+		6E8468600F558EB700E145FB /* TFIPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D30F556A6800E145FB /* TFIPSocket.m */; };
+		6E8468610F558EB800E145FB /* TFIPStreamSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D70F556A6800E145FB /* TFIPStreamSocket.m */; };
+		6E8468620F558EB900E145FB /* TFIPTCPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D90F556A6800E145FB /* TFIPTCPSocket.m */; };
+		6E8468630F558EBA00E145FB /* TFIPUDPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463DB0F556A6800E145FB /* TFIPUDPSocket.m */; };
+		6E8468640F558EBB00E145FB /* TFSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D10F556A6800E145FB /* TFSocket.m */; };
+		6E8469E30F55A4FE00E145FB /* CFSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8469E20F55A4FE00E145FB /* CFSocket.m */; };
+		6E846A320F55A73D00E145FB /* CFRunLoop.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E846A310F55A73D00E145FB /* CFRunLoop.m */; };
+		6E846CF10F56BD2F00E145FB /* TSBlobLabelizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E846CEF0F56BD2F00E145FB /* TSBlobLabelizer.m */; };
+		6E846D0F0F56BDD800E145FB /* TSBlobLabelizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E846CEF0F56BD2F00E145FB /* TSBlobLabelizer.m */; };
+		6E846F3F0F57613200E145FB /* TSTouchInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E846F3E0F57613200E145FB /* TSTouchInputSource.m */; };
+		6E846F400F57613200E145FB /* TSTouchInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E846F3E0F57613200E145FB /* TSTouchInputSource.m */; };
+		6E846F480F5761FC00E145FB /* TSNextwindowTouchInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E846F470F5761FC00E145FB /* TSNextwindowTouchInputSource.m */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		6E84683E0F558D3100E145FB /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		6E846F7E0F57652700E145FB /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.cpp;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		32CA4F630368D1EE00C91783 /* TouchsmartTUIO_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchsmartTUIO_Prefix.pch; sourceTree = "<group>"; };
+		6E8463D00F556A6800E145FB /* TFSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFSocket.h; sourceTree = "<group>"; };
+		6E8463D10F556A6800E145FB /* TFSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFSocket.m; sourceTree = "<group>"; };
+		6E8463D20F556A6800E145FB /* TFIPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPSocket.h; sourceTree = "<group>"; };
+		6E8463D30F556A6800E145FB /* TFIPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPSocket.m; sourceTree = "<group>"; };
+		6E8463D40F556A6800E145FB /* TFIPDatagramSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPDatagramSocket.h; sourceTree = "<group>"; };
+		6E8463D50F556A6800E145FB /* TFIPDatagramSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPDatagramSocket.m; sourceTree = "<group>"; };
+		6E8463D60F556A6800E145FB /* TFIPStreamSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPStreamSocket.h; sourceTree = "<group>"; };
+		6E8463D70F556A6800E145FB /* TFIPStreamSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPStreamSocket.m; sourceTree = "<group>"; };
+		6E8463D80F556A6800E145FB /* TFIPTCPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPTCPSocket.h; sourceTree = "<group>"; };
+		6E8463D90F556A6800E145FB /* TFIPTCPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPTCPSocket.m; sourceTree = "<group>"; };
+		6E8463DA0F556A6800E145FB /* TFIPUDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPUDPSocket.h; sourceTree = "<group>"; };
+		6E8463DB0F556A6800E145FB /* TFIPUDPSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPUDPSocket.m; sourceTree = "<group>"; };
+		6E8463DD0F556A6800E145FB /* TFOSCServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOSCServer.h; sourceTree = "<group>"; };
+		6E8463DE0F556A6800E145FB /* TFOSCServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOSCServer.m; sourceTree = "<group>"; };
+		6E8463DF0F556A6800E145FB /* TFTrackingDataReceiverInfoDictKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTrackingDataReceiverInfoDictKeys.h; sourceTree = "<group>"; };
+		6E8463E00F556A6800E145FB /* TFTrackingDataReceiverInfoDictKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTrackingDataReceiverInfoDictKeys.m; sourceTree = "<group>"; };
+		6E8463E10F556A6800E145FB /* TFTrackingDataDistributor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTrackingDataDistributor.m; sourceTree = "<group>"; };
+		6E8463E20F556A6800E145FB /* TFTrackingDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTrackingDataReceiver.h; sourceTree = "<group>"; };
+		6E8463E30F556A6800E145FB /* TFTrackingDataReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTrackingDataReceiver.m; sourceTree = "<group>"; };
+		6E8463E40F556A6800E145FB /* TFTrackingDataDistributor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTrackingDataDistributor.h; sourceTree = "<group>"; };
+		6E8463E50F556A6800E145FB /* TFTrackingDataDistributionCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTrackingDataDistributionCenter.m; sourceTree = "<group>"; };
+		6E8463E60F556A6800E145FB /* TFTrackingDataDistributionCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTrackingDataDistributionCenter.h; sourceTree = "<group>"; };
+		6E8463E70F556A6800E145FB /* TFTUIOConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOConstants.h; sourceTree = "<group>"; };
+		6E8463E80F556A6800E145FB /* TFTUIOConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOConstants.m; sourceTree = "<group>"; };
+		6E8463E90F556A6800E145FB /* TFTUIOFlashXmlSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOFlashXmlSettingsController.h; sourceTree = "<group>"; };
+		6E8463EA0F556A6800E145FB /* TFTUIOFlashXmlSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOFlashXmlSettingsController.m; sourceTree = "<group>"; };
+		6E8463EB0F556A6800E145FB /* TFTUIOOSCServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOOSCServer.h; sourceTree = "<group>"; };
+		6E8463EC0F556A6800E145FB /* TFTUIOOSCServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOOSCServer.m; sourceTree = "<group>"; };
+		6E8463ED0F556A6800E145FB /* TFTUIOOSCSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOOSCSettingsController.m; sourceTree = "<group>"; };
+		6E8463EE0F556A6800E145FB /* TFTUIOOSCTrackingDataDistributor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOOSCTrackingDataDistributor.h; sourceTree = "<group>"; };
+		6E8463EF0F556A6800E145FB /* TFTUIOOSCTrackingDataDistributor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOOSCTrackingDataDistributor.m; sourceTree = "<group>"; };
+		6E8463F00F556A6800E145FB /* TFTUIOOSCTrackingDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOOSCTrackingDataReceiver.h; sourceTree = "<group>"; };
+		6E8463F10F556A6800E145FB /* TFTUIOOSCTrackingDataReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOOSCTrackingDataReceiver.m; sourceTree = "<group>"; };
+		6E8463F20F556A6800E145FB /* TFTUIOTrackingDataDistributor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOTrackingDataDistributor.h; sourceTree = "<group>"; };
+		6E8463F30F556A6800E145FB /* TFTUIOTrackingDataDistributor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOTrackingDataDistributor.m; sourceTree = "<group>"; };
+		6E8463F40F556A6800E145FB /* TFTUIOOSCSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOOSCSettingsController.h; sourceTree = "<group>"; };
+		6E8463F50F556A6800E145FB /* TFBlob+TUIOMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFBlob+TUIOMethods.h"; sourceTree = "<group>"; };
+		6E8463F60F556A6800E145FB /* TFBlob+TUIOMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFBlob+TUIOMethods.m"; sourceTree = "<group>"; };
+		6E8463F70F556A6800E145FB /* TFBlob+TUIOOSCMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFBlob+TUIOOSCMethods.h"; sourceTree = "<group>"; };
+		6E8463F80F556A6800E145FB /* TFBlob+TUIOOSCMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFBlob+TUIOOSCMethods.m"; sourceTree = "<group>"; };
+		6E8463F90F556A6800E145FB /* TFFlashXMLTUIOGeneration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFFlashXMLTUIOGeneration.h; sourceTree = "<group>"; };
+		6E8463FA0F556A6800E145FB /* TFFlashXMLTUIOGeneration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFFlashXMLTUIOGeneration.m; sourceTree = "<group>"; };
+		6E8463FB0F556A6800E145FB /* TFFlashXMLTUIOServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFFlashXMLTUIOServer.h; sourceTree = "<group>"; };
+		6E8463FC0F556A6800E145FB /* TFFlashXMLTUIOServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFFlashXMLTUIOServer.m; sourceTree = "<group>"; };
+		6E8463FD0F556A6800E145FB /* TFFlashXMLTUIOTrackingDataDistributor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFFlashXMLTUIOTrackingDataDistributor.h; sourceTree = "<group>"; };
+		6E8463FE0F556A6800E145FB /* TFFlashXMLTUIOTrackingDataDistributor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFFlashXMLTUIOTrackingDataDistributor.m; sourceTree = "<group>"; };
+		6E8463FF0F556A6800E145FB /* TFFlashXMLTUIOTrackingDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFFlashXMLTUIOTrackingDataReceiver.h; sourceTree = "<group>"; };
+		6E8464000F556A6800E145FB /* TFFlashXMLTUIOTrackingDataReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFFlashXMLTUIOTrackingDataReceiver.m; sourceTree = "<group>"; };
+		6E8464040F556A6800E145FB /* TFBlobLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBlobLabel.h; sourceTree = "<group>"; };
+		6E8464050F556A6800E145FB /* TFBlobLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlobLabel.m; sourceTree = "<group>"; };
+		6E8464060F556A6800E145FB /* TFBlobPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBlobPoint.h; sourceTree = "<group>"; };
+		6E8464070F556A6800E145FB /* TFBlobPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlobPoint.m; sourceTree = "<group>"; };
+		6E8464080F556A6800E145FB /* TFBlobSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBlobSize.h; sourceTree = "<group>"; };
+		6E8464090F556A6800E145FB /* TFBlobSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlobSize.m; sourceTree = "<group>"; };
+		6E84640A0F556A6800E145FB /* TFBlobBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBlobBox.h; sourceTree = "<group>"; };
+		6E84640B0F556A6800E145FB /* TFBlobBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlobBox.m; sourceTree = "<group>"; };
+		6E84640C0F556A6800E145FB /* TFBlob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBlob.h; sourceTree = "<group>"; };
+		6E84640D0F556A6800E145FB /* TFBlob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlob.m; sourceTree = "<group>"; };
+		6E84640F0F556A6800E145FB /* NSScreen+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+Extras.h"; sourceTree = "<group>"; };
+		6E8464100F556A6800E145FB /* NSScreen+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Extras.m"; sourceTree = "<group>"; };
+		6E8464110F556A6800E145FB /* TFLabelFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFLabelFactory.m; sourceTree = "<group>"; };
+		6E8464120F556A6800E145FB /* TFLabelFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLabelFactory.h; sourceTree = "<group>"; };
+		6E8464130F556A6800E145FB /* TFBlobLabelizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBlobLabelizer.h; sourceTree = "<group>"; };
+		6E8464140F556A6800E145FB /* TFBlobLabelizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlobLabelizer.m; sourceTree = "<group>"; };
+		6E8464150F556A6800E145FB /* TFScreenPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFScreenPreferencesController.h; sourceTree = "<group>"; };
+		6E8464160F556A6800E145FB /* TFScreenPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFScreenPreferencesController.m; sourceTree = "<group>"; };
+		6E8464170F556A6800E145FB /* TFThreadMessagingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFThreadMessagingQueue.h; sourceTree = "<group>"; };
+		6E8464180F556A6800E145FB /* TFThreadMessagingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFThreadMessagingQueue.m; sourceTree = "<group>"; };
+		6E8464190F556A6800E145FB /* TFError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFError.m; sourceTree = "<group>"; };
+		6E84641A0F556A6800E145FB /* TFError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFError.h; sourceTree = "<group>"; };
+		6E8464640F556C7200E145FB /* BBOSCAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBOSCAddress.h; sourceTree = "<group>"; };
+		6E8464650F556C7200E145FB /* BBOSCAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBOSCAddress.m; sourceTree = "<group>"; };
+		6E8464660F556C7200E145FB /* BBOSCArgument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBOSCArgument.h; sourceTree = "<group>"; };
+		6E8464670F556C7200E145FB /* BBOSCArgument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBOSCArgument.m; sourceTree = "<group>"; };
+		6E8464680F556C7200E145FB /* BBOSCBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBOSCBundle.h; sourceTree = "<group>"; };
+		6E8464690F556C7200E145FB /* BBOSCBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBOSCBundle.m; sourceTree = "<group>"; };
+		6E84646A0F556C7200E145FB /* BBOSCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBOSCMessage.h; sourceTree = "<group>"; };
+		6E84646B0F556C7200E145FB /* BBOSCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBOSCMessage.m; sourceTree = "<group>"; };
+		6E8464740F556C8E00E145FB /* BBOSCPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBOSCPacket.m; sourceTree = "<group>"; };
+		6E8464750F556C8E00E145FB /* BBOSCPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBOSCPacket.h; sourceTree = "<group>"; };
+		6E8464980F55704400E145FB /* BBOSCDataUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBOSCDataUtilities.m; sourceTree = "<group>"; };
+		6E8464990F55704400E145FB /* BBOSCDataUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBOSCDataUtilities.h; sourceTree = "<group>"; };
+		6E8464BD0F55722F00E145FB /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Preferences.xib; sourceTree = "<group>"; };
+		6E8464BF0F55725200E145FB /* TSPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSPreferencesController.m; sourceTree = "<group>"; };
+		6E8464C00F55725200E145FB /* TSPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSPreferencesController.h; sourceTree = "<group>"; };
+		6E8464D80F5573CB00E145FB /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6E8464DD0F55744400E145FB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = src/AppDelegate.h; sourceTree = "<group>"; };
+		6E8464DE0F55744400E145FB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = src/AppDelegate.m; sourceTree = "<group>"; };
+		6E8465100F5578C900E145FB /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserDefaults.plist; sourceTree = "<group>"; };
+		6E84656C0F557D0500E145FB /* TouchsmartTUIO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TouchsmartTUIO.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E8465BA0F557FB000E145FB /* TouchsmartTUIO-Windows_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TouchsmartTUIO-Windows_Prefix.pch"; sourceTree = "<group>"; };
+		6E84684B0F558DA900E145FB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		6E8469E20F55A4FE00E145FB /* CFSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFSocket.m; sourceTree = "<group>"; };
+		6E846A310F55A73D00E145FB /* CFRunLoop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFRunLoop.m; sourceTree = "<group>"; };
+		6E846CEF0F56BD2F00E145FB /* TSBlobLabelizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSBlobLabelizer.m; sourceTree = "<group>"; };
+		6E846CF00F56BD2F00E145FB /* TSBlobLabelizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSBlobLabelizer.h; sourceTree = "<group>"; };
+		6E846F3D0F57613200E145FB /* TSTouchInputSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSTouchInputSource.h; sourceTree = "<group>"; };
+		6E846F3E0F57613200E145FB /* TSTouchInputSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSTouchInputSource.m; sourceTree = "<group>"; };
+		6E846F460F5761FC00E145FB /* TSNextwindowTouchInputSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSNextwindowTouchInputSource.h; sourceTree = "<group>"; };
+		6E846F470F5761FC00E145FB /* TSNextwindowTouchInputSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSNextwindowTouchInputSource.m; sourceTree = "<group>"; };
+		6E846F4C0F57630D00E145FB /* NWMultiTouch.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = NWMultiTouch.h; path = ../nextwindow/NWMultiTouch.h; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* TouchsmartTUIO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TouchsmartTUIO.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6E8465670F557D0500E145FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E8465680F557D0500E145FB /* Cocoa.framework in Frameworks */,
+				6E8467BE0F558B3200E145FB /* AppKit.framework in Frameworks */,
+				6E84684C0F558DA900E145FB /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				6E84684D0F558DA900E145FB /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				6E846F450F5761DC00E145FB /* Nextwindow */,
+				6E8464C00F55725200E145FB /* TSPreferencesController.h */,
+				6E8464BF0F55725200E145FB /* TSPreferencesController.m */,
+				6E846CF00F56BD2F00E145FB /* TSBlobLabelizer.h */,
+				6E846CEF0F56BD2F00E145FB /* TSBlobLabelizer.m */,
+				6E846F3D0F57613200E145FB /* TSTouchInputSource.h */,
+				6E846F3E0F57613200E145FB /* TSTouchInputSource.m */,
+			);
+			name = Classes;
+			path = src;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6E84684B0F558DA900E145FB /* Foundation.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* TouchsmartTUIO.app */,
+				6E84656C0F557D0500E145FB /* TouchsmartTUIO.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* TouchsmartTUIO */ = {
+			isa = PBXGroup;
+			children = (
+				6E8469DC0F55A49000E145FB /* Cocotron Hacks */,
+				6E8464620F556C4400E145FB /* BBOSC Sources */,
+				6E8463BE0F556A0800E145FB /* Touché Sources */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				6E8464DD0F55744400E145FB /* AppDelegate.h */,
+				6E8464DE0F55744400E145FB /* AppDelegate.m */,
+			);
+			name = TouchsmartTUIO;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				6E8465BA0F557FB000E145FB /* TouchsmartTUIO-Windows_Prefix.pch */,
+				32CA4F630368D1EE00C91783 /* TouchsmartTUIO_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			path = src;
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107310486CEB800E47090 /* Info.plist */,
+				6E8465100F5578C900E145FB /* UserDefaults.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+				6E8464BC0F55722F00E145FB /* Preferences.xib */,
+				6E8464DA0F5573D700E145FB /* Localizable.strings */,
+			);
+			name = Resources;
+			path = resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6E8463BE0F556A0800E145FB /* Touché Sources */ = {
+			isa = PBXGroup;
+			children = (
+				6E8464030F556A6800E145FB /* Blobs */,
+				6E84640E0F556A6800E145FB /* Misc */,
+				6E8463CF0F556A6800E145FB /* Network */,
+				6E8463DC0F556A6800E145FB /* TUIO Distribution */,
+			);
+			name = "Touché Sources";
+			path = ../touche/src;
+			sourceTree = "<group>";
+		};
+		6E8463CF0F556A6800E145FB /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				6E8463D00F556A6800E145FB /* TFSocket.h */,
+				6E8463D10F556A6800E145FB /* TFSocket.m */,
+				6E8463D20F556A6800E145FB /* TFIPSocket.h */,
+				6E8463D30F556A6800E145FB /* TFIPSocket.m */,
+				6E8463D40F556A6800E145FB /* TFIPDatagramSocket.h */,
+				6E8463D50F556A6800E145FB /* TFIPDatagramSocket.m */,
+				6E8463D60F556A6800E145FB /* TFIPStreamSocket.h */,
+				6E8463D70F556A6800E145FB /* TFIPStreamSocket.m */,
+				6E8463D80F556A6800E145FB /* TFIPTCPSocket.h */,
+				6E8463D90F556A6800E145FB /* TFIPTCPSocket.m */,
+				6E8463DA0F556A6800E145FB /* TFIPUDPSocket.h */,
+				6E8463DB0F556A6800E145FB /* TFIPUDPSocket.m */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
+		6E8463DC0F556A6800E145FB /* TUIO Distribution */ = {
+			isa = PBXGroup;
+			children = (
+				6E8463DD0F556A6800E145FB /* TFOSCServer.h */,
+				6E8463DE0F556A6800E145FB /* TFOSCServer.m */,
+				6E8463DF0F556A6800E145FB /* TFTrackingDataReceiverInfoDictKeys.h */,
+				6E8463E00F556A6800E145FB /* TFTrackingDataReceiverInfoDictKeys.m */,
+				6E8463E10F556A6800E145FB /* TFTrackingDataDistributor.m */,
+				6E8463E20F556A6800E145FB /* TFTrackingDataReceiver.h */,
+				6E8463E30F556A6800E145FB /* TFTrackingDataReceiver.m */,
+				6E8463E40F556A6800E145FB /* TFTrackingDataDistributor.h */,
+				6E8463E50F556A6800E145FB /* TFTrackingDataDistributionCenter.m */,
+				6E8463E60F556A6800E145FB /* TFTrackingDataDistributionCenter.h */,
+				6E8463E70F556A6800E145FB /* TFTUIOConstants.h */,
+				6E8463E80F556A6800E145FB /* TFTUIOConstants.m */,
+				6E8463E90F556A6800E145FB /* TFTUIOFlashXmlSettingsController.h */,
+				6E8463EA0F556A6800E145FB /* TFTUIOFlashXmlSettingsController.m */,
+				6E8463EB0F556A6800E145FB /* TFTUIOOSCServer.h */,
+				6E8463EC0F556A6800E145FB /* TFTUIOOSCServer.m */,
+				6E8463ED0F556A6800E145FB /* TFTUIOOSCSettingsController.m */,
+				6E8463EE0F556A6800E145FB /* TFTUIOOSCTrackingDataDistributor.h */,
+				6E8463EF0F556A6800E145FB /* TFTUIOOSCTrackingDataDistributor.m */,
+				6E8463F00F556A6800E145FB /* TFTUIOOSCTrackingDataReceiver.h */,
+				6E8463F10F556A6800E145FB /* TFTUIOOSCTrackingDataReceiver.m */,
+				6E8463F20F556A6800E145FB /* TFTUIOTrackingDataDistributor.h */,
+				6E8463F30F556A6800E145FB /* TFTUIOTrackingDataDistributor.m */,
+				6E8463F40F556A6800E145FB /* TFTUIOOSCSettingsController.h */,
+				6E8463F50F556A6800E145FB /* TFBlob+TUIOMethods.h */,
+				6E8463F60F556A6800E145FB /* TFBlob+TUIOMethods.m */,
+				6E8463F70F556A6800E145FB /* TFBlob+TUIOOSCMethods.h */,
+				6E8463F80F556A6800E145FB /* TFBlob+TUIOOSCMethods.m */,
+				6E8463F90F556A6800E145FB /* TFFlashXMLTUIOGeneration.h */,
+				6E8463FA0F556A6800E145FB /* TFFlashXMLTUIOGeneration.m */,
+				6E8463FB0F556A6800E145FB /* TFFlashXMLTUIOServer.h */,
+				6E8463FC0F556A6800E145FB /* TFFlashXMLTUIOServer.m */,
+				6E8463FD0F556A6800E145FB /* TFFlashXMLTUIOTrackingDataDistributor.h */,
+				6E8463FE0F556A6800E145FB /* TFFlashXMLTUIOTrackingDataDistributor.m */,
+				6E8463FF0F556A6800E145FB /* TFFlashXMLTUIOTrackingDataReceiver.h */,
+				6E8464000F556A6800E145FB /* TFFlashXMLTUIOTrackingDataReceiver.m */,
+			);
+			name = "TUIO Distribution";
+			sourceTree = "<group>";
+		};
+		6E8464030F556A6800E145FB /* Blobs */ = {
+			isa = PBXGroup;
+			children = (
+				6E8464040F556A6800E145FB /* TFBlobLabel.h */,
+				6E8464050F556A6800E145FB /* TFBlobLabel.m */,
+				6E8464060F556A6800E145FB /* TFBlobPoint.h */,
+				6E8464070F556A6800E145FB /* TFBlobPoint.m */,
+				6E8464080F556A6800E145FB /* TFBlobSize.h */,
+				6E8464090F556A6800E145FB /* TFBlobSize.m */,
+				6E84640A0F556A6800E145FB /* TFBlobBox.h */,
+				6E84640B0F556A6800E145FB /* TFBlobBox.m */,
+				6E84640C0F556A6800E145FB /* TFBlob.h */,
+				6E84640D0F556A6800E145FB /* TFBlob.m */,
+			);
+			name = Blobs;
+			sourceTree = "<group>";
+		};
+		6E84640E0F556A6800E145FB /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				6E84640F0F556A6800E145FB /* NSScreen+Extras.h */,
+				6E8464100F556A6800E145FB /* NSScreen+Extras.m */,
+				6E8464110F556A6800E145FB /* TFLabelFactory.m */,
+				6E8464120F556A6800E145FB /* TFLabelFactory.h */,
+				6E8464130F556A6800E145FB /* TFBlobLabelizer.h */,
+				6E8464140F556A6800E145FB /* TFBlobLabelizer.m */,
+				6E8464150F556A6800E145FB /* TFScreenPreferencesController.h */,
+				6E8464160F556A6800E145FB /* TFScreenPreferencesController.m */,
+				6E8464170F556A6800E145FB /* TFThreadMessagingQueue.h */,
+				6E8464180F556A6800E145FB /* TFThreadMessagingQueue.m */,
+				6E8464190F556A6800E145FB /* TFError.m */,
+				6E84641A0F556A6800E145FB /* TFError.h */,
+			);
+			name = Misc;
+			sourceTree = "<group>";
+		};
+		6E8464620F556C4400E145FB /* BBOSC Sources */ = {
+			isa = PBXGroup;
+			children = (
+				6E8464640F556C7200E145FB /* BBOSCAddress.h */,
+				6E8464650F556C7200E145FB /* BBOSCAddress.m */,
+				6E8464660F556C7200E145FB /* BBOSCArgument.h */,
+				6E8464670F556C7200E145FB /* BBOSCArgument.m */,
+				6E8464680F556C7200E145FB /* BBOSCBundle.h */,
+				6E8464690F556C7200E145FB /* BBOSCBundle.m */,
+				6E8464990F55704400E145FB /* BBOSCDataUtilities.h */,
+				6E8464980F55704400E145FB /* BBOSCDataUtilities.m */,
+				6E84646A0F556C7200E145FB /* BBOSCMessage.h */,
+				6E84646B0F556C7200E145FB /* BBOSCMessage.m */,
+				6E8464750F556C8E00E145FB /* BBOSCPacket.h */,
+				6E8464740F556C8E00E145FB /* BBOSCPacket.m */,
+			);
+			name = "BBOSC Sources";
+			path = BBOSC;
+			sourceTree = "<group>";
+		};
+		6E8469DC0F55A49000E145FB /* Cocotron Hacks */ = {
+			isa = PBXGroup;
+			children = (
+				6E8469E20F55A4FE00E145FB /* CFSocket.m */,
+				6E846A310F55A73D00E145FB /* CFRunLoop.m */,
+			);
+			name = "Cocotron Hacks";
+			path = "cocotron-hacks";
+			sourceTree = "<group>";
+		};
+		6E846F450F5761DC00E145FB /* Nextwindow */ = {
+			isa = PBXGroup;
+			children = (
+				6E846F4C0F57630D00E145FB /* NWMultiTouch.h */,
+				6E846F460F5761FC00E145FB /* TSNextwindowTouchInputSource.h */,
+				6E846F470F5761FC00E145FB /* TSNextwindowTouchInputSource.m */,
+			);
+			name = Nextwindow;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6E8465320F557D0500E145FB /* TouchsmartTUIO-Windows */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6E8465690F557D0500E145FB /* Build configuration list for PBXNativeTarget "TouchsmartTUIO-Windows" */;
+			buildPhases = (
+				6E8465330F557D0500E145FB /* Resources */,
+				6E8465390F557D0500E145FB /* Sources */,
+				6E8465670F557D0500E145FB /* Frameworks */,
+				6E846B4D0F55FF1700E145FB /* ShellScript */,
+			);
+			buildRules = (
+				6E846F7E0F57652700E145FB /* PBXBuildRule */,
+				6E84683E0F558D3100E145FB /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "TouchsmartTUIO-Windows";
+			productInstallPath = "$(HOME)/Applications";
+			productName = TouchsmartTUIO;
+			productReference = 6E84656C0F557D0500E145FB /* TouchsmartTUIO.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8D1107260486CEB800E47090 /* TouchsmartTUIO */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "TouchsmartTUIO" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TouchsmartTUIO;
+			productInstallPath = "$(HOME)/Applications";
+			productName = TouchsmartTUIO;
+			productReference = 8D1107320486CEB800E47090 /* TouchsmartTUIO.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TouchsmartTUIO" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* TouchsmartTUIO */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* TouchsmartTUIO */,
+				6E8465320F557D0500E145FB /* TouchsmartTUIO-Windows */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6E8465330F557D0500E145FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E8465340F557D0500E145FB /* InfoPlist.strings in Resources */,
+				6E8465350F557D0500E145FB /* MainMenu.xib in Resources */,
+				6E8465360F557D0500E145FB /* Preferences.xib in Resources */,
+				6E8465370F557D0500E145FB /* Localizable.strings in Resources */,
+				6E8465380F557D0500E145FB /* UserDefaults.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
+				6E8464BE0F55722F00E145FB /* Preferences.xib in Resources */,
+				6E8464DB0F5573D700E145FB /* Localizable.strings in Resources */,
+				6E8465110F5578C900E145FB /* UserDefaults.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6E846B4D0F55FF1700E145FB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework AppKit -framework Cocoa -destination \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"\n\ncp \"$SOURCE_ROOT\"/nextwindow/dll/NWMultiTouch.dll \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6E8465390F557D0500E145FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E84653A0F557D0500E145FB /* main.m in Sources */,
+				6E8465410F557D0500E145FB /* TFOSCServer.m in Sources */,
+				6E8465420F557D0500E145FB /* TFTrackingDataReceiverInfoDictKeys.m in Sources */,
+				6E8465430F557D0500E145FB /* TFTrackingDataDistributor.m in Sources */,
+				6E8465440F557D0500E145FB /* TFTrackingDataReceiver.m in Sources */,
+				6E8465450F557D0500E145FB /* TFTrackingDataDistributionCenter.m in Sources */,
+				6E8465460F557D0500E145FB /* TFTUIOConstants.m in Sources */,
+				6E8465470F557D0500E145FB /* TFTUIOFlashXmlSettingsController.m in Sources */,
+				6E8465480F557D0500E145FB /* TFTUIOOSCServer.m in Sources */,
+				6E8465490F557D0500E145FB /* TFTUIOOSCSettingsController.m in Sources */,
+				6E84654A0F557D0500E145FB /* TFTUIOOSCTrackingDataDistributor.m in Sources */,
+				6E84654B0F557D0500E145FB /* TFTUIOOSCTrackingDataReceiver.m in Sources */,
+				6E84654C0F557D0500E145FB /* TFTUIOTrackingDataDistributor.m in Sources */,
+				6E84654D0F557D0500E145FB /* TFBlob+TUIOMethods.m in Sources */,
+				6E84654E0F557D0500E145FB /* TFBlob+TUIOOSCMethods.m in Sources */,
+				6E84654F0F557D0500E145FB /* TFFlashXMLTUIOGeneration.m in Sources */,
+				6E8465500F557D0500E145FB /* TFFlashXMLTUIOServer.m in Sources */,
+				6E8465510F557D0500E145FB /* TFFlashXMLTUIOTrackingDataDistributor.m in Sources */,
+				6E8465520F557D0500E145FB /* TFFlashXMLTUIOTrackingDataReceiver.m in Sources */,
+				6E8465540F557D0500E145FB /* TFBlobLabel.m in Sources */,
+				6E8465550F557D0500E145FB /* TFBlobPoint.m in Sources */,
+				6E8465560F557D0500E145FB /* TFBlobSize.m in Sources */,
+				6E8465570F557D0500E145FB /* TFBlobBox.m in Sources */,
+				6E8465580F557D0500E145FB /* TFBlob.m in Sources */,
+				6E8465590F557D0500E145FB /* NSScreen+Extras.m in Sources */,
+				6E84655A0F557D0500E145FB /* TFLabelFactory.m in Sources */,
+				6E84655B0F557D0500E145FB /* TFBlobLabelizer.m in Sources */,
+				6E84655C0F557D0500E145FB /* TFScreenPreferencesController.m in Sources */,
+				6E84655D0F557D0500E145FB /* TFThreadMessagingQueue.m in Sources */,
+				6E84655E0F557D0500E145FB /* TFError.m in Sources */,
+				6E84655F0F557D0500E145FB /* BBOSCAddress.m in Sources */,
+				6E8465600F557D0500E145FB /* BBOSCArgument.m in Sources */,
+				6E8465610F557D0500E145FB /* BBOSCBundle.m in Sources */,
+				6E8465620F557D0500E145FB /* BBOSCMessage.m in Sources */,
+				6E8465630F557D0500E145FB /* BBOSCPacket.m in Sources */,
+				6E8465640F557D0500E145FB /* BBOSCDataUtilities.m in Sources */,
+				6E8465650F557D0500E145FB /* TSPreferencesController.m in Sources */,
+				6E8465660F557D0500E145FB /* AppDelegate.m in Sources */,
+				6E84685F0F558EB600E145FB /* TFIPDatagramSocket.m in Sources */,
+				6E8468600F558EB700E145FB /* TFIPSocket.m in Sources */,
+				6E8468610F558EB800E145FB /* TFIPStreamSocket.m in Sources */,
+				6E8468620F558EB900E145FB /* TFIPTCPSocket.m in Sources */,
+				6E8468630F558EBA00E145FB /* TFIPUDPSocket.m in Sources */,
+				6E8468640F558EBB00E145FB /* TFSocket.m in Sources */,
+				6E8469E30F55A4FE00E145FB /* CFSocket.m in Sources */,
+				6E846A320F55A73D00E145FB /* CFRunLoop.m in Sources */,
+				6E846CF10F56BD2F00E145FB /* TSBlobLabelizer.m in Sources */,
+				6E846F3F0F57613200E145FB /* TSTouchInputSource.m in Sources */,
+				6E846F480F5761FC00E145FB /* TSNextwindowTouchInputSource.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				6E84641B0F556A6800E145FB /* TFSocket.m in Sources */,
+				6E84641C0F556A6800E145FB /* TFIPSocket.m in Sources */,
+				6E84641D0F556A6800E145FB /* TFIPDatagramSocket.m in Sources */,
+				6E84641E0F556A6800E145FB /* TFIPStreamSocket.m in Sources */,
+				6E84641F0F556A6800E145FB /* TFIPTCPSocket.m in Sources */,
+				6E8464200F556A6800E145FB /* TFIPUDPSocket.m in Sources */,
+				6E8464210F556A6800E145FB /* TFOSCServer.m in Sources */,
+				6E8464220F556A6800E145FB /* TFTrackingDataReceiverInfoDictKeys.m in Sources */,
+				6E8464230F556A6800E145FB /* TFTrackingDataDistributor.m in Sources */,
+				6E8464240F556A6800E145FB /* TFTrackingDataReceiver.m in Sources */,
+				6E8464250F556A6800E145FB /* TFTrackingDataDistributionCenter.m in Sources */,
+				6E8464260F556A6800E145FB /* TFTUIOConstants.m in Sources */,
+				6E8464270F556A6800E145FB /* TFTUIOFlashXmlSettingsController.m in Sources */,
+				6E8464280F556A6800E145FB /* TFTUIOOSCServer.m in Sources */,
+				6E8464290F556A6800E145FB /* TFTUIOOSCSettingsController.m in Sources */,
+				6E84642A0F556A6800E145FB /* TFTUIOOSCTrackingDataDistributor.m in Sources */,
+				6E84642B0F556A6800E145FB /* TFTUIOOSCTrackingDataReceiver.m in Sources */,
+				6E84642C0F556A6800E145FB /* TFTUIOTrackingDataDistributor.m in Sources */,
+				6E84642D0F556A6800E145FB /* TFBlob+TUIOMethods.m in Sources */,
+				6E84642E0F556A6800E145FB /* TFBlob+TUIOOSCMethods.m in Sources */,
+				6E84642F0F556A6800E145FB /* TFFlashXMLTUIOGeneration.m in Sources */,
+				6E8464300F556A6800E145FB /* TFFlashXMLTUIOServer.m in Sources */,
+				6E8464310F556A6800E145FB /* TFFlashXMLTUIOTrackingDataDistributor.m in Sources */,
+				6E8464320F556A6800E145FB /* TFFlashXMLTUIOTrackingDataReceiver.m in Sources */,
+				6E8464340F556A6800E145FB /* TFBlobLabel.m in Sources */,
+				6E8464350F556A6800E145FB /* TFBlobPoint.m in Sources */,
+				6E8464360F556A6800E145FB /* TFBlobSize.m in Sources */,
+				6E8464370F556A6800E145FB /* TFBlobBox.m in Sources */,
+				6E8464380F556A6800E145FB /* TFBlob.m in Sources */,
+				6E8464390F556A6800E145FB /* NSScreen+Extras.m in Sources */,
+				6E84643A0F556A6800E145FB /* TFLabelFactory.m in Sources */,
+				6E84643B0F556A6800E145FB /* TFBlobLabelizer.m in Sources */,
+				6E84643C0F556A6800E145FB /* TFScreenPreferencesController.m in Sources */,
+				6E84643D0F556A6800E145FB /* TFThreadMessagingQueue.m in Sources */,
+				6E84643E0F556A6800E145FB /* TFError.m in Sources */,
+				6E84646C0F556C7200E145FB /* BBOSCAddress.m in Sources */,
+				6E84646D0F556C7200E145FB /* BBOSCArgument.m in Sources */,
+				6E84646E0F556C7200E145FB /* BBOSCBundle.m in Sources */,
+				6E84646F0F556C7200E145FB /* BBOSCMessage.m in Sources */,
+				6E8464760F556C8E00E145FB /* BBOSCPacket.m in Sources */,
+				6E84649A0F55704400E145FB /* BBOSCDataUtilities.m in Sources */,
+				6E8464C10F55725200E145FB /* TSPreferencesController.m in Sources */,
+				6E8464DF0F55744400E145FB /* AppDelegate.m in Sources */,
+				6E846D0F0F56BDD800E145FB /* TSBlobLabelizer.m in Sources */,
+				6E846F400F57613200E145FB /* TSTouchInputSource.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		1DDD58140DA1D0A300B32029 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1DDD58150DA1D0A300B32029 /* English */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		6E8464BC0F55722F00E145FB /* Preferences.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6E8464BD0F55722F00E145FB /* English */,
+			);
+			name = Preferences.xib;
+			sourceTree = "<group>";
+		};
+		6E8464DA0F5573D700E145FB /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6E8464D80F5573CB00E145FB /* English */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6E84656A0F557D0500E145FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = i386;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_EXTENSION = .exe;
+				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
+				EXECUTABLE_SUFFIX = .exe;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = automatic;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "src/TouchsmartTUIO-Windows_Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = __DEBUG__;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					nextwindow,
+					../touche/src,
+					.,
+				);
+				INFOPLIST_FILE = resources/Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				MACH_O_TYPE = mh_execute;
+				OTHER_LDFLAGS = (
+					"--enable-auto-import",
+					"-mwindows",
+					"-mconsole",
+					"-lws2_32",
+					"-lwsock32",
+				);
+				PRODUCT_NAME = TouchsmartTUIO;
+				SDKROOT = "";
+				STRIP_STYLE = all;
+				SYMROOT = "/Users/gck/LOCAL_HOME/xcode-build/Windows";
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Debug;
+		};
+		6E84656B0F557D0500E145FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = i386;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				EXECUTABLE_EXTENSION = .exe;
+				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
+				EXECUTABLE_SUFFIX = .exe;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = automatic;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "src/TouchsmartTUIO-Windows_Prefix.pch";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					nextwindow,
+					../touche/src,
+					.,
+				);
+				INFOPLIST_FILE = resources/Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				MACH_O_TYPE = mh_execute;
+				OTHER_LDFLAGS = (
+					"--enable-auto-import",
+					"-mwindows",
+					"-lwsock32",
+					"-lws2_32",
+				);
+				PRODUCT_NAME = TouchsmartTUIO;
+				SDKROOT = "";
+				STRIP_STYLE = all;
+				SYMROOT = "/Users/gck/LOCAL_HOME/xcode-build/Windows";
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Release;
+		};
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/TouchsmartTUIO_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = __DEBUG__;
+				HEADER_SEARCH_PATHS = .;
+				INFOPLIST_FILE = resources/Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = TouchsmartTUIO;
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/TouchsmartTUIO_Prefix.pch;
+				HEADER_SEARCH_PATHS = .;
+				INFOPLIST_FILE = resources/Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = TouchsmartTUIO;
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6E8465690F557D0500E145FB /* Build configuration list for PBXNativeTarget "TouchsmartTUIO-Windows" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E84656A0F557D0500E145FB /* Debug */,
+				6E84656B0F557D0500E145FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "TouchsmartTUIO" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TouchsmartTUIO" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

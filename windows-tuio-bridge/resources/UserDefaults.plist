@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PixelsForMotion</key>
+	<integer>3</integer>
+	<key>FramesPerSecond</key>
+	<integer>60</integer>
+	<key>FlashXMLServerPort</key>
+	<integer>3000</integer>
+	<key>OSCTargetHost</key>
+	<string>127.0.0.1</string>
+	<key>OSCTargetPort</key>
+	<integer>3333</integer>
+</dict>
+</plist>

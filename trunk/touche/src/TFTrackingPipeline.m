@@ -52,6 +52,7 @@
 #import "TFBlobLibDc1394InputSource.h"
 #import "TFBlobCameraInputSource.h"
 #import "TFOpenCVContourBlobDetector.h"
+#import "TFPerformanceTimer.h"
 
 
 #define BLOB_PROCESSING_THREAD_PRIORITY	(1.0)
@@ -126,6 +127,7 @@ enum {
 		[standardUserDefaults removeObserver:self forKeyPath:libdc1394CaptureCameraResolutionPrefKey];
 		[standardUserDefaults removeObserver:self forKeyPath:libDc1394CameraUniqueIdPrefKey];
 		[standardUserDefaults removeObserver:self forKeyPath:trackingInputMethodPrefKey];
+		
 		[self unloadPipeline:NULL];
 		[self _unbindFromPreferences:YES];
 		
@@ -137,6 +139,11 @@ enum {
 		
 		[_currentUntransformedBlobs release];
 		_currentUntransformedBlobs = nil;
+		
+		// clean up performance measuring
+		TFPerformanceTimer* perfTimer = [TFPerformanceTimer sharedTimer];
+		[perfTimer unregisterObject:self];
+		[perfTimer disposeTimerWithID:_performanceMeasurementID];
 	}
 	
 	[super dealloc];
@@ -236,6 +243,9 @@ enum {
 						  context:NULL];
 	
 	inputMethod = [standardDefaults integerForKey:trackingInputMethodPrefKey];
+	
+	// get an ID for performance measurements
+	_performanceMeasurementID = [[TFPerformanceTimer sharedTimer] createTimer];
 			
 	return self;
 }
@@ -418,6 +428,9 @@ enum {
 		for (NSString* keyPath in keyPaths)
 			[_coordConverter unbind:[keyPath stringByReplacingOccurrencesOfString:[_coordConverter className]
 																	   withString:@""]];
+		
+		// second, we unregister it from performance measurements
+		[[TFPerformanceTimer sharedTimer] unregisterObject:_coordConverter];
 		
 		if (![self _setupCoordinateConverter:&error])  {
 			// TODO: inform the user that changing the resolution failed, via delegate
@@ -629,6 +642,18 @@ enum {
 															  nil]];
 			}
 		}
+	}
+	
+	// register the blob input (and its aggregated objects) for performance measurements
+	TFPerformanceTimer* perfTimer = [TFPerformanceTimer sharedTimer];
+	[perfTimer registerObject:_blobInput forMeasurementID:_performanceMeasurementID];
+	
+	if ([_blobInput isKindOfClass:[TFBlobCameraInputSource class]]) {
+		TFBlobCameraInputSource* cameraInput = (TFBlobCameraInputSource*)_blobInput;
+		
+		[perfTimer registerObject:[cameraInput captureObject] forMeasurementID:_performanceMeasurementID];
+		[perfTimer registerObject:cameraInput.filterChain forMeasurementID:_performanceMeasurementID];
+		[perfTimer registerObject:cameraInput.blobDetector forMeasurementID:_performanceMeasurementID];
 	}
 	
 	return YES;
@@ -989,6 +1014,18 @@ errorReturn:
 {
 	BOOL success = [self stopProcessing:error];
 	
+	TFPerformanceTimer* perfTimer = [TFPerformanceTimer sharedTimer];
+	[perfTimer unregisterObject:_blobInput];
+	[perfTimer unregisterObject:_blobLabelizer];
+	[perfTimer unregisterObject:_coordConverter];
+	if ([_blobInput isKindOfClass:[TFBlobCameraInputSource class]]) {
+		TFBlobCameraInputSource* cameraSource = (TFBlobCameraInputSource*)_blobInput;
+	
+		[perfTimer unregisterObject:[cameraSource captureObject]];
+		[perfTimer unregisterObject:cameraSource.blobDetector];
+		[perfTimer unregisterObject:cameraSource.filterChain];
+	}
+	
 	[self _unbindFromPreferences:NO];
 	
 	@synchronized (_blobInput) {
@@ -1011,6 +1048,9 @@ errorReturn:
 	
 	if (success && NULL != error)
 		*error = nil;
+	
+	// TODO: remove me!
+	[[TFPerformanceTimer sharedTimer] logMeasurementsForID:_performanceMeasurementID];
 	
 	return success;
 }

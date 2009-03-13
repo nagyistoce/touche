@@ -36,6 +36,8 @@
 		6E239BB60D1C2A9A00054844 /* TFLabelFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E239BB50D1C2A9A00054844 /* TFLabelFactory.m */; };
 		6E239BBF0D1C386700054844 /* TFBlobSimpleDistanceLabelizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E239BBE0D1C386700054844 /* TFBlobSimpleDistanceLabelizer.m */; };
 		6E239BC20D1C423E00054844 /* TFBlobLabelizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E239BC10D1C423E00054844 /* TFBlobLabelizer.m */; };
+		6E25B61F0F66BB83001B7064 /* TFPerformanceMeasurement.c in Sources */ = {isa = PBXBuildFile; fileRef = 6E25B61E0F66BB83001B7064 /* TFPerformanceMeasurement.c */; };
+		6E25B7010F694220001B7064 /* TFPerformanceTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E25B7000F694220001B7064 /* TFPerformanceTimer.m */; };
 		6E2DC3DE0E5874FE00409C0E /* TFSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC3DD0E5874FE00409C0E /* TFSocket.m */; };
 		6E2DC5770E5A075B00409C0E /* TFIPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC5760E5A075B00409C0E /* TFIPSocket.m */; };
 		6E2DC57A0E5A07AD00409C0E /* TFIPStreamSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC5790E5A07AD00409C0E /* TFIPStreamSocket.m */; };
@@ -288,6 +290,10 @@
 		6E239BBE0D1C386700054844 /* TFBlobSimpleDistanceLabelizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlobSimpleDistanceLabelizer.m; sourceTree = "<group>"; };
 		6E239BC00D1C423E00054844 /* TFBlobLabelizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBlobLabelizer.h; sourceTree = "<group>"; };
 		6E239BC10D1C423E00054844 /* TFBlobLabelizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlobLabelizer.m; sourceTree = "<group>"; };
+		6E25B61D0F66BB83001B7064 /* TFPerformanceMeasurement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPerformanceMeasurement.h; sourceTree = "<group>"; };
+		6E25B61E0F66BB83001B7064 /* TFPerformanceMeasurement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFPerformanceMeasurement.c; sourceTree = "<group>"; };
+		6E25B6FF0F694220001B7064 /* TFPerformanceTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPerformanceTimer.h; sourceTree = "<group>"; };
+		6E25B7000F694220001B7064 /* TFPerformanceTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPerformanceTimer.m; sourceTree = "<group>"; };
 		6E2DC3DC0E5874FE00409C0E /* TFSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFSocket.h; sourceTree = "<group>"; };
 		6E2DC3DD0E5874FE00409C0E /* TFSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFSocket.m; sourceTree = "<group>"; };
 		6E2DC5750E5A075B00409C0E /* TFIPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPSocket.h; sourceTree = "<group>"; };
@@ -730,6 +736,17 @@
 			name = Labeling;
 			sourceTree = "<group>";
 		};
+		6E25B6FD0F6940F5001B7064 /* Performance Measuring */ = {
+			isa = PBXGroup;
+			children = (
+				6E25B61D0F66BB83001B7064 /* TFPerformanceMeasurement.h */,
+				6E25B61E0F66BB83001B7064 /* TFPerformanceMeasurement.c */,
+				6E25B6FF0F694220001B7064 /* TFPerformanceTimer.h */,
+				6E25B7000F694220001B7064 /* TFPerformanceTimer.m */,
+			);
+			name = "Performance Measuring";
+			sourceTree = "<group>";
+		};
 		6E2DC3DB0E5874D000409C0E /* TCPIP */ = {
 			isa = PBXGroup;
 			children = (
@@ -839,6 +856,7 @@
 		6E6ADB910DD0A8530078DD1B /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				6E25B6FD0F6940F5001B7064 /* Performance Measuring */,
 				6E927A510EB5268A00C88BEC /* Value Transformers */,
 				6E07FBBB0DF013DC00FCB681 /* TFIncludes.h */,
 				6ECA94C90DD1E90E00A9ABE3 /* PreferencesStrings.h */,
@@ -1563,6 +1581,8 @@
 				6E9279940EB3C7AC00C88BEC /* TFCIThresholdFilter.m in Sources */,
 				6E927A540EB526B900C88BEC /* TFNSColorToCIColorInNSDataValueTransfomer.m in Sources */,
 				6EC632CF0ED9A2170094958E /* GCKGradientOverlayView.m in Sources */,
+				6E25B61F0F66BB83001B7064 /* TFPerformanceMeasurement.c in Sources */,
+				6E25B7010F694220001B7064 /* TFPerformanceTimer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -39,6 +39,19 @@
 "StatusLabelWarning"				= "Attention";
 "StatusLabelError"					= "Error";
 
+"PerfSeconds"						= "%.2f seconds";
+"PerfMilliseconds"					= "%.2f milliseconds";
+"PerfNanoseconds"					= "%lu nanoseconds";
+"PerfNothing"						= "N/A";
+
+"PerfInternalMeasurementLogHeader"	= "Performance Measurements";
+"PerfInternalMeasurementLogLine"	= "%1$@\t\t%2$@\t\t%3$.2f%% overlap\t\t%4$.2f FPS\n";
+
+"PerfTimerTypeUnknown"				= "Unknown performance timer";
+"PerfTimerTypeCIImageAcquisition"	= "Video capture/preprocessing";
+"PerfTimerTypeFilterRendering"		= "Filter rendering";
+"PerfTimerTypeBlobDetection"		= "Blob detection";
+
 "TFCalibrationControllerHumandReadableName"		= "Touché Calibration Tool";
 "TFCalibrationControllerStartInfo"				= "Touch the white dot to calibrate.\nHit 'Esc' to cancel.";
 

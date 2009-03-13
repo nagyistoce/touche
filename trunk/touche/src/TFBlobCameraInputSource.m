@@ -35,6 +35,7 @@
 #import "TFGrayscale8BlobDetector.h"
 #import "TFOpenCVContourBlobDetector.h"
 #import "TFThreadMessagingQueue.h"
+#import "TFPerformanceTimer.h"
 
 
 #define	FILTERING_THREAD_PRIORITY			(0.95)
@@ -430,6 +431,8 @@
 			}
 		}
 		
+		TFPMStartTimer(TFPerformanceTimerFilterRendering);
+
 		if ([blobDetector isKindOfClass:[TFRGBA8888BlobDetector class]]) {
 			imgBuffer = [img createPremultipliedRGBA8888BitmapWithColorSpace:_colorSpace
 														   workingColorSpace:_workingColorSpace
@@ -459,6 +462,8 @@
 													 [NSNumber numberWithBool:renderFiltersOnCPU],
 													 nil];
 		}
+		
+		TFPMStopTimer(TFPerformanceTimerFilterRendering);
 		
 		[processingQueue enqueue:pixelBuffer];
 		[pixelBuffer release];

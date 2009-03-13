@@ -69,6 +69,8 @@ extern NSInteger TFTrackingPipelineInputResolutionHighest;
 	
 	NSThread*								_processingThread;
 	TFThreadMessagingQueue*					_processingQueue;
+	
+	int										_performanceMeasurementID;
 }
 
 @property (readonly) NSInteger inputMethod;

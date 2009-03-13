@@ -28,6 +28,7 @@
 #import "TFQTKitCapture.h"
 #import "TFIncludes.h"
 #import "TFThreadMessagingQueue.h"
+#import "TFPerformanceTimer.h"
 
 
 #define DEFAULT_LATENCY_FRAMEDROP_THRESHOLD		(0.5)
@@ -345,6 +346,8 @@
 	if (hts > ihts + framedropLatencyThreshold)
 		return;
 
+	TFPMStartTimer(TFPerformanceTimerCIImageAcquisition);
+	
 	if (_delegateCapabilities.hasDidCaptureFrame) {
 		CIImage* image = nil;
 		
@@ -357,6 +360,8 @@
 		
 		[_frameQueue enqueue:image];
 	}
+	
+	TFPMStopTimer(TFPerformanceTimerCIImageAcquisition);
 }
 
 + (NSDictionary*)connectedDevicesNamesAndIds

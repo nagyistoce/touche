@@ -30,6 +30,7 @@
 
 #import "TFIncludes.h"
 #import "TFThreadMessagingQueue.h"
+#import "TFPerformanceTimer.h"
 
 #define NUM_DMA_BUFFERS					(10)
 #define MAX_FEATURE_KEY					(4)
@@ -796,10 +797,14 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 
 - (void)dispatchFrame:(dc1394video_frame_t*)frame
 {
+	TFPMStartTimer(TFPerformanceTimerCIImageAcquisition);
+
 	CIImage* image = [self ciImageWithDc1394Frame:frame error:NULL];
 				
 	if (nil != image && _delegateCapabilities.hasDidCaptureFrame)
 			[_frameQueue enqueue:image];
+	
+	TFPMStopTimer(TFPerformanceTimerCIImageAcquisition);
 }
 
 - (dc1394feature_t)_featureFromKey:(NSInteger)featureKey

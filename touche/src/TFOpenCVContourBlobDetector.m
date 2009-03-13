@@ -30,6 +30,7 @@
 #import "TFBlobPoint.h"
 #import "TFBlobBox.h"
 #import "TFBlobSize.h"
+#import "TFPerformanceTimer.h"
 
 
 #define	MAX_BLOBS		(100)	// maximum amounts of blobs to track simultaneously
@@ -109,6 +110,8 @@
 		if (!_blobsNotYetDetected)
 			return YES;
 
+		TFPMStartTimer(TFPerformanceTimerBlobDetection);
+
 		[detectedBlobs removeAllObjects];
 
 		NSMutableArray* edgeVertices = [NSMutableArray array];
@@ -183,6 +186,8 @@
 		cvReleaseMemStorage(&storage);
 		
 		_blobsNotYetDetected = NO;
+		
+		TFPMStopTimer(TFPerformanceTimerBlobDetection);
 	}
 	
 	return YES;

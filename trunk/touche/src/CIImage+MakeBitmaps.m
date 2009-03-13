@@ -283,15 +283,12 @@
 	size_t bitsPerComponent = (bitmapInfo & kCGBitmapFloatComponents) ? 32 : 8;
 	size_t bytesPerRow;
 	
-	BOOL shouldReleaseWorkingColorSpace = NO;
 	BOOL shouldReleaseCGContext = NO;
 	BOOL shouldReleaseCIContext = NO;
 	BOOL shouldReleaseBitmapDataOnError = NO;
 	
-	if (nil == workingColorSpace) {
-		workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
-		shouldReleaseWorkingColorSpace = YES;
-	}
+	if (nil == workingColorSpace)
+		workingColorSpace = colorSpace;
 	
 	CGRect extent = [self extent];
 			
@@ -335,7 +332,7 @@
 	
 	if (NULL == ciContextPointer || nil == *ciContextPointer) {
 		NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys: 
-								 (id)colorSpace,     kCIContextOutputColorSpace, 
+								 (id)colorSpace, kCIContextOutputColorSpace, 
 								 (id)workingColorSpace, kCIContextWorkingColorSpace,
 								 [NSNumber numberWithBool:renderOnCPU], kCIContextUseSoftwareRenderer,
 								 nil];
@@ -374,9 +371,6 @@ errorReturn:
 		[ciContext release];
 	else if (NULL != ciContextPointer)
 		*ciContextPointer = ciContext;
-	
-	if (shouldReleaseWorkingColorSpace)
-		CGColorSpaceRelease(workingColorSpace);
 	
 	return bitmapData;
 }

@@ -1142,7 +1142,10 @@ errorReturn:
 #pragma mark -
 #pragma mark Delegate methods for TFBlobTrackingView
 
-- (CIImage*)trackingPipelineView:(TFTrackingPipelineView*)pipelineView frameForTimestamp:(const CVTimeStamp*)timeStamp
+- (CIImage*)trackingPipelineView:(TFTrackingPipelineView*)pipelineView
+			   frameForTimestamp:(const CVTimeStamp*)timeStamp
+					  colorSpace:(CGColorSpaceRef*)colorSpace
+			   workingColorSpace:(CGColorSpaceRef*)workingColorSpace
 {
 	if (nil == _blobInput)
 		return nil;
@@ -1151,6 +1154,12 @@ errorReturn:
 	CIImage* img;
 	@synchronized (_blobInput) {
 		img = [_blobInput currentRawImageForStage:frameStageForDisplay];
+		
+		if (NULL != colorSpace)
+			*colorSpace = [_blobInput colorSpace];
+		
+		if (NULL != workingColorSpace)
+			*workingColorSpace = [_blobInput workingColorSpace];
 	}
 		
 	return img;

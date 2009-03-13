@@ -43,7 +43,7 @@
 	delegate = newDelegate;
 	
 	// cache this for performance reasons
-	_delegateHasFrameForTimestamp = [delegate respondsToSelector:@selector(trackingPipelineView:frameForTimestamp:)];
+	_delegateHasFrameForTimestamp = [delegate respondsToSelector:@selector(trackingPipelineView:frameForTimestamp:colorSpace:workingColorSpace:)];
 }
 
 - (CVReturn)drawFrameForTimeStamp:(const CVTimeStamp*)timeStamp
@@ -52,9 +52,30 @@
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
 	if (_delegateHasFrameForTimestamp) {
-		CIImage* newFrame = [[delegate trackingPipelineView:self frameForTimestamp:timeStamp] retain];
+		CGColorSpaceRef colorSpace, workingColorSpace;
+		
+		CIImage* newFrame = [[delegate trackingPipelineView:self
+										  frameForTimestamp:timeStamp
+											 colorSpace:&colorSpace
+									  workingColorSpace:&workingColorSpace] retain];
 	
 		@synchronized(self) {
+			if (nil != colorSpace && _colorSpace != colorSpace) {
+				CGColorSpaceRetain(colorSpace);
+				CGColorSpaceRelease(_colorSpace);
+				_colorSpace = colorSpace;
+				
+				[self clearCIContext];
+			}
+			
+			if (nil != workingColorSpace && _workingColorSpace != workingColorSpace) {
+				CGColorSpaceRetain(workingColorSpace);
+				CGColorSpaceRelease(_workingColorSpace);
+				_workingColorSpace = workingColorSpace;
+				
+				[self clearCIContext];
+			} 
+		
 			CGRect oldRect = [_ciimage extent];
 			CGRect newRect = [newFrame extent];
 			

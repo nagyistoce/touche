@@ -185,6 +185,16 @@
 	return nil;
 }
 
+- (CGColorSpaceRef)colorSpace
+{
+	return nil;
+}
+
+- (CGColorSpaceRef)workingColorSpace
+{
+	return nil;
+}
+
 - (BOOL)_shouldProcessThisFrame
 {
 	NSDate* now = [NSDate date];

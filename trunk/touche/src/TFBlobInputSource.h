@@ -70,6 +70,9 @@
 - (BOOL)hasFilterStages;
 - (CIImage*)currentRawImageForStage:(NSInteger)filterStage;
 
+- (CGColorSpaceRef)colorSpace;
+- (CGColorSpaceRef)workingColorSpace;
+
 @end
 
 @interface NSObject (TFBlobInputSourceDelegate)

@@ -301,6 +301,16 @@
 	return img;
 }
 
+- (CGColorSpaceRef)colorSpace
+{
+	return _colorSpace;
+}
+
+- (CGColorSpaceRef)workingColorSpace
+{
+	return _workingColorSpace;
+}
+
 - (void)_clearPixelBuffer:(NSArray*)buffer
 {
 	if ([buffer count] == NUM_PIXEL_BUFFER_FIELDS) {

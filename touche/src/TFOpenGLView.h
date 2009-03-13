@@ -32,11 +32,15 @@
 	CIContext*				_ciContext;
 	CGDirectDisplayID		_curDisplay;
 	CVDisplayLinkRef		_displayLink;
+	CGColorSpaceRef			_colorSpace;
+	CGColorSpaceRef			_workingColorSpace;
 	BOOL					_needsReshape;
 	float					_zoomX, _zoomY;
 }
 
 - (CVReturn)drawFrameForTimeStamp:(const CVTimeStamp*)timeStamp;
+
+- (void)clearCIContext;
 
 - (void)setCurrentDisplay:(const CGDirectDisplayID)displayID;
 

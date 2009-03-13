@@ -74,6 +74,12 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 	
 	[_ciimage release];
 	_ciimage = nil;
+	
+	CGColorSpaceRelease(_colorSpace);
+	_colorSpace = NULL;
+	
+	CGColorSpaceRelease(_workingColorSpace);
+	_workingColorSpace = NULL;
 
 	if (_displayLink) {
 		[self stopDisplayLink];
@@ -95,6 +101,9 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 	_ciimage = nil;
 	_curDisplay = CGMainDisplayID();
 	_needsReshape = YES;
+	
+	_colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+	_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
 	
 	return self;
 }
@@ -138,7 +147,6 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 	if (nil == _ciContext) {
 		[[self openGLContext] makeCurrentContext];
 		
-		CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
 		NSOpenGLPixelFormat* pixelFormat = [self pixelFormat];
 		if (nil == pixelFormat)
 			pixelFormat = [[self class] defaultPixelFormat];
@@ -146,13 +154,22 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 		_ciContext = [[CIContext contextWithCGLContext:(CGLContextObj)CGLGetCurrentContext()
 										   pixelFormat:(CGLPixelFormatObj)[pixelFormat CGLPixelFormatObj]
 											   options:[NSDictionary dictionaryWithObjectsAndKeys:
-														(id)colorSpace, kCIContextOutputColorSpace,
-														(id)colorSpace, kCIContextWorkingColorSpace, nil]] retain];
+														(id)_colorSpace, kCIContextOutputColorSpace,
+														(id)_workingColorSpace, kCIContextWorkingColorSpace, nil]] retain];
 		
-		CGColorSpaceRelease(colorSpace);
 	}
 	
 	return _ciContext;
+}
+
+- (void)clearCIContext
+{
+	if (nil != _ciContext) {
+		[_ciContext clearCaches];
+		[_ciContext reclaimResources];
+		[_ciContext release];
+		_ciContext = nil;
+	}
 }
 
 - (void)render
@@ -265,12 +282,7 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 		[_ciimage release];
 		_ciimage = nil;
 		
-		if (nil != _ciContext) {
-			[_ciContext clearCaches];
-			[_ciContext reclaimResources];
-			[_ciContext release];
-			_ciContext = nil;
-		}
+		[self clearCIContext];
 		
 		return rv;
 	}

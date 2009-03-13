@@ -40,5 +40,7 @@
 
 @interface NSObject (TFTrackingPipelineViewDelegate)
 - (CIImage*)trackingPipelineView:(TFTrackingPipelineView*)pipelineView
-			   frameForTimestamp:(const CVTimeStamp*)timeStamp;
+			   frameForTimestamp:(const CVTimeStamp*)timeStamp
+					  colorSpace:(CGColorSpaceRef*)colorSpace
+			   workingColorSpace:(CGColorSpaceRef*)workingColorSpace;
 @end

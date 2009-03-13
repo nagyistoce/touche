@@ -158,12 +158,12 @@
 		
 	if ([blobDetector isKindOfClass:[TFRGBA8888BlobDetector class]]) {
 		_colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+		_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
 	} else if ([blobDetector isKindOfClass:[TFGrayscale8BlobDetector class]]) {
 		_colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericGray);
+		_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericGray);
 	}
-	
-	_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
-		
+			
 	if (NULL != error)
 		*error = nil;
 	

@@ -26,70 +26,37 @@
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
 
+
+typedef struct CIImageBitmapData {
+	void* data;
+	size_t width, height, rowBytes;
+} CIImageBitmapData;
+
+void* CIImageBitmapsCreateContextForGrayscale8(CIImage* image, BOOL renderOnCPU);
+void* CIImageBitmapsCreateContextForRGB8(CIImage* image, BOOL renderOnCPU);
+void* CIImageBitmapsCreateContextForPremultipliedARGB8(CIImage* image, BOOL renderOnCPU);
+void* CIImageBitmapsCreateContextForPremultipliedRGBA8(CIImage* image, BOOL renderOnCPU);
+void* CIImageBitmapsCreateContextForPremultipliedRGBAf(CIImage* image, BOOL renderOnCPU);
+
+void CIImageBitmapsReleaseContext(void* pContext);
+
+// if you set this to YES, the context will determine the fastest rendering method (for your system)
+// dynamically by measuring the performance of different methods. Only set this on contexts that you
+// will use to render at least a couple of CIImages with. Off per default.
+void CIImageBitmapsSetContextDeterminesFastestRenderingDynamically(void* pContext, BOOL determineDynamically);
+
+inline BOOL CIImageBitmapsContextMatchesBitmapSize(void* pContext, CGSize size);
+inline BOOL CIImageBitmapsContextRendersOnCPU(void* pContext);
+
+inline CIImageBitmapData CIImageBitmapsCurrentBitmapDataForContext(void* pContext);
+
+inline CGColorSpaceRef CIImageBitmapsCIOutputColorSpaceForContext(void* pContext);
+inline CGColorSpaceRef CIImageBitmapsCIWorkingColorSpaceForContext(void* pContext);
+
 @interface CIImage (MakeBitmapsExtensions)
 
 + (CGColorSpaceRef)screenColorSpace;
-- (size_t)optimalRowBytesForWidth:(size_t)width
-					bytesPerPixel:(size_t)bytesPerPixel;
-					
-- (UInt32*)createPremultipliedRGBA8888BitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-												  rowBytes:(size_t *)rowBytes
-													buffer:(void*)buffer;
-- (UInt32*)createPremultipliedRGBA8888BitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-												  rowBytes:(size_t *)rowBytes
-													buffer:(void*)buffer
-											   renderOnCPU:(BOOL)renderOnCPU;
-- (UInt32*)createPremultipliedRGBA8888BitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-										 workingColorSpace:(CGColorSpaceRef)workingColorSpace
-												  rowBytes:(size_t *)rowBytes
-													buffer:(void*)buffer
-											   renderOnCPU:(BOOL)renderOnCPU;
-- (UInt32*)createPremultipliedRGBA8888BitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-										 workingColorSpace:(CGColorSpaceRef)workingColorSpace
-												  rowBytes:(size_t *)rowBytes
-													buffer:(void*)buffer
-										  cgContextPointer:(CGContextRef*)cgContextPointer
-										  ciContextPointer:(CIContext**)ciContextPointer
-											   renderOnCPU:(BOOL)renderOnCPU;
 
-- (float*)createPremultipliedRGBAFFFFBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-												 rowBytes:(size_t *)rowBytes
-												   buffer:(void*)buffer;
-- (float*)createPremultipliedRGBAFFFFBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-												 rowBytes:(size_t *)rowBytes
-												   buffer:(void*)buffer
-											  renderOnCPU:(BOOL)renderOnCPU;
-- (float*)createPremultipliedRGBAFFFFBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-										workingColorSpace:(CGColorSpaceRef)workingColorSpace
-												 rowBytes:(size_t *)rowBytes
-												   buffer:(void*)buffer
-											  renderOnCPU:(BOOL)renderOnCPU;
-- (float*)createPremultipliedRGBAFFFFBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-										workingColorSpace:(CGColorSpaceRef)workingColorSpace
-												 rowBytes:(size_t *)rowBytes
-												   buffer:(void*)buffer
-										 cgContextPointer:(CGContextRef*)cgContextPointer
-										 ciContextPointer:(CIContext**)ciContextPointer
-											  renderOnCPU:(BOOL)renderOnCPU;
-
-- (UInt8*)createGrayscaleBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-									 rowBytes:(size_t *)rowBytes
-									   buffer:(void*)buffer;
-- (UInt8*)createGrayscaleBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-									 rowBytes:(size_t *)rowBytes
-									   buffer:(void*)buffer
-								  renderOnCPU:(BOOL)renderOnCPU;
-- (UInt8*)createGrayscaleBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-							workingColorSpace:(CGColorSpaceRef)workingColorSpace
-									 rowBytes:(size_t *)rowBytes
-									   buffer:(void*)buffer
-								  renderOnCPU:(BOOL)renderOnCPU;
-- (UInt8*)createGrayscaleBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-							workingColorSpace:(CGColorSpaceRef)workingColorSpace
-									 rowBytes:(size_t *)rowBytes
-									   buffer:(void*)buffer
-							 cgContextPointer:(CGContextRef*)cgContextPointer
-							 ciContextPointer:(CIContext**)ciContextPointer
-								  renderOnCPU:(BOOL)renderOnCPU;
+- (CIImageBitmapData)bitmapDataWithBitmapCreationContext:(void*)pContext;
 
 @end

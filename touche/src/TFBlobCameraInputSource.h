@@ -34,18 +34,14 @@
 @interface TFBlobCameraInputSource : TFBlobInputSource {
 	TFFilterChain*		filterChain;
 	TFBlobDetector*		blobDetector;
-		
-	CGColorSpaceRef		_colorSpace;
-	CGColorSpaceRef		_workingColorSpace;
-	CGSize				_lastFrameSize;
-	BOOL				_lastFrameRenderOnCPU;
 	
 	BOOL				_filterChainIsCameraInputFilterChain;
 	
 	NSThread*					_processingThread;
 	TFThreadMessagingQueue*		_processingQueue;
 	
-	NSMutableArray*				_freePixelBuffers;
+	NSMutableArray*				_bitmapCreationContexts;
+	NSMutableArray*				_freeBitmapCreationContexts;
 	NSThread*					_filteringThread;
 	TFThreadMessagingQueue*		_filteringQueue;
 }

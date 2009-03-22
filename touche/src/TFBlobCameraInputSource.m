@@ -44,8 +44,11 @@
 #define	NUM_PIXEL_BUFFER_FIELDS				(6)
 
 @interface TFBlobCameraInputSource (NonPublicMethods)
-- (void)_clearFreePixelBuffers;
-- (void)_clearPixelBuffer:(NSArray*)buffer;
+- (void)_clearFreeBitmapCreationContexts;
+- (void)_clearBitmapCreationContext:(id)contextValue;
+- (NSValue*)_reusableContextValueForCIImage:(CIImage*)ciimage
+						 renderFiltersOnCPU:(BOOL)renderFiltersOnCPU
+						 frameSizeDidChange:(BOOL*)frameSizeDidChange;
 - (void)_resetBackgroundAcquisitionTiming;
 - (void)_clearBackgroundForSubtraction;
 - (BOOL)_shouldProcessThisFrame;
@@ -66,8 +69,8 @@
 		return nil;
 	}
 	
-	_lastFrameSize = CGSizeMake(0.0f, 0.0f);
-	_freePixelBuffers = [[NSMutableArray alloc] init];
+	_bitmapCreationContexts = [[NSMutableArray alloc] init];
+	_freeBitmapCreationContexts = [[NSMutableArray alloc] init];
 		
 	return self;
 }
@@ -76,10 +79,13 @@
 {
 	[self unloadWithError:nil];
 	
-	[self _clearFreePixelBuffers];
+	[self _clearFreeBitmapCreationContexts];
 	
-	[_freePixelBuffers release];
-	_freePixelBuffers = nil;
+	[_bitmapCreationContexts release];
+	_bitmapCreationContexts = nil;
+	
+	[_freeBitmapCreationContexts release];
+	_freeBitmapCreationContexts = nil;
 	
 	[super dealloc];
 }
@@ -155,14 +161,6 @@
 	}
 	
 	blobDetector = opencvDetector;
-		
-	if ([blobDetector isKindOfClass:[TFRGBA8888BlobDetector class]]) {
-		_colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
-		_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
-	} else if ([blobDetector isKindOfClass:[TFGrayscale8BlobDetector class]]) {
-		_colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericGray);
-		_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericGray);
-	}
 			
 	if (NULL != error)
 		*error = nil;
@@ -185,17 +183,7 @@
 		blobDetector = nil;
 	}
 	
-	if (NULL != _colorSpace) {
-		CGColorSpaceRelease(_colorSpace);
-		_colorSpace = NULL;
-	}
-	
-	if (NULL != _workingColorSpace) {
-		CGColorSpaceRelease(_workingColorSpace);
-		_workingColorSpace = NULL;
-	}
-	
-	[self _clearFreePixelBuffers];
+	[self _clearFreeBitmapCreationContexts];
 	
 	BOOL success = [self stopProcessing:error];
 	
@@ -208,7 +196,7 @@
 		*error = nil;
 
 	[self _resetBackgroundAcquisitionTiming];
-	[self _clearFreePixelBuffers];
+	[self _clearFreeBitmapCreationContexts];
 	
 	BOOL success = [[self captureObject] startCapturing:error];
 	
@@ -301,42 +289,98 @@
 	return img;
 }
 
-- (CGColorSpaceRef)colorSpace
+- (CGColorSpaceRef)ciColorSpace
 {
-	return _colorSpace;
+	CGColorSpaceRef rv = NULL;
+	
+	@synchronized(_bitmapCreationContexts) {
+		if ([_bitmapCreationContexts count] > 0) {
+			NSValue* contextValue = [_bitmapCreationContexts objectAtIndex:0];
+			rv = CIImageBitmapsCIOutputColorSpaceForContext([contextValue pointerValue]);
+			
+			if ([NSNull null] == (id)rv)
+				rv = NULL;
+		}
+	}
+	
+	return rv;
 }
 
-- (CGColorSpaceRef)workingColorSpace
+- (CGColorSpaceRef)ciWorkingColorSpace
 {
-	return _workingColorSpace;
+	CGColorSpaceRef rv = NULL;
+	
+	@synchronized(_bitmapCreationContexts) {
+		if ([_bitmapCreationContexts count] > 0) {
+			NSValue* contextValue = [_bitmapCreationContexts objectAtIndex:0];
+			rv = CIImageBitmapsCIWorkingColorSpaceForContext([contextValue pointerValue]);
+			
+			if ([NSNull null] == (id)rv)
+				rv = NULL;
+		}
+	}
+	
+	return rv;
 }
 
-- (void)_clearPixelBuffer:(NSArray*)buffer
+- (void)_clearBitmapCreationContext:(id)contextValue
 {
-	if ([buffer count] == NUM_PIXEL_BUFFER_FIELDS) {
-		CGContextRef context = (CGContextRef)[buffer objectAtIndex:0];
-		CIContext* ciContext = [buffer objectAtIndex:1];
-		void* buf = [[buffer objectAtIndex:2] pointerValue];
-		
-		if ([NSNull null] != (id)context)
-			CGContextRelease(context);
-		
-		if ([NSNull null] != (id)ciContext)
-			[ciContext release];
-		
-		if (NULL != buf)
-			free(buf);		
+	if ([contextValue isKindOfClass:[NSValue class]]) {
+		void* context = [(NSValue*)contextValue pointerValue];
+		CIImageBitmapsReleaseContext(context);
 	}
 }
 
-- (void)_clearFreePixelBuffers
+- (void)_clearFreeBitmapCreationContexts
+{	
+	for (id contextValue in _freeBitmapCreationContexts)
+		[self _clearBitmapCreationContext:contextValue];
+	
+	[_freeBitmapCreationContexts removeAllObjects];
+}
+
+- (NSValue*)_reusableContextValueForCIImage:(CIImage*)ciimage
+						 renderFiltersOnCPU:(BOOL)renderFiltersOnCPU
+						 frameSizeDidChange:(BOOL*)frameSizeDidChange
 {
-	NSArray* allBuffers = [NSArray arrayWithArray:_freePixelBuffers];
+	NSValue* contextValue = nil;
 	
-	for (NSArray* buffer in allBuffers)
-		[self _clearPixelBuffer:buffer];
+	if (NULL != frameSizeDidChange)
+		*frameSizeDidChange = NO;
 	
-	[_freePixelBuffers removeAllObjects];
+	@synchronized (_freeBitmapCreationContexts) {
+		while (nil == contextValue && [_freeBitmapCreationContexts count] > 0) {
+			contextValue = [[_freeBitmapCreationContexts objectAtIndex:0] retain];
+			[_freeBitmapCreationContexts removeObjectAtIndex:0];
+			
+			void* context = [contextValue pointerValue];
+			if (!CIImageBitmapsContextMatchesBitmapSize(context, [ciimage extent].size) ||
+				renderFiltersOnCPU != CIImageBitmapsContextRendersOnCPU(context)) {
+				[self _clearBitmapCreationContext:contextValue];
+				[contextValue release];
+				contextValue = nil;
+				
+				if (NULL != frameSizeDidChange)
+					*frameSizeDidChange = YES;
+			}
+		}
+	}
+	
+	// no suitable context found for reuse, so we make a new one...
+	if (nil == contextValue) {
+		void* context = NULL;
+	
+		if ([blobDetector isKindOfClass:[TFRGBA8888BlobDetector class]])
+			context = CIImageBitmapsCreateContextForPremultipliedRGBA8(ciimage, renderFiltersOnCPU);
+		else if ([blobDetector isKindOfClass:[TFGrayscale8BlobDetector class]])
+			context = CIImageBitmapsCreateContextForGrayscale8(ciimage, renderFiltersOnCPU);
+		
+		CIImageBitmapsSetContextDeterminesFastestRenderingDynamically(context, YES);
+		
+		contextValue = [[NSValue valueWithPointer:context] retain];		
+	}
+		
+	return [contextValue autorelease];
 }
 
 - (void)_updateBackgroundForSubtraction
@@ -381,37 +425,34 @@
 			break;
 		}
 		
-		if (![filteringQueue isEmpty] || ![self _shouldProcessThisFrame] || ![capturedFrame isKindOfClass:[CIImage class]]) {
+		if (![filteringQueue isEmpty] ||
+			![self _shouldProcessThisFrame] ||
+			![capturedFrame isKindOfClass:[CIImage class]]) {
 			[pool release];
 			continue;
 		}
 		
-		CGSize frameSize = [capturedFrame extent].size;
 		CIImage* img = nil;
 		BOOL renderFiltersOnCPU = YES;
-		
-		if (frameSize.width != _lastFrameSize.width || frameSize.height != _lastFrameSize.height) {
-			_lastFrameSize.width = frameSize.width;
-			_lastFrameSize.height = frameSize.height;
-			
-			[self _clearFreePixelBuffers];
-			
-			// if the frame size changed, we need to acquire a new BG image immediately!
-			[self _clearBackgroundForSubtraction];
-			[self _resetBackgroundAcquisitionTiming];
-		}
+		NSValue* contextValue = nil;
 		
 		@synchronized(filterChain) {
 			img = [filterChain apply:capturedFrame];
 			renderFiltersOnCPU =
-				[filterChain isKindOfClass:[TFCIFilterChain class]] ?
-					[(TFCIFilterChain*)filterChain renderOnCPU] : YES;
+					[filterChain isKindOfClass:[TFCIFilterChain class]] ?
+						[(TFCIFilterChain*)filterChain renderOnCPU] : YES;
 		}
 		
-		if (_lastFrameRenderOnCPU != renderFiltersOnCPU)
-			[self _clearFreePixelBuffers];
+		BOOL frameSizeDidChange = NO;
+		contextValue = [self _reusableContextValueForCIImage:img
+										  renderFiltersOnCPU:renderFiltersOnCPU
+										  frameSizeDidChange:&frameSizeDidChange];
 		
-		_lastFrameRenderOnCPU = renderFiltersOnCPU;
+		// if the frame size changed, we need to acquire a new BG image immediately!
+		if (frameSizeDidChange) {
+			[self _clearBackgroundForSubtraction];
+			[self _resetBackgroundAcquisitionTiming];
+		}
 		
 		if (!blobTrackingEnabled) {
 			[self _updateBackgroundForSubtraction];
@@ -422,61 +463,14 @@
 			[pool release];
 			continue;
 		}
-			
-		NSArray* pixelBuffer = nil;
-		CIContext* ciContext = nil;
-		CGContextRef cgContext = NULL;
-		void* imgBuffer = NULL;
-		size_t rowBytes = 0;
-				
-		@synchronized(_freePixelBuffers) {
-			if ([_freePixelBuffers count] > 0) {
-				pixelBuffer = [[_freePixelBuffers objectAtIndex:0] retain];
-				[_freePixelBuffers removeObjectAtIndex:0];
-				
-				cgContext = (CGContextRef)[pixelBuffer objectAtIndex:0];
-				ciContext = [pixelBuffer objectAtIndex:1];
-				imgBuffer = [[pixelBuffer objectAtIndex:2] pointerValue];
-				rowBytes = [[pixelBuffer objectAtIndex:3] unsignedIntValue];
-			}
-		}
 		
 		TFPMStartTimer(TFPerformanceTimerFilterRendering);
 
-		if ([blobDetector isKindOfClass:[TFRGBA8888BlobDetector class]]) {
-			imgBuffer = [img createPremultipliedRGBA8888BitmapWithColorSpace:_colorSpace
-														   workingColorSpace:_workingColorSpace
-																	rowBytes:&rowBytes
-																	  buffer:imgBuffer
-															cgContextPointer:&cgContext
-															ciContextPointer:&ciContext
-																 renderOnCPU:renderFiltersOnCPU];
-
-		} else if ([blobDetector isKindOfClass:[TFGrayscale8BlobDetector class]]) {
-			imgBuffer = [img createGrayscaleBitmapWithColorSpace:_colorSpace
-											   workingColorSpace:_workingColorSpace
-														rowBytes:&rowBytes
-														  buffer:imgBuffer
-												cgContextPointer:&cgContext
-												ciContextPointer:&ciContext
-													 renderOnCPU:renderFiltersOnCPU];
-		}
-		
-		if (nil == pixelBuffer) {
-			pixelBuffer = [[NSArray alloc] initWithObjects:
-													(id)cgContext,
-													 ciContext,
-													 [NSValue valueWithPointer:imgBuffer],
-													 [NSNumber numberWithUnsignedInt:rowBytes],
-													 [NSValue valueWithSize:NSSizeFromCGSize(frameSize)],
-													 [NSNumber numberWithBool:renderFiltersOnCPU],
-													 nil];
-		}
+		(void)[img bitmapDataWithBitmapCreationContext:[contextValue pointerValue]];
 		
 		TFPMStopTimer(TFPerformanceTimerFilterRendering);
 		
-		[processingQueue enqueue:pixelBuffer];
-		[pixelBuffer release];
+		[processingQueue enqueue:contextValue];
 		
 		[pool release];
 	}
@@ -497,33 +491,25 @@
 	while (YES) {
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		
-		NSArray* pixelBuffer = [processingQueue dequeue];
+		NSValue* contextValue = [processingQueue dequeue];
 		
 		if ([[NSThread currentThread] isCancelled]) {
 			[pool release];
 			break;
 		}
 		
-		if (![processingQueue isEmpty] || [pixelBuffer count] != NUM_PIXEL_BUFFER_FIELDS) {
+		if (![processingQueue isEmpty] || ![contextValue isKindOfClass:[NSValue class]]) {
 			[pool release];
 			continue;
 		}
 		
-		void* buf = [[pixelBuffer objectAtIndex:2] pointerValue];
-		size_t rowBytes = [[pixelBuffer objectAtIndex:3] unsignedIntValue];
-		NSSize size = [[pixelBuffer objectAtIndex:4] sizeValue];
+		CIImageBitmapData bitmapData =
+				CIImageBitmapsCurrentBitmapDataForContext([contextValue pointerValue]);
 			
-		if ([blobDetector isKindOfClass:[TFRGBA8888BlobDetector class]]) {
-			[(TFRGBA8888BlobDetector*)blobDetector setRGBA8888ImageBuffer:buf
-																	width:size.width
-																   height:size.height
-																 rowBytes:rowBytes];
-		} else if ([blobDetector isKindOfClass:[TFGrayscale8BlobDetector class]]) {
-			[(TFGrayscale8BlobDetector*)blobDetector setGrayscale8ImageBuffer:buf
-																		width:size.width
-																	   height:size.height
-																	 rowBytes:rowBytes];
-		}
+		[blobDetector setImageBuffer:bitmapData.data
+							   width:bitmapData.width
+							  height:bitmapData.height
+							rowBytes:bitmapData.rowBytes];
 		
 		NSArray* blobs = nil;
 		@synchronized (blobDetector) {
@@ -537,23 +523,17 @@
 		if (_delegateHasDidDetectBlobs)
 			[_deliveryQueue enqueue:blobs];
 		
-		// re-use the buffer if the framesize or "render on cpu" haven't changed
-		if (size.width == _lastFrameSize.width &&
-			size.height == _lastFrameSize.height &&
-			_lastFrameRenderOnCPU == [[pixelBuffer objectAtIndex:5] boolValue]) {
-			@synchronized(_freePixelBuffers) {
-				[_freePixelBuffers addObject:pixelBuffer];
-			}
-		} else {
-			[self _clearPixelBuffer:pixelBuffer];
+		// reuse the bitmap creation context
+		@synchronized (_freeBitmapCreationContexts) {
+			[_freeBitmapCreationContexts addObject:contextValue];
 		}
 		
 		[pool release];
 	}
 	
 	while (![processingQueue isEmpty]) {
-		NSArray* buffer = [processingQueue dequeue];
-		[self _clearPixelBuffer:buffer];
+		id contextValue = [processingQueue dequeue];
+		[self _clearBitmapCreationContext:contextValue];
 	}
 	
 	[processingQueue release];
@@ -598,7 +578,7 @@
 
 - (CGColorSpaceRef)wantedCIImageColorSpaceForCapture:(TFCapture*)capture
 {
-	return _workingColorSpace;
+	return [self ciWorkingColorSpace];
 }
 
 - (void)capture:(TFCapture*)capture didCaptureFrame:(CIImage*)capturedFrame

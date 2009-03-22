@@ -60,6 +60,7 @@
 
 "TFTUIOClientName"	= "%@:%d (TUIO/OSC/UDP)";
 "TFTUIOXMLFlashClientName"	= "%@ (TUIO/Flash XML-Socket)";
+"TFTUIOFlashLCClientName" = "Flash LocalConnection (%@)";
 
 "TFTUIOXMLFlashPortFormatError"	= "Please enter a number between 1 and 65535 as the server port.";
 

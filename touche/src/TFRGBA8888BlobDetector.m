@@ -35,29 +35,26 @@
 	[super dealloc];
 }
 
-- (id)init
+- (id)initWithImageBuffer:(void*)imgBuf
+					width:(size_t)width
+				   height:(size_t)height
+				 rowBytes:(size_t)rowBytes
 {
-	return [self initWithRGBA8888ImageBuffer:NULL width:0 height:0 rowBytes:0];
-}
-
-- (id)initWithRGBA8888ImageBuffer:(UInt32*)imgBuf width:(size_t)width height:(size_t)height rowBytes:(size_t)rowBytes
-{
-	if (!(self = [super init])) {
+	if (!(self = [super initWithImageBuffer:imgBuf
+									  width:width
+									 height:height
+								   rowBytes:rowBytes])) {
 		[super dealloc];
 		return nil;
 	}
 	
-	[self setRGBA8888ImageBuffer:imgBuf width:width height:height rowBytes:rowBytes];
-	
 	return self;
 }
 
-+ (id)detectorWithRGBA8888ImageBuffer:(UInt32*)imgBuf width:(size_t)width height:(size_t)height rowBytes:(size_t)rowBytes
-{
-	return [[[[self class] alloc] initWithRGBA8888ImageBuffer:imgBuf width:width height:height rowBytes:rowBytes] autorelease];
-}
-
-- (void)setRGBA8888ImageBuffer:(UInt32*)imgBuf width:(size_t)width height:(size_t)height rowBytes:(size_t)rowBytes
+- (void)setImageBuffer:(void*)imgBuf
+				 width:(size_t)width
+				height:(size_t)height
+			  rowBytes:(size_t)rowBytes
 {
 	@synchronized (self) {
 		_imgBuf		= imgBuf;

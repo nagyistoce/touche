@@ -212,11 +212,15 @@
 			}
 			
 			CIImage* image = nil;
-			if (_delegateCapabilities.hasWantedCIImageColorSpace)
+			if (_delegateCapabilities.hasWantedCIImageColorSpace) {
+				id colorSpace = (id)[delegate wantedCIImageColorSpaceForCapture:self];
+				if (nil == colorSpace)
+					colorSpace = [NSNull null];
+				
 				image = [CIImage imageWithCVImageBuffer:pixelBuffer
-												options:[NSDictionary dictionaryWithObject:(id)[delegate wantedCIImageColorSpaceForCapture:self]
+												options:[NSDictionary dictionaryWithObject:colorSpace
 																					forKey:kCIImageColorSpace]];
-			else
+			} else
 				image = [CIImage imageWithCVImageBuffer:pixelBuffer];
 						
 			CVPixelBufferRelease(pixelBuffer);

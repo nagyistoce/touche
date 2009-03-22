@@ -36,19 +36,14 @@
 // caller is responsible for keeping the data available until blobs are detected and free'ing
 // it afterwards if necessary!
 
-+ (id)detectorWithGrayscale8ImageBuffer:(UInt8*)imgBuf
-								  width:(size_t)width
-								 height:(size_t)height
-							   rowBytes:(size_t)rowBytes;
-- (id)initWithGrayscale8ImageBuffer:(UInt8*)imgBuf
-							  width:(size_t)width
-							 height:(size_t)height
-						   rowBytes:(size_t)rowBytes;
+- (id)initWithImageBuffer:(void*)imgBuf
+					width:(size_t)width
+				   height:(size_t)height
+				 rowBytes:(size_t)rowBytes;
 
-- (void)setGrayscale8ImageBuffer:(UInt8*)imgBuf
-						   width:(size_t)width
-						  height:(size_t)height
-						rowBytes:(size_t)rowBytes;
-
+- (void)setImageBuffer:(void*)imgBuf
+				 width:(size_t)width
+				height:(size_t)height
+			  rowBytes:(size_t)rowBytes;
 
 @end

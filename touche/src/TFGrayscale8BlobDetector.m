@@ -29,16 +29,6 @@
 
 @implementation TFGrayscale8BlobDetector
 
-+ (id)detectorWithGrayscale8ImageBuffer:(UInt8*)imgBuf
-								  width:(size_t)width
-								 height:(size_t)height
-							   rowBytes:(size_t)rowBytes
-{
-	return [[[[self class] alloc]
-			initWithGrayscale8ImageBuffer:imgBuf width:width height:height rowBytes:rowBytes]
-				autorelease];
-}
-
 - (void)dealloc
 {
 	// whoever allocated this detector is responsible
@@ -46,30 +36,26 @@
 	[super dealloc];
 }
 
-- (id)init
+- (id)initWithImageBuffer:(void*)imgBuf
+					width:(size_t)width
+				   height:(size_t)height
+				 rowBytes:(size_t)rowBytes
 {
-	return [self initWithGrayscale8ImageBuffer:NULL width:0 height:0 rowBytes:0];
-}
-
-- (id)initWithGrayscale8ImageBuffer:(UInt8*)imgBuf
-							  width:(size_t)width
-							 height:(size_t)height
-						   rowBytes:(size_t)rowBytes
-{
-	if (!(self = [super init])) {
+	if (!(self = [super initWithImageBuffer:imgBuf
+									  width:width
+									 height:height
+								   rowBytes:rowBytes])) {
 		[super dealloc];
 		return nil;
 	}
 	
-	[self setGrayscale8ImageBuffer:imgBuf width:width height:height rowBytes:rowBytes];
-	
 	return self;
 }
 
-- (void)setGrayscale8ImageBuffer:(UInt8*)imgBuf
-						   width:(size_t)width
-						  height:(size_t)height
-						rowBytes:(size_t)rowBytes
+- (void)setImageBuffer:(void*)imgBuf
+				 width:(size_t)width
+				height:(size_t)height
+			  rowBytes:(size_t)rowBytes
 {
 	@synchronized (self) {
 		_imgBuf		= imgBuf;

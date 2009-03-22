@@ -24,15 +24,7 @@
 
 #import "TFTUIOOSCServer.h"
 
-#import <BBOSC/BBOSCAddress.h>
-#import <BBOSC/BBOSCArgument.h>
-#import <BBOSC/BBOSCBundle.h>
-#import <BBOSC/BBOSCMessage.h>
-
-#import "TFTUIOConstants.h"
 #import "TFIPUDPSocket.h"
-#import "TFBlob.h"
-#import "TFBlob+TUIOOSCMethods.h"
 
 
 #define SECONDS_IN_RUNLOOP		((NSTimeInterval)5.0)
@@ -42,69 +34,6 @@
 @end
 
 @implementation TFTUIOOSCServer
-
-+ (BBOSCAddress*)tuioProfileAddress
-{
-	static BBOSCAddress* tuioProfileAddress = nil;
-	
-	if (nil == tuioProfileAddress)
-		tuioProfileAddress = [[BBOSCAddress alloc] initWithString:kTFTUIOProfileAddressString];
-	
-	return [[tuioProfileAddress retain] autorelease];
-}
-
-+ (BBOSCMessage*)tuioSourceMessage
-{
-	static BBOSCMessage* sourceMsg = nil;
-	
-	if (nil == sourceMsg) {
-		sourceMsg = [[BBOSCMessage alloc] initWithBBOSCAddress:[self tuioProfileAddress]];
-	
-		NSString* appName = TFTUIOConstantsSourceName();
-		if (nil != appName) {
-			[sourceMsg attachArgument:[BBOSCArgument argumentWithString:kTFTUIOSourceArgumentName]];
-			[sourceMsg attachArgument:[BBOSCArgument argumentWithString:appName]];
-		}
-	}
-	
-	return [[sourceMsg retain] autorelease];
-}
-
-+ (BBOSCMessage*)tuioFrameSequenceNumberMessageForFrameNumber:(NSInteger)frameNumber
-{
-	BBOSCMessage* fseqMessage = [BBOSCMessage messageWithBBOSCAddress:[self tuioProfileAddress]];
-	[fseqMessage attachArgument:[BBOSCArgument argumentWithString:kTFTUIOFrameSequenceNumberArgumentName]];
-	[fseqMessage attachArgument:[BBOSCArgument argumentWithInt:frameNumber]];
-	
-	return fseqMessage;
-}
-
-+ (BBOSCMessage*)tuioAliveMessageForBlobs:(NSArray*)blobs
-{
-	BBOSCMessage* aliveMessage = [BBOSCMessage messageWithBBOSCAddress:[self tuioProfileAddress]];
-	[aliveMessage attachArgument:[BBOSCArgument argumentWithString:kTFTUIOAliveArgumentName]];
-	
-	for (TFBlob* blob in blobs)
-		[aliveMessage attachArgument:[blob tuioAliveArgument]];
-	
-	return aliveMessage;
-}
-
-+ (BBOSCBundle*)tuioBundleForFrameNumber:(NSInteger)frameNumber
-							 activeBlobs:(NSArray*)activeBlobs
-							  movedBlobs:(NSArray*)movedBlobs
-{
-	BBOSCBundle* tuioBundle = [BBOSCBundle bundleWithTimestamp:[NSDate date]];
-	[tuioBundle attachObject:[self tuioSourceMessage]];
-	
-	for (TFBlob* blob in movedBlobs)
-		[tuioBundle attachObject:[blob tuioSetMessageForCurrentState]];
-	
-	[tuioBundle attachObject:[self tuioAliveMessageForBlobs:activeBlobs]];
-	[tuioBundle attachObject:[self tuioFrameSequenceNumberMessageForFrameNumber:frameNumber]];
-	
-	return tuioBundle;
-}
 
 // we override this, since we aren't actually supposed to listen on a well-defined port
 - (id)initWithPort:(UInt16)port andLocalAddress:(NSString*)localAddress error:(NSError**)error

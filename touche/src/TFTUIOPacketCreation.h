@@ -1,10 +1,10 @@
 //
-//  TFTUIOOSCServer.h
+//  TFTUIOPacketCreation.h
 //  Touché
 //
-//  Created by Georg Kaindl on 21/8/08.
+//  Created by Georg Kaindl on 17/3/09.
 //
-//  Copyright (C) 2008 Georg Kaindl
+//  Copyright (C) 2009 Georg Kaindl
 //
 //  This file is part of Touché.
 //
@@ -24,29 +24,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "TFOSCServer.h"
 
+@class BBOSCAddress, BBOSCBundle, BBOSCMessage;
 
-@class TFTUIOOSCServer;
-
-@interface NSObject (TFTUIOOSCServerDelegate)
-- (void)tuioOscServer:(TFTUIOOSCServer*)server networkErrorDidOccur:(NSError*)error;
-@end
-
-@class TFIPDatagramSocket, TFIPUDPSocket;
-
-@interface TFTUIOOSCServer : TFOSCServer {
-	NSThread*		_socketThread;
-}
-
-- (id)initWithPort:(UInt16)port andLocalAddress:(NSString*)localAddress error:(NSError**)error;
-- (void)dealloc;
-
-- (void)invalidate;
-
-#pragma mark -
-#pragma mark TFIPDatagramSocket delegate
-
-- (void)socketHadReadWriteError:(TFIPDatagramSocket*)socket;
-
-@end
+BBOSCAddress* TFTUIOPCProfileAddress();
+BBOSCMessage* TFTUIOPCSourceMessage();
+BBOSCMessage* TFTUIOPCFrameSequenceNumberMessageForFrameNumber(NSInteger frameNumber);
+BBOSCMessage* TFTUIOPCAliveMessageForBlobs(NSArray* blobs);
+BBOSCBundle* TFTUIOPCBundleWithData(NSInteger frameNumber,
+									NSArray* activeBlobs,
+									NSArray* movedBlobs);

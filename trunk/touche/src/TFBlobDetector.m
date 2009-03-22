@@ -28,6 +28,17 @@
 
 @implementation TFBlobDetector
 
++ (id)detectorWithImageBuffer:(void*)imgBuf
+						width:(size_t)width
+					   height:(size_t)height
+					 rowBytes:(size_t)rowBytes
+{
+	return [[[self alloc] initWithImageBuffer:imgBuf
+										width:width
+									   height:height
+									 rowBytes:rowBytes] autorelease];	
+}
+
 - (void)dealloc
 {
 	[detectedBlobs release];
@@ -37,14 +48,31 @@
 
 - (id)init
 {
-	if (!(self = [super init])) {
-		[self release];
-		return nil;
+	return [self initWithImageBuffer:NULL
+							   width:0
+							  height:0
+							rowBytes:0];
+}
+
+- (id)initWithImageBuffer:(void*)imgBuf
+					width:(size_t)width
+				   height:(size_t)height
+				 rowBytes:(size_t)rowBytes
+{
+	if (nil != (self = [super init])) {
+		[self setImageBuffer:imgBuf width:width height:height rowBytes:rowBytes];
+		detectedBlobs = [[NSMutableArray alloc] init];
 	}
-	
-	detectedBlobs = [[NSMutableArray alloc] init];
-	
+		
 	return self;
+}
+
+- (void)setImageBuffer:(void*)imgBuf
+				 width:(size_t)width
+				height:(size_t)height
+			  rowBytes:(size_t)rowBytes
+{
+	TFThrowMethodNotImplementedException();
 }
 
 - (NSArray*)detectedBlobs

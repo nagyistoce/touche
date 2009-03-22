@@ -28,6 +28,7 @@
 #import <BBOSC/BBOSCBundle.h>
 
 #import "TFThreadMessagingQueue.h"
+#import "TFTUIOPacketCreation.h"
 #import "TFTUIOOSCServer.h"
 #import "TFTUIOOSCTrackingDataReceiver.h"
 
@@ -57,6 +58,7 @@
 		_server.delegate = self;
 	}
 	
+	// TODO: report a proper error.
 	if (nil == _server)
 		return NO;
 	
@@ -132,10 +134,8 @@
 							   movedTouches:(NSArray*)movedTouches
 								frameNumber:(NSUInteger)frameNumber
 {
-	BBOSCBundle* tuioBundle = [TFTUIOOSCServer tuioBundleForFrameNumber:frameNumber
-															activeBlobs:livingTouches
-															 movedBlobs:movedTouches];
-	
+	BBOSCBundle* tuioBundle = TFTUIOPCBundleWithData(frameNumber, livingTouches, movedTouches);
+		
 	@synchronized (_receivers) {
 		for (TFTUIOOSCTrackingDataReceiver* receiver in [_receivers allValues])
 			[receiver consumeTrackingData:tuioBundle];

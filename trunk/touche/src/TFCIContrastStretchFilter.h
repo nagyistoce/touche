@@ -44,10 +44,6 @@ typedef enum {
 	NSNumber*			inputBoostStrength;
 	CIFilter*			_areaMinFilter;
 	CIFilter*			_areaMaxFilter;
-	CGColorSpaceRef		_colorSpace;
-	CGColorSpaceRef		_workingColorSpace;
-	float*				_imgBuffer;
-	size_t				_rowBytes;
 }
 
 @property (assign) BOOL isEnabled;

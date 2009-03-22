@@ -21,7 +21,7 @@
 		6E0AE6270DE1C4E100D41A13 /* TFFullscreenController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E937B130D9D66AC00B75112 /* TFFullscreenController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E0AE6280DE1C4E200D41A13 /* TFFullscreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E937B140D9D66AC00B75112 /* TFFullscreenController.m */; };
 		6E0AE6290DE1C54000D41A13 /* ToucheFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E0AE6100DE1C3E000D41A13 /* ToucheFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6E14CF1B0DCFA25000509998 /* CGColorRefColorSpaceConversions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14CF1A0DCFA25000509998 /* CGColorRefColorSpaceConversions.m */; };
+		6E14CF1B0DCFA25000509998 /* CGColorRefColorSpaceConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6E14CF1A0DCFA25000509998 /* CGColorRefColorSpaceConversions.c */; };
 		6E14CF220DCFA47000509998 /* CGColorFromNSColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14CF210DCFA47000509998 /* CGColorFromNSColor.m */; };
 		6E14CF280DCFA63100509998 /* GCKIPhoneNavigationBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14CF270DCFA63100509998 /* GCKIPhoneNavigationBarView.m */; };
 		6E14CF420DCFA8A200509998 /* GCKObservingForDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14CF410DCFA8A200509998 /* GCKObservingForDisplayView.m */; };
@@ -163,6 +163,10 @@
 		6ECA956F0DD204E200A9ABE3 /* TFInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECA956E0DD204E200A9ABE3 /* TFInfoView.m */; };
 		6ECA966A0DD249D300A9ABE3 /* erroricon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ECA96680DD249D300A9ABE3 /* erroricon.png */; };
 		6ECA966B0DD249D300A9ABE3 /* warningicon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6ECA96690DD249D300A9ABE3 /* warningicon.tiff */; };
+		6ECE5D630F6E7A960067CC99 /* TFFlashLCSHMEM.c in Sources */ = {isa = PBXBuildFile; fileRef = 6ECE5D620F6E7A960067CC99 /* TFFlashLCSHMEM.c */; };
+		6ECE5F830F6FF6C10067CC99 /* TFTUIOPacketCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECE5F820F6FF6C10067CC99 /* TFTUIOPacketCreation.m */; };
+		6ECE60340F719F8C0067CC99 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECE60330F719F8C0067CC99 /* TFTUIOFlashLCTrackingDataDistributor.m */; };
+		6ECE61CD0F72B3F00067CC99 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECE61CC0F72B3F00067CC99 /* TFTUIOFlashLCTrackingDataReceiver.m */; };
 		6ECF81780E72B05E009433B3 /* TFTUIOOSCTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF81770E72B05E009433B3 /* TFTUIOOSCTrackingDataReceiver.m */; };
 		6ECF819E0E72B223009433B3 /* TFTUIOOSCTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF819D0E72B223009433B3 /* TFTUIOOSCTrackingDataDistributor.m */; };
 		6ECF81B10E72B2D3009433B3 /* TFTUIOOSCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF81B00E72B2D3009433B3 /* TFTUIOOSCSettingsController.m */; };
@@ -262,7 +266,7 @@
 		6E07FD470DF0419300FCB681 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = English; path = English.lproj/credits.html; sourceTree = "<group>"; };
 		6E0AE6100DE1C3E000D41A13 /* ToucheFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToucheFramework.h; sourceTree = "<group>"; };
 		6E14CF190DCFA25000509998 /* CGColorRefColorSpaceConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGColorRefColorSpaceConversions.h; sourceTree = "<group>"; };
-		6E14CF1A0DCFA25000509998 /* CGColorRefColorSpaceConversions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGColorRefColorSpaceConversions.m; sourceTree = "<group>"; };
+		6E14CF1A0DCFA25000509998 /* CGColorRefColorSpaceConversions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CGColorRefColorSpaceConversions.c; sourceTree = "<group>"; };
 		6E14CF200DCFA46800509998 /* CGColorFromNSColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGColorFromNSColor.h; sourceTree = "<group>"; };
 		6E14CF210DCFA47000509998 /* CGColorFromNSColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGColorFromNSColor.m; sourceTree = "<group>"; };
 		6E14CF260DCFA63100509998 /* GCKIPhoneNavigationBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCKIPhoneNavigationBarView.h; sourceTree = "<group>"; };
@@ -454,6 +458,14 @@
 		6ECA956E0DD204E200A9ABE3 /* TFInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFInfoView.m; sourceTree = "<group>"; };
 		6ECA96680DD249D300A9ABE3 /* erroricon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = erroricon.png; path = images/erroricon.png; sourceTree = "<group>"; };
 		6ECA96690DD249D300A9ABE3 /* warningicon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = warningicon.tiff; path = images/warningicon.tiff; sourceTree = "<group>"; };
+		6ECE5D610F6E7A960067CC99 /* TFFlashLCSHMEM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFFlashLCSHMEM.h; sourceTree = "<group>"; };
+		6ECE5D620F6E7A960067CC99 /* TFFlashLCSHMEM.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFFlashLCSHMEM.c; sourceTree = "<group>"; };
+		6ECE5F810F6FF6C10067CC99 /* TFTUIOPacketCreation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOPacketCreation.h; sourceTree = "<group>"; };
+		6ECE5F820F6FF6C10067CC99 /* TFTUIOPacketCreation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOPacketCreation.m; sourceTree = "<group>"; };
+		6ECE60320F719F8C0067CC99 /* TFTUIOFlashLCTrackingDataDistributor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOFlashLCTrackingDataDistributor.h; sourceTree = "<group>"; };
+		6ECE60330F719F8C0067CC99 /* TFTUIOFlashLCTrackingDataDistributor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOFlashLCTrackingDataDistributor.m; sourceTree = "<group>"; };
+		6ECE61CB0F72B3F00067CC99 /* TFTUIOFlashLCTrackingDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOFlashLCTrackingDataReceiver.h; sourceTree = "<group>"; };
+		6ECE61CC0F72B3F00067CC99 /* TFTUIOFlashLCTrackingDataReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOFlashLCTrackingDataReceiver.m; sourceTree = "<group>"; };
 		6ECF81760E72B05E009433B3 /* TFTUIOOSCTrackingDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOOSCTrackingDataReceiver.h; sourceTree = "<group>"; };
 		6ECF81770E72B05E009433B3 /* TFTUIOOSCTrackingDataReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOOSCTrackingDataReceiver.m; sourceTree = "<group>"; };
 		6ECF819C0E72B223009433B3 /* TFTUIOOSCTrackingDataDistributor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOOSCTrackingDataDistributor.h; sourceTree = "<group>"; };
@@ -784,10 +796,12 @@
 			isa = PBXGroup;
 			children = (
 				6E2DC55C0E5991B000409C0E /* DO */,
+				6ECE5D600F6E7A620067CC99 /* Flash LC (SHMEM) */,
 				6EED5F010E5DAF2300375CC0 /* OSC */,
 				6E2DC3DB0E5874D000409C0E /* TCPIP */,
 				6E6C8CF10E72AE490062EA15 /* TUIO */,
 				6EED5FF90E5E07BA00375CC0 /* TUIO (OSC) */,
+				6ECE60310F719F630067CC99 /* TUIO (Flash LocalConnection) */,
 				6E6C8CF00E72AE370062EA15 /* TUIO (Flash XML Socket) */,
 				6EED60C90E5ED7E000375CC0 /* TFTrackingDataDistributor.h */,
 				6EED60CA0E5ED7E000375CC0 /* TFTrackingDataDistributor.m */,
@@ -892,6 +906,8 @@
 				6ECF82A90E72C4FC009433B3 /* TFTUIOConstants.m */,
 				6ECF85150E734879009433B3 /* TFBlob+TUIOMethods.h */,
 				6ECF85160E734879009433B3 /* TFBlob+TUIOMethods.m */,
+				6ECE5F810F6FF6C10067CC99 /* TFTUIOPacketCreation.h */,
+				6ECE5F820F6FF6C10067CC99 /* TFTUIOPacketCreation.m */,
 				6ECF81BA0E72B93D009433B3 /* TFTUIOTrackingDataDistributor.h */,
 				6ECF81BB0E72B93D009433B3 /* TFTUIOTrackingDataDistributor.m */,
 			);
@@ -1173,7 +1189,7 @@
 				6E14CF200DCFA46800509998 /* CGColorFromNSColor.h */,
 				6E14CF210DCFA47000509998 /* CGColorFromNSColor.m */,
 				6E14CF190DCFA25000509998 /* CGColorRefColorSpaceConversions.h */,
-				6E14CF1A0DCFA25000509998 /* CGColorRefColorSpaceConversions.m */,
+				6E14CF1A0DCFA25000509998 /* CGColorRefColorSpaceConversions.c */,
 				6E14CFBF0DCFAE2700509998 /* NSView+Extras.h */,
 				6E14CFC00DCFAE2700509998 /* NSView+Extras.m */,
 				6E9355800DC0D6FC0048E1A3 /* NSImage-Extras.h */,
@@ -1200,6 +1216,26 @@
 				6EE608C90DDC9E540069A40E /* TFTrackingPipeline+LibDc1394InputAdditions.m */,
 			);
 			name = "Processing Pipeline";
+			sourceTree = "<group>";
+		};
+		6ECE5D600F6E7A620067CC99 /* Flash LC (SHMEM) */ = {
+			isa = PBXGroup;
+			children = (
+				6ECE5D610F6E7A960067CC99 /* TFFlashLCSHMEM.h */,
+				6ECE5D620F6E7A960067CC99 /* TFFlashLCSHMEM.c */,
+			);
+			name = "Flash LC (SHMEM)";
+			sourceTree = "<group>";
+		};
+		6ECE60310F719F630067CC99 /* TUIO (Flash LocalConnection) */ = {
+			isa = PBXGroup;
+			children = (
+				6ECE60320F719F8C0067CC99 /* TFTUIOFlashLCTrackingDataDistributor.h */,
+				6ECE60330F719F8C0067CC99 /* TFTUIOFlashLCTrackingDataDistributor.m */,
+				6ECE61CB0F72B3F00067CC99 /* TFTUIOFlashLCTrackingDataReceiver.h */,
+				6ECE61CC0F72B3F00067CC99 /* TFTUIOFlashLCTrackingDataReceiver.m */,
+			);
+			name = "TUIO (Flash LocalConnection)";
 			sourceTree = "<group>";
 		};
 		6EE6074F0DDB53240069A40E /* QuickTime Kit */ = {
@@ -1515,7 +1551,7 @@
 				6E9394460DC7768600D21ADC /* TFBlobWiiRemoteInputSource.m in Sources */,
 				6E76BF080DCA0FAA00D30859 /* TFGrayscale8BlobDetector.m in Sources */,
 				6E76BF120DCA12AE00D30859 /* TFOpenCVContourBlobDetector.m in Sources */,
-				6E14CF1B0DCFA25000509998 /* CGColorRefColorSpaceConversions.m in Sources */,
+				6E14CF1B0DCFA25000509998 /* CGColorRefColorSpaceConversions.c in Sources */,
 				6E14CF220DCFA47000509998 /* CGColorFromNSColor.m in Sources */,
 				6E14CF280DCFA63100509998 /* GCKIPhoneNavigationBarView.m in Sources */,
 				6E14CF420DCFA8A200509998 /* GCKObservingForDisplayView.m in Sources */,
@@ -1583,6 +1619,10 @@
 				6EC632CF0ED9A2170094958E /* GCKGradientOverlayView.m in Sources */,
 				6E25B61F0F66BB83001B7064 /* TFPerformanceMeasurement.c in Sources */,
 				6E25B7010F694220001B7064 /* TFPerformanceTimer.m in Sources */,
+				6ECE5D630F6E7A960067CC99 /* TFFlashLCSHMEM.c in Sources */,
+				6ECE5F830F6FF6C10067CC99 /* TFTUIOPacketCreation.m in Sources */,
+				6ECE60340F719F8C0067CC99 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */,
+				6ECE61CD0F72B3F00067CC99 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

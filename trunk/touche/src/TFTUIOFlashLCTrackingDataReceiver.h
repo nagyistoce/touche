@@ -1,10 +1,10 @@
 //
-//  TFTUIOOSCServer.h
+//  TFTUIOFlashLCTrackingDataReceiver.h
 //  Touché
 //
-//  Created by Georg Kaindl on 21/8/08.
+//  Created by Georg Kaindl on 19/3/09.
 //
-//  Copyright (C) 2008 Georg Kaindl
+//  Copyright (C) 2009 Georg Kaindl
 //
 //  This file is part of Touché.
 //
@@ -24,29 +24,26 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "TFOSCServer.h"
+#import "TFTrackingDataReceiver.h"
 
 
-@class TFTUIOOSCServer;
+extern NSString* TFTUIOFlashLCTrackingDataReceiverIDFormat;
 
-@interface NSObject (TFTUIOOSCServerDelegate)
-- (void)tuioOscServer:(TFTUIOOSCServer*)server networkErrorDidOccur:(NSError*)error;
-@end
+struct TFLCSLocalConnection_t;
 
-@class TFIPDatagramSocket, TFIPUDPSocket;
-
-@interface TFTUIOOSCServer : TFOSCServer {
-	NSThread*		_socketThread;
+@interface TFTUIOFlashLCTrackingDataReceiver : TFTrackingDataReceiver {
+	NSString*	_connectionName;
+	NSString*	_connectionMethod;
+	
+	struct TFLCSLocalConnection_t*	_lcConnection;
 }
 
-- (id)initWithPort:(UInt16)port andLocalAddress:(NSString*)localAddress error:(NSError**)error;
+- (id)init;
+- (id)initWithConnectionName:(NSString*)connectionName
+			   andMethodName:(NSString*)methodName;
 - (void)dealloc;
 
-- (void)invalidate;
-
-#pragma mark -
-#pragma mark TFIPDatagramSocket delegate
-
-- (void)socketHadReadWriteError:(TFIPDatagramSocket*)socket;
+- (void)receiverShouldQuit;
+- (void)consumeTrackingData:(id)trackingData;
 
 @end

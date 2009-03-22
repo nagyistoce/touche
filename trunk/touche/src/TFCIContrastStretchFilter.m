@@ -28,17 +28,25 @@
 #import "TFIncludes.h"
 #import "CIImage+MakeBitmaps.h"
 
+
 #define DEFAULT_SENSITIVITY	(0.01)
 #define BOOST_BIAS	(0.0007f)
+
+static CIKernel*	tFCIContrastStretchFilterKernel = nil;
+static CIKernel*	tFCIContrastStretchFilterEvalMinMaxOnCPUKernel = nil;
+static CIKernel*	tFCIContrastStretchFilterBoostKernel = nil;
+
+static NSMutableArray*	_freeMinMaxCIImageBitmapContexts = nil;
+
+@interface TFCIContrastStretchFilter (PrivateMethods)
++ (NSValue*)_reusableCIImageBitmapContextForImage:(CIImage*)image;
++ (void)_saveCIImageBitmapContextForReuse:(NSValue*)contextValue;
+@end
 
 @implementation TFCIContrastStretchFilter
 
 @synthesize isEnabled;
 @synthesize evalMinMaxOnCPU;
-
-static CIKernel*	tFCIContrastStretchFilterKernel = nil;
-static CIKernel*	tFCIContrastStretchFilterEvalMinMaxOnCPUKernel = nil;
-static CIKernel*	tFCIContrastStretchFilterBoostKernel = nil;
 
 + (void)initialize
 {
@@ -55,6 +63,49 @@ static CIKernel*	tFCIContrastStretchFilterBoostKernel = nil;
 	 ];
 }
 
++ (NSValue*)_reusableCIImageBitmapContextForImage:(CIImage*)image
+{
+	if (nil == _freeMinMaxCIImageBitmapContexts)
+		_freeMinMaxCIImageBitmapContexts = [[NSMutableArray alloc] init];
+	
+	NSValue* contextValue = nil;
+	
+	@synchronized (_freeMinMaxCIImageBitmapContexts) {
+		int i;
+		for (i=0; i<[_freeMinMaxCIImageBitmapContexts count]; i++) {
+			contextValue = [_freeMinMaxCIImageBitmapContexts objectAtIndex:i];
+			if (CIImageBitmapsContextMatchesBitmapSize([contextValue pointerValue], [image extent].size)) {
+				[[contextValue retain] autorelease];
+				[_freeMinMaxCIImageBitmapContexts removeObjectAtIndex:i];
+				break;
+			}
+			
+			contextValue = nil;
+		}
+	}
+	
+	if (nil == contextValue) {
+		void* context = CIImageBitmapsCreateContextForPremultipliedRGBAf(image, YES);
+		
+		CIImageBitmapsSetContextDeterminesFastestRenderingDynamically(context, YES);
+		
+		contextValue = [NSValue valueWithPointer:context];
+	}
+	
+	return contextValue;
+}
+
++ (void)_saveCIImageBitmapContextForReuse:(NSValue*)contextValue
+{
+	if (nil == _freeMinMaxCIImageBitmapContexts)
+		_freeMinMaxCIImageBitmapContexts = [[NSMutableArray alloc] init];
+	
+	if (nil != contextValue)
+		@synchronized (_freeMinMaxCIImageBitmapContexts) {
+			[_freeMinMaxCIImageBitmapContexts addObject:contextValue];
+		}
+}
+
 - (void)dealloc
 {
 	[_areaMaxFilter release];
@@ -62,17 +113,6 @@ static CIKernel*	tFCIContrastStretchFilterBoostKernel = nil;
 	
 	[_areaMinFilter release];
 	_areaMaxFilter = nil;
-	
-	CGColorSpaceRelease(_colorSpace);
-	_colorSpace = nil;
-	
-	CGColorSpaceRelease(_workingColorSpace);
-	_workingColorSpace = nil;
-	
-	if (NULL != _imgBuffer) {
-		free(_imgBuffer);
-		_imgBuffer = NULL;
-	}
 	
 	[super dealloc];
 }
@@ -101,11 +141,6 @@ static CIKernel*	tFCIContrastStretchFilterBoostKernel = nil;
 	
 	[_areaMaxFilter setDefaults];
 	[_areaMinFilter setDefaults];
-	
-	_colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
-	_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
-	_rowBytes = 16;
-	_imgBuffer = (float*)malloc(sizeof(float)*_rowBytes);
 	
 	isEnabled = NO;
 	evalMinMaxOnCPU = YES;
@@ -189,24 +224,25 @@ static CIKernel*	tFCIContrastStretchFilterBoostKernel = nil;
 				
 				outImg = [self apply:tFCIContrastStretchFilterKernel, src, maxSampler, minSampler, inputStretchMinIntensityDistance,
 									kCIApplyOptionDefinition, [src definition], nil];
-			} else {			
-				_imgBuffer = [minImg createPremultipliedRGBAFFFFBitmapWithColorSpace:_colorSpace
-																   workingColorSpace:_workingColorSpace
-																			rowBytes:&_rowBytes
-																			  buffer:(void*)_imgBuffer
-																		 renderOnCPU:YES];
+			} else {
+				NSValue* contextValue = [[self class] _reusableCIImageBitmapContextForImage:minImg];
+			
+				// renders in RGBAf pixel format
+				CIImageBitmapData bitmapData =
+						[minImg bitmapDataWithBitmapCreationContext:[contextValue pointerValue]];
 				
-				CIVector* minVect = [CIVector vectorWithX:_imgBuffer[0]
-														Y:_imgBuffer[1]
-														Z:_imgBuffer[2]];
+				float* rgbfData = (float*)bitmapData.data;
+				CIVector* minVect = [CIVector vectorWithX:rgbfData[0]
+														Y:rgbfData[1]
+														Z:rgbfData[2]];
 
-				_imgBuffer = [maxImg createPremultipliedRGBAFFFFBitmapWithColorSpace:_colorSpace
-																   workingColorSpace:_workingColorSpace
-																			rowBytes:&_rowBytes
-																			  buffer:(void*)_imgBuffer
-																		 renderOnCPU:YES];
+				// also renders in RGBAf pixel format
+				bitmapData = [maxImg bitmapDataWithBitmapCreationContext:[contextValue pointerValue]];
+				rgbfData = (float*)bitmapData.data;
 								
-				float dx = _imgBuffer[0]-[minVect X], dy = _imgBuffer[1]-[minVect Y], dz = _imgBuffer[2]-[minVect Z];
+				float dx = rgbfData[0]-[minVect X], dy = rgbfData[1]-[minVect Y], dz = rgbfData[2]-[minVect Z];
+				
+				[[self class] _saveCIImageBitmapContextForReuse:contextValue];
 				
 				if (0 == dx || 0 == dy || 0 == dz)
 					return inputImage;

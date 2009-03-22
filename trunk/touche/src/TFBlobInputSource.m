@@ -185,12 +185,12 @@
 	return nil;
 }
 
-- (CGColorSpaceRef)colorSpace
+- (CGColorSpaceRef)ciColorSpace
 {
 	return nil;
 }
 
-- (CGColorSpaceRef)workingColorSpace
+- (CGColorSpaceRef)ciWorkingColorSpace
 {
 	return nil;
 }

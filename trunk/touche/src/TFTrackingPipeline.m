@@ -1156,10 +1156,10 @@ errorReturn:
 		img = [_blobInput currentRawImageForStage:frameStageForDisplay];
 		
 		if (NULL != colorSpace)
-			*colorSpace = [_blobInput colorSpace];
+			*colorSpace = [_blobInput ciColorSpace];
 		
 		if (NULL != workingColorSpace)
-			*workingColorSpace = [_blobInput workingColorSpace];
+			*workingColorSpace = [_blobInput ciWorkingColorSpace];
 	}
 		
 	return img;

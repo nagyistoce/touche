@@ -36,4 +36,16 @@
 
 @property (assign) float minimumBlobDiameter;
 
+- (id)initWithImageBuffer:(void*)imgBuf
+					width:(size_t)width
+				   height:(size_t)height
+				 rowBytes:(size_t)rowBytes;
+
+- (void)setImageBuffer:(void*)imgBuf
+				 width:(size_t)width
+				height:(size_t)height
+			  rowBytes:(size_t)rowBytes;
+
+- (BOOL)detectBlobs:(NSError**)error ignoreErrors:(BOOL)ignoreErrors;
+
 @end

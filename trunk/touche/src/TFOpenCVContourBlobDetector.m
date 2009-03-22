@@ -53,12 +53,15 @@
 	[super dealloc];
 }
 
-- (id)initWithGrayscale8ImageBuffer:(UInt8*)imgBuf
-							  width:(size_t)width
-							 height:(size_t)height
-						   rowBytes:(size_t)rowBytes
+- (id)initWithImageBuffer:(void*)imgBuf
+					width:(size_t)width
+				   height:(size_t)height
+				 rowBytes:(size_t)rowBytes
 {
-	if (!(self = [super initWithGrayscale8ImageBuffer:imgBuf width:width height:height rowBytes:rowBytes])) {
+	if (!(self = [super initWithImageBuffer:imgBuf
+									  width:width
+									 height:height
+								   rowBytes:rowBytes])) {
 		[super dealloc];
 		return nil;
 	}
@@ -68,10 +71,10 @@
 	return self;
 }
 
-- (void)setGrayscale8ImageBuffer:(UInt8*)imgBuf
-						   width:(size_t)width
-						  height:(size_t)height
-						rowBytes:(size_t)rowBytes
+- (void)setImageBuffer:(void*)imgBuf
+				 width:(size_t)width
+				height:(size_t)height
+			  rowBytes:(size_t)rowBytes
 {
 	if (NULL == imgBuf)
 		return;
@@ -87,10 +90,10 @@
 			_cvImg = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 1);
 		}
 		
-		[super setGrayscale8ImageBuffer:imgBuf
-								  width:width
-								 height:height
-							   rowBytes:rowBytes];
+		[super setImageBuffer:imgBuf
+						width:width
+					   height:height
+					 rowBytes:rowBytes];
 		
 		cvSetData(_cvImg, imgBuf, rowBytes);
 		

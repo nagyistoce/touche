@@ -102,8 +102,8 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 	_curDisplay = CGMainDisplayID();
 	_needsReshape = YES;
 	
-	_colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
-	_workingColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+	_colorSpace = NULL;
+	_workingColorSpace = NULL;
 	
 	return self;
 }
@@ -154,8 +154,8 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 		_ciContext = [[CIContext contextWithCGLContext:(CGLContextObj)CGLGetCurrentContext()
 										   pixelFormat:(CGLPixelFormatObj)[pixelFormat CGLPixelFormatObj]
 											   options:[NSDictionary dictionaryWithObjectsAndKeys:
-														(id)_colorSpace, kCIContextOutputColorSpace,
-														(id)_workingColorSpace, kCIContextWorkingColorSpace, nil]] retain];
+														(NULL != (id)_colorSpace ? (id)_colorSpace : (id)[NSNull null]), kCIContextOutputColorSpace,
+														(NULL != (id)_workingColorSpace ? (id)_workingColorSpace : (id)[NSNull null]), kCIContextWorkingColorSpace, nil]] retain];
 		
 	}
 	

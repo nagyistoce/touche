@@ -47,6 +47,7 @@
 #import "TFTUIOOSCTrackingDataDistributor.h"
 #import "TFFlashXMLTUIOTrackingDataDistributor.h"
 #import "TFTUIOFlashXmlSettingsController.h"
+#import "TFTUIOFlashLCTrackingDataDistributor.h"
 #import "TFTrackingDataDistributionCenter.h"
 
 
@@ -555,6 +556,7 @@ enum {
 {	
 	_distributionCenter = [[TFTrackingDataDistributionCenter alloc] init];
 	
+	// distributed objects distributor
 	TFDOTrackingDataDistributor* doDistributor = [[TFDOTrackingDataDistributor alloc] init];
 	[doDistributor startDistributorWithObject:nil error:NULL];
 	doDistributor.delegate = self;
@@ -562,6 +564,7 @@ enum {
 	[_distributionCenter addDistributor:doDistributor];
 	[doDistributor release];
 	
+	// TUIO/OSC distributor
 	TFTUIOOSCTrackingDataDistributor* tuioDistributor = [[TFTUIOOSCTrackingDataDistributor alloc] init];
 	[tuioDistributor startDistributorWithObject:nil error:NULL];
 	tuioDistributor.motionThreshold = [TFTUIOOSCSettingsController pixelsForBlobMotion];
@@ -574,6 +577,7 @@ enum {
 	_tuioSettingsController.distributor = tuioDistributor;
 	[tuioDistributor release];
 	
+	// flash XML socket distributor
 	NSDictionary* flashXmlConfig = [NSDictionary dictionaryWithObjectsAndKeys:
 									[TFTUIOFlashXmlSettingsController serverAddress], kTFFlashXMLTUIOTrackingDataDistributorLocalAddress,
 									[NSNumber numberWithUnsignedShort:[TFTUIOFlashXmlSettingsController serverPort]], kTFFlashXMLTUIOTrackingDataDistributorPort,
@@ -603,6 +607,15 @@ enum {
 	_tuioFlashXmlSettingsController = [[TFTUIOFlashXmlSettingsController alloc] init];
 	_tuioFlashXmlSettingsController.distributor = flashDistributor;
 	[flashDistributor release];
+	
+	// flash LocalConnection distributor
+	TFTUIOFlashLCTrackingDataDistributor* flashLCDistributor = [[TFTUIOFlashLCTrackingDataDistributor alloc] init];
+	flashLCDistributor.delegate = self;
+	
+	[flashLCDistributor startDistributorWithObject:nil error:NULL];
+	
+	[_distributionCenter addDistributor:flashLCDistributor];
+	[flashLCDistributor release];
 	
 	_pipeline = [[TFTrackingPipeline sharedPipeline] retain];
 	_pipeline.delegate = self;

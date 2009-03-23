@@ -281,11 +281,15 @@
 			CGDataProviderRelease(dataProvider);
 			
 			CIImage* image = nil;
-			if (_delegateCapabilities.hasWantedCIImageColorSpace)
+			if (_delegateCapabilities.hasWantedCIImageColorSpace) {
+				id colorSpace = (id)[delegate wantedCIImageColorSpaceForCapture:self];
+				if (nil == colorSpace)
+					colorSpace = [NSNull null];
+				
 				image = [CIImage imageWithCGImage:cgImage
-										  options:[NSDictionary dictionaryWithObject:(id)[delegate wantedCIImageColorSpaceForCapture:self]
+										  options:[NSDictionary dictionaryWithObject:(id)colorSpace
 																			  forKey:kCIImageColorSpace]];
-			else
+			} else
 				image = [CIImage imageWithCGImage:cgImage];
 			
 			CGImageRelease(cgImage);

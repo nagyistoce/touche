@@ -539,8 +539,9 @@ int _TFLCSDelayedConnect(TFLCSLocalConnection_t* connection)
 	
 	connection->data = (char*)connection->mapAddress;
 	connection->open = 1;
-#endif
 
 errorReturn:
+#endif
+
 	return connection->open;
 }

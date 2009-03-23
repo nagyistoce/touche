@@ -2,13 +2,14 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.02">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">9F33</string>
+		<string key="IBDocument.SystemVersion">9G55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">672</string>
-		<string key="IBDocument.AppKitVersion">949.34</string>
-		<string key="IBDocument.HIToolboxVersion">352.00</string>
+		<string key="IBDocument.AppKitVersion">949.43</string>
+		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="7"/>
+			<integer value="163"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2067,7 +2068,7 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="770787616">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">45</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2091,7 +2092,7 @@
 											<object class="NSTabViewItem" id="1070037123">
 												<string key="NSIdentifier">1</string>
 												<object class="NSView" key="NSView" id="344151144">
-													<nil key="NSNextResponder"/>
+													<reference key="NSNextResponder" ref="499113659"/>
 													<int key="NSvFlags">256</int>
 													<object class="NSMutableArray" key="NSSubviews">
 														<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3449,6 +3450,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 														</object>
 													</object>
 													<string key="NSFrame">{{10, 19}, {602, 199}}</string>
+													<reference key="NSSuperview" ref="499113659"/>
 												</object>
 												<string key="NSLabel">Preprocessing</string>
 												<reference key="NSColor" ref="160301866"/>
@@ -3457,7 +3459,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 											<object class="NSTabViewItem" id="14972845">
 												<string key="NSIdentifier">2</string>
 												<object class="NSView" key="NSView" id="724162819">
-													<reference key="NSNextResponder" ref="499113659"/>
+													<nil key="NSNextResponder"/>
 													<int key="NSvFlags">256</int>
 													<object class="NSMutableArray" key="NSSubviews">
 														<bool key="EncodedWithXMLCoder">YES</bool>
@@ -5051,7 +5053,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 														</object>
 													</object>
 													<string key="NSFrame">{{10, 19}, {602, 199}}</string>
-													<reference key="NSSuperview" ref="499113659"/>
 												</object>
 												<string key="NSLabel">Thresholding</string>
 												<reference key="NSColor" ref="160301866"/>
@@ -6570,14 +6571,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<reference key="NSTabView" ref="499113659"/>
 											</object>
 										</object>
-										<reference key="NSSelectedTabViewItem" ref="14972845"/>
+										<reference key="NSSelectedTabViewItem" ref="1070037123"/>
 										<reference key="NSFont" ref="22"/>
 										<int key="NSTvFlags">268435456</int>
 										<bool key="NSAllowTruncatedLabels">YES</bool>
 										<bool key="NSDrawsBackground">YES</bool>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
-											<reference ref="724162819"/>
+											<reference ref="344151144"/>
 										</object>
 									</object>
 									<object class="NSButton" id="772020524">
@@ -6629,6 +6630,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					</object>
 				</object>
 				<string key="NSFrameSize">{680, 292}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="830953166">

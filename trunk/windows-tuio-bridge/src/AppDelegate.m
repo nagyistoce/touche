@@ -40,7 +40,7 @@
 #import "TFTrackingDataDistributionCenter.h"
 #import "TFTUIOOSCTrackingDataDistributor.h"
 #import "TFFlashXMLTUIOTrackingDataDistributor.h"
-
+#import "TFTUIOFlashLCTrackingDataDistributor.h"
 
 #define	DEFAULT_MOTION_THRESHOLD	(3.0)
 
@@ -143,7 +143,6 @@ NSString* TSLocalizedLabelForDeviceInfoKey(NSString* deviceInfoKey);
 	tuioDistributor.delegate = self;
 	
 	[_distributionCenter addDistributor:tuioDistributor];
-	
 	[tuioDistributor release];
 	
 	NSDictionary* flashXmlConfig = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -173,6 +172,16 @@ NSString* TSLocalizedLabelForDeviceInfoKey(NSString* deviceInfoKey);
 	}
 	
 	[_distributionCenter addDistributor:flashDistributor];
+	[flashDistributor release];
+	
+	// flash LocalConnection distributor
+	TFTUIOFlashLCTrackingDataDistributor* flashLCDistributor = [[TFTUIOFlashLCTrackingDataDistributor alloc] init];
+	flashLCDistributor.delegate = self;
+	
+	[flashLCDistributor startDistributorWithObject:nil error:NULL];
+	
+	[_distributionCenter addDistributor:flashLCDistributor];
+	[flashLCDistributor release];
 	
 	// add the TUIO target
 	if (![tuioDistributor addTUIOClientAtHost:[userDefaults objectForKey:PrefKeyOSCTargetHost]

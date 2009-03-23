@@ -114,6 +114,14 @@
 		6E846F3F0F57613200E145FB /* TSTouchInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E846F3E0F57613200E145FB /* TSTouchInputSource.m */; };
 		6E846F400F57613200E145FB /* TSTouchInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E846F3E0F57613200E145FB /* TSTouchInputSource.m */; };
 		6E846F480F5761FC00E145FB /* TSNextwindowTouchInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E846F470F5761FC00E145FB /* TSNextwindowTouchInputSource.m */; };
+		6EC220FD0F77DAD9008FD532 /* TFTUIOPacketCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC220FC0F77DAD9008FD532 /* TFTUIOPacketCreation.m */; };
+		6EC220FE0F77DAD9008FD532 /* TFTUIOPacketCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC220FC0F77DAD9008FD532 /* TFTUIOPacketCreation.m */; };
+		6EC221020F77DAFA008FD532 /* TFFlashLCSHMEM.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC221000F77DAFA008FD532 /* TFFlashLCSHMEM.c */; };
+		6EC221030F77DAFA008FD532 /* TFFlashLCSHMEM.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC221000F77DAFA008FD532 /* TFFlashLCSHMEM.c */; };
+		6EC2210F0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC2210B0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataReceiver.m */; };
+		6EC221100F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC2210D0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataDistributor.m */; };
+		6EC221110F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC2210B0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataReceiver.m */; };
+		6EC221120F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC2210D0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataDistributor.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -246,6 +254,14 @@
 		6E846F460F5761FC00E145FB /* TSNextwindowTouchInputSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSNextwindowTouchInputSource.h; sourceTree = "<group>"; };
 		6E846F470F5761FC00E145FB /* TSNextwindowTouchInputSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSNextwindowTouchInputSource.m; sourceTree = "<group>"; };
 		6E846F4C0F57630D00E145FB /* NWMultiTouch.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = NWMultiTouch.h; path = ../nextwindow/NWMultiTouch.h; sourceTree = "<group>"; };
+		6EC220FB0F77DAD9008FD532 /* TFTUIOPacketCreation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOPacketCreation.h; sourceTree = "<group>"; };
+		6EC220FC0F77DAD9008FD532 /* TFTUIOPacketCreation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOPacketCreation.m; sourceTree = "<group>"; };
+		6EC221000F77DAFA008FD532 /* TFFlashLCSHMEM.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = TFFlashLCSHMEM.c; sourceTree = "<group>"; };
+		6EC221010F77DAFA008FD532 /* TFFlashLCSHMEM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFFlashLCSHMEM.h; sourceTree = "<group>"; };
+		6EC2210B0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOFlashLCTrackingDataReceiver.m; sourceTree = "<group>"; };
+		6EC2210C0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOFlashLCTrackingDataReceiver.h; sourceTree = "<group>"; };
+		6EC2210D0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataDistributor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOFlashLCTrackingDataDistributor.m; sourceTree = "<group>"; };
+		6EC2210E0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataDistributor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOFlashLCTrackingDataDistributor.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* TouchsmartTUIO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TouchsmartTUIO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -399,6 +415,14 @@
 		6E8463DC0F556A6800E145FB /* TUIO Distribution */ = {
 			isa = PBXGroup;
 			children = (
+				6EC2210C0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataReceiver.h */,
+				6EC2210B0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataReceiver.m */,
+				6EC2210E0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataDistributor.h */,
+				6EC2210D0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataDistributor.m */,
+				6EC221010F77DAFA008FD532 /* TFFlashLCSHMEM.h */,
+				6EC221000F77DAFA008FD532 /* TFFlashLCSHMEM.c */,
+				6EC220FB0F77DAD9008FD532 /* TFTUIOPacketCreation.h */,
+				6EC220FC0F77DAD9008FD532 /* TFTUIOPacketCreation.m */,
 				6E8463DD0F556A6800E145FB /* TFOSCServer.h */,
 				6E8463DE0F556A6800E145FB /* TFOSCServer.m */,
 				6E8463DF0F556A6800E145FB /* TFTrackingDataReceiverInfoDictKeys.h */,
@@ -525,7 +549,9 @@
 				6E8465330F557D0500E145FB /* Resources */,
 				6E8465390F557D0500E145FB /* Sources */,
 				6E8465670F557D0500E145FB /* Frameworks */,
-				6E846B4D0F55FF1700E145FB /* ShellScript */,
+				6E846B4D0F55FF1700E145FB /* Retarget Cocotron bundles */,
+				6EC221B20F77E9C4008FD532 /* Delete .svn folders */,
+				6EC221B70F77EBD0008FD532 /* ShellScript */,
 			);
 			buildRules = (
 				6E846F7E0F57652700E145FB /* PBXBuildRule */,
@@ -546,6 +572,7 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
+				6EC221B40F77E9EC008FD532 /* Delete .svn folders */,
 			);
 			buildRules = (
 			);
@@ -603,7 +630,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6E846B4D0F55FF1700E145FB /* ShellScript */ = {
+		6E846B4D0F55FF1700E145FB /* Retarget Cocotron bundles */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Retarget Cocotron bundles";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework AppKit -framework Cocoa -destination \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"\n\ncp \"$SOURCE_ROOT\"/nextwindow/dll/NWMultiTouch.dll \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"\n\ncp \"$SOURCE_ROOT\"/resources/README.txt \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"/../../";
+		};
+		6EC221B20F77E9C4008FD532 /* Delete .svn folders */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Delete .svn folders";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# find all .svn directories in the built product and delete them\tfind -d \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/\" -name \".svn\" -exec rm -r '{}' \\; -print";
+		};
+		6EC221B40F77E9EC008FD532 /* Delete .svn folders */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Delete .svn folders";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# find all .svn directories in the built product and delete them\tfind -d \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/\" -name \".svn\" -exec rm -r '{}' \\; -print";
+		};
+		6EC221B70F77EBD0008FD532 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -614,7 +683,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework AppKit -framework Cocoa -destination \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"\n\ncp \"$SOURCE_ROOT\"/nextwindow/dll/NWMultiTouch.dll \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"\n\ncp \"$SOURCE_ROOT\"/resources/README.txt \"$TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\"/../../";
+			shellScript = "cd \"${BUILT_PRODUCTS_DIR}\"\nrm -rf \"${PRODUCT_NAME}.zip\"\nzip -r \"${PRODUCT_NAME}.zip\" \"${PRODUCT_NAME}.app\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -672,6 +741,10 @@
 				6E846CF10F56BD2F00E145FB /* TSBlobLabelizer.m in Sources */,
 				6E846F3F0F57613200E145FB /* TSTouchInputSource.m in Sources */,
 				6E846F480F5761FC00E145FB /* TSNextwindowTouchInputSource.m in Sources */,
+				6EC220FD0F77DAD9008FD532 /* TFTUIOPacketCreation.m in Sources */,
+				6EC221020F77DAFA008FD532 /* TFFlashLCSHMEM.c in Sources */,
+				6EC2210F0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */,
+				6EC221100F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -725,6 +798,10 @@
 				6E8464DF0F55744400E145FB /* AppDelegate.m in Sources */,
 				6E846D0F0F56BDD800E145FB /* TSBlobLabelizer.m in Sources */,
 				6E846F400F57613200E145FB /* TSTouchInputSource.m in Sources */,
+				6EC220FE0F77DAD9008FD532 /* TFTUIOPacketCreation.m in Sources */,
+				6EC221030F77DAFA008FD532 /* TFFlashLCSHMEM.c in Sources */,
+				6EC221110F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */,
+				6EC221120F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -57,8 +57,13 @@ NSString* TFTUIOFlashLCTrackingDataReceiverIDFormat = @"%@:TUIO:OSC:FlashLC";
 		_connectionName = [connectionName copy];
 		_connectionMethod = [methodName copy];
 		
+#if defined(WINDOWS)
+		_lcConnection = TFLCSConnect([_connectionName cString],
+									 [_connectionMethod cString],
+#else
 		_lcConnection = TFLCSConnect([_connectionName cStringUsingEncoding:NSASCIIStringEncoding],
 									 [_connectionMethod cStringUsingEncoding:NSASCIIStringEncoding],
+#endif
 									 (void*)NULL,
 									 (void*)NULL);
 		

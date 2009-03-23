@@ -98,12 +98,17 @@ int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, cons
 - (BOOL)startDistributorWithObject:(id)obj error:(NSError**)error
 {	
 	if (NULL == _lcConnection) {
+#if defined(WINDOWS)
+		_lcConnection = TFLCSConnect([_receiverConnectionName cString],
+									 [_receiverMethodName cString],
+#else
 		_lcConnection = TFLCSConnect([_receiverConnectionName cStringUsingEncoding:NSASCIIStringEncoding],
 									 [_receiverMethodName cStringUsingEncoding:NSASCIIStringEncoding],
+#endif
 									 NULL,
 									 NULL);
 	}
-	
+		
 	// TODO: report a proper error.
 	if (NULL == _lcConnection)
 		return NO;
@@ -169,7 +174,7 @@ int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, cons
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
 		int numConnections = TFLCSGetConnectedConnectionNames(_lcConnection, buf, 8192);
-		
+				
 		NSMutableArray* stillExistingConnectionNames = [NSMutableArray array];
 		if (numConnections > 0) {
 			int i=0;
@@ -177,8 +182,12 @@ int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, cons
 			const char* recName = [_receiverConnectionName cStringUsingEncoding:NSASCIIStringEncoding];
 			
 			for (i; (char)0 != *p && i < numConnections; i++) {
-				if (_TFTUIOFlashLCReceiverNameBelongsToConnection(recName, p)) {				
+				if (_TFTUIOFlashLCReceiverNameBelongsToConnection(recName, p)) {
+#if defined(WINDOWS)
+					NSString* connectionName = [NSString stringWithCString:p];
+#else
 					NSString* connectionName = [NSString stringWithCString:p encoding:NSASCIIStringEncoding];
+#endif
 					
 					[stillExistingConnectionNames addObject:connectionName];
 					
@@ -202,7 +211,7 @@ int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, cons
 						@synchronized (_receivers) {
 							[_receivers setObject:receiver forKey:receiver.receiverID];
 						}
-						
+												
 						if ([delegate respondsToSelector:@selector(trackingDataDistributor:receiverDidConnect:)])
 							[delegate trackingDataDistributor:self receiverDidConnect:receiver];
 					}

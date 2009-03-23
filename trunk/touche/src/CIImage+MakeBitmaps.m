@@ -21,13 +21,19 @@
 //  You should have received a copy of the GNU Lesser General Public
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
-//  Based on code by: http://www.geekspiff.com/unlinkedCrap/ciImageToBitmap.html
+//  CGBitmapContext-backed rendering based on:
+//	http://www.geekspiff.com/unlinkedCrap/ciImageToBitmap.html
 
 #import "CIImage+MakeBitmaps.h"
 
 #import <Accelerate/Accelerate.h>
 #import <mach/mach.h>
 #import <mach/mach_time.h>
+
+#if defined(_USES_IPP_)
+#import <ipp.h>
+#import <ippi.h>
+#endif
 
 typedef enum {
 	CIImageInternalOutputPixelFormatARGB8,
@@ -63,7 +69,7 @@ typedef struct CIImageBitmapsInternalData {
 	CIImageInternalOutputPixelFormat	internalOutputPixelFormat;
 	CGBitmapInfo						bitmapInfo;
 	NSUInteger							bytesPerPixel;
-	size_t								rowBytes;
+	int									rowBytes;
 	void*								outputBuffer;
 	
 	CIImageInternalBitmapCreationMethod	chosenCreationMethod;
@@ -107,6 +113,15 @@ int _CIImagePrivateConvertInternalPixelFormats(void* dest,
 // rendering method dynamically)
 uint64_t _CIImagePrivateGetCurrentNanoseconds();
 
+// allocates memory like malloc, but with the correct alignment for a given high-performance
+// image manipulation library
+// height and width in pixels, rowBytes in bytes
+// rowBytes may be modified by this call.
+void* _CIImageBitmapsMalloc(int width, int height, int* rowBytes, CIImageInternalOutputPixelFormat pixelFormat);
+
+// frees a pointer allocated with the above malloc variant.
+void _CIImageBitmapsFree(void* ptr);
+
 @interface CIImage (MakeBitmapsExtensionsPrivate)
 - (void*)_createBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
 				  ciOutputColorSpace:(CGColorSpaceRef)ciOutputColorSpace
@@ -140,7 +155,7 @@ uint64_t _CIImagePrivateGetCurrentNanoseconds();
 }
 
 - (CIImageBitmapData)bitmapDataWithBitmapCreationContext:(void*)pContext
-{
+{	
 	uint64_t beforeTime;
 	BOOL measurePerformance = NO;
 	CIImageBitmapsInternalData* context = (CIImageBitmapsInternalData*)pContext;
@@ -213,8 +228,13 @@ methodDetermined:
 					break;
 				case CIImageInternalOutputPixelFormatRGBA8:
 					renderFormat = kCIFormatARGB8;
+#if defined(_USES_IPP_)
+					renderRowBytes = context->rowBytes;
+					renderBuffer = context->outputBuffer;
+#else
 					renderRowBytes = context->scratchRowBytes[0];
 					renderBuffer = context->scratchSpace[0];
+#endif
 					break;
 				case CIImageInternalOutputPixelFormatRGBAF:
 					renderFormat = kCIFormatRGBAf;
@@ -371,12 +391,12 @@ void CIImageBitmapsReleaseContext(void* pContext)
 		[context->ciContext release];
 		context->ciContext = nil;
 		
-		free(context->outputBuffer);
+		_CIImageBitmapsFree(context->outputBuffer);
 		
 		int i;
 		for (i=0; i<MAX_INTERNAL_DATA_SCRATCH_SPACE; i++)
 			if (NULL != context->scratchSpace[i]) {
-				free(context->scratchSpace[i]);
+				_CIImageBitmapsFree(context->scratchSpace[i]);
 				context->scratchSpace[i] = NULL;
 				context->scratchRowBytes[i] = 0;
 			}
@@ -389,7 +409,7 @@ void CIImageBitmapsSetContextDeterminesFastestRenderingDynamically(void* pContex
 {
 	CIImageBitmapsInternalData* context = (CIImageBitmapsInternalData*)pContext;
 	
-	if (determineDynamically)
+	if (NO && determineDynamically)
 		context->chosenCreationMethod = CIImageInternalBitmapCreationMethodUndetermined;
 	else
 		context->chosenCreationMethod = CIImageInternalBitmapCreationMethodDefault;
@@ -433,6 +453,15 @@ inline CIImageBitmapData _CIImagePrivateMakeBitmapData(void* data,
 													   size_t height,
 													   size_t rowBytes)
 {
+#if defined (_USES_IPP_)
+	static BOOL ippInitialized = NO;
+	
+	if (!ippInitialized) {
+		ippStaticInit();
+		ippInitialized = YES;
+	}
+#endif
+	
 	CIImageBitmapData bitmapData = { data, width, height, rowBytes };
 	return bitmapData;
 }
@@ -464,7 +493,7 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 	context->height = extent.size.height;
 	
 	context->rowBytes = _CIImagePrivateOptimalRowBytesForWidthAndBytesPerPixel(context->width, context->bytesPerPixel);
-	context->outputBuffer = malloc(context->rowBytes * context->height);
+	context->outputBuffer = _CIImageBitmapsMalloc(context->width, context->height, &context->rowBytes, context->internalOutputPixelFormat);
 	
 	context->renderOnCPU = renderOnCPU;
 	context->chosenCreationMethod = CIImageInternalBitmapCreationMethodDefault;
@@ -478,10 +507,16 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 			unsigned sRowBytes = _CIImagePrivateOptimalRowBytesForWidthAndBytesPerPixel(context->width, 4);
 			
 			context->scratchRowBytes[0] = sRowBytes;
-			context->scratchSpace[0] = malloc(sRowBytes * context->height);
+			context->scratchSpace[0] = _CIImageBitmapsMalloc(context->width,
+															 context->height,
+															 &context->scratchRowBytes[0],
+															 CIImageInternalOutputPixelFormatARGB8);
 			
 			context->scratchRowBytes[1] = sRowBytes;
-			context->scratchSpace[1] = malloc(sRowBytes * context->height);
+			context->scratchSpace[1] = _CIImageBitmapsMalloc(context->width,
+															 context->height,
+															 &context->scratchRowBytes[1],
+															 CIImageInternalOutputPixelFormatARGB8);
 			
 			break;
 		}
@@ -491,7 +526,10 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 			unsigned sRowBytes = _CIImagePrivateOptimalRowBytesForWidthAndBytesPerPixel(context->width, 4);
 		
 			context->scratchRowBytes[0] = sRowBytes;
-			context->scratchSpace[0] = malloc(sRowBytes * context->height);
+			context->scratchSpace[0] = _CIImageBitmapsMalloc(context->width,
+															 context->height,
+															 &context->scratchRowBytes[0],
+															 CIImageInternalOutputPixelFormatARGB8);
 		
 			break;
 		}
@@ -562,7 +600,24 @@ int _CIImagePrivateConvertInternalPixelFormats(void* dest,
 	
 	if (NULL != dest && NULL != internalData) {
 		if (CIImageInternalOutputPixelFormatGray8 == destFormat &&
-			kCIFormatARGB8 == srcFormat) {			
+			kCIFormatARGB8 == srcFormat) {
+#if defined(_USES_IPP_)
+			IppiSize swapChannelRoiSize = { width, height };
+			int permuteMap[] = { 1, 2, 3, 0 };
+			
+			ippiSwapChannels_8u_C4IR(internalData->scratchSpace[0],
+									 internalData->scratchRowBytes[0],
+									 swapChannelRoiSize,
+									 permuteMap);
+			
+			IppiSize convertToGrayRoiSize = { width, height };
+			
+			ippiRGBToGray_8u_AC4C1R(internalData->scratchSpace[0],
+									internalData->scratchRowBytes[0],
+									dest,
+									destRowBytes,
+									convertToGrayRoiSize);			
+#else // no IPP available
 			vImage_Buffer intermediateBuf, srcBuf, destBuf;
 			
 			intermediateBuf.data = internalData->scratchSpace[1];
@@ -581,10 +636,11 @@ int _CIImagePrivateConvertInternalPixelFormats(void* dest,
 			destBuf.rowBytes = destRowBytes;
 			
 			// these constants are derived from the NTSC RGB->Luminance conversion
+			// the same values are used by the Intel IPP.
 			int16_t matrix[] = { 0,   0, 0, 0,
-								 0, 308, 0, 0,
-								 0, 609, 0, 0,
-								 0,  82, 0, 0 };
+								 0, 299, 0, 0,
+								 0, 587, 0, 0,
+								 0, 114, 0, 0 };
 			
 			vImageMatrixMultiply_ARGB8888(&srcBuf, &intermediateBuf, matrix, 100, NULL, NULL, 0);
 			
@@ -599,9 +655,19 @@ int _CIImagePrivateConvertInternalPixelFormats(void* dest,
 										  height,
 										  intermediateBuf.rowBytes,
 										  0);
+#endif
 			success = 1;
 		} else if (CIImageInternalOutputPixelFormatRGBA8 == destFormat &&
 				   kCIFormatARGB8 == srcFormat) {
+#if defined(_USES_IPP_)
+			IppiSize roiSize = { width, height };
+			int permuteMap[] = { 1, 2, 3, 0 };
+			
+			ippiSwapChannels_8u_C4IR(dest,
+									 destRowBytes,
+									 roiSize,
+									 permuteMap);
+#else // no IPP available
 			vImage_Buffer srcBuf, destBuf;
 			
 			destBuf.data = dest;
@@ -616,10 +682,21 @@ int _CIImagePrivateConvertInternalPixelFormats(void* dest,
 			
 			uint8_t permuteMap[] = { 1, 2, 3, 0 };
 			vImagePermuteChannels_ARGB8888(&srcBuf, &destBuf, permuteMap, 0);
-			
+#endif
 			success = 1;
 		} else if (CIImageInternalOutputPixelFormatRGB8 == destFormat &&
 				   kCIFormatARGB8 == srcFormat) {
+#if defined(_USES_IPP_)
+			IppiSize roiSize = { width, height };
+			int permuteMap[] = { 1, 2, 3 };
+			
+			ippiSwapChannels_8u_C4C3R(internalData->scratchSpace[0],
+									  internalData->scratchRowBytes[0],
+									  dest,
+									  destRowBytes,
+									  roiSize,
+									  permuteMap);
+#else // no IPP available
 			vImage_Buffer srcBuf, destBuf;
 			
 			destBuf.data = dest;
@@ -633,7 +710,7 @@ int _CIImagePrivateConvertInternalPixelFormats(void* dest,
 			srcBuf.rowBytes = internalData->scratchRowBytes[0];
 			
 			vImageConvert_ARGB8888toRGB888(&srcBuf, &destBuf, 0);
-			
+#endif
 			success = 1;
 		}
 	}
@@ -651,4 +728,41 @@ uint64_t _CIImagePrivateGetCurrentNanoseconds()
 	uint64_t now = mach_absolute_time();
 	
 	return now * (timeBase.numer / timeBase.denom);
+}
+
+void* _CIImageBitmapsMalloc(int width, int height, int* rowBytes, CIImageInternalOutputPixelFormat pixelFormat)
+{
+#if defined(_USES_IPP_)
+	void* m = NULL;
+	
+	switch(pixelFormat) {
+		case CIImageInternalOutputPixelFormatRGBAF:
+			m  = ippiMalloc_32f_AC4(width, height, rowBytes);
+			break;
+		case CIImageInternalOutputPixelFormatRGB8:
+			m = ippiMalloc_8u_C3(width, height, rowBytes);
+			break;
+		case CIImageInternalOutputPixelFormatGray8:
+			m = ippiMalloc_8u_C1(width, height, rowBytes);
+			break;
+		case CIImageInternalOutputPixelFormatARGB8:
+		case CIImageInternalOutputPixelFormatRGBA8:
+		default:
+			m = ippiMalloc_8u_AC4(width, height, rowBytes);
+			break;
+	}
+	
+	return m;
+#else
+	return (void*)malloc(height * (*rowBytes));
+#endif
+}
+
+void _CIImageBitmapsFree(void* ptr)
+{
+#if defined(_USES_IPP_)
+	ippiFree(ptr);
+#else
+	free(ptr);
+#endif
 }

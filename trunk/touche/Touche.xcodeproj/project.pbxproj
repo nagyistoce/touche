@@ -79,6 +79,166 @@
 		6E81EB210D522BAF003EA72C /* TFCIRatioImageBlendFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81EB200D522BAF003EA72C /* TFCIRatioImageBlendFilter.m */; };
 		6E81EB230D522CC0003EA72C /* TFCIRatioImageBlendFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E81EB220D522C87003EA72C /* TFCIRatioImageBlendFilter.cikernel */; };
 		6E854C730DBF977200B5EB68 /* TFTrackingPipeline+QTInputAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E854C720DBF977200B5EB68 /* TFTrackingPipeline+QTInputAdditions.m */; };
+		6E8738710F77B4F400402313 /* BBOSC.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */; };
+		6E8738720F77B4F400402313 /* dc1394.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE606A60DD9F5C40069A40E /* dc1394.framework */; };
+		6E8738730F77B4F400402313 /* OpenCV.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6E76BF180DCA140C00D30859 /* OpenCV.framework */; };
+		6E8738740F77B4F400402313 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6E7ECA800E0E69170080F7EF /* Sparkle.framework */; };
+		6E8738750F77B4F400402313 /* WiiRemote.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6E9394300DC775DC00D21ADC /* WiiRemote.framework */; };
+		6E8738780F77B4F400402313 /* TFCIGrayscalingFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E6021F40E07D30D00E83E18 /* TFCIGrayscalingFilter.cikernel */; };
+		6E8738790F77B4F400402313 /* TFCI3x3ErosionFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6EF5E3F60DFEAFDD00432557 /* TFCI3x3ErosionFilter.cikernel */; };
+		6E87387A0F77B4F400402313 /* TFCI3x3DilationFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6EF5E3F80DFEB55700432557 /* TFCI3x3DilationFilter.cikernel */; };
+		6E87387B0F77B4F400402313 /* TFCIContrastStretchFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E5F837A0DF5DECF00A39FFF /* TFCIContrastStretchFilter.cikernel */; };
+		6E87387C0F77B4F400402313 /* TFCIRatioImageBlendFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E81EB220D522C87003EA72C /* TFCIRatioImageBlendFilter.cikernel */; };
+		6E87387D0F77B4F400402313 /* TFCIBackgroundSubtractionFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E1D0DEF0D351F5A005AB4DA /* TFCIBackgroundSubtractionFilter.cikernel */; };
+		6E87387E0F77B4F400402313 /* TFCI1PixelBorderAroundImage.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E9862FA0D173D5F00B07124 /* TFCI1PixelBorderAroundImage.cikernel */; };
+		6E87387F0F77B4F400402313 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		6E8738800F77B4F400402313 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6EAD35050D2C4B9900C34A1A /* Localizable.strings */; };
+		6E8738810F77B4F400402313 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6ECA94D10DD1E9A000A9ABE3 /* UserDefaults.plist */; };
+		6E8738820F77B4F400402313 /* erroricon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ECA96680DD249D300A9ABE3 /* erroricon.png */; };
+		6E8738830F77B4F400402313 /* warningicon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6ECA96690DD249D300A9ABE3 /* warningicon.tiff */; };
+		6E8738840F77B4F400402313 /* InfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EF63F360DD7B56900888DB0 /* InfoView.xib */; };
+		6E8738850F77B4F400402313 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EF63F3A0DD7B57D00888DB0 /* MainMenu.xib */; };
+		6E8738860F77B4F400402313 /* PipelineSetup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EF63F3E0DD7B59100888DB0 /* PipelineSetup.xib */; };
+		6E8738870F77B4F400402313 /* WizardStep.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EF63F420DD7B5A500888DB0 /* WizardStep.xib */; };
+		6E8738880F77B4F400402313 /* About.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E06D1540DD852B500B86D27 /* About.xib */; };
+		6E8738890F77B4F400402313 /* touchdown.aif in Resources */ = {isa = PBXBuildFile; fileRef = 6E06D1E30DD85E0300B86D27 /* touchdown.aif */; };
+		6E87388A0F77B4F400402313 /* touchup.aif in Resources */ = {isa = PBXBuildFile; fileRef = 6E06D1ED0DD8602300B86D27 /* touchup.aif */; };
+		6E87388B0F77B4F400402313 /* ScreenPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EE60CAA0DDEF4030069A40E /* ScreenPreferences.xib */; };
+		6E87388C0F77B4F400402313 /* MiscPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EE60E590DDF2E350069A40E /* MiscPreferences.xib */; };
+		6E87388D0F77B4F400402313 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6E7DB2BD0DEB76E700CF9556 /* AppIcon.icns */; };
+		6E87388E0F77B4F400402313 /* credits-wrapper.html in Resources */ = {isa = PBXBuildFile; fileRef = 6E07FCEE0DF03B4C00FCB681 /* credits-wrapper.html */; };
+		6E87388F0F77B4F400402313 /* credits.html in Resources */ = {isa = PBXBuildFile; fileRef = 6E07FD490DF0419900FCB681 /* credits.html */; };
+		6E8738900F77B4F400402313 /* tuio-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF3C4680E61BEE400BF6B39 /* tuio-image.png */; };
+		6E8738910F77B4F400402313 /* Help in Resources */ = {isa = PBXBuildFile; fileRef = 6E7ED6400E621F9100ECAE8B /* Help */; };
+		6E8738920F77B4F400402313 /* TUIOOSCSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ECF81B30E72B362009433B3 /* TUIOOSCSettings.xib */; };
+		6E8738930F77B4F400402313 /* flash-image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6ECF883F0E7488FB009433B3 /* flash-image.jpg */; };
+		6E8738940F77B4F400402313 /* TUIOFlashXMLSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ECF88460E75315C009433B3 /* TUIOFlashXMLSettings.xib */; };
+		6E8738950F77B4F400402313 /* TFCIThresholdFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E9279900EB3C78200C88BEC /* TFCIThresholdFilter.cikernel */; };
+		6E8738970F77B4F400402313 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4D9990D119A19008AB9CF /* AppController.m */; };
+		6E8738980F77B4F400402313 /* TFOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4D9F60D11AA39008AB9CF /* TFOpenGLView.m */; };
+		6E8738990F77B4F400402313 /* TFFilterChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DC460D1439D9008AB9CF /* TFFilterChain.m */; };
+		6E87389A0F77B4F400402313 /* TFCIFilterChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DC4A0D143B28008AB9CF /* TFCIFilterChain.m */; };
+		6E87389B0F77B4F400402313 /* TFCameraInputFilterChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DC560D143D98008AB9CF /* TFCameraInputFilterChain.m */; };
+		6E87389C0F77B4F400402313 /* CIImage+MakeBitmaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DDB70D144EA7008AB9CF /* CIImage+MakeBitmaps.m */; };
+		6E87389D0F77B4F400402313 /* TFCI1PixelBorderAroundImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9862FC0D173E4D00B07124 /* TFCI1PixelBorderAroundImage.m */; };
+		6E87389E0F77B4F400402313 /* TFBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69ED0D18291C00B19EB0 /* TFBlob.m */; };
+		6E87389F0F77B4F400402313 /* TFBlobPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69F00D1829D200B19EB0 /* TFBlobPoint.m */; };
+		6E8738A00F77B4F400402313 /* TFBlobBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69FB0D1831C300B19EB0 /* TFBlobBox.m */; };
+		6E8738A10F77B4F400402313 /* TFBlobSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69FE0D18322400B19EB0 /* TFBlobSize.m */; };
+		6E8738A20F77B4F400402313 /* TFBlobDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A6A0B0D1836E900B19EB0 /* TFBlobDetector.m */; };
+		6E8738A30F77B4F400402313 /* TFRGBA8888BlobDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A6A180D183B4500B19EB0 /* TFRGBA8888BlobDetector.m */; };
+		6E8738A40F77B4F400402313 /* TFBlobTrackingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A6C070D196C8500B19EB0 /* TFBlobTrackingView.m */; };
+		6E8738A50F77B4F400402313 /* TFBlobLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9863740D1AE9E000B07124 /* TFBlobLabel.m */; };
+		6E8738A60F77B4F400402313 /* TFLabelFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E239BB50D1C2A9A00054844 /* TFLabelFactory.m */; };
+		6E8738A70F77B4F400402313 /* TFBlobSimpleDistanceLabelizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E239BBE0D1C386700054844 /* TFBlobSimpleDistanceLabelizer.m */; };
+		6E8738A80F77B4F400402313 /* TFBlobLabelizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E239BC10D1C423E00054844 /* TFBlobLabelizer.m */; };
+		6E8738A90F77B4F400402313 /* TFCamera2ScreenCoordinatesConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E1571D00D254AA900F4AFFD /* TFCamera2ScreenCoordinatesConverter.m */; };
+		6E8738AA0F77B4F400402313 /* TFInverseTextureMappingConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E1571D90D254BFB00F4AFFD /* TFInverseTextureMappingConverter.m */; };
+		6E8738AB0F77B4F400402313 /* TFCalibrationPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBB25DD0D280EE1006520CD /* TFCalibrationPoint.m */; };
+		6E8738AC0F77B4F400402313 /* TFQTKitCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E203EEF0D2EDFF600162547 /* TFQTKitCapture.m */; };
+		6E8738AD0F77B4F400402313 /* TFCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E203EF90D2EE92300162547 /* TFCapture.m */; };
+		6E8738AE0F77B4F400402313 /* TFTrackingPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4FFE320D2FED53007564F4 /* TFTrackingPipeline.m */; };
+		6E8738AF0F77B4F400402313 /* TFTrackingPipelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EA4FF4C0D32890500339E6E /* TFTrackingPipelineView.m */; };
+		6E8738B00F77B4F400402313 /* TFPipelineSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF130A10D32AC3200D807B8 /* TFPipelineSetupController.m */; };
+		6E8738B10F77B4F400402313 /* TFCIBackgroundSubtractionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E1D0DED0D351F37005AB4DA /* TFCIBackgroundSubtractionFilter.m */; };
+		6E8738B20F77B4F400402313 /* TFCIRatioImageBlendFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81EB200D522BAF003EA72C /* TFCIRatioImageBlendFilter.m */; };
+		6E8738B30F77B4F400402313 /* TFFullscreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E937B140D9D66AC00B75112 /* TFFullscreenController.m */; };
+		6E8738B40F77B4F400402313 /* TFTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E937B1F0D9D726E00B75112 /* TFTouchView.m */; };
+		6E8738B50F77B4F400402313 /* TFCalibrationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E937B230D9D754D00B75112 /* TFCalibrationController.m */; };
+		6E8738B60F77B4F400402313 /* TFBlobInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EA5126C0DBCDA65005958C2 /* TFBlobInputSource.m */; };
+		6E8738B70F77B4F400402313 /* TFBlobCameraInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EA512700DBCDE9C005958C2 /* TFBlobCameraInputSource.m */; };
+		6E8738B80F77B4F400402313 /* TFBlobQuicktimeKitInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EA512760DBCE64B005958C2 /* TFBlobQuicktimeKitInputSource.m */; };
+		6E8738B90F77B4F400402313 /* TFTrackingPipeline+QTInputAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E854C720DBF977200B5EB68 /* TFTrackingPipeline+QTInputAdditions.m */; };
+		6E8738BA0F77B4F400402313 /* NSImage-Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9355810DC0D6FC0048E1A3 /* NSImage-Extras.m */; };
+		6E8738BB0F77B4F400402313 /* TFTouchTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E34D9160DC396E00040AF2D /* TFTouchTestController.m */; };
+		6E8738BC0F77B4F400402313 /* TFBlobWiiRemoteInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9394450DC7768600D21ADC /* TFBlobWiiRemoteInputSource.m */; };
+		6E8738BD0F77B4F400402313 /* TFGrayscale8BlobDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E76BF070DCA0FAA00D30859 /* TFGrayscale8BlobDetector.m */; };
+		6E8738BE0F77B4F400402313 /* TFOpenCVContourBlobDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E76BF110DCA12AE00D30859 /* TFOpenCVContourBlobDetector.m */; };
+		6E8738BF0F77B4F400402313 /* CGColorRefColorSpaceConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6E14CF1A0DCFA25000509998 /* CGColorRefColorSpaceConversions.c */; };
+		6E8738C00F77B4F400402313 /* CGColorFromNSColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14CF210DCFA47000509998 /* CGColorFromNSColor.m */; };
+		6E8738C10F77B4F400402313 /* GCKIPhoneNavigationBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14CF270DCFA63100509998 /* GCKIPhoneNavigationBarView.m */; };
+		6E8738C20F77B4F400402313 /* GCKObservingForDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14CF410DCFA8A200509998 /* GCKObservingForDisplayView.m */; };
+		6E8738C30F77B4F400402313 /* NSView+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14CFC00DCFAE2700509998 /* NSView+Extras.m */; };
+		6E8738C40F77B4F400402313 /* GCKIPhoneNavigationBarLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14D0DB0DCFC03400509998 /* GCKIPhoneNavigationBarLabelView.m */; };
+		6E8738C50F77B4F400402313 /* GCKNumberCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E997F440DD084EE0034264B /* GCKNumberCircleView.m */; };
+		6E8738C60F77B4F400402313 /* TFWizardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E997F9E0DD08BB70034264B /* TFWizardView.m */; };
+		6E8738C70F77B4F400402313 /* TFWizardStepController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E997FD30DD091850034264B /* TFWizardStepController.m */; };
+		6E8738C80F77B4F400402313 /* TFWizardController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6ADAE40DD098F90078DD1B /* TFWizardController.m */; };
+		6E8738C90F77B4F400402313 /* GCKPlatinumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECA93FC0DD1D91200A9ABE3 /* GCKPlatinumView.m */; };
+		6E8738CA0F77B4F400402313 /* TFInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECA95130DD1F1DA00A9ABE3 /* TFInfoViewController.m */; };
+		6E8738CB0F77B4F400402313 /* TFInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECA956E0DD204E200A9ABE3 /* TFInfoView.m */; };
+		6E8738CC0F77B4F400402313 /* TFAboutController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E06D15B0DD8557200B86D27 /* TFAboutController.m */; };
+		6E8738CD0F77B4F400402313 /* TFLibDC1394Capture.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4B12A0DD9DBE30085D7B8 /* TFLibDC1394Capture.m */; };
+		6E8738CE0F77B4F400402313 /* TFBlobLibDc1394InputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE608340DDC8AFC0069A40E /* TFBlobLibDc1394InputSource.m */; };
+		6E8738CF0F77B4F400402313 /* TFTrackingPipeline+LibDc1394InputAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE608C90DDC9E540069A40E /* TFTrackingPipeline+LibDc1394InputAdditions.m */; };
+		6E8738D00F77B4F400402313 /* TFPipelineSetupController+LibDc1394Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60B620DDDDE090069A40E /* TFPipelineSetupController+LibDc1394Configuration.m */; };
+		6E8738D10F77B4F400402313 /* TFScreenPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60C6B0DDEF3B80069A40E /* TFScreenPreferencesController.m */; };
+		6E8738D20F77B4F400402313 /* NSScreen+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60D1A0DDF0FBF0069A40E /* NSScreen+Extras.m */; };
+		6E8738D30F77B4F400402313 /* TFScreenPrefsMeasureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60D670DDF14FE0069A40E /* TFScreenPrefsMeasureView.m */; };
+		6E8738D40F77B4F400402313 /* TFMiscPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60E9B0DDF2EFF0069A40E /* TFMiscPreferencesController.m */; };
+		6E8738D50F77B4F400402313 /* TFError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7DB4EA0DEC677800CF9556 /* TFError.m */; };
+		6E8738D60F77B4F400402313 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F83360DF567F500A39FFF /* main.m */; };
+		6E8738D70F77B4F400402313 /* TFCIContrastStretchFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F837D0DF5E2B200A39FFF /* TFCIContrastStretchFilter.m */; };
+		6E8738D80F77B4F400402313 /* TFCI3x3ErosionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAF4EF90DFE8BBA00104357 /* TFCI3x3ErosionFilter.m */; };
+		6E8738D90F77B4F400402313 /* TFCI3x3DilationFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAF4F330DFE945F00104357 /* TFCI3x3DilationFilter.m */; };
+		6E8738DA0F77B4F400402313 /* TFCIErosionDilationComboFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAF4F380DFEA37500104357 /* TFCIErosionDilationComboFilter.m */; };
+		6E8738DB0F77B4F400402313 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF5E3E90DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m */; };
+		6E8738DC0F77B4F400402313 /* TFCIMorphologicalCloseWith3x3ShapeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E88D1D40DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m */; };
+		6E8738DD0F77B4F400402313 /* TFCIGrayscalingFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6021E90E07CD8500E83E18 /* TFCIGrayscalingFilter.m */; };
+		6E8738DE0F77B4F400402313 /* TFCIGaussianBlurFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C61210E2AC257006B4D67 /* TFCIGaussianBlurFilter.m */; };
+		6E8738DF0F77B4F400402313 /* TFSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC3DD0E5874FE00409C0E /* TFSocket.m */; };
+		6E8738E00F77B4F400402313 /* TFIPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC5760E5A075B00409C0E /* TFIPSocket.m */; };
+		6E8738E10F77B4F400402313 /* TFIPStreamSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC5790E5A07AD00409C0E /* TFIPStreamSocket.m */; };
+		6E8738E20F77B4F400402313 /* TFIPDatagramSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC57C0E5A07D000409C0E /* TFIPDatagramSocket.m */; };
+		6E8738E30F77B4F400402313 /* TFIPTCPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5D100E5C73CF00375CC0 /* TFIPTCPSocket.m */; };
+		6E8738E40F77B4F400402313 /* TFIPUDPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5D140E5C758500375CC0 /* TFIPUDPSocket.m */; };
+		6E8738E50F77B4F400402313 /* TFOSCServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED5FEF0E5E048000375CC0 /* TFOSCServer.m */; };
+		6E8738E60F77B4F400402313 /* TFTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED60CA0E5ED7E000375CC0 /* TFTrackingDataDistributor.m */; };
+		6E8738E70F77B4F400402313 /* TFTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED60D00E5ED9B800375CC0 /* TFTrackingDataReceiver.m */; };
+		6E8738E80F77B4F400402313 /* TFDOTrackingClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED60DB0E5EE64300375CC0 /* TFDOTrackingClient.m */; };
+		6E8738E90F77B4F400402313 /* TFDOTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED60FA0E5EEB7600375CC0 /* TFDOTrackingDataDistributor.m */; };
+		6E8738EA0F77B4F400402313 /* TFDOTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED61160E5EF2BF00375CC0 /* TFDOTrackingDataReceiver.m */; };
+		6E8738EB0F77B4F400402313 /* TFTrackingDataDistributionCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED61430E5F0C3C00375CC0 /* TFTrackingDataDistributionCenter.m */; };
+		6E8738EC0F77B4F400402313 /* TFTrackingDataReceiverInfoDictKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED61470E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.m */; };
+		6E8738ED0F77B4F400402313 /* TFThreadMessagingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED61600E5F135100375CC0 /* TFThreadMessagingQueue.m */; };
+		6E8738EE0F77B4F400402313 /* TFTrackingDataReceiverCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED62510E5F638200375CC0 /* TFTrackingDataReceiverCell.m */; };
+		6E8738EF0F77B4F400402313 /* TFCIColorInversionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAE6FD80E640C520083A4C7 /* TFCIColorInversionFilter.m */; };
+		6E8738F00F77B4F400402313 /* TFTUIOOSCServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C8CF30E72AF030062EA15 /* TFTUIOOSCServer.m */; };
+		6E8738F10F77B4F400402313 /* TFTUIOOSCTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF81770E72B05E009433B3 /* TFTUIOOSCTrackingDataReceiver.m */; };
+		6E8738F20F77B4F400402313 /* TFTUIOOSCTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF819D0E72B223009433B3 /* TFTUIOOSCTrackingDataDistributor.m */; };
+		6E8738F30F77B4F400402313 /* TFTUIOOSCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF81B00E72B2D3009433B3 /* TFTUIOOSCSettingsController.m */; };
+		6E8738F40F77B4F400402313 /* TFTUIOTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF81BB0E72B93D009433B3 /* TFTUIOTrackingDataDistributor.m */; };
+		6E8738F50F77B4F400402313 /* TFTUIOConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF82A90E72C4FC009433B3 /* TFTUIOConstants.m */; };
+		6E8738F60F77B4F400402313 /* TFFlashXMLTUIOServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF830E0E72CBEA009433B3 /* TFFlashXMLTUIOServer.m */; };
+		6E8738F70F77B4F400402313 /* TFFlashXMLTUIOTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF83870E72D3EF009433B3 /* TFFlashXMLTUIOTrackingDataReceiver.m */; };
+		6E8738F80F77B4F400402313 /* TFBlob+TUIOOSCMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF845A0E733388009433B3 /* TFBlob+TUIOOSCMethods.m */; };
+		6E8738F90F77B4F400402313 /* TFFlashXMLTUIOTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF845E0E733449009433B3 /* TFFlashXMLTUIOTrackingDataDistributor.m */; };
+		6E8738FA0F77B4F400402313 /* TFFlashXMLTUIOGeneration.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF84FF0E733CA8009433B3 /* TFFlashXMLTUIOGeneration.m */; };
+		6E8738FB0F77B4F400402313 /* TFBlob+TUIOMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF85160E734879009433B3 /* TFBlob+TUIOMethods.m */; };
+		6E8738FC0F77B4F400402313 /* TFTUIOFlashXmlSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECF885D0E7534AD009433B3 /* TFTUIOFlashXmlSettingsController.m */; };
+		6E8738FD0F77B4F400402313 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EEC22540E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */; };
+		6E8738FE0F77B4F400402313 /* TFCIThresholdFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9279930EB3C7AC00C88BEC /* TFCIThresholdFilter.m */; };
+		6E8738FF0F77B4F400402313 /* TFNSColorToCIColorInNSDataValueTransfomer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E927A530EB526B900C88BEC /* TFNSColorToCIColorInNSDataValueTransfomer.m */; };
+		6E8739000F77B4F400402313 /* GCKGradientOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC632CE0ED9A2170094958E /* GCKGradientOverlayView.m */; };
+		6E8739010F77B4F400402313 /* TFPerformanceMeasurement.c in Sources */ = {isa = PBXBuildFile; fileRef = 6E25B61E0F66BB83001B7064 /* TFPerformanceMeasurement.c */; };
+		6E8739020F77B4F400402313 /* TFPerformanceTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E25B7000F694220001B7064 /* TFPerformanceTimer.m */; };
+		6E8739030F77B4F400402313 /* TFFlashLCSHMEM.c in Sources */ = {isa = PBXBuildFile; fileRef = 6ECE5D620F6E7A960067CC99 /* TFFlashLCSHMEM.c */; };
+		6E8739040F77B4F400402313 /* TFTUIOPacketCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECE5F820F6FF6C10067CC99 /* TFTUIOPacketCreation.m */; };
+		6E8739050F77B4F400402313 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECE60330F719F8C0067CC99 /* TFTUIOFlashLCTrackingDataDistributor.m */; };
+		6E8739060F77B4F400402313 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECE61CC0F72B3F00067CC99 /* TFTUIOFlashLCTrackingDataReceiver.m */; };
+		6E8739080F77B4F400402313 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		6E8739090F77B4F400402313 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC4D9900D1199DE008AB9CF /* QTKit.framework */; };
+		6E87390A0F77B4F400402313 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC4D9940D1199E9008AB9CF /* QuartzCore.framework */; };
+		6E87390B0F77B4F400402313 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD10D11D72200664F81 /* GLUT.framework */; };
+		6E87390C0F77B4F400402313 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD50D11D73000664F81 /* QuickTime.framework */; };
+		6E87390D0F77B4F400402313 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD90D11D74900664F81 /* OpenGL.framework */; };
+		6E87390E0F77B4F400402313 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E90B19A0D1ED84700A21C36 /* Accelerate.framework */; };
+		6E87390F0F77B4F400402313 /* WiiRemote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E9394300DC775DC00D21ADC /* WiiRemote.framework */; };
+		6E8739100F77B4F400402313 /* OpenCV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E76BF180DCA140C00D30859 /* OpenCV.framework */; };
+		6E8739110F77B4F400402313 /* dc1394.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EE606A60DD9F5C40069A40E /* dc1394.framework */; };
+		6E8739120F77B4F400402313 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E07FD090DF03ECC00FCB681 /* WebKit.framework */; };
+		6E8739130F77B4F400402313 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E7ECA800E0E69170080F7EF /* Sparkle.framework */; };
+		6E8739140F77B4F400402313 /* BBOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */; };
 		6E88D1D50DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E88D1D40DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m */; };
 		6E8BB7D10DE43A33006450C8 /* TFBlob+FrameworkAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BB7CB0DE43734006450C8 /* TFBlob+FrameworkAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E8BB7D20DE43A35006450C8 /* TFBlob+FrameworkAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BB7CC0DE43734006450C8 /* TFBlob+FrameworkAdditions.m */; };
@@ -134,6 +294,58 @@
 		6EAF4F390DFEA37500104357 /* TFCIErosionDilationComboFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAF4F380DFEA37500104357 /* TFCIErosionDilationComboFilter.m */; };
 		6EB73B6A0D1749BA00D5984B /* TFCI1PixelBorderAroundImage.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E9862FA0D173D5F00B07124 /* TFCI1PixelBorderAroundImage.cikernel */; };
 		6EBB25DE0D280EE1006520CD /* TFCalibrationPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBB25DD0D280EE1006520CD /* TFCalibrationPoint.m */; };
+		6EC221C70F77EEF8008FD532 /* TFBlob.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4A69EC0D18291C00B19EB0 /* TFBlob.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221C80F77EEF8008FD532 /* TFBlobBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4A69FA0D1831C300B19EB0 /* TFBlobBox.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221C90F77EEF8008FD532 /* TFBlobLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E9863730D1AE9E000B07124 /* TFBlobLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221CA0F77EEF8008FD532 /* TFBlobPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4A69EF0D1829D200B19EB0 /* TFBlobPoint.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221CB0F77EEF8008FD532 /* TFBlobSize.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4A69FD0D18322400B19EB0 /* TFBlobSize.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221CC0F77EEF8008FD532 /* TFFullscreenController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E937B130D9D66AC00B75112 /* TFFullscreenController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221CD0F77EEF8008FD532 /* ToucheFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E0AE6100DE1C3E000D41A13 /* ToucheFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221CE0F77EEF8008FD532 /* TFBlob+FrameworkAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BB7CB0DE43734006450C8 /* TFBlob+FrameworkAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221CF0F77EEF8008FD532 /* NSScreen+Extras.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EE60D190DDF0FBF0069A40E /* NSScreen+Extras.h */; };
+		6EC221D00F77EEF8008FD532 /* TFAlignedMalloc.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BC3D40DE86ED2006450C8 /* TFAlignedMalloc.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221D10F77EEF8008FD532 /* TFCATouchIndicationLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BC3D80DE86F18006450C8 /* TFCATouchIndicationLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221D20F77EEF8008FD532 /* TFCombinadicIndices.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BC3CF0DE86EC2006450C8 /* TFCombinadicIndices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221D30F77EEF8008FD532 /* TFGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BC3CD0DE86EC2006450C8 /* TFGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221D40F77EEF8008FD532 /* TFGestureConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BC3C40DE86E85006450C8 /* TFGestureConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221D50F77EEF8008FD532 /* TFGestureInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BC3BF0DE86E4D006450C8 /* TFGestureInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221D60F77EEF8008FD532 /* TFGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BC3C20DE86E85006450C8 /* TFGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221D70F77EEF8008FD532 /* TFLabeledTouchSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BC3DC0DE86F39006450C8 /* TFLabeledTouchSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221D80F77EEF8008FD532 /* TFTouchLabelObjectAssociator.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BC3CB0DE86EC2006450C8 /* TFTouchLabelObjectAssociator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221D90F77EEF8008FD532 /* TFZoomPinchRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BC3C70DE86E94006450C8 /* TFZoomPinchRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221DA0F77EEF8008FD532 /* TFError.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E7DB4BE0DEC588B00CF9556 /* TFError.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221DB0F77EEF8008FD532 /* TFLocalization.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E07FB480DF00CB200FCB681 /* TFLocalization.h */; };
+		6EC221DC0F77EEF8008FD532 /* TFIncludes.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E07FBBB0DF013DC00FCB681 /* TFIncludes.h */; };
+		6EC221DD0F77EEF8008FD532 /* TFExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E07FBEE0DF01EA200FCB681 /* TFExceptions.h */; };
+		6EC221DE0F77EEF8008FD532 /* PreferencesStrings.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECA94C90DD1E90E00A9ABE3 /* PreferencesStrings.h */; };
+		6EC221DF0F77EEF8008FD532 /* TFTapRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EA02EFC0DF4213D00B8A1D3 /* TFTapRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221E00F77EEF8008FD532 /* TFDOTrackingClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EED60DA0E5EE64300375CC0 /* TFDOTrackingClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221E10F77EEF8008FD532 /* TFDOTrackingCommProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EED60EE0E5EE9B600375CC0 /* TFDOTrackingCommProtocols.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221E20F77EEF8008FD532 /* TFTrackingDataReceiverInfoDictKeys.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EED61460E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EC221E40F77EEF8008FD532 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6EAD35050D2C4B9900C34A1A /* Localizable.strings */; };
+		6EC221E60F77EEF8008FD532 /* TFBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69ED0D18291C00B19EB0 /* TFBlob.m */; };
+		6EC221E70F77EEF8008FD532 /* TFBlobBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69FB0D1831C300B19EB0 /* TFBlobBox.m */; };
+		6EC221E80F77EEF8008FD532 /* TFBlobLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9863740D1AE9E000B07124 /* TFBlobLabel.m */; };
+		6EC221E90F77EEF8008FD532 /* TFBlobPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69F00D1829D200B19EB0 /* TFBlobPoint.m */; };
+		6EC221EA0F77EEF8008FD532 /* TFBlobSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69FE0D18322400B19EB0 /* TFBlobSize.m */; };
+		6EC221EB0F77EEF8008FD532 /* TFFullscreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E937B140D9D66AC00B75112 /* TFFullscreenController.m */; };
+		6EC221EC0F77EEF8008FD532 /* TFBlob+FrameworkAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BB7CC0DE43734006450C8 /* TFBlob+FrameworkAdditions.m */; };
+		6EC221ED0F77EEF8008FD532 /* NSScreen+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60D1A0DDF0FBF0069A40E /* NSScreen+Extras.m */; };
+		6EC221EE0F77EEF8008FD532 /* TFAlignedMalloc.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BC3D50DE86ED2006450C8 /* TFAlignedMalloc.m */; };
+		6EC221EF0F77EEF8008FD532 /* TFCATouchIndicationLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BC3D90DE86F18006450C8 /* TFCATouchIndicationLayer.m */; };
+		6EC221F00F77EEF8008FD532 /* TFCombinadicIndices.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BC3D00DE86EC2006450C8 /* TFCombinadicIndices.m */; };
+		6EC221F10F77EEF8008FD532 /* TFGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BC3CE0DE86EC2006450C8 /* TFGeometry.m */; };
+		6EC221F20F77EEF8008FD532 /* TFGestureInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BC3C00DE86E4D006450C8 /* TFGestureInfo.m */; };
+		6EC221F30F77EEF8008FD532 /* TFGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BC3C30DE86E85006450C8 /* TFGestureRecognizer.m */; };
+		6EC221F40F77EEF8008FD532 /* TFLabeledTouchSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BC3DD0DE86F39006450C8 /* TFLabeledTouchSet.m */; };
+		6EC221F50F77EEF8008FD532 /* TFTouchLabelObjectAssociator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BC3CC0DE86EC2006450C8 /* TFTouchLabelObjectAssociator.m */; };
+		6EC221F60F77EEF8008FD532 /* TFZoomPinchRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BC3C80DE86E95006450C8 /* TFZoomPinchRecognizer.m */; };
+		6EC221F70F77EEF8008FD532 /* TFError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7DB4EA0DEC677800CF9556 /* TFError.m */; };
+		6EC221F80F77EEF8008FD532 /* TFTapRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EA02EFD0DF4213D00B8A1D3 /* TFTapRecognizer.m */; };
+		6EC221F90F77EEF8008FD532 /* TFDOTrackingClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED60DB0E5EE64300375CC0 /* TFDOTrackingClient.m */; };
+		6EC221FA0F77EEF8008FD532 /* TFTrackingDataReceiverInfoDictKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED61470E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.m */; };
+		6EC221FC0F77EEF8008FD532 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC4D9940D1199E9008AB9CF /* QuartzCore.framework */; };
+		6EC221FD0F77EEF8008FD532 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E90B19A0D1ED84700A21C36 /* Accelerate.framework */; };
 		6EC4B0D20DD9D6D50085D7B8 /* TFBlob.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4A69EC0D18291C00B19EB0 /* TFBlob.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EC4B0D30DD9D6D60085D7B8 /* TFBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69ED0D18291C00B19EB0 /* TFBlob.m */; };
 		6EC4B0D40DD9D6D70085D7B8 /* TFBlobBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4A69FA0D1831C300B19EB0 /* TFBlobBox.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -221,7 +433,57 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXBuildRule section */
+		6E8739440F77B91500402313 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.intel.compilers.icc.11_0_0;
+			fileType = sourcecode.cpp;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		6E8739450F77B91500402313 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.intel.compilers.icc.11_0_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		6EC2220A0F77EFB9008FD532 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.intel.compilers.icc.11_0_0;
+			fileType = sourcecode.cpp;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		6EC2220B0F77EFB9008FD532 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.intel.compilers.icc.11_0_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXCopyFilesBuildPhase section */
+		6E8738700F77B4F400402313 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6E8738710F77B4F400402313 /* BBOSC.framework in Copy Frameworks */,
+				6E8738720F77B4F400402313 /* dc1394.framework in Copy Frameworks */,
+				6E8738730F77B4F400402313 /* OpenCV.framework in Copy Frameworks */,
+				6E8738740F77B4F400402313 /* Sparkle.framework in Copy Frameworks */,
+				6E8738750F77B4F400402313 /* WiiRemote.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6E93943B0DC775F900D21ADC /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -235,15 +497,6 @@
 				6E93943C0DC7763D00D21ADC /* WiiRemote.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6EE22FFF0E57373B00724A19 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -353,6 +606,9 @@
 		6E81EB220D522C87003EA72C /* TFCIRatioImageBlendFilter.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TFCIRatioImageBlendFilter.cikernel; sourceTree = "<group>"; };
 		6E854C710DBF977200B5EB68 /* TFTrackingPipeline+QTInputAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFTrackingPipeline+QTInputAdditions.h"; sourceTree = "<group>"; };
 		6E854C720DBF977200B5EB68 /* TFTrackingPipeline+QTInputAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFTrackingPipeline+QTInputAdditions.m"; sourceTree = "<group>"; };
+		6E8738570F77B0FB00402313 /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
+		6E8739190F77B4F400402313 /* Touche.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Touche.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E87391B0F77B4F400402313 /* Info copy 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy 2.plist"; sourceTree = "<group>"; };
 		6E88D1D30DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIMorphologicalCloseWith3x3ShapeFilter.h; sourceTree = "<group>"; };
 		6E88D1D40DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIMorphologicalCloseWith3x3ShapeFilter.m; sourceTree = "<group>"; };
 		6E8BB7CB0DE43734006450C8 /* TFBlob+FrameworkAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFBlob+FrameworkAdditions.h"; sourceTree = "<group>"; };
@@ -425,6 +681,8 @@
 		6EAF4F380DFEA37500104357 /* TFCIErosionDilationComboFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIErosionDilationComboFilter.m; sourceTree = "<group>"; };
 		6EBB25DC0D280EE1006520CD /* TFCalibrationPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCalibrationPoint.h; sourceTree = "<group>"; };
 		6EBB25DD0D280EE1006520CD /* TFCalibrationPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCalibrationPoint.m; sourceTree = "<group>"; };
+		6EC222020F77EEF8008FD532 /* ToucheFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ToucheFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6EC222030F77EEF8008FD532 /* ToucheFramework-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ToucheFramework-Info copy.plist"; sourceTree = "<group>"; };
 		6EC4B0CD0DD9D6C20085D7B8 /* ToucheFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ToucheFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EC4B0CE0DD9D6C20085D7B8 /* ToucheFramework-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ToucheFramework-Info.plist"; sourceTree = "<group>"; };
 		6EC4B1290DD9DBE30085D7B8 /* TFLibDC1394Capture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLibDC1394Capture.h; sourceTree = "<group>"; };
@@ -554,6 +812,35 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6E8739070F77B4F400402313 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E8739080F77B4F400402313 /* Cocoa.framework in Frameworks */,
+				6E8739090F77B4F400402313 /* QTKit.framework in Frameworks */,
+				6E87390A0F77B4F400402313 /* QuartzCore.framework in Frameworks */,
+				6E87390B0F77B4F400402313 /* GLUT.framework in Frameworks */,
+				6E87390C0F77B4F400402313 /* QuickTime.framework in Frameworks */,
+				6E87390D0F77B4F400402313 /* OpenGL.framework in Frameworks */,
+				6E87390E0F77B4F400402313 /* Accelerate.framework in Frameworks */,
+				6E87390F0F77B4F400402313 /* WiiRemote.framework in Frameworks */,
+				6E8739100F77B4F400402313 /* OpenCV.framework in Frameworks */,
+				6E8739110F77B4F400402313 /* dc1394.framework in Frameworks */,
+				6E8739120F77B4F400402313 /* WebKit.framework in Frameworks */,
+				6E8739130F77B4F400402313 /* Sparkle.framework in Frameworks */,
+				6E8739140F77B4F400402313 /* BBOSC.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6EC221FB0F77EEF8008FD532 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EC221FC0F77EEF8008FD532 /* QuartzCore.framework in Frameworks */,
+				6EC221FD0F77EEF8008FD532 /* Accelerate.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6EC4B0CB0DD9D6C20085D7B8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -635,6 +922,8 @@
 			children = (
 				8D1107320486CEB800E47090 /* Touche.app */,
 				6EC4B0CD0DD9D6C20085D7B8 /* ToucheFramework.framework */,
+				6E8739190F77B4F400402313 /* Touche.app */,
+				6EC222020F77EEF8008FD532 /* ToucheFramework.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -661,6 +950,9 @@
 				6ECA94D10DD1E9A000A9ABE3 /* UserDefaults.plist */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				6EC4B0CE0DD9D6C20085D7B8 /* ToucheFramework-Info.plist */,
+				6E8738570F77B0FB00402313 /* Info copy.plist */,
+				6E87391B0F77B4F400402313 /* Info copy 2.plist */,
+				6EC222030F77EEF8008FD532 /* ToucheFramework-Info copy.plist */,
 			);
 			name = Resources;
 			path = resources;
@@ -1318,6 +1610,41 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		6EC221C60F77EEF8008FD532 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EC221C70F77EEF8008FD532 /* TFBlob.h in Headers */,
+				6EC221C80F77EEF8008FD532 /* TFBlobBox.h in Headers */,
+				6EC221C90F77EEF8008FD532 /* TFBlobLabel.h in Headers */,
+				6EC221CA0F77EEF8008FD532 /* TFBlobPoint.h in Headers */,
+				6EC221CB0F77EEF8008FD532 /* TFBlobSize.h in Headers */,
+				6EC221CC0F77EEF8008FD532 /* TFFullscreenController.h in Headers */,
+				6EC221CD0F77EEF8008FD532 /* ToucheFramework.h in Headers */,
+				6EC221CE0F77EEF8008FD532 /* TFBlob+FrameworkAdditions.h in Headers */,
+				6EC221CF0F77EEF8008FD532 /* NSScreen+Extras.h in Headers */,
+				6EC221D00F77EEF8008FD532 /* TFAlignedMalloc.h in Headers */,
+				6EC221D10F77EEF8008FD532 /* TFCATouchIndicationLayer.h in Headers */,
+				6EC221D20F77EEF8008FD532 /* TFCombinadicIndices.h in Headers */,
+				6EC221D30F77EEF8008FD532 /* TFGeometry.h in Headers */,
+				6EC221D40F77EEF8008FD532 /* TFGestureConstants.h in Headers */,
+				6EC221D50F77EEF8008FD532 /* TFGestureInfo.h in Headers */,
+				6EC221D60F77EEF8008FD532 /* TFGestureRecognizer.h in Headers */,
+				6EC221D70F77EEF8008FD532 /* TFLabeledTouchSet.h in Headers */,
+				6EC221D80F77EEF8008FD532 /* TFTouchLabelObjectAssociator.h in Headers */,
+				6EC221D90F77EEF8008FD532 /* TFZoomPinchRecognizer.h in Headers */,
+				6EC221DA0F77EEF8008FD532 /* TFError.h in Headers */,
+				6EC221DB0F77EEF8008FD532 /* TFLocalization.h in Headers */,
+				6EC221DC0F77EEF8008FD532 /* TFIncludes.h in Headers */,
+				6EC221DD0F77EEF8008FD532 /* TFExceptions.h in Headers */,
+				6EC221DE0F77EEF8008FD532 /* PreferencesStrings.h in Headers */,
+				6EC221DF0F77EEF8008FD532 /* TFTapRecognizer.h in Headers */,
+				6EC221E00F77EEF8008FD532 /* TFDOTrackingClient.h in Headers */,
+				6EC221E10F77EEF8008FD532 /* TFDOTrackingCommProtocols.h in Headers */,
+				6EC221E20F77EEF8008FD532 /* TFTrackingDataReceiverInfoDictKeys.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6EC4B0C80DD9D6C20085D7B8 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1356,6 +1683,50 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		6E87386F0F77B4F400402313 /* Touche (ICC IPP) 11.0 #056 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6E8739160F77B4F400402313 /* Build configuration list for PBXNativeTarget "Touche (ICC IPP) 11.0 #056" */;
+			buildPhases = (
+				6E8738700F77B4F400402313 /* Copy Frameworks */,
+				6E8738770F77B4F400402313 /* Resources */,
+				6E8738960F77B4F400402313 /* Sources */,
+				6E8739070F77B4F400402313 /* Frameworks */,
+				6E8738760F77B4F400402313 /* Delete Framework Headers & Docs */,
+				6E8739150F77B4F400402313 /* Delete .svn folders */,
+			);
+			buildRules = (
+				6E8739440F77B91500402313 /* PBXBuildRule */,
+				6E8739450F77B91500402313 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "Touche (ICC IPP) 11.0 #056";
+			productInstallPath = "$(HOME)/Applications";
+			productName = Touche;
+			productReference = 6E8739190F77B4F400402313 /* Touche.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6EC221C50F77EEF8008FD532 /* ToucheFramework (ICC IPP) 11.0 #056 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6EC221FF0F77EEF8008FD532 /* Build configuration list for PBXNativeTarget "ToucheFramework (ICC IPP) 11.0 #056" */;
+			buildPhases = (
+				6EC221C60F77EEF8008FD532 /* Headers */,
+				6EC221E30F77EEF8008FD532 /* Resources */,
+				6EC221E50F77EEF8008FD532 /* Sources */,
+				6EC221FB0F77EEF8008FD532 /* Frameworks */,
+				6EC221FE0F77EEF8008FD532 /* Delete .svn folders */,
+			);
+			buildRules = (
+				6EC2220A0F77EFB9008FD532 /* PBXBuildRule */,
+				6EC2220B0F77EFB9008FD532 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "ToucheFramework (ICC IPP) 11.0 #056";
+			productName = "TouchéFramework";
+			productReference = 6EC222020F77EEF8008FD532 /* ToucheFramework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		6EC4B0CC0DD9D6C20085D7B8 /* ToucheFramework */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6EC4B0D10DD9D6C30085D7B8 /* Build configuration list for PBXNativeTarget "ToucheFramework" */;
@@ -1364,6 +1735,7 @@
 				6EC4B0C90DD9D6C20085D7B8 /* Resources */,
 				6EC4B0CA0DD9D6C20085D7B8 /* Sources */,
 				6EC4B0CB0DD9D6C20085D7B8 /* Frameworks */,
+				6E8737AA0F77B0E600402313 /* Delete .svn folders */,
 			);
 			buildRules = (
 			);
@@ -1379,11 +1751,11 @@
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Touche" */;
 			buildPhases = (
 				6E93943B0DC775F900D21ADC /* Copy Frameworks */,
-				6EE673960E22CD0500F9793E /* Delete Framework Headers & Docs */,
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
-				6EE22FFF0E57373B00724A19 /* CopyFiles */,
+				6EE673960E22CD0500F9793E /* Delete Framework Headers & Docs */,
+				6E8737A20F77B08000402313 /* Delete .svn folders */,
 			);
 			buildRules = (
 			);
@@ -1409,11 +1781,58 @@
 			targets = (
 				8D1107260486CEB800E47090 /* Touche */,
 				6EC4B0CC0DD9D6C20085D7B8 /* ToucheFramework */,
+				6E87386F0F77B4F400402313 /* Touche (ICC IPP) 11.0 #056 */,
+				6EC221C50F77EEF8008FD532 /* ToucheFramework (ICC IPP) 11.0 #056 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6E8738770F77B4F400402313 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E8738780F77B4F400402313 /* TFCIGrayscalingFilter.cikernel in Resources */,
+				6E8738790F77B4F400402313 /* TFCI3x3ErosionFilter.cikernel in Resources */,
+				6E87387A0F77B4F400402313 /* TFCI3x3DilationFilter.cikernel in Resources */,
+				6E87387B0F77B4F400402313 /* TFCIContrastStretchFilter.cikernel in Resources */,
+				6E87387C0F77B4F400402313 /* TFCIRatioImageBlendFilter.cikernel in Resources */,
+				6E87387D0F77B4F400402313 /* TFCIBackgroundSubtractionFilter.cikernel in Resources */,
+				6E87387E0F77B4F400402313 /* TFCI1PixelBorderAroundImage.cikernel in Resources */,
+				6E87387F0F77B4F400402313 /* InfoPlist.strings in Resources */,
+				6E8738800F77B4F400402313 /* Localizable.strings in Resources */,
+				6E8738810F77B4F400402313 /* UserDefaults.plist in Resources */,
+				6E8738820F77B4F400402313 /* erroricon.png in Resources */,
+				6E8738830F77B4F400402313 /* warningicon.tiff in Resources */,
+				6E8738840F77B4F400402313 /* InfoView.xib in Resources */,
+				6E8738850F77B4F400402313 /* MainMenu.xib in Resources */,
+				6E8738860F77B4F400402313 /* PipelineSetup.xib in Resources */,
+				6E8738870F77B4F400402313 /* WizardStep.xib in Resources */,
+				6E8738880F77B4F400402313 /* About.xib in Resources */,
+				6E8738890F77B4F400402313 /* touchdown.aif in Resources */,
+				6E87388A0F77B4F400402313 /* touchup.aif in Resources */,
+				6E87388B0F77B4F400402313 /* ScreenPreferences.xib in Resources */,
+				6E87388C0F77B4F400402313 /* MiscPreferences.xib in Resources */,
+				6E87388D0F77B4F400402313 /* AppIcon.icns in Resources */,
+				6E87388E0F77B4F400402313 /* credits-wrapper.html in Resources */,
+				6E87388F0F77B4F400402313 /* credits.html in Resources */,
+				6E8738900F77B4F400402313 /* tuio-image.png in Resources */,
+				6E8738910F77B4F400402313 /* Help in Resources */,
+				6E8738920F77B4F400402313 /* TUIOOSCSettings.xib in Resources */,
+				6E8738930F77B4F400402313 /* flash-image.jpg in Resources */,
+				6E8738940F77B4F400402313 /* TUIOFlashXMLSettings.xib in Resources */,
+				6E8738950F77B4F400402313 /* TFCIThresholdFilter.cikernel in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6EC221E30F77EEF8008FD532 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EC221E40F77EEF8008FD532 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6EC4B0C90DD9D6C20085D7B8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1462,6 +1881,76 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		6E8737A20F77B08000402313 /* Delete .svn folders */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Delete .svn folders";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# find all .svn directories in the built product and delete them\tfind -d \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/\" -name \".svn\" -exec rm -r '{}' \\; -print";
+		};
+		6E8737AA0F77B0E600402313 /* Delete .svn folders */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Delete .svn folders";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# find all .svn directories in the built product and delete them\tfind -d \"${BUILD_DIR}/${PRODUCT_NAME}.app/\" -name \".svn\" -exec rm -r '{}' \\; -print";
+		};
+		6E8738760F77B4F400402313 /* Delete Framework Headers & Docs */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Delete Framework Headers & Docs";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# delete all framework headers, since we don't need them in the final product\nfind -E -d \"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app/Contents/Frameworks\" -regex \".*/(Private)?Headers\" -exec rm -rf {} \";\";\n\n# OpenCV has docs in the framework too, which we don't need\nfind -E -d \"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app/Contents/Frameworks\" -regex \".*/Documentation\" -exec rm -rf {} \";\";";
+		};
+		6E8739150F77B4F400402313 /* Delete .svn folders */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Delete .svn folders";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# find all .svn directories in the built product and delete them\tfind -d \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/\" -name \".svn\" -exec rm -r '{}' \\; -print";
+		};
+		6EC221FE0F77EEF8008FD532 /* Delete .svn folders */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Delete .svn folders";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# find all .svn directories in the built product and delete them\tfind -d \"${BUILD_DIR}/${PRODUCT_NAME}.app/\" -name \".svn\" -exec rm -r '{}' \\; -print";
+		};
 		6EE673960E22CD0500F9793E /* Delete Framework Headers & Docs */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1474,11 +1963,158 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# delete all framework headers, since we don't need them in the final product\nfind -E -d \"$BUILT_PRODUCTS_DIR/$TARGET_NAME.app/Contents/Frameworks\" -regex \".*/(Private)?Headers\" -exec rm -rf {} \";\";\n\n# OpenCV has docs in the framework too, which we don't need\nfind -E -d \"$BUILT_PRODUCTS_DIR/$TARGET_NAME.app/Contents/Frameworks\" -regex \".*/Documentation\" -exec rm -rf {} \";\";";
+			shellScript = "# delete all framework headers, since we don't need them in the final product\nfind -E -d \"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app/Contents/Frameworks\" -regex \".*/(Private)?Headers\" -exec rm -rf {} \";\";\n\n# OpenCV has docs in the framework too, which we don't need\nfind -E -d \"$BUILT_PRODUCTS_DIR/$PRODUCT_NAME.app/Contents/Frameworks\" -regex \".*/Documentation\" -exec rm -rf {} \";\";";
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6E8738960F77B4F400402313 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E8738970F77B4F400402313 /* AppController.m in Sources */,
+				6E8738980F77B4F400402313 /* TFOpenGLView.m in Sources */,
+				6E8738990F77B4F400402313 /* TFFilterChain.m in Sources */,
+				6E87389A0F77B4F400402313 /* TFCIFilterChain.m in Sources */,
+				6E87389B0F77B4F400402313 /* TFCameraInputFilterChain.m in Sources */,
+				6E87389C0F77B4F400402313 /* CIImage+MakeBitmaps.m in Sources */,
+				6E87389D0F77B4F400402313 /* TFCI1PixelBorderAroundImage.m in Sources */,
+				6E87389E0F77B4F400402313 /* TFBlob.m in Sources */,
+				6E87389F0F77B4F400402313 /* TFBlobPoint.m in Sources */,
+				6E8738A00F77B4F400402313 /* TFBlobBox.m in Sources */,
+				6E8738A10F77B4F400402313 /* TFBlobSize.m in Sources */,
+				6E8738A20F77B4F400402313 /* TFBlobDetector.m in Sources */,
+				6E8738A30F77B4F400402313 /* TFRGBA8888BlobDetector.m in Sources */,
+				6E8738A40F77B4F400402313 /* TFBlobTrackingView.m in Sources */,
+				6E8738A50F77B4F400402313 /* TFBlobLabel.m in Sources */,
+				6E8738A60F77B4F400402313 /* TFLabelFactory.m in Sources */,
+				6E8738A70F77B4F400402313 /* TFBlobSimpleDistanceLabelizer.m in Sources */,
+				6E8738A80F77B4F400402313 /* TFBlobLabelizer.m in Sources */,
+				6E8738A90F77B4F400402313 /* TFCamera2ScreenCoordinatesConverter.m in Sources */,
+				6E8738AA0F77B4F400402313 /* TFInverseTextureMappingConverter.m in Sources */,
+				6E8738AB0F77B4F400402313 /* TFCalibrationPoint.m in Sources */,
+				6E8738AC0F77B4F400402313 /* TFQTKitCapture.m in Sources */,
+				6E8738AD0F77B4F400402313 /* TFCapture.m in Sources */,
+				6E8738AE0F77B4F400402313 /* TFTrackingPipeline.m in Sources */,
+				6E8738AF0F77B4F400402313 /* TFTrackingPipelineView.m in Sources */,
+				6E8738B00F77B4F400402313 /* TFPipelineSetupController.m in Sources */,
+				6E8738B10F77B4F400402313 /* TFCIBackgroundSubtractionFilter.m in Sources */,
+				6E8738B20F77B4F400402313 /* TFCIRatioImageBlendFilter.m in Sources */,
+				6E8738B30F77B4F400402313 /* TFFullscreenController.m in Sources */,
+				6E8738B40F77B4F400402313 /* TFTouchView.m in Sources */,
+				6E8738B50F77B4F400402313 /* TFCalibrationController.m in Sources */,
+				6E8738B60F77B4F400402313 /* TFBlobInputSource.m in Sources */,
+				6E8738B70F77B4F400402313 /* TFBlobCameraInputSource.m in Sources */,
+				6E8738B80F77B4F400402313 /* TFBlobQuicktimeKitInputSource.m in Sources */,
+				6E8738B90F77B4F400402313 /* TFTrackingPipeline+QTInputAdditions.m in Sources */,
+				6E8738BA0F77B4F400402313 /* NSImage-Extras.m in Sources */,
+				6E8738BB0F77B4F400402313 /* TFTouchTestController.m in Sources */,
+				6E8738BC0F77B4F400402313 /* TFBlobWiiRemoteInputSource.m in Sources */,
+				6E8738BD0F77B4F400402313 /* TFGrayscale8BlobDetector.m in Sources */,
+				6E8738BE0F77B4F400402313 /* TFOpenCVContourBlobDetector.m in Sources */,
+				6E8738BF0F77B4F400402313 /* CGColorRefColorSpaceConversions.c in Sources */,
+				6E8738C00F77B4F400402313 /* CGColorFromNSColor.m in Sources */,
+				6E8738C10F77B4F400402313 /* GCKIPhoneNavigationBarView.m in Sources */,
+				6E8738C20F77B4F400402313 /* GCKObservingForDisplayView.m in Sources */,
+				6E8738C30F77B4F400402313 /* NSView+Extras.m in Sources */,
+				6E8738C40F77B4F400402313 /* GCKIPhoneNavigationBarLabelView.m in Sources */,
+				6E8738C50F77B4F400402313 /* GCKNumberCircleView.m in Sources */,
+				6E8738C60F77B4F400402313 /* TFWizardView.m in Sources */,
+				6E8738C70F77B4F400402313 /* TFWizardStepController.m in Sources */,
+				6E8738C80F77B4F400402313 /* TFWizardController.m in Sources */,
+				6E8738C90F77B4F400402313 /* GCKPlatinumView.m in Sources */,
+				6E8738CA0F77B4F400402313 /* TFInfoViewController.m in Sources */,
+				6E8738CB0F77B4F400402313 /* TFInfoView.m in Sources */,
+				6E8738CC0F77B4F400402313 /* TFAboutController.m in Sources */,
+				6E8738CD0F77B4F400402313 /* TFLibDC1394Capture.m in Sources */,
+				6E8738CE0F77B4F400402313 /* TFBlobLibDc1394InputSource.m in Sources */,
+				6E8738CF0F77B4F400402313 /* TFTrackingPipeline+LibDc1394InputAdditions.m in Sources */,
+				6E8738D00F77B4F400402313 /* TFPipelineSetupController+LibDc1394Configuration.m in Sources */,
+				6E8738D10F77B4F400402313 /* TFScreenPreferencesController.m in Sources */,
+				6E8738D20F77B4F400402313 /* NSScreen+Extras.m in Sources */,
+				6E8738D30F77B4F400402313 /* TFScreenPrefsMeasureView.m in Sources */,
+				6E8738D40F77B4F400402313 /* TFMiscPreferencesController.m in Sources */,
+				6E8738D50F77B4F400402313 /* TFError.m in Sources */,
+				6E8738D60F77B4F400402313 /* main.m in Sources */,
+				6E8738D70F77B4F400402313 /* TFCIContrastStretchFilter.m in Sources */,
+				6E8738D80F77B4F400402313 /* TFCI3x3ErosionFilter.m in Sources */,
+				6E8738D90F77B4F400402313 /* TFCI3x3DilationFilter.m in Sources */,
+				6E8738DA0F77B4F400402313 /* TFCIErosionDilationComboFilter.m in Sources */,
+				6E8738DB0F77B4F400402313 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m in Sources */,
+				6E8738DC0F77B4F400402313 /* TFCIMorphologicalCloseWith3x3ShapeFilter.m in Sources */,
+				6E8738DD0F77B4F400402313 /* TFCIGrayscalingFilter.m in Sources */,
+				6E8738DE0F77B4F400402313 /* TFCIGaussianBlurFilter.m in Sources */,
+				6E8738DF0F77B4F400402313 /* TFSocket.m in Sources */,
+				6E8738E00F77B4F400402313 /* TFIPSocket.m in Sources */,
+				6E8738E10F77B4F400402313 /* TFIPStreamSocket.m in Sources */,
+				6E8738E20F77B4F400402313 /* TFIPDatagramSocket.m in Sources */,
+				6E8738E30F77B4F400402313 /* TFIPTCPSocket.m in Sources */,
+				6E8738E40F77B4F400402313 /* TFIPUDPSocket.m in Sources */,
+				6E8738E50F77B4F400402313 /* TFOSCServer.m in Sources */,
+				6E8738E60F77B4F400402313 /* TFTrackingDataDistributor.m in Sources */,
+				6E8738E70F77B4F400402313 /* TFTrackingDataReceiver.m in Sources */,
+				6E8738E80F77B4F400402313 /* TFDOTrackingClient.m in Sources */,
+				6E8738E90F77B4F400402313 /* TFDOTrackingDataDistributor.m in Sources */,
+				6E8738EA0F77B4F400402313 /* TFDOTrackingDataReceiver.m in Sources */,
+				6E8738EB0F77B4F400402313 /* TFTrackingDataDistributionCenter.m in Sources */,
+				6E8738EC0F77B4F400402313 /* TFTrackingDataReceiverInfoDictKeys.m in Sources */,
+				6E8738ED0F77B4F400402313 /* TFThreadMessagingQueue.m in Sources */,
+				6E8738EE0F77B4F400402313 /* TFTrackingDataReceiverCell.m in Sources */,
+				6E8738EF0F77B4F400402313 /* TFCIColorInversionFilter.m in Sources */,
+				6E8738F00F77B4F400402313 /* TFTUIOOSCServer.m in Sources */,
+				6E8738F10F77B4F400402313 /* TFTUIOOSCTrackingDataReceiver.m in Sources */,
+				6E8738F20F77B4F400402313 /* TFTUIOOSCTrackingDataDistributor.m in Sources */,
+				6E8738F30F77B4F400402313 /* TFTUIOOSCSettingsController.m in Sources */,
+				6E8738F40F77B4F400402313 /* TFTUIOTrackingDataDistributor.m in Sources */,
+				6E8738F50F77B4F400402313 /* TFTUIOConstants.m in Sources */,
+				6E8738F60F77B4F400402313 /* TFFlashXMLTUIOServer.m in Sources */,
+				6E8738F70F77B4F400402313 /* TFFlashXMLTUIOTrackingDataReceiver.m in Sources */,
+				6E8738F80F77B4F400402313 /* TFBlob+TUIOOSCMethods.m in Sources */,
+				6E8738F90F77B4F400402313 /* TFFlashXMLTUIOTrackingDataDistributor.m in Sources */,
+				6E8738FA0F77B4F400402313 /* TFFlashXMLTUIOGeneration.m in Sources */,
+				6E8738FB0F77B4F400402313 /* TFBlob+TUIOMethods.m in Sources */,
+				6E8738FC0F77B4F400402313 /* TFTUIOFlashXmlSettingsController.m in Sources */,
+				6E8738FD0F77B4F400402313 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */,
+				6E8738FE0F77B4F400402313 /* TFCIThresholdFilter.m in Sources */,
+				6E8738FF0F77B4F400402313 /* TFNSColorToCIColorInNSDataValueTransfomer.m in Sources */,
+				6E8739000F77B4F400402313 /* GCKGradientOverlayView.m in Sources */,
+				6E8739010F77B4F400402313 /* TFPerformanceMeasurement.c in Sources */,
+				6E8739020F77B4F400402313 /* TFPerformanceTimer.m in Sources */,
+				6E8739030F77B4F400402313 /* TFFlashLCSHMEM.c in Sources */,
+				6E8739040F77B4F400402313 /* TFTUIOPacketCreation.m in Sources */,
+				6E8739050F77B4F400402313 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */,
+				6E8739060F77B4F400402313 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6EC221E50F77EEF8008FD532 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EC221E60F77EEF8008FD532 /* TFBlob.m in Sources */,
+				6EC221E70F77EEF8008FD532 /* TFBlobBox.m in Sources */,
+				6EC221E80F77EEF8008FD532 /* TFBlobLabel.m in Sources */,
+				6EC221E90F77EEF8008FD532 /* TFBlobPoint.m in Sources */,
+				6EC221EA0F77EEF8008FD532 /* TFBlobSize.m in Sources */,
+				6EC221EB0F77EEF8008FD532 /* TFFullscreenController.m in Sources */,
+				6EC221EC0F77EEF8008FD532 /* TFBlob+FrameworkAdditions.m in Sources */,
+				6EC221ED0F77EEF8008FD532 /* NSScreen+Extras.m in Sources */,
+				6EC221EE0F77EEF8008FD532 /* TFAlignedMalloc.m in Sources */,
+				6EC221EF0F77EEF8008FD532 /* TFCATouchIndicationLayer.m in Sources */,
+				6EC221F00F77EEF8008FD532 /* TFCombinadicIndices.m in Sources */,
+				6EC221F10F77EEF8008FD532 /* TFGeometry.m in Sources */,
+				6EC221F20F77EEF8008FD532 /* TFGestureInfo.m in Sources */,
+				6EC221F30F77EEF8008FD532 /* TFGestureRecognizer.m in Sources */,
+				6EC221F40F77EEF8008FD532 /* TFLabeledTouchSet.m in Sources */,
+				6EC221F50F77EEF8008FD532 /* TFTouchLabelObjectAssociator.m in Sources */,
+				6EC221F60F77EEF8008FD532 /* TFZoomPinchRecognizer.m in Sources */,
+				6EC221F70F77EEF8008FD532 /* TFError.m in Sources */,
+				6EC221F80F77EEF8008FD532 /* TFTapRecognizer.m in Sources */,
+				6EC221F90F77EEF8008FD532 /* TFDOTrackingClient.m in Sources */,
+				6EC221FA0F77EEF8008FD532 /* TFTrackingDataReceiverInfoDictKeys.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6EC4B0CA0DD9D6C20085D7B8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1736,6 +2372,162 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6E8739170F77B4F400402313 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/frameworks\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/Touche_Prefix.pch;
+				ICC_FP_MODEL = default;
+				ICC_FP_SPECULATION = default;
+				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
+				INFOPLIST_FILE = resources/Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/lib";
+				OTHER_LDFLAGS = (
+					"-lippiemerged",
+					"-lippimerged",
+					"-lippsemerged",
+					"-lippsmerged",
+					"-lippcore",
+					"-no-ipo",
+					"-static-intel",
+				);
+				PRODUCT_NAME = Touche;
+				USER_HEADER_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/Headers";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		6E8739180F77B4F400402313 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/frameworks\"",
+				);
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/Touche_Prefix.pch;
+				ICC_FP_MODEL = fast2;
+				ICC_FP_SPECULATION = fast;
+				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
+				ICC_LANG_ANSI = "compiler-default";
+				ICC_OPTLEVEL = speedHLO;
+				ICC_OPT_IPO_FOR_SINGLE_FILE_COMPILATION = NO;
+				ICC_OPT_PARALLEL = YES;
+				ICC_OPT_PREFETCH_INSERTION = YES;
+				ICC_OPT_PROVIDE_FRAME_PTR = NO;
+				ICC_OTHER_CFLAGS = "-no-prec-div -xT -axSSE3,SSSE3,SSE4.1,SSE4.2 -ip $(OTHER_CFLAGS)";
+				INFOPLIST_FILE = resources/Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/lib";
+				OTHER_LDFLAGS = (
+					"-lippiemerged",
+					"-lippimerged",
+					"-lippsemerged",
+					"-lippsmerged",
+					"-lippcore",
+					"-no-ipo",
+					"-static-intel",
+				);
+				PRODUCT_NAME = Touche;
+				USER_HEADER_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/Headers";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		6EC222000F77EEF8008FD532 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
+				INFOPLIST_FILE = "resources/ToucheFramework-Info.plist";
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/lib";
+				OTHER_LDFLAGS = (
+					"-static-intel",
+					"-no-ipo",
+					"-lippiemerged",
+					"-lippimerged",
+					"-lippsemerged",
+					"-lippsmerged",
+					"-lippcore",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = ToucheFramework;
+				USER_HEADER_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/Headers";
+			};
+			name = Debug;
+		};
+		6EC222010F77EEF8008FD532 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				ICC_FP_MODEL = fast2;
+				ICC_FP_SPECULATION = fast;
+				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
+				ICC_OPTLEVEL = speedHLO;
+				ICC_OPT_PARALLEL = YES;
+				ICC_OPT_PREFETCH_INSERTION = YES;
+				ICC_OPT_PROVIDE_FRAME_PTR = NO;
+				ICC_OTHER_CFLAGS = "-no-prec-div -xT -axSSE3,SSSE3,SSE4.1,SSE4.2 -ip $(OTHER_CFLAGS)";
+				INFOPLIST_FILE = "resources/ToucheFramework-Info.plist";
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/lib";
+				OTHER_LDFLAGS = (
+					"-static-intel",
+					"-no-ipo",
+					"-lippiemerged",
+					"-lippimerged",
+					"-lippsemerged",
+					"-lippsmerged",
+					"-lippcore",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = ToucheFramework;
+				USER_HEADER_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/Headers";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		6EC4B0CF0DD9D6C30085D7B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1796,9 +2588,7 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../../../Desktop\"",
 					"\"$(SRCROOT)/frameworks\"",
-					"\"$(SRCROOT)\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -1820,9 +2610,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../../../Desktop\"",
 					"\"$(SRCROOT)/frameworks\"",
-					"\"$(SRCROOT)\"",
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1873,6 +2661,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6E8739160F77B4F400402313 /* Build configuration list for PBXNativeTarget "Touche (ICC IPP) 11.0 #056" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E8739170F77B4F400402313 /* Debug */,
+				6E8739180F77B4F400402313 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6EC221FF0F77EEF8008FD532 /* Build configuration list for PBXNativeTarget "ToucheFramework (ICC IPP) 11.0 #056" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6EC222000F77EEF8008FD532 /* Debug */,
+				6EC222010F77EEF8008FD532 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		6EC4B0D10DD9D6C30085D7B8 /* Build configuration list for PBXNativeTarget "ToucheFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

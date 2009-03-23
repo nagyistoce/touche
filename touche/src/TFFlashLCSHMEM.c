@@ -42,9 +42,10 @@
 
 #define	PROTOCOL_NAME				("localhost")
 
-#define	WINDOWS_SEMAPHORE_NAME		("MacromediaMutexOmega")
-#define WINDOWS_SHMEM_NAME			("MacromediaFMOmega")
-#define DARWIN_SEMAPHORE_NAME		("MacromediaSemaphoreDig")
+#define	WINDOWS_SEMAPHORE_NAME				("MacromediaMutexOmega")
+#define WINDOWS_SHMEM_NAME					("MacromediaFMOmega")
+#define DARWIN_SEMAPHORE_NAME				("MacromediaSemaphoreDig")
+#define	DARWIN_SEMAPHORE_INITIAL_VALUE		(10)
 
 #define	AMF_TYPE_STRING				(0x02)
 #define AMF_TYPE_AMF3OBJ			(0x11)
@@ -129,7 +130,10 @@ TFLCSLocalConnection_t* TFLCSConnect(const char* listenerName,
 	else
 		semName = DARWIN_SEMAPHORE_NAME;
 	
-	connection->semaphore = sem_open(semName, O_CREAT);
+	connection->semaphore = sem_open(semName,
+									 O_CREAT,
+									 S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH,
+									 DARWIN_SEMAPHORE_INITIAL_VALUE);
 	if (SEM_FAILED == connection->semaphore) {
 		TFLCSErrno = TFLCSErrorSemaphoreCreationFailed;
 		goto errorReturn;

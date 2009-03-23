@@ -551,7 +551,7 @@
 				6E8465670F557D0500E145FB /* Frameworks */,
 				6E846B4D0F55FF1700E145FB /* Retarget Cocotron bundles */,
 				6EC221B20F77E9C4008FD532 /* Delete .svn folders */,
-				6EC221B70F77EBD0008FD532 /* ShellScript */,
+				6EC221B70F77EBD0008FD532 /* Make distribution zip */,
 			);
 			buildRules = (
 				6E846F7E0F57652700E145FB /* PBXBuildRule */,
@@ -672,13 +672,14 @@
 			shellPath = /bin/sh;
 			shellScript = "# find all .svn directories in the built product and delete them\tfind -d \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/\" -name \".svn\" -exec rm -r '{}' \\; -print";
 		};
-		6EC221B70F77EBD0008FD532 /* ShellScript */ = {
+		6EC221B70F77EBD0008FD532 /* Make distribution zip */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Make distribution zip";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

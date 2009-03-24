@@ -346,6 +346,8 @@
 		6EC221FA0F77EEF8008FD532 /* TFTrackingDataReceiverInfoDictKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED61470E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.m */; };
 		6EC221FC0F77EEF8008FD532 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC4D9940D1199E9008AB9CF /* QuartzCore.framework */; };
 		6EC221FD0F77EEF8008FD532 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E90B19A0D1ED84700A21C36 /* Accelerate.framework */; };
+		6EC223090F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */; };
+		6EC2230A0F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */; };
 		6EC4B0D20DD9D6D50085D7B8 /* TFBlob.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4A69EC0D18291C00B19EB0 /* TFBlob.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EC4B0D30DD9D6D60085D7B8 /* TFBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69ED0D18291C00B19EB0 /* TFBlob.m */; };
 		6EC4B0D40DD9D6D70085D7B8 /* TFBlobBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4A69FA0D1831C300B19EB0 /* TFBlobBox.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -683,6 +685,8 @@
 		6EBB25DD0D280EE1006520CD /* TFCalibrationPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCalibrationPoint.m; sourceTree = "<group>"; };
 		6EC222020F77EEF8008FD532 /* ToucheFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ToucheFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EC222030F77EEF8008FD532 /* ToucheFramework-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ToucheFramework-Info copy.plist"; sourceTree = "<group>"; };
+		6EC223070F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLibDC1394CapturePixelFormatConversions.h; sourceTree = "<group>"; };
+		6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFLibDC1394CapturePixelFormatConversions.c; sourceTree = "<group>"; };
 		6EC4B0CD0DD9D6C20085D7B8 /* ToucheFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ToucheFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EC4B0CE0DD9D6C20085D7B8 /* ToucheFramework-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ToucheFramework-Info.plist"; sourceTree = "<group>"; };
 		6EC4B1290DD9DBE30085D7B8 /* TFLibDC1394Capture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLibDC1394Capture.h; sourceTree = "<group>"; };
@@ -1546,6 +1550,8 @@
 				6EC4B12A0DD9DBE30085D7B8 /* TFLibDC1394Capture.m */,
 				6EEC22550E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.h */,
 				6EEC22540E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */,
+				6EC223070F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.h */,
+				6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */,
 			);
 			name = libdc1394;
 			sourceTree = "<group>";
@@ -2084,6 +2090,7 @@
 				6E8739040F77B4F400402313 /* TFTUIOPacketCreation.m in Sources */,
 				6E8739050F77B4F400402313 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */,
 				6E8739060F77B4F400402313 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */,
+				6EC2230A0F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2259,6 +2266,7 @@
 				6ECE5F830F6FF6C10067CC99 /* TFTUIOPacketCreation.m in Sources */,
 				6ECE60340F719F8C0067CC99 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */,
 				6ECE61CD0F72B3F00067CC99 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */,
+				6EC223090F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2392,6 +2400,8 @@
 				ICC_FP_MODEL = default;
 				ICC_FP_SPECULATION = default;
 				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
+				ICC_OPT_PREFETCH_INSERTION = NO;
+				ICC_RT_LIBRARY = static;
 				INFOPLIST_FILE = resources/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/lib";
@@ -2407,7 +2417,7 @@
 					"-static-intel",
 				);
 				PRODUCT_NAME = Touche;
-				USER_HEADER_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/Headers";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/frameworks/dc1394.framework/Headers\" $(ICC_INSTALL_DIR)/Frameworks/ipp/Headers";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -2434,9 +2444,10 @@
 				ICC_OPTLEVEL = speedHLO;
 				ICC_OPT_IPO_FOR_SINGLE_FILE_COMPILATION = NO;
 				ICC_OPT_PARALLEL = YES;
-				ICC_OPT_PREFETCH_INSERTION = YES;
+				ICC_OPT_PREFETCH_INSERTION = NO;
 				ICC_OPT_PROVIDE_FRAME_PTR = NO;
 				ICC_OTHER_CFLAGS = "-no-prec-div -xT -axSSE3,SSSE3,SSE4.1,SSE4.2 -ip $(OTHER_CFLAGS)";
+				ICC_RT_LIBRARY = static;
 				INFOPLIST_FILE = resources/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/lib";
@@ -2452,7 +2463,7 @@
 					"-static-intel",
 				);
 				PRODUCT_NAME = Touche;
-				USER_HEADER_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/Headers";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/frameworks/dc1394.framework/Headers\" $(ICC_INSTALL_DIR)/Frameworks/ipp/Headers";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -2475,6 +2486,8 @@
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=x86_64]" = _USES_IPP_;
 				ICC_DEFINES = "_USES_IPP_ $(GCC_PREPROCESSOR_DEFINITIONS)";
 				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
+				ICC_OPT_PREFETCH_INSERTION = NO;
+				ICC_RT_LIBRARY = static;
 				INFOPLIST_FILE = "resources/ToucheFramework-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/lib";
@@ -2520,9 +2533,10 @@
 				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
 				ICC_OPTLEVEL = speedHLO;
 				ICC_OPT_PARALLEL = YES;
-				ICC_OPT_PREFETCH_INSERTION = YES;
+				ICC_OPT_PREFETCH_INSERTION = NO;
 				ICC_OPT_PROVIDE_FRAME_PTR = NO;
 				ICC_OTHER_CFLAGS = "-no-prec-div -xT -axSSE3,SSSE3,SSE4.1,SSE4.2 -ip $(OTHER_CFLAGS)";
+				ICC_RT_LIBRARY = static;
 				INFOPLIST_FILE = "resources/ToucheFramework-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(ICC_INSTALL_DIR)/Frameworks/ipp/lib";

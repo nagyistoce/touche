@@ -39,6 +39,8 @@ enum {
 
 #define TFLibDC1394CaptureNumFeatures	(5)
 
+struct TFLibDC1394CaptureConversionContext;
+
 @interface TFLibDC1394Capture : TFCapture {
 	dc1394_t*			_dc;
 	dc1394camera_t*		_camera;
@@ -56,6 +58,8 @@ enum {
 	
 	CVPixelBufferPoolRef	_pixelBufferPool;
 	BOOL					_pixelBufferPoolNeedsUpdating;
+	
+	struct TFLibDC1394CaptureConversionContext* _pixelConversionContext;
 }
 
 - (id)initWithCameraUniqueId:(NSNumber*)uid;

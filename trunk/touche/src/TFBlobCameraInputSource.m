@@ -460,6 +460,11 @@
 			if (_delegateHasDidDetectBlobs)
 				[delegate blobInputSource:self didDetectBlobs:[NSArray array]];
 			
+			// reuse the bitmap creation context
+			@synchronized (_freeBitmapCreationContexts) {
+				[_freeBitmapCreationContexts addObject:contextValue];
+			}
+			
 			[pool release];
 			continue;
 		}

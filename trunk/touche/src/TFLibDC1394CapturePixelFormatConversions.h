@@ -39,3 +39,11 @@ int TFLibDC1394PixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
 											   int intermediateRowBytes,
 											   int width,
 											   int height);
+
+// returns non-zero on success, zero on failure
+int TFLibDC1394PixelFormatConvertRGB8toARGB8(uint8_t* srcBuf,
+											 int srcRowBytes,
+											 uint8_t* dstBuf,
+											 int dstRowBytes,
+											 int width,
+											 int height);

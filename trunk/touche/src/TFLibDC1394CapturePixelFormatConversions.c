@@ -46,10 +46,7 @@ int TFLibDC1394PixelFormatConvertYUV411toARGB8(uint8_t* srcBuf,
 											   uint8_t* dstBuf,
 											   int width,
 											   int height)
-{
-	if (NULL == srcBuf || NULL == dstBuf)
-		return 0;
-	
+{	
 	int i = (width*height) + ( (width*height) >> 1 )-1;
 	int j = ((width*height) << 2) - 1;
 	int y0, y1, y2, y3, u, v, r, g, b;
@@ -132,6 +129,36 @@ int TFLibDC1394PixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
 								  prebias,
 								  NULL,
 								  0);
+	
+	return 1;
+}
+
+// returns non-zero on success, zero on failure
+int TFLibDC1394PixelFormatConvertRGB8toARGB8(uint8_t* srcBuf,
+											 int srcRowBytes,
+											 uint8_t* dstBuf,
+											 int dstRowBytes,
+											 int width,
+											 int height)
+{
+	vImage_Buffer vSrc, vDst;
+	
+	vSrc.data = srcBuf;
+	vSrc.width = width;
+	vSrc.height = height;
+	vSrc.rowBytes = srcRowBytes;
+	
+	vDst.data = dstBuf;
+	vDst.width = width;
+	vDst.height = height;
+	vDst.rowBytes = dstRowBytes;
+	
+	vImageConvert_RGB888toARGB8888(&vSrc,
+								   NULL,
+								   0,
+								   &vDst,
+								   false,
+								   0);
 	
 	return 1;
 }

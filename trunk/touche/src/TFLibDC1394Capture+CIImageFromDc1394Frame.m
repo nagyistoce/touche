@@ -465,6 +465,8 @@ void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionCon
 		while (0 == p % i)
 			i <<= 1; */
 		
+		// on OSX, malloc allows returns 16-byte aligned memory, and the optimal rowbytes function respects
+		// this alignment, too.
 		context->alignment = 16;
 		
 		//NSLog(@"alignment of scratch buffer is %d\n", i);

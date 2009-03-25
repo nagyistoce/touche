@@ -45,18 +45,20 @@ typedef struct TFLibDC1394CaptureConversionResult {
 } TFLibDC1394CaptureConversionResult;
 
 // checks wether the given scratch space is appropriate for the given color conversion. If not,
-// a new scratchspace is created (old one's free'd) and stored through the given pointer.
+// a new context is created (old one's free'd) and stored through the given pointer.
 // the pointer to destCVPixelFormat will be filled with the CV pixel format to which srcColorCoding
 // can be converted most efficiently.
-void _TFLibDC1394CapturePrepareConversionScratchSpace(TFLibDC1394CaptureConversionContext** scratchSpace,
-													  dc1394color_coding_t srcColorCoding,
-													  unsigned int* destCVPixelFormat,
-													  int width,
-													  int height);
+void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionContext** pContext,
+												 dc1394color_coding_t srcColorCoding,
+												 unsigned int* destCVPixelFormat,
+												 int width,
+												 int height);
 
 // converts a frame with a given conversion context
+// if outputData is NULL, the context's data field is used.
 TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394CaptureConversionContext* context,
-															  dc1394video_frame_t* frame);
+															  dc1394video_frame_t* frame,
+															  void* outputData);
 
 // returns an optimal value for rowBytes for a given image width and byterPerPixel value.
 size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width,
@@ -146,11 +148,11 @@ size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width,
 						break;
 					case DC1394_COLOR_CODING_YUV411:
 					case DC1394_COLOR_CODING_YUV444:
-						_TFLibDC1394CapturePrepareConversionScratchSpace(&_pixelConversionContext,
-																		 frame->color_coding,
-																		 &pixelFormat,
-																		 frame->size[0],
-																		 frame->size[1]);
+						_TFLibDC1394CapturePrepareConversionContext(&_pixelConversionContext,
+																	frame->color_coding,
+																	&pixelFormat,
+																	frame->size[0],
+																	frame->size[1]);
 						pixelAlignment = _pixelConversionContext->alignment;
 						break;
 					case DC1394_COLOR_CODING_RGB8:
@@ -177,20 +179,6 @@ size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width,
 				}
 								
 				_pixelBufferPoolNeedsUpdating = NO;
-			}
-			
-			void* imageData = frame->image;
-			int imageDataSize = frame->image_bytes;
-						
-			// do pixel format conversion if needed.
-			if (DC1394_COLOR_CODING_YUV444 == frame->color_coding		||
-				DC1394_COLOR_CODING_YUV411 == frame->color_coding) {
-				
-				TFLibDC1394CaptureConversionResult conversionResult =
-					_TFLibDC1394CaptureConvert(_pixelConversionContext, frame);
-			
-				imageData = conversionResult.data;
-				imageDataSize = conversionResult.totalSize;
 			}
 			
 			CVPixelBufferRef pixelBuffer = nil;
@@ -221,7 +209,20 @@ size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width,
 			}
 			
 			unsigned char* baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
-			memcpy(baseAddress, imageData, imageDataSize);
+			
+			// do pixel format conversion if needed.
+			if (DC1394_COLOR_CODING_YUV444 == frame->color_coding		||
+				DC1394_COLOR_CODING_YUV411 == frame->color_coding) {
+				
+				TFLibDC1394CaptureConversionResult conversionResult =
+					_TFLibDC1394CaptureConvert(_pixelConversionContext, frame, baseAddress);
+				
+				if (!conversionResult.success) {
+					// TODO: report error
+				}
+			} else {
+				memcpy(baseAddress, frame->image, frame->image_bytes);
+			}
 			
 			err = CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
 			
@@ -378,21 +379,21 @@ size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width,
 
 @end
 
-void _TFLibDC1394CapturePrepareConversionScratchSpace(TFLibDC1394CaptureConversionContext** pScratchSpace,
-													  dc1394color_coding_t srcColorCoding,
-													  unsigned int *destCVPixelFormat,
-													  int width,
-													  int height)
+void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionContext** pContext,
+												 dc1394color_coding_t srcColorCoding,
+												 unsigned int *destCVPixelFormat,
+												 int width,
+												 int height)
 {
-	if (NULL == pScratchSpace)
+	if (NULL == pContext)
 		return;
 	
-	TFLibDC1394CaptureConversionContext* scratchSpace = *pScratchSpace;
+	TFLibDC1394CaptureConversionContext* context = *pContext;
 	
 	int wantedBytesPerPixel = 0;
 	BOOL wantsAlignedRowBytes = YES;
 	unsigned int selectedCVFormat;
-	unsigned int multiples = 1;
+	unsigned int multiples = 0;
 	
 	switch (srcColorCoding) {
 		case DC1394_COLOR_CODING_YUV411:
@@ -409,7 +410,7 @@ void _TFLibDC1394CapturePrepareConversionScratchSpace(TFLibDC1394CaptureConversi
 			wantsAlignedRowBytes = YES;
 			selectedCVFormat = k32ARGBPixelFormat;
 			wantedBytesPerPixel = 4;
-			multiples = 2;
+			multiples = 1;
 			break;
 					
 		default:
@@ -422,66 +423,78 @@ void _TFLibDC1394CapturePrepareConversionScratchSpace(TFLibDC1394CaptureConversi
 	if (NULL != destCVPixelFormat)
 		*destCVPixelFormat = selectedCVFormat;
 	
-	if (NULL != scratchSpace) {
-		if (scratchSpace->srcColorCoding != srcColorCoding			||
-			scratchSpace->width != width							||
-			scratchSpace->height != height							||
-			scratchSpace->bytesPerPixel != wantedBytesPerPixel		||
-			scratchSpace->multiples != multiples) {
-				free(scratchSpace->data);
-				free(scratchSpace);
-				scratchSpace = NULL;
+	if (NULL != context) {
+		if (context->srcColorCoding != srcColorCoding		||
+			context->width != width							||
+			context->height != height						||
+			context->bytesPerPixel != wantedBytesPerPixel	||
+			context->multiples != multiples) {
+				if (NULL != context->data)
+					free(context->data);
+				free(context);
+				context = NULL;
 		}
 	}
 	
-	// scratchSpace is fine for this conversion, don't do anything
-	if (NULL != scratchSpace)
+	// context is fine for this conversion, don't do anything
+	if (NULL != context)
 		return;
 	
-	// allocate a new scratchSpace.
+	// allocate a new context.
 	// TODO: some unchecked malloc's here...
-	scratchSpace = (TFLibDC1394CaptureConversionContext*)
+	context = (TFLibDC1394CaptureConversionContext*)
 						malloc(sizeof(TFLibDC1394CaptureConversionContext));
 	
-	scratchSpace->width = width;
-	scratchSpace->height = height;
-	scratchSpace->srcColorCoding = srcColorCoding;
-	scratchSpace->destCVPixelFormat = selectedCVFormat;
-	scratchSpace->bytesPerPixel = wantedBytesPerPixel;
-	scratchSpace->multiples = multiples;
+	context->width = width;
+	context->height = height;
+	context->srcColorCoding = srcColorCoding;
+	context->destCVPixelFormat = selectedCVFormat;
+	context->bytesPerPixel = wantedBytesPerPixel;
+	context->multiples = multiples;
 
 	if (wantsAlignedRowBytes) {
-		scratchSpace->rowBytes = _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(width,
+		context->rowBytes = _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(width,
 																							wantedBytesPerPixel);
-		scratchSpace->data = malloc(multiples * scratchSpace->rowBytes * height);
+		if (multiples > 0)
+			context->data = malloc(multiples * context->rowBytes * height);
+		else
+			context->data = NULL;
 		
-		ptrdiff_t p = (ptrdiff_t)((char*)scratchSpace->data + scratchSpace->rowBytes);
+		/* ptrdiff_t p = (ptrdiff_t)((char*)context->data + context->rowBytes);
 		int i = 1;
 		while (0 == p % i)
-			i <<= 1;
+			i <<= 1; */
 		
-		scratchSpace->alignment = i / 16;
+		context->alignment = 16;
 		
-		NSLog(@"alignment of scratch buffer is %d\n", i);
+		//NSLog(@"alignment of scratch buffer is %d\n", i);
 	} else {
-		scratchSpace->rowBytes = wantedBytesPerPixel * width;
-		scratchSpace->data = malloc(multiples * scratchSpace->rowBytes * height);
-		scratchSpace->alignment = 0;
+		context->rowBytes = wantedBytesPerPixel * width;
+
+		if (multiples > 0)
+			context->data = malloc(multiples * context->rowBytes * height);
+		else
+			context->data = NULL;
+
+		context->alignment = 0;
 	}
 	
-	*pScratchSpace = scratchSpace;
+	*pContext = context;
 }
 
 TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394CaptureConversionContext* context,
-															  dc1394video_frame_t* frame)
+															  dc1394video_frame_t* frame,
+															  void* outputData)
 {
 	if (NULL == context) {
 		TFLibDC1394CaptureConversionResult r = { 0, NULL, 0, 0, 0, 0, 0, 0 };
 		return r;
 	}
 	
+	void* data = (NULL != outputData) ? outputData : context->data;
+	
 	TFLibDC1394CaptureConversionResult result = { 0,
-												  context->data,
+												  data,
 												  context->destCVPixelFormat,
 												  context->width,
 												  context->height,
@@ -495,7 +508,7 @@ TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394Capture
 			k32ARGBPixelFormat == context->destCVPixelFormat) {
 			
 			TFLibDC1394PixelFormatConvertYUV411toARGB8(frame->image,
-													   context->data,
+													   data,
 													   context->width,
 													   context->height);
 			
@@ -505,9 +518,9 @@ TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394Capture
 		
 			TFLibDC1394PixelFormatConvertYUV444toARGB8(frame->image,
 													   3*frame->size[0],
-													   context->data,
+													   data,
 													   context->rowBytes,
-													   ((uint8_t*)context->data + (context->height * context->rowBytes)),
+													   context->data,
 													   context->rowBytes,
 													   context->width,
 													   context->height);

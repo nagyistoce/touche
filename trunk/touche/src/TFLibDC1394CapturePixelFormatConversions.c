@@ -114,22 +114,22 @@ int TFLibDC1394PixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
 	
 	vImageConvert_RGB888toARGB8888(&vSrc,
 								   NULL,
-								   255,
+								   0,
 								   &vInter,
 								   false,
 								   0);
 	
-	// constants from http://www.fourcc.org/fccyvrgb.php
+	int16_t prebias[] = { 0, -128, -16, -128};
 	int16_t matrix[] = { 100,   0,   0,   0,
+						   0,   0, -39, 203 ,
 						   0, 100, 100, 100,
-						   0,   0, -34, 177,
-						   0, 140, -71,   0 };
+						   0, 124, -58,   0 };
 	
 	vImageMatrixMultiply_ARGB8888(&vInter,
 								  &vDst,
 								  matrix,
 								  100,
-								  NULL,
+								  prebias,
 								  NULL,
 								  0);
 	

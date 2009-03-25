@@ -49,6 +49,7 @@
 - (NSValue*)_reusableContextValueForCIImage:(CIImage*)ciimage
 						 renderFiltersOnCPU:(BOOL)renderFiltersOnCPU
 						 frameSizeDidChange:(BOOL*)frameSizeDidChange;
+- (void)_saveContextValueForReuse:(NSValue*)contextValue;
 - (void)_resetBackgroundAcquisitionTiming;
 - (void)_clearBackgroundForSubtraction;
 - (BOOL)_shouldProcessThisFrame;
@@ -383,6 +384,13 @@
 	return [contextValue autorelease];
 }
 
+- (void)_saveContextValueForReuse:(NSValue*)contextValue
+{
+	@synchronized (_freeBitmapCreationContexts) {
+		[_freeBitmapCreationContexts addObject:contextValue];
+	}
+}
+
 - (void)_updateBackgroundForSubtraction
 {
 	if (_filterChainIsCameraInputFilterChain)
@@ -461,9 +469,7 @@
 				[delegate blobInputSource:self didDetectBlobs:[NSArray array]];
 			
 			// reuse the bitmap creation context
-			@synchronized (_freeBitmapCreationContexts) {
-				[_freeBitmapCreationContexts addObject:contextValue];
-			}
+			[self _saveContextValueForReuse:contextValue];
 			
 			[pool release];
 			continue;
@@ -529,9 +535,7 @@
 			[_deliveryQueue enqueue:blobs];
 		
 		// reuse the bitmap creation context
-		@synchronized (_freeBitmapCreationContexts) {
-			[_freeBitmapCreationContexts addObject:contextValue];
-		}
+		[self _saveContextValueForReuse:contextValue];
 		
 		[pool release];
 	}

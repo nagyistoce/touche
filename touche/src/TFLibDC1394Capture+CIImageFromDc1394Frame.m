@@ -405,7 +405,7 @@ void _TFLibDC1394CapturePrepareConversionScratchSpace(TFLibDC1394CaptureConversi
 #endif
 			break;
 		
-		DC1394_COLOR_CODING_YUV444:
+		case DC1394_COLOR_CODING_YUV444:
 			wantsAlignedRowBytes = YES;
 			selectedCVFormat = k32ARGBPixelFormat;
 			wantedBytesPerPixel = 4;
@@ -458,9 +458,9 @@ void _TFLibDC1394CapturePrepareConversionScratchSpace(TFLibDC1394CaptureConversi
 		ptrdiff_t p = (ptrdiff_t)((char*)scratchSpace->data + scratchSpace->rowBytes);
 		int i = 1;
 		while (0 == p % i)
-			i >>= 1;
+			i <<= 1;
 		
-		scratchSpace->alignment = i;
+		scratchSpace->alignment = i / 16;
 		
 		NSLog(@"alignment of scratch buffer is %d\n", i);
 	} else {
@@ -498,7 +498,7 @@ TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394Capture
 													   context->data,
 													   context->width,
 													   context->height);
-
+			
 			result.success = 1;
 		} else if (DC1394_COLOR_CODING_YUV444 == frame->color_coding	&&
 			k32ARGBPixelFormat == context->destCVPixelFormat) {
@@ -511,7 +511,7 @@ TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394Capture
 													   context->rowBytes,
 													   context->width,
 													   context->height);
-			
+					
 		}
 	}
 	

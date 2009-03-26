@@ -72,39 +72,39 @@ int TFLibDC1394PixelFormatConvertYUV411toARGB8(uint8_t* srcBuf,
 											   int height)
 #endif
 {	
-	int i = (width*height) + ( (width*height) >> 1 )-1;
-	int j = ((width*height) << 2) - 1;
+	int k = (width*height) + ( (width*height) >> 1 )-1;
+	int j = 0, i = 0;
 	int y0, y1, y2, y3, u, v, r, g, b;
 	
-    for (i; i >= 0; i-=6) {
-		y3 = (uint8_t) srcBuf[i];
-        y2 = (uint8_t) srcBuf[i-1];
-        v  = (uint8_t) srcBuf[i-2] - 128;
-        y1 = (uint8_t) srcBuf[i-3];
-        y0 = (uint8_t) srcBuf[i-4];
-        u  = (uint8_t) srcBuf[i-5] - 128;
-        YUV2RGB (y3, u, v, r, g, b);
-		dstBuf[j--] = b;
-        dstBuf[j--] = (uint8_t)g;
-        dstBuf[j--] = (uint8_t)r;
-		dstBuf[j--] = UINT8_MAX;
-        YUV2RGB (y2, u, v, r, g, b);
-        dstBuf[j--] = (uint8_t)b;
-        dstBuf[j--] = (uint8_t)g;
-        dstBuf[j--] = (uint8_t)r;
-		dstBuf[j--] = UINT8_MAX;
-        YUV2RGB (y1, u, v, r, g, b);
-        dstBuf[j--] = (uint8_t)b;
-        dstBuf[j--] = (uint8_t)g;
-        dstBuf[j--] = (uint8_t)r;
-		dstBuf[j--] = UINT8_MAX;
+    for (i; i<=k; i+=6) {
+		y3 = (uint8_t) srcBuf[i+5];
+        y2 = (uint8_t) srcBuf[i+4];
+        v  = (uint8_t) srcBuf[i+3] - 128;
+        y1 = (uint8_t) srcBuf[i+2];
+        y0 = (uint8_t) srcBuf[i+1];
+        u  = (uint8_t) srcBuf[i] - 128;
         YUV2RGB (y0, u, v, r, g, b);
-        dstBuf[j--] = (uint8_t)b;
-        dstBuf[j--] = (uint8_t)g;
-        dstBuf[j--] = (uint8_t)r;
-		dstBuf[j--] = UINT8_MAX;
+		dstBuf[j++] = UINT8_MAX;
+		dstBuf[j++] = (uint8_t)r;
+		dstBuf[j++] = (uint8_t)g;
+		dstBuf[j++] = (uint8_t)b;
+		YUV2RGB (y1, u, v, r, g, b);
+		dstBuf[j++] = UINT8_MAX;
+		dstBuf[j++] = (uint8_t)r;
+		dstBuf[j++] = (uint8_t)g;
+		dstBuf[j++] = (uint8_t)b;
+        YUV2RGB (y2, u, v, r, g, b);
+		dstBuf[j++] = UINT8_MAX;
+		dstBuf[j++] = (uint8_t)r;
+		dstBuf[j++] = (uint8_t)g;
+		dstBuf[j++] = (uint8_t)b;
+		YUV2RGB (y3, u, v, r, g, b);
+		dstBuf[j++] = UINT8_MAX;
+		dstBuf[j++] = (uint8_t)r;
+		dstBuf[j++] = (uint8_t)g;
+		dstBuf[j++] = (uint8_t)b;
     }
-	
+			
 	return 1;
 }
 

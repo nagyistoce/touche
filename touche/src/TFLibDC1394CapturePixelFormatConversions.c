@@ -120,6 +120,14 @@ int TFLibDC1394PixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
 #if defined(_USES_IPP_)
 	IppiSize roiSize = { width, height };
 	
+	// ippi conversion function expects YUV, but IIDC spec is UYV
+	int uyvPermuteMap[] = { 1, 0, 2 };
+	
+	ippiSwapChannels_8u_C3IR(srcBuf,
+							 srcRowBytes,
+							 roiSize,
+							 uyvPermuteMap);
+	
 	ippiYUVToRGB_8u_C3R(srcBuf,
 						srcRowBytes,
 						intermediateBuf,
@@ -132,12 +140,12 @@ int TFLibDC1394PixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
 					   dstRowBytes,
 					   roiSize);
 	
-	int permuteMap[] = { 3, 0, 1, 2 };
+	int argbPermuteMap[] = { 3, 0, 1, 2 };
 	
 	ippiSwapChannels_8u_C4IR(dstBuf,
 							 dstRowBytes,
 							 roiSize,
-							 permuteMap);
+							 argbPermuteMap);	
 #else
 	vImage_Buffer vInter, vSrc, vDst;
 	
@@ -203,7 +211,7 @@ int TFLibDC1394PixelFormatConvertRGB8toARGB8(uint8_t* srcBuf,
 	ippiSwapChannels_8u_C4IR(dstBuf,
 							 dstRowBytes,
 							 roiSize,
-							 permuteMap);
+							 permuteMap);	
 #else
 	vImage_Buffer vSrc, vDst;
 	
@@ -248,7 +256,7 @@ int TFLibDC1394PixelFormatConvertMono8toARGB8(uint8_t* srcBuf,
 					  srcRowBytes,
 					  dstBuf,
 					  dstRowBytes,
-					  roiSize);
+					  roiSize);	
 #else
 	vImage_Buffer aSrc, mSrc, argbDest;
 	

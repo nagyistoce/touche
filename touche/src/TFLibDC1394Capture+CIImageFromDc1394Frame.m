@@ -30,6 +30,11 @@
 #import "TFIncludes.h"
 #import "TFLibDC1394CapturePixelFormatConversions.h"
 
+#if defined(_USES_IPP_)
+#import <ipp.h>
+#import <ippi.h>
+#endif
+
 typedef struct TFLibDC1394CaptureConversionContext {
 	int width, height, rowBytes, bytesPerPixel, alignment, multiples;
 	dc1394color_coding_t srcColorCoding;
@@ -345,7 +350,12 @@ void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionCon
 			context->bytesPerPixel != wantedBytesPerPixel	||
 			context->multiples != multiples) {
 				if (NULL != context->data)
+#if defined(_USES_IPP_)
+					ippiFree(context->data);
+#else
 					free(context->data);
+#endif
+
 				free(context);
 				context = NULL;
 		}
@@ -368,8 +378,26 @@ void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionCon
 	context->multiples = multiples;
 
 	if (wantsAlignedRowBytes) {
+#if defined(_USES_IPP_)
+		int m = multiples > 0 ? multiples : 1;
+		// TODO: if we support other formats than k32ARGBPixelFormat, we need to use th
+		// specific ippiMalloc() variant for that.
+		context->data = ippiMalloc_8u_AC4(width, height * m, &context->rowBytes);
+		
+		if (multiples > 0) {
+			int size = multiples * context->rowBytes * height;
+			memset(context->data, 0, size);
+		} else {
+			ippiFree(context->data);
+			context->data = NULL;
+		}
+
+		// ippiMalloc returns memory aligned to 32-byte boundaries
+		context->alignment = 32;
+#else
 		context->rowBytes = _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(width,
 																							wantedBytesPerPixel);
+
 		if (multiples > 0) {
 			int size = multiples * context->rowBytes * height;
 			context->data = malloc(size);
@@ -377,16 +405,10 @@ void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionCon
 		} else
 			context->data = NULL;
 		
-		/* ptrdiff_t p = (ptrdiff_t)((char*)context->data + context->rowBytes);
-		int i = 1;
-		while (0 == p % i)
-			i <<= 1; */
-		
 		// on OSX, malloc allows returns 16-byte aligned memory, and the optimal rowbytes function respects
 		// this alignment, too.
 		context->alignment = 16;
-		
-		//NSLog(@"alignment of scratch buffer is %d\n", i);
+#endif
 	} else {
 		context->rowBytes = wantedBytesPerPixel * width;
 

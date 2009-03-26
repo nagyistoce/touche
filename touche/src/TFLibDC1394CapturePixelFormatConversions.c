@@ -24,11 +24,29 @@
 
 #include "TFLibDC1394CapturePixelFormatConversions.h"
 
-#include <stdlib.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
+#if defined(_USES_IPP_)
+#import <ipp.h>
+#import <ippi.h>
+#else
 #include <Accelerate/Accelerate.h>
+#endif
 
+
+void TFLibDC1394PixelFormatConvertInitialize()
+{
+#if defined(_USES_IPP_)
+	static int ippInitialized = 0;
+	
+	if (!ippInitialized) {
+		ippStaticInit();
+		ippInitialized = 1;
+	}
+#endif
+}
 
 // taken from libdc1394
 #define YUV2RGB(y, u, v, r, g, b) {		\
@@ -42,41 +60,48 @@
 	g = g > 255 ? 255 : g;				\
 	b = b > 255 ? 255 : b; }
 
+#if defined(__INTEL_COMPILER)
+int TFLibDC1394PixelFormatConvertYUV411toARGB8(uint8_t *restrict srcBuf,
+											   uint8_t *restrict dstBuf,
+											   int width,
+											   int height)
+#else
 int TFLibDC1394PixelFormatConvertYUV411toARGB8(uint8_t* srcBuf,
 											   uint8_t* dstBuf,
 											   int width,
 											   int height)
+#endif
 {	
 	int i = (width*height) + ( (width*height) >> 1 )-1;
 	int j = ((width*height) << 2) - 1;
 	int y0, y1, y2, y3, u, v, r, g, b;
 	
-    while (i >= 0) {
-        y3 = (uint8_t) srcBuf[i--];
-        y2 = (uint8_t) srcBuf[i--];
-        v  = (uint8_t) srcBuf[i--] - 128;
-        y1 = (uint8_t) srcBuf[i--];
-        y0 = (uint8_t) srcBuf[i--];
-        u  = (uint8_t) srcBuf[i--] - 128;
+    for (i; i >= 0; i-=6) {
+		y3 = (uint8_t) srcBuf[i];
+        y2 = (uint8_t) srcBuf[i-1];
+        v  = (uint8_t) srcBuf[i-2] - 128;
+        y1 = (uint8_t) srcBuf[i-3];
+        y0 = (uint8_t) srcBuf[i-4];
+        u  = (uint8_t) srcBuf[i-5] - 128;
         YUV2RGB (y3, u, v, r, g, b);
-        dstBuf[j--] = b;
-        dstBuf[j--] = g;
-        dstBuf[j--] = r;
+		dstBuf[j--] = b;
+        dstBuf[j--] = (uint8_t)g;
+        dstBuf[j--] = (uint8_t)r;
 		dstBuf[j--] = UINT8_MAX;
         YUV2RGB (y2, u, v, r, g, b);
-        dstBuf[j--] = b;
-        dstBuf[j--] = g;
-        dstBuf[j--] = r;
+        dstBuf[j--] = (uint8_t)b;
+        dstBuf[j--] = (uint8_t)g;
+        dstBuf[j--] = (uint8_t)r;
 		dstBuf[j--] = UINT8_MAX;
         YUV2RGB (y1, u, v, r, g, b);
-        dstBuf[j--] = b;
-        dstBuf[j--] = g;
-        dstBuf[j--] = r;
+        dstBuf[j--] = (uint8_t)b;
+        dstBuf[j--] = (uint8_t)g;
+        dstBuf[j--] = (uint8_t)r;
 		dstBuf[j--] = UINT8_MAX;
         YUV2RGB (y0, u, v, r, g, b);
-        dstBuf[j--] = b;
-        dstBuf[j--] = g;
-        dstBuf[j--] = r;
+        dstBuf[j--] = (uint8_t)b;
+        dstBuf[j--] = (uint8_t)g;
+        dstBuf[j--] = (uint8_t)r;
 		dstBuf[j--] = UINT8_MAX;
     }
 	
@@ -92,6 +117,28 @@ int TFLibDC1394PixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
 											   int width,
 											   int height)
 {
+#if defined(_USES_IPP_)
+	IppiSize roiSize = { width, height };
+	
+	ippiYUVToRGB_8u_C3R(srcBuf,
+						srcRowBytes,
+						intermediateBuf,
+						intermediateRowBytes,
+						roiSize);
+	
+	ippiCopy_8u_C3AC4R(intermediateBuf,
+					   intermediateRowBytes,
+					   dstBuf,
+					   dstRowBytes,
+					   roiSize);
+	
+	int permuteMap[] = { 3, 0, 1, 2 };
+	
+	ippiSwapChannels_8u_C4IR(dstBuf,
+							 dstRowBytes,
+							 roiSize,
+							 permuteMap);
+#else
 	vImage_Buffer vInter, vSrc, vDst;
 	
 	vInter.data = intermediateBuf;
@@ -120,7 +167,7 @@ int TFLibDC1394PixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
 	int16_t matrix[] = { 100,   0,   0,   0,
 						   0,   0, -39, 203 ,
 						   0, 100, 100, 100,
-						   0, 124, -58,   0 };
+						   0, 114, -58,   0 };
 	
 	vImageMatrixMultiply_ARGB8888(&vInter,
 								  &vDst,
@@ -129,6 +176,7 @@ int TFLibDC1394PixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
 								  prebias,
 								  NULL,
 								  0);
+#endif
 	
 	return 1;
 }
@@ -141,6 +189,22 @@ int TFLibDC1394PixelFormatConvertRGB8toARGB8(uint8_t* srcBuf,
 											 int width,
 											 int height)
 {
+#if defined(_USES_IPP_)
+	IppiSize roiSize = { width, height };
+	
+	ippiCopy_8u_C3AC4R(srcBuf,
+					   srcRowBytes,
+					   dstBuf,
+					   dstRowBytes,
+					   roiSize);
+	
+	int permuteMap[] = { 3, 0, 1, 2 };
+	
+	ippiSwapChannels_8u_C4IR(dstBuf,
+							 dstRowBytes,
+							 roiSize,
+							 permuteMap);
+#else
 	vImage_Buffer vSrc, vDst;
 	
 	vSrc.data = srcBuf;
@@ -155,10 +219,61 @@ int TFLibDC1394PixelFormatConvertRGB8toARGB8(uint8_t* srcBuf,
 	
 	vImageConvert_RGB888toARGB8888(&vSrc,
 								   NULL,
-								   0,
+								   UINT8_MAX,
 								   &vDst,
 								   false,
 								   0);
+#endif
+	
+	return 1;
+}
+
+int TFLibDC1394PixelFormatConvertMono8toARGB8(uint8_t* srcBuf,
+											  int srcRowBytes,
+											  uint8_t* dstBuf,
+											  int dstRowBytes,
+											  uint8_t* tmpBuf,
+											  int tmpRowBytes,
+											  int width,
+											  int height)
+{
+	if (0 == *tmpBuf)
+		memset(tmpBuf, UINT8_MAX, tmpRowBytes * height);
+
+#if defined(_USES_IPP_)
+	IppiSize roiSize = { width, height };
+	const uint8_t* channels[] = { tmpBuf, srcBuf, srcBuf, srcBuf };
+	
+	ippiCopy_8u_P4C4R(channels,
+					  srcRowBytes,
+					  dstBuf,
+					  dstRowBytes,
+					  roiSize);
+#else
+	vImage_Buffer aSrc, mSrc, argbDest;
+	
+	aSrc.data = tmpBuf;
+	aSrc.width = width;
+	aSrc.height = height;
+	aSrc.rowBytes = tmpRowBytes;
+	
+	mSrc.data = srcBuf;
+	mSrc.width = width;
+	mSrc.height = height;
+	mSrc.rowBytes = srcRowBytes;
+	
+	argbDest.data = dstBuf;
+	argbDest.width = width;
+	argbDest.height = height;
+	argbDest.rowBytes = dstRowBytes;
+	
+	vImageConvert_Planar8toARGB8888(&aSrc,
+									&mSrc,
+									&mSrc,
+									&mSrc,
+									&argbDest,
+									0);
+#endif
 	
 	return 1;
 }

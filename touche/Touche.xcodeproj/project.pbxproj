@@ -2400,6 +2400,7 @@
 				ICC_FP_MODEL = default;
 				ICC_FP_SPECULATION = default;
 				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
+				ICC_LANG_RESTRICT = YES;
 				ICC_OPT_PREFETCH_INSERTION = NO;
 				ICC_RT_LIBRARY = static;
 				INFOPLIST_FILE = resources/Info.plist;
@@ -2441,6 +2442,7 @@
 				ICC_FP_SPECULATION = fast;
 				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
 				ICC_LANG_ANSI = "compiler-default";
+				ICC_LANG_RESTRICT = YES;
 				ICC_OPTLEVEL = speedHLO;
 				ICC_OPT_IPO_FOR_SINGLE_FILE_COMPILATION = NO;
 				ICC_OPT_PARALLEL = YES;
@@ -2486,6 +2488,7 @@
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=x86_64]" = _USES_IPP_;
 				ICC_DEFINES = "_USES_IPP_ $(GCC_PREPROCESSOR_DEFINITIONS)";
 				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
+				ICC_LANG_RESTRICT = YES;
 				ICC_OPT_PREFETCH_INSERTION = NO;
 				ICC_RT_LIBRARY = static;
 				INFOPLIST_FILE = "resources/ToucheFramework-Info.plist";
@@ -2531,6 +2534,7 @@
 				ICC_FP_MODEL = fast2;
 				ICC_FP_SPECULATION = fast;
 				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
+				ICC_LANG_RESTRICT = YES;
 				ICC_OPTLEVEL = speedHLO;
 				ICC_OPT_PARALLEL = YES;
 				ICC_OPT_PREFETCH_INSERTION = NO;

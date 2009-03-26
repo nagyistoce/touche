@@ -247,10 +247,6 @@
 "TFDc1394GettingVideoModesErrorReason"					= "Due to an internal error, the video modes and resolutions supported by the IIDC camera could not be acquired.";
 "TFDc1394GettingVideoModesErrorRecovery"				= "Please make sure that your camera conforms to the IIDC spec and that it is not being tampered with via external applications while the tracker is running.";
 
-"TFDc1394LittleEndianVideoUnsupportedErrorDesc"			= "Little Endian image data encoding is not supported.";
-"TFDc1394LittleEndianVideoUnsupportedErrorReason"		= "The QuickTime APIs used internally do not support little-endian byte order for multi-byte (color) intensity data.";
-"TFDc1394LittleEndianVideoUnsupportedErrorRecovery"		= "Please choose another video mode for your IIDC camera.";
-
 "TFDc1394PixelBufferCreationErrorDesc"					= "Pixel buffer creation failed.";
 "TFDc1394PixelBufferCreationErrorReason"				= "Due to an internal error, the IIDC capture frame could not be converted to a Core Video pixel buffer.";
 "TFDc1394PixelBufferCreationErrorRecovery"				= "Please make sure that your camera is IIDC-compaible and supports capturing with the settings you have chosen.";

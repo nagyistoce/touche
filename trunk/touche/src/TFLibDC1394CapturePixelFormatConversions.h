@@ -24,6 +24,9 @@
 
 #include <stdint.h>
 
+// call this once before using any of the conversion functions below
+void TFLibDC1394PixelFormatConvertInitialize();
+
 // returns non-zero on success, zero on failure
 int TFLibDC1394PixelFormatConvertYUV411toARGB8(uint8_t* srcBuf,
 											   uint8_t* dstBuf,
@@ -47,3 +50,13 @@ int TFLibDC1394PixelFormatConvertRGB8toARGB8(uint8_t* srcBuf,
 											 int dstRowBytes,
 											 int width,
 											 int height);
+
+// returns non-zero on success, zero on failure
+int TFLibDC1394PixelFormatConvertMono8toARGB8(uint8_t* srcBuf,
+											  int srcRowBytes,
+											  uint8_t* dstBuf,
+											  int dstRowBytes,
+											  uint8_t* tmpBuf,
+											  int tmpRowBytes,
+											  int width,
+											  int height);

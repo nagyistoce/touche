@@ -34,7 +34,7 @@ typedef struct TFLibDC1394CaptureConversionContext {
 	int width, height, rowBytes, bytesPerPixel, alignment, multiples;
 	dc1394color_coding_t srcColorCoding;
 	unsigned int destCVPixelFormat;
-	void* data;
+	void* data; // used as scratch space for pixel format conversions
 } TFLibDC1394CaptureConversionContext;
 
 typedef struct TFLibDC1394CaptureConversionResult {
@@ -55,7 +55,6 @@ void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionCon
 												 int height);
 
 // converts a frame with a given conversion context
-// if outputData is NULL, the context's data field is used.
 TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394CaptureConversionContext* context,
 															  dc1394video_frame_t* frame,
 															  void* outputData);
@@ -111,27 +110,7 @@ size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width,
 		case DC1394_COLOR_CODING_YUV422:
 		case DC1394_COLOR_CODING_YUV444:
 		case DC1394_COLOR_CODING_RGB8:
-		case DC1394_COLOR_CODING_RGB16:
-		case DC1394_COLOR_CODING_MONO16: {		
-			if ((DC1394_COLOR_CODING_MONO16 == frame->color_coding || DC1394_COLOR_CODING_RGB16 == frame->color_coding) &&
-				DC1394_TRUE == frame->little_endian) {
-				if (NULL != error)
-					*error = [NSError errorWithDomain:TFErrorDomain
-												 code:TFErrorDc1394LittleEndianVideoUnsupported
-											 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-													   TFLocalizedString(@"TFDc1394LittleEndianVideoUnsupportedErrorDesc", @"TFDc1394LittleEndianVideoUnsupportedErrorDesc"),
-														NSLocalizedDescriptionKey,
-													   TFLocalizedString(@"TFDc1394LittleEndianVideoUnsupportedErrorReason", @"TFDc1394LittleEndianVideoUnsupportedErrorReason"),
-														NSLocalizedFailureReasonErrorKey,
-													   TFLocalizedString(@"TFDc1394LittleEndianVideoUnsupportedErrorRecovery", @"TFDc1394LittleEndianVideoUnsupportedErrorRecovery"),
-														NSLocalizedRecoverySuggestionErrorKey,
-													   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-														NSStringEncodingErrorKey,
-													   nil]];
-
-				return nil;
-			}
-		
+		case DC1394_COLOR_CODING_MONO8: {
 			if (_pixelBufferPoolNeedsUpdating) {
 				if (NULL != _pixelBufferPool) {
 					CVPixelBufferPoolRelease(_pixelBufferPool);
@@ -148,21 +127,14 @@ size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width,
 						break;
 					case DC1394_COLOR_CODING_YUV411:
 					case DC1394_COLOR_CODING_YUV444:
+					case DC1394_COLOR_CODING_RGB8:
+					case DC1394_COLOR_CODING_MONO8:
 						_TFLibDC1394CapturePrepareConversionContext(&_pixelConversionContext,
 																	frame->color_coding,
 																	&pixelFormat,
 																	frame->size[0],
 																	frame->size[1]);
 						pixelAlignment = _pixelConversionContext->alignment;
-						break;
-					case DC1394_COLOR_CODING_RGB8:
-						pixelFormat = k24RGBPixelFormat;
-						break;
-					case DC1394_COLOR_CODING_RGB16:
-						pixelFormat = k48RGBCodecType;
-						break;
-					case DC1394_COLOR_CODING_MONO16:
-						pixelFormat = k16GrayCodecType;
 						break;
 				}
 				
@@ -212,7 +184,9 @@ size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width,
 			
 			// do pixel format conversion if needed.
 			if (DC1394_COLOR_CODING_YUV444 == frame->color_coding		||
-				DC1394_COLOR_CODING_YUV411 == frame->color_coding) {
+				DC1394_COLOR_CODING_YUV411 == frame->color_coding		||
+				DC1394_COLOR_CODING_RGB8 == frame->color_coding			||
+				DC1394_COLOR_CODING_MONO8 == frame->color_coding) {
 				
 				TFLibDC1394CaptureConversionResult conversionResult =
 					_TFLibDC1394CaptureConvert(_pixelConversionContext, frame, baseAddress);
@@ -244,75 +218,6 @@ size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width,
 						
 			CVPixelBufferRelease(pixelBuffer);
 					
-			return image;
-		}
-		
-		//case DC1394_COLOR_CODING_RGB8:
-		case DC1394_COLOR_CODING_MONO8: {
-			CGColorSpaceRef colorSpace = nil;
-			CGBitmapInfo bitmapInfo = kCGImageAlphaNone;
-			size_t bitsPerComponent = 8, bitsPerPixel = 24;
-
-			switch (frame->color_coding) {
-				case DC1394_COLOR_CODING_RGB8: {
-					static CGColorSpaceRef rgbColorSpace = NULL;
-					
-					if (NULL == rgbColorSpace)
-						rgbColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
-					
-					colorSpace = rgbColorSpace;
-					bitsPerComponent = 8;
-					bitsPerPixel = 24;
-					
-					break;
-				}
-				
-				case DC1394_COLOR_CODING_MONO8: {
-					static CGColorSpaceRef grayScaleColorSpace = NULL;
-					
-					if (NULL == grayScaleColorSpace)
-						grayScaleColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericGray);
-					
-					colorSpace = grayScaleColorSpace;
-					bitsPerComponent = 8;
-					bitsPerPixel = 8;
-					
-					break;
-				}
-			}
-		
-			CGDataProviderRef dataProvider = CGDataProviderCreateWithCFData(
-													(CFDataRef)[NSData dataWithBytes:frame->image
-																			  length:frame->image_bytes]);
-		
-			CGImageRef cgImage = CGImageCreate(frame->size[0],
-											   frame->size[1],
-											   bitsPerComponent,
-											   bitsPerPixel,
-											   frame->stride,
-											   colorSpace,
-											   bitmapInfo,
-											   dataProvider,
-											   NULL,
-											   NO,
-											   kCGRenderingIntentDefault);
-			
-			CGDataProviderRelease(dataProvider);
-			
-			CIImage* image = nil;
-			if (_delegateCapabilities.hasWantedCIImageColorSpace) {
-				id colorSpace = (id)[delegate wantedCIImageColorSpaceForCapture:self];
-				if (nil == colorSpace)
-					colorSpace = [NSNull null];
-				
-				image = [CIImage imageWithCGImage:cgImage
-										  options:[NSDictionary dictionaryWithObject:(id)colorSpace
-																			  forKey:kCIImageColorSpace]];
-			} else
-				image = [CIImage imageWithCGImage:cgImage];
-			
-			CGImageRelease(cgImage);
-			
 			return image;
 		}
 	}
@@ -351,13 +256,6 @@ size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width,
 		case DC1394_VIDEO_MODE_1280x960_MONO8:
 		case DC1394_VIDEO_MODE_1600x1200_MONO8:
 			return 1;
-	
-		case DC1394_VIDEO_MODE_640x480_MONO16:
-		case DC1394_VIDEO_MODE_800x600_MONO16:
-		case DC1394_VIDEO_MODE_1024x768_MONO16:
-		case DC1394_VIDEO_MODE_1280x960_MONO16:
-		case DC1394_VIDEO_MODE_1600x1200_MONO16:
-			return 2;
 		
 		case DC1394_VIDEO_MODE_320x240_YUV422:
 		case DC1394_VIDEO_MODE_640x480_YUV422:
@@ -365,13 +263,13 @@ size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width,
 		case DC1394_VIDEO_MODE_1024x768_YUV422:
 		case DC1394_VIDEO_MODE_1280x960_YUV422:
 		case DC1394_VIDEO_MODE_1600x1200_YUV422:
-			return 3;
+			return 2;
 		
 		case DC1394_VIDEO_MODE_160x120_YUV444:
-			return 4;
+			return 3;
 		
 		case DC1394_VIDEO_MODE_640x480_YUV411:
-			return 5;
+			return 4;
 	}
 	
 	return INT_MAX;
@@ -388,6 +286,12 @@ void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionCon
 	if (NULL == pContext)
 		return;
 	
+	static int converterInitialized = 0;
+	if (!converterInitialized) {
+		TFLibDC1394PixelFormatConvertInitialize();
+		converterInitialized = 1;
+	}
+	
 	TFLibDC1394CaptureConversionContext* context = *pContext;
 	
 	int wantedBytesPerPixel = 0;
@@ -397,16 +301,27 @@ void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionCon
 	
 	switch (srcColorCoding) {
 		case DC1394_COLOR_CODING_YUV411:
-#if defined(_USES_IPP_)
-			wantsAlignedRowBytes = YES;
-#else
 			wantsAlignedRowBytes = NO;
 			selectedCVFormat = k32ARGBPixelFormat;
 			wantedBytesPerPixel = 4;
-#endif
+			multiples = 0;
 			break;
 		
 		case DC1394_COLOR_CODING_YUV444:
+			wantsAlignedRowBytes = YES;
+			selectedCVFormat = k32ARGBPixelFormat;
+			wantedBytesPerPixel = 4;
+			multiples = 1;
+			break;
+		
+		case DC1394_COLOR_CODING_RGB8:
+			wantsAlignedRowBytes = YES;
+			selectedCVFormat = k32ARGBPixelFormat;
+			wantedBytesPerPixel = 4;
+			multiples = 0;
+			break;
+		
+		case DC1394_COLOR_CODING_MONO8:
 			wantsAlignedRowBytes = YES;
 			selectedCVFormat = k32ARGBPixelFormat;
 			wantedBytesPerPixel = 4;
@@ -455,9 +370,11 @@ void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionCon
 	if (wantsAlignedRowBytes) {
 		context->rowBytes = _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(width,
 																							wantedBytesPerPixel);
-		if (multiples > 0)
-			context->data = malloc(multiples * context->rowBytes * height);
-		else
+		if (multiples > 0) {
+			int size = multiples * context->rowBytes * height;
+			context->data = malloc(size);
+			memset(context->data, 0, size);
+		} else
 			context->data = NULL;
 		
 		/* ptrdiff_t p = (ptrdiff_t)((char*)context->data + context->rowBytes);
@@ -473,9 +390,11 @@ void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionCon
 	} else {
 		context->rowBytes = wantedBytesPerPixel * width;
 
-		if (multiples > 0)
-			context->data = malloc(multiples * context->rowBytes * height);
-		else
+		if (multiples > 0) {
+			int size = multiples * context->rowBytes * height;
+			context->data = malloc(size);
+			memset(context->data, 0, size);
+		} else
 			context->data = NULL;
 
 		context->alignment = 0;
@@ -492,11 +411,9 @@ TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394Capture
 		TFLibDC1394CaptureConversionResult r = { 0, NULL, 0, 0, 0, 0, 0, 0 };
 		return r;
 	}
-	
-	void* data = (NULL != outputData) ? outputData : context->data;
-	
+		
 	TFLibDC1394CaptureConversionResult result = { 0,
-												  data,
+												  outputData,
 												  context->destCVPixelFormat,
 												  context->width,
 												  context->height,
@@ -510,7 +427,7 @@ TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394Capture
 			k32ARGBPixelFormat == context->destCVPixelFormat) {
 			
 			TFLibDC1394PixelFormatConvertYUV411toARGB8(frame->image,
-													   data,
+													   outputData,
 													   context->width,
 													   context->height);
 			
@@ -520,13 +437,35 @@ TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394Capture
 		
 			TFLibDC1394PixelFormatConvertYUV444toARGB8(frame->image,
 													   3*frame->size[0],
-													   data,
+													   outputData,
 													   context->rowBytes,
 													   context->data,
 													   context->rowBytes,
 													   context->width,
 													   context->height);
 					
+		} else if (DC1394_COLOR_CODING_RGB8 == frame->color_coding	&&
+				   k32ARGBPixelFormat == context->destCVPixelFormat) {
+		
+			TFLibDC1394PixelFormatConvertRGB8toARGB8(frame->image,
+													 3*frame->size[0],
+													 outputData,
+													 context->rowBytes,
+													 context->width,
+													 context->height);
+		
+		} else if (DC1394_COLOR_CODING_MONO8 == frame->color_coding &&
+				   k32ARGBPixelFormat == context->destCVPixelFormat) {
+		
+			TFLibDC1394PixelFormatConvertMono8toARGB8(frame->image,
+													  frame->size[0],
+													  outputData,
+													  context->rowBytes,
+													  context->data,
+													  context->rowBytes,
+													  context->width,
+													  context->height);
+		
 		}
 	}
 	

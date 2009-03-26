@@ -60,29 +60,31 @@ void TFLibDC1394PixelFormatConvertInitialize()
 	g = g > 255 ? 255 : g;				\
 	b = b > 255 ? 255 : b; }
 
-#if defined(__INTEL_COMPILER)
-int TFLibDC1394PixelFormatConvertYUV411toARGB8(uint8_t *restrict srcBuf,
-											   uint8_t *restrict dstBuf,
+#if 0	// the Intel C/C++ and GCC can't vectorize this, which is what libdc1394 uses,
+		// though I've rewritten it to loop upwards rather than downwards for better
+		// cache utilization.
+		// Therefore, I've changed it in a way that can be vectorized. I'm keeping
+		// this original libdc1394 code here for reference purposes only.
+		// The actual implementation of the vectorizable version is below.
+int TFLibDC1394PixelFormatConvertYUV411toARGB8(void* src,
+											   void* dst,
 											   int width,
 											   int height)
-#else
-int TFLibDC1394PixelFormatConvertYUV411toARGB8(uint8_t* srcBuf,
-											   uint8_t* dstBuf,
-											   int width,
-											   int height)
-#endif
 {	
+	uint8_t* restrict srcBuf = src;
+	uint8_t* restrict dstBuf = dst;
+	
 	int k = (width*height) + ( (width*height) >> 1 )-1;
 	int j = 0, i = 0;
 	int y0, y1, y2, y3, u, v, r, g, b;
 	
     for (i; i<=k; i+=6) {
+		u  = (uint8_t) srcBuf[i] - 128;
+		y0 = (uint8_t) srcBuf[i+1];
+		y1 = (uint8_t) srcBuf[i+2];
+		v  = (uint8_t) srcBuf[i+3] - 128;
+		y2 = (uint8_t) srcBuf[i+4];
 		y3 = (uint8_t) srcBuf[i+5];
-        y2 = (uint8_t) srcBuf[i+4];
-        v  = (uint8_t) srcBuf[i+3] - 128;
-        y1 = (uint8_t) srcBuf[i+2];
-        y0 = (uint8_t) srcBuf[i+1];
-        u  = (uint8_t) srcBuf[i] - 128;
         YUV2RGB (y0, u, v, r, g, b);
 		dstBuf[j++] = UINT8_MAX;
 		dstBuf[j++] = (uint8_t)r;
@@ -105,6 +107,82 @@ int TFLibDC1394PixelFormatConvertYUV411toARGB8(uint8_t* srcBuf,
 		dstBuf[j++] = (uint8_t)b;
     }
 			
+	return 1;
+}
+#endif // 0
+
+#if defined(__LITTLE_ENDIAN__)
+#define UNPACK32(i32, a, b, c, d)	{							\
+										a = (i32) & 0xff;		\
+										b = (i32 >> 8) & 0xff;	\
+										c = (i32 >> 16) & 0xff;	\
+										d = (i32 >> 24) & 0xff;	\
+									}
+#else
+#define UNPACK32(i32, a, b, c, d)	{							\
+										a = (i32 >> 24) & 0xff;	\
+										b = (i32 >> 16) & 0xff;	\
+										c = (i32 >> 8) & 0xff;	\
+										d = i32 & 0xff;			\
+									}
+#endif
+
+#if defined(__LITTLE_ENDIAN__)
+#define PACKARGB(a, r, g, b)	(((a) & 0xff)			|	\
+								(((r) & 0xff) << 8)		|	\
+								(((g) & 0xff) << 16)	|	\
+								(((b) & 0xff) << 24))
+#else
+#define PACKARGB(a, r, g, b)	((((a) & 0xff) << 24)	|	\
+								(((r) & 0xff) << 16)	|	\
+								(((g) & 0xff) << 8)		|	\
+								((b) & 0xff))
+#endif
+
+// icc 11.0 and (hopefully) gcc can vectorize this
+int TFLibDC1394PixelFormatConvertYUV411toARGB8(void* src,
+											   void* dst,
+											   int width,
+											   int height)
+{
+	uint32_t* restrict srcBuf = src;
+	uint32_t* restrict dstBuf = dst;
+	
+	int k = ((width*height) + ( (width*height) >> 1 ) + 3)/4;
+	int j = 0, i = 0;
+	int y0, y1, y2, y3, y4, y5, y6, y7, u0, v0, u1, v1, r, g, b;
+	int i1, i2, i3;
+	
+    for (i; i <= k; i+=3) {
+		i1 = srcBuf[i];
+		UNPACK32(i1, u0, y0, y1, v0);
+		u0 -= 128;
+		v0 -= 128;
+		i2 = srcBuf[i+1];
+		UNPACK32(i2, y2, y3, u1, y4);
+		u1 -= 128;
+		i3 = srcBuf[i+2];
+		UNPACK32(i3, y5, v1, y6, y7);
+		v1 -= 128;
+		
+		YUV2RGB (y0, u0, v0, r, g, b);
+		dstBuf[j++] = PACKARGB(UINT8_MAX, r, g, b);
+		YUV2RGB (y1, u0, v0, r, g, b);
+		dstBuf[j++] = PACKARGB(UINT8_MAX, r, g, b);
+		YUV2RGB (y2, u0, v0, r, g, b);
+		dstBuf[j++] = PACKARGB(UINT8_MAX, r, g, b);
+		YUV2RGB (y3, u0, v0, r, g, b);
+		dstBuf[j++] = PACKARGB(UINT8_MAX, r, g, b);
+		YUV2RGB (y4, u1, v1, r, g, b);
+		dstBuf[j++] = PACKARGB(UINT8_MAX, r, g, b);
+		YUV2RGB (y5, u1, v1, r, g, b);
+		dstBuf[j++] = PACKARGB(UINT8_MAX, r, g, b);
+		YUV2RGB (y6, u1, v1, r, g, b);
+		dstBuf[j++] = PACKARGB(UINT8_MAX, r, g, b);
+		YUV2RGB (y7, u1, v1, r, g, b);
+		dstBuf[j++] = PACKARGB(UINT8_MAX, r, g, b);
+    }
+	
 	return 1;
 }
 

@@ -346,8 +346,8 @@
 		6EC221FA0F77EEF8008FD532 /* TFTrackingDataReceiverInfoDictKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED61470E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.m */; };
 		6EC221FC0F77EEF8008FD532 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC4D9940D1199E9008AB9CF /* QuartzCore.framework */; };
 		6EC221FD0F77EEF8008FD532 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E90B19A0D1ED84700A21C36 /* Accelerate.framework */; };
-		6EC223090F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */; };
-		6EC2230A0F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */; };
+		6EC223090F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */; settings = {COMPILER_FLAGS = "-std=c99"; }; };
+		6EC2230A0F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */; settings = {COMPILER_FLAGS = "-std=c99"; }; };
 		6EC4B0D20DD9D6D50085D7B8 /* TFBlob.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4A69EC0D18291C00B19EB0 /* TFBlob.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EC4B0D30DD9D6D60085D7B8 /* TFBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69ED0D18291C00B19EB0 /* TFBlob.m */; };
 		6EC4B0D40DD9D6D70085D7B8 /* TFBlobBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4A69FA0D1831C300B19EB0 /* TFBlobBox.h */; settings = {ATTRIBUTES = (Public, ); }; };

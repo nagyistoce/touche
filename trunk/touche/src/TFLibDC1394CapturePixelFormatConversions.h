@@ -28,8 +28,8 @@
 void TFLibDC1394PixelFormatConvertInitialize();
 
 // returns non-zero on success, zero on failure
-int TFLibDC1394PixelFormatConvertYUV411toARGB8(uint8_t* srcBuf,
-											   uint8_t* dstBuf,
+int TFLibDC1394PixelFormatConvertYUV411toARGB8(void* srcBuf,
+											   void* dstBuf,
 											   int width,
 											   int height);
 

@@ -246,7 +246,7 @@ methodDetermined:
 				default:
 					break;
 			}
-			
+						
 			[(context->ciContextglContext) render:self
 										 toBitmap:renderBuffer
 										 rowBytes:renderRowBytes
@@ -590,7 +590,9 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 	if (numFormats <= 0) {
 		// we didn't find a suitable format, so we reuse the cgContext-backed CIContext instead
 		context->ciContextglContext = [context->ciContextcgContext retain];
-	} else {		
+	} else {
+		// CIContext's render:toBitmap: doesn't really touch the CGL context, so we don't
+		// need to worry much about the setup for now...
 		CGLCreateContext(cglPixelFormatObj, NULL, &context->cglContext);
 				
 		CGLSetCurrentContext(context->cglContext);

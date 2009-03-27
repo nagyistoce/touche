@@ -330,6 +330,16 @@ enum {
 	return NO;
 }
 
+- (CGColorSpaceRef)ciColorSpace
+{
+	return NULL;
+}
+
+- (CGColorSpaceRef)ciWorkingColorSpace
+{
+	return NULL;
+}
+
 - (NSImage*)_emptyFrameNSImage
 {
 	NSSize frameSize = NSSizeFromCGSize([self currentCaptureResolution]);

@@ -63,7 +63,9 @@ typedef struct CIImageBitmapsInternalData {
 
 	CGColorSpaceRef						colorSpace, ciOutputColorSpace, ciWorkingColorSpace;
 	CGContextRef						cgContext;
-	CIContext*							ciContext;
+	CIContext*							ciContextcgContext;		// CGBitmapContext-backed CIContext
+	CGLContextObj						cglContext;
+	CIContext*							ciContextglContext;		// CGLContext-backed CIContext
 	BOOL								renderOnCPU;
 	
 	CIImageInternalOutputPixelFormat	internalOutputPixelFormat;
@@ -194,9 +196,9 @@ methodDetermined:
 	switch (method) {
 		case CIImageInternalBitmapCreationMethodBitmapContextBackedCIContext: {
 			CGContextSaveGState(context->cgContext);
-			[(context->ciContext) drawImage:self
-									atPoint:CGPointZero
-								   fromRect:extent];
+			[(context->ciContextcgContext) drawImage:self
+											 atPoint:CGPointZero
+											fromRect:extent];
 			CGContextFlush(context->cgContext);
 			CGContextRestoreGState(context->cgContext);
 			
@@ -245,12 +247,12 @@ methodDetermined:
 					break;
 			}
 			
-			[(context->ciContext) render:self
-								toBitmap:renderBuffer
-								rowBytes:renderRowBytes
-								  bounds:extent
-								  format:renderFormat
-							  colorSpace:nil];
+			[(context->ciContextglContext) render:self
+										 toBitmap:renderBuffer
+										 rowBytes:renderRowBytes
+										   bounds:extent
+										   format:renderFormat
+									   colorSpace:NULL];
 			
 			switch (context->internalOutputPixelFormat) {
 				case CIImageInternalOutputPixelFormatGray8:
@@ -383,13 +385,20 @@ void CIImageBitmapsReleaseContext(void* pContext)
 	if (NULL != pContext) {
 		CIImageBitmapsInternalData* context = (CIImageBitmapsInternalData*)pContext;
 		
+		[context->ciContextcgContext release];
+		context->ciContextcgContext = nil;
+		
+		[context->ciContextglContext release];
+		context->ciContextglContext = nil;
+		
 		RELEASE_CF_MEMBER(context->colorSpace);
 		RELEASE_CF_MEMBER(context->ciOutputColorSpace);
 		RELEASE_CF_MEMBER(context->ciWorkingColorSpace);
 		RELEASE_CF_MEMBER(context->cgContext);
 		
-		[context->ciContext release];
-		context->ciContext = nil;
+		if (NULL != context->cglContext)
+			CGLDestroyContext(context->cglContext);
+		context->cglContext = NULL;
 		
 		_CIImageBitmapsFree(context->outputBuffer);
 		
@@ -552,17 +561,50 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 	
 	CGContextSetInterpolationQuality(context->cgContext, kCGInterpolationNone);
 	
-	// create the CIContext
+	// create the CIContext backed by this CGBitmapContext
 	NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys:
 							 (id)context->ciOutputColorSpace, kCIContextOutputColorSpace, 
 							 (id)context->ciWorkingColorSpace, kCIContextWorkingColorSpace,
 							 [NSNumber numberWithBool:context->renderOnCPU], kCIContextUseSoftwareRenderer,
 							 nil];
 	
-	context->ciContext = [[CIContext contextWithCGContext:context->cgContext
+	context->ciContextcgContext = [[CIContext contextWithCGContext:context->cgContext
 												  options:options] retain];
 	
-	if (NULL == context->ciContext)
+	if (nil == context->ciContextcgContext)
+		goto errorReturn;
+	
+	// create the CIContext backed by a CGLContext
+	CGLPixelFormatObj cglPixelFormatObj = nil;
+	
+	static const CGLPixelFormatAttribute attr[] = {
+		kCGLPFAAccelerated,
+		kCGLPFANoRecovery,
+		kCGLPFAColorSize, 32,
+		(CGLPixelFormatAttribute)NULL
+	};
+	
+	GLint numFormats = 0;
+	CGLChoosePixelFormat(attr, &cglPixelFormatObj, &numFormats);
+	
+	if (numFormats <= 0) {
+		// we didn't find a suitable format, so we reuse the cgContext-backed CIContext instead
+		context->ciContextglContext = [context->ciContextcgContext retain];
+	} else {		
+		CGLCreateContext(cglPixelFormatObj, NULL, &context->cglContext);
+				
+		CGLSetCurrentContext(context->cglContext);
+
+		context->ciContextglContext = [[CIContext contextWithCGLContext:context->cglContext
+															pixelFormat:cglPixelFormatObj
+																options:options] retain];
+	
+		CGLSetCurrentContext(NULL);
+				
+		CGLDestroyPixelFormat(cglPixelFormatObj);		
+	}
+	
+	if (nil == context->ciContextglContext)
 		goto errorReturn;
 	
 	return (void*)context;

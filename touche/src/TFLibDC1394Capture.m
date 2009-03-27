@@ -84,6 +84,8 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		_dc = NULL;
 	}
 	
+	[self cleanUpCIImageCreator];
+	
 	[super dealloc];
 }
 

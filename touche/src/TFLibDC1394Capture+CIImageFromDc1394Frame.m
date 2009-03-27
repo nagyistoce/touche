@@ -68,7 +68,16 @@ TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394Capture
 size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width,
 																  size_t bytesPerPixel);
 
+// properly frees a pixel format conversion context
+void _TFLibDC1394CaptureFreePixelFormatConversionContext(TFLibDC1394CaptureConversionContext* context);
+
 @implementation TFLibDC1394Capture (CIImageFromDc1394Frame)
+
+- (void)cleanUpCIImageCreator
+{
+	_TFLibDC1394CaptureFreePixelFormatConversionContext(_pixelConversionContext);
+	_pixelConversionContext = NULL;	
+}
 
 - (NSString*)dc1394ColorCodingToString:(dc1394color_coding_t)coding
 {
@@ -349,15 +358,8 @@ void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionCon
 			context->height != height						||
 			context->bytesPerPixel != wantedBytesPerPixel	||
 			context->multiples != multiples) {
-				if (NULL != context->data)
-#if defined(_USES_IPP_)
-					ippiFree(context->data);
-#else
-					free(context->data);
-#endif
-
-				free(context);
-				context = NULL;
+			_TFLibDC1394CaptureFreePixelFormatConversionContext(context);
+			context = NULL;
 		}
 	}
 	
@@ -507,4 +509,19 @@ size_t _TFLibDC1394CaptureOptimalRowBytesForWidthAndBytesPerPixel(size_t width, 
 		rowBytes += 16;
 	
 	return rowBytes;
+}
+
+void _TFLibDC1394CaptureFreePixelFormatConversionContext(TFLibDC1394CaptureConversionContext* context)
+{
+	if (NULL != context) {
+		if (NULL != context->data)
+#if defined(_USES_IPP_)
+			ippiFree(context->data);
+#else
+		free(context->data);
+#endif
+		
+		free(context);
+		context = NULL;
+	}
 }

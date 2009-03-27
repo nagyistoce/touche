@@ -31,6 +31,8 @@
 @interface TFLibDC1394Capture (CIImageFromDc1394Frame) 
 
 + (int)rankingForVideoMode:(dc1394video_mode_t)mode;
+
+- (void)cleanUpCIImageCreator;
 - (NSString*)dc1394ColorCodingToString:(dc1394color_coding_t)coding;
 - (CIImage*)ciImageWithDc1394Frame:(dc1394video_frame_t*)frame error:(NSError**)error;
 

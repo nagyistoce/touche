@@ -1147,20 +1147,28 @@ errorReturn:
 					  colorSpace:(CGColorSpaceRef*)colorSpace
 			   workingColorSpace:(CGColorSpaceRef*)workingColorSpace
 {
-	if (nil == _blobInput)
-		return nil;
-
-	// we simply ignore the timestamp and always return the most current frame
-	CIImage* img;
-	@synchronized (_blobInput) {
-		img = [_blobInput currentRawImageForStage:frameStageForDisplay];
-		
-		if (NULL != colorSpace)
-			*colorSpace = [_blobInput ciColorSpace];
-		
-		if (NULL != workingColorSpace)
-			*workingColorSpace = [_blobInput ciWorkingColorSpace];
+	CIImage* img = NULL;
+	CGColorSpaceRef cs = NULL, wcs = NULL;
+	
+	if (nil != _blobInput) {
+		// we simply ignore the timestamp and always return the most current frame
+		@synchronized (_blobInput) {
+			img = [_blobInput currentRawImageForStage:frameStageForDisplay];
+			
+			// for performance reasons, we only query the blob input if we have to
+			if (NULL != colorSpace)
+				cs = [_blobInput ciColorSpace];
+			
+			if (NULL != workingColorSpace)
+				wcs = [_blobInput ciWorkingColorSpace];
+		}
 	}
+	
+	if (NULL != colorSpace)
+		*colorSpace = cs;
+
+	if (NULL != workingColorSpace)
+		*workingColorSpace = wcs;
 		
 	return img;
 }

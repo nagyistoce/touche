@@ -56,6 +56,7 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 		static const NSOpenGLPixelFormatAttribute attr[] = {
 			NSOpenGLPFAAccelerated,
 			NSOpenGLPFANoRecovery,
+			NSOpenGLPFADoubleBuffer,
 			NSOpenGLPFAColorSize, 32,
 			NSOpenGLPFAAllowOfflineRenderers,
 			0
@@ -108,6 +109,11 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 	return self;
 }
 
+- (BOOL)isOpaque
+{
+	return YES;
+}
+
 - (void)prepareOpenGL
 {
 	glDisable(GL_ALPHA_TEST);
@@ -120,15 +126,18 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 	glDepthMask(GL_FALSE);
 	glStencilMask (0);
 	glHint(GL_TRANSFORM_HINT_APPLE, GL_FASTEST);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	
 	GLint swapInterval = 1;
 	[[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+	
+	_needsReshape = YES;
 }
 
 - (void)reshape
-{ 
+{ 	
 	_needsReshape = YES;
+	[[self openGLContext] update];
 }
 
 // override this in a subclass to process a frame before displaying it
@@ -191,6 +200,8 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 			if (_needsReshape) {
 				float minX, minY, maxX, maxY;
 				
+				[[self openGLContext] update];
+				
 				minX = NSMinX(bounds);
 				minY = NSMinY(bounds);
 				maxX = NSMaxX(bounds);
@@ -198,8 +209,6 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 				
 				_zoomX = imageRect.size.width/frame.size.width;
 				_zoomY = imageRect.size.height/frame.size.height;
-				
-				[self update];
 				
 				if (NSIsEmptyRect([self visibleRect]))
 					glViewport(0, 0, 1, 1);
@@ -231,8 +240,10 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 			glPopMatrix();
 		}
 	}
-	
+		
 	[[self openGLContext] flushBuffer];
+	
+	[NSOpenGLContext clearCurrentContext];
 }
 
 - (CVReturn)drawFrameForTimeStamp:(const CVTimeStamp*)timeStamp

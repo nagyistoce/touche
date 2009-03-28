@@ -580,6 +580,7 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 	static const CGLPixelFormatAttribute attr[] = {
 		kCGLPFAAccelerated,
 		kCGLPFANoRecovery,
+		kCGLPFAAllowOfflineRenderers,
 		kCGLPFAColorSize, 32,
 		(CGLPixelFormatAttribute)NULL
 	};

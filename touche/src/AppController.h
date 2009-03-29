@@ -39,6 +39,7 @@
 @class TFWizardView;
 @class TFTUIOOSCSettingsController;
 @class TFTUIOFlashXmlSettingsController;
+@class TFPerformanceMonitorController;
 
 @interface AppController : NSWindowController {
 	IBOutlet GCKIPhoneNavigationBarView*		_statusBar;
@@ -67,6 +68,8 @@
 	TFAboutController*						_aboutController;
 	TFWizardController*						_wizardController;
 	
+	TFPerformanceMonitorController*			_perfMonitorController;
+	
 	TFTUIOOSCSettingsController*			_tuioSettingsController;
 	TFTUIOFlashXmlSettingsController*		_tuioFlashXmlSettingsController;
 	
@@ -85,6 +88,7 @@
 - (IBAction)showTUIOFlashXmlSettings:(id)sender;
 - (IBAction)showMiscPrefs:(id)sender;
 - (IBAction)showTrackingPreviewWindow:(id)sender;
+- (IBAction)showPerformanceMonitor:(id)sender;
 - (IBAction)startWizard:(id)sender;
 - (IBAction)welcomeViewDismissClicked:(id)sender;
 - (IBAction)openIssueTrackerWebpage:(id)sender;

@@ -78,6 +78,7 @@ extern NSInteger TFTrackingPipelineInputResolutionHighest;
 @property (assign) BOOL showBlobsInPreview;
 @property (assign) BOOL transformBlobsToScreenCoordinates;
 @property (assign) NSInteger frameStageForDisplay;
+@property (readonly, getter=performanceMeasurementID) int _performanceMeasurementID;
 
 + (TFTrackingPipeline*)sharedPipeline;
 

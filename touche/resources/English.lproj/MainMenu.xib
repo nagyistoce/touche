@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.02">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">9E17</string>
-		<string key="IBDocument.InterfaceBuilderVersion">670</string>
-		<string key="IBDocument.AppKitVersion">949.33</string>
-		<string key="IBDocument.HIToolboxVersion">352.00</string>
+		<string key="IBDocument.SystemVersion">9G55</string>
+		<string key="IBDocument.InterfaceBuilderVersion">672</string>
+		<string key="IBDocument.AppKitVersion">949.43</string>
+		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="418"/>
+			<integer value="579"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -602,6 +602,14 @@
 									<reference key="NSOnImage" ref="940690404"/>
 									<reference key="NSMixedImage" ref="133917768"/>
 								</object>
+								<object class="NSMenuItem" id="1042952632">
+									<reference key="NSMenu" ref="835318025"/>
+									<string key="NSTitle">Performance Monitor</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="940690404"/>
+									<reference key="NSMixedImage" ref="133917768"/>
+								</object>
 								<object class="NSMenuItem" id="182531057">
 									<reference key="NSMenu" ref="835318025"/>
 									<bool key="NSIsDisabled">YES</bool>
@@ -763,6 +771,7 @@
 					<string key="NSFrameSize">{590, 408}</string>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
+				<string key="NSMinSize">{428, 166}</string>
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
 			</object>
 			<object class="NSCustomObject" id="250667394">
@@ -1523,6 +1532,14 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 					</object>
 					<int key="connectionID">578</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showPerformanceMonitor:</string>
+						<reference key="source" ref="124338352"/>
+						<reference key="destination" ref="1042952632"/>
+					</object>
+					<int key="connectionID">580</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1662,6 +1679,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 							<reference ref="299356726"/>
 							<reference ref="182531057"/>
 							<reference ref="966681317"/>
+							<reference ref="1042952632"/>
 						</object>
 						<reference key="parent" ref="713487014"/>
 					</object>
@@ -2322,6 +2340,11 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 						<reference key="object" ref="1018361119"/>
 						<reference key="parent" ref="740614258"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">579</int>
+						<reference key="object" ref="1042952632"/>
+						<reference key="parent" ref="835318025"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -2405,7 +2428,9 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 					<string>425.NSWindowTemplate.visibleAtLaunch</string>
 					<string>425.editorWindowContentRectSynchronizationRect</string>
 					<string>425.windowTemplate.hasMaxSize</string>
+					<string>425.windowTemplate.hasMinSize</string>
 					<string>425.windowTemplate.maxSize</string>
+					<string>425.windowTemplate.minSize</string>
 					<string>426.IBPluginDependency</string>
 					<string>427.IBPluginDependency</string>
 					<string>428.IBPluginDependency</string>
@@ -2491,6 +2516,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 					<string>572.IBPluginDependency</string>
 					<string>573.IBPluginDependency</string>
 					<string>576.IBPluginDependency</string>
+					<string>579.IBPluginDependency</string>
 					<string>92.IBPluginDependency</string>
 					<string>92.ImportedFromIB2</string>
 				</object>
@@ -2522,7 +2548,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 					<reference ref="9"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
-					<string>{{400, 633}, {264, 103}}</string>
+					<string>{{429, 598}, {264, 123}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{127, 905}, {197, 73}}</string>
@@ -2572,8 +2598,10 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 					<string>{{14, 229}, {590, 408}}</string>
 					<reference ref="8"/>
 					<string>{{539, 234}, {590, 408}}</string>
-					<reference ref="9"/>
+					<integer value="0"/>
+					<integer value="1"/>
 					<string>{3.40282e+38, 3.40282e+38}</string>
+					<string>{428, 150}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2681,6 +2709,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 				</object>
 			</object>
@@ -2704,7 +2733,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">578</int>
+			<int key="maxID">580</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2720,6 +2749,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 							<string>openIssueTrackerWebpage:</string>
 							<string>showAboutPanel:</string>
 							<string>showMiscPrefs:</string>
+							<string>showPerformanceMonitor:</string>
 							<string>showPipelineConfigurationWindow:</string>
 							<string>showScreenPrefs:</string>
 							<string>showTUIOAddClientPanel:</string>
@@ -2733,6 +2763,7 @@ IHRoZSAiU2V0dXAiIG1lbnUuA</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

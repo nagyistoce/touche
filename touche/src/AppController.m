@@ -36,6 +36,7 @@
 #import	"TFNSColorToCIColorInNSDataValueTransfomer.h"
 #import "GCKIPhoneNavigationBarView.h"
 #import "GCKIPhoneNavigationBarLabelView.h"
+#import "TFPerformanceMonitorController.h"
 #import "TFWizardController.h"
 #import "TFWizardView.h"
 #import "TFInfoViewController.h"
@@ -222,6 +223,16 @@ enum {
 		_miscPrefsController = [[TFMiscPreferencesController alloc] init];
 	
 	[_miscPrefsController showWindow:sender];
+}
+
+- (IBAction)showPerformanceMonitor:(id)sender
+{
+	if (nil == _perfMonitorController) {
+		_perfMonitorController = [[TFPerformanceMonitorController alloc] init];
+		_perfMonitorController.measureID = _pipeline.performanceMeasurementID;
+	}
+	
+	[_perfMonitorController showWindow:sender];
 }
 
 - (IBAction)showTrackingPreviewWindow:(id)sender

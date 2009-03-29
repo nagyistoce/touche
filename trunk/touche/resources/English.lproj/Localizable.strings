@@ -20,6 +20,20 @@
 
 "UnknownDV1394CameraWithVendor"		= "Unknown camera (%s)";
 
+"PerformanceMeasureNothing"			= "N/A";
+"PerformanceMeasureTimeFormat"		= "%.3f ms";
+"PerformanceMeasureFPSFormat"		= "%.0f fps";
+"PerformanceCPUTimeName"			= "CPU Usage";
+"PerformanceCPUTimeFormat"			= "%.0f%%";
+"PerformanceCPUTimeMaxFormat"		= "of %d%%";
+"PerformanceMemUsageName"			= "Memory Usage";
+"PerformanceMemRealFormat"			= "%@ real";
+"PerformanceMemVirtualFormat"		= "%@ virtual";
+"PerformanceMemGBFormat"			= "%.2f GB";
+"PerformanceMemMBFormat"			= "%.2f MB";
+"PerformanceMemKBFormat"			= "%.2f KB";
+"PerformanceMemBFormat"				= "%d B";
+
 "ScreenTitle"						= "Screen %d (%d x %d)";
 "PixelsMeasureLabel"				= "%1$.2f cm (%2$.1f pixels/cm) — %3$.4f inch (%4$.1f pixels/inch)";
 
@@ -48,9 +62,9 @@
 "PerfInternalMeasurementLogLine"	= "%1$@\t\t%2$@\t\t%3$.2f%% overlap\t\t%4$.2f FPS\n";
 
 "PerfTimerTypeUnknown"				= "Unknown performance timer";
-"PerfTimerTypeCIImageAcquisition"	= "Video capture/preprocessing";
-"PerfTimerTypeFilterRendering"		= "Filter rendering";
-"PerfTimerTypeBlobDetection"		= "Blob detection";
+"PerfTimerTypeCIImageAcquisition"	= "Video Capture";
+"PerfTimerTypeFilterRendering"		= "Filter Rendering";
+"PerfTimerTypeBlobDetection"		= "Blob Detection";
 
 "TFCalibrationControllerHumandReadableName"		= "Touché Calibration Tool";
 "TFCalibrationControllerStartInfo"				= "Touch the white dot to calibrate.\nHit 'Esc' to cancel.";

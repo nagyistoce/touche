@@ -104,6 +104,7 @@ enum {
 @synthesize showBlobsInPreview;
 @synthesize frameStageForDisplay;
 @synthesize transformBlobsToScreenCoordinates;
+@synthesize _performanceMeasurementID;
 
 + (void)initialize
 {
@@ -1048,9 +1049,6 @@ errorReturn:
 	
 	if (success && NULL != error)
 		*error = nil;
-	
-	// TODO: remove me!
-	[[TFPerformanceTimer sharedTimer] logMeasurementsForID:_performanceMeasurementID];
 	
 	return success;
 }

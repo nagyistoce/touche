@@ -348,6 +348,16 @@
 		6EC221FD0F77EEF8008FD532 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E90B19A0D1ED84700A21C36 /* Accelerate.framework */; };
 		6EC223090F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */; settings = {COMPILER_FLAGS = "-std=c99"; }; };
 		6EC2230A0F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */; settings = {COMPILER_FLAGS = "-std=c99"; }; };
+		6EC226810F7E5F3E008FD532 /* TFPerformanceMonitorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC226800F7E5F3E008FD532 /* TFPerformanceMonitorController.m */; };
+		6EC226820F7E5F3E008FD532 /* TFPerformanceMonitorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC226800F7E5F3E008FD532 /* TFPerformanceMonitorController.m */; };
+		6EC226840F7E64C3008FD532 /* PerformanceMonitor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EC226830F7E64C3008FD532 /* PerformanceMonitor.xib */; };
+		6EC226850F7E64C3008FD532 /* PerformanceMonitor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EC226830F7E64C3008FD532 /* PerformanceMonitor.xib */; };
+		6EC227160F7E9504008FD532 /* GCKHUDTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC227150F7E9504008FD532 /* GCKHUDTableView.m */; };
+		6EC227170F7E9504008FD532 /* GCKHUDTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC227150F7E9504008FD532 /* GCKHUDTableView.m */; };
+		6EC2271F0F7E9978008FD532 /* GCKHUDTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC2271E0F7E9978008FD532 /* GCKHUDTableCell.m */; };
+		6EC227200F7E9978008FD532 /* GCKHUDTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC2271E0F7E9978008FD532 /* GCKHUDTableCell.m */; };
+		6EC227660F7ED324008FD532 /* TFResourceStats.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC227650F7ED324008FD532 /* TFResourceStats.c */; };
+		6EC227670F7ED324008FD532 /* TFResourceStats.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC227650F7ED324008FD532 /* TFResourceStats.c */; };
 		6EC4B0D20DD9D6D50085D7B8 /* TFBlob.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4A69EC0D18291C00B19EB0 /* TFBlob.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EC4B0D30DD9D6D60085D7B8 /* TFBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69ED0D18291C00B19EB0 /* TFBlob.m */; };
 		6EC4B0D40DD9D6D70085D7B8 /* TFBlobBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4A69FA0D1831C300B19EB0 /* TFBlobBox.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -687,6 +697,15 @@
 		6EC222030F77EEF8008FD532 /* ToucheFramework-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ToucheFramework-Info copy.plist"; sourceTree = "<group>"; };
 		6EC223070F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLibDC1394CapturePixelFormatConversions.h; sourceTree = "<group>"; };
 		6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFLibDC1394CapturePixelFormatConversions.c; sourceTree = "<group>"; };
+		6EC2266E0F7E5CFE008FD532 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/PerformanceMonitor.xib; sourceTree = "<group>"; };
+		6EC2267F0F7E5F3E008FD532 /* TFPerformanceMonitorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPerformanceMonitorController.h; sourceTree = "<group>"; };
+		6EC226800F7E5F3E008FD532 /* TFPerformanceMonitorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPerformanceMonitorController.m; sourceTree = "<group>"; };
+		6EC227140F7E9504008FD532 /* GCKHUDTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCKHUDTableView.h; sourceTree = "<group>"; };
+		6EC227150F7E9504008FD532 /* GCKHUDTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCKHUDTableView.m; sourceTree = "<group>"; };
+		6EC2271D0F7E9978008FD532 /* GCKHUDTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCKHUDTableCell.h; sourceTree = "<group>"; };
+		6EC2271E0F7E9978008FD532 /* GCKHUDTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCKHUDTableCell.m; sourceTree = "<group>"; };
+		6EC227640F7ED324008FD532 /* TFResourceStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFResourceStats.h; sourceTree = "<group>"; };
+		6EC227650F7ED324008FD532 /* TFResourceStats.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFResourceStats.c; sourceTree = "<group>"; };
 		6EC4B0CD0DD9D6C20085D7B8 /* ToucheFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ToucheFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EC4B0CE0DD9D6C20085D7B8 /* ToucheFramework-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ToucheFramework-Info.plist"; sourceTree = "<group>"; };
 		6EC4B1290DD9DBE30085D7B8 /* TFLibDC1394Capture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLibDC1394Capture.h; sourceTree = "<group>"; };
@@ -1176,6 +1195,8 @@
 				6E07FBEE0DF01EA200FCB681 /* TFExceptions.h */,
 				6EED615F0E5F135100375CC0 /* TFThreadMessagingQueue.h */,
 				6EED61600E5F135100375CC0 /* TFThreadMessagingQueue.m */,
+				6EC227640F7ED324008FD532 /* TFResourceStats.h */,
+				6EC227650F7ED324008FD532 /* TFResourceStats.c */,
 			);
 			name = Misc;
 			sourceTree = "<group>";
@@ -1217,6 +1238,7 @@
 				6EF63F360DD7B56900888DB0 /* InfoView.xib */,
 				6EF63F3A0DD7B57D00888DB0 /* MainMenu.xib */,
 				6EE60E590DDF2E350069A40E /* MiscPreferences.xib */,
+				6EC226830F7E64C3008FD532 /* PerformanceMonitor.xib */,
 				6EF63F3E0DD7B59100888DB0 /* PipelineSetup.xib */,
 				6EE60CAA0DDEF4030069A40E /* ScreenPreferences.xib */,
 				6ECF88460E75315C009433B3 /* TUIOFlashXMLSettings.xib */,
@@ -1371,6 +1393,10 @@
 				6ECA93FC0DD1D91200A9ABE3 /* GCKPlatinumView.m */,
 				6EC632CD0ED9A2170094958E /* GCKGradientOverlayView.h */,
 				6EC632CE0ED9A2170094958E /* GCKGradientOverlayView.m */,
+				6EC227140F7E9504008FD532 /* GCKHUDTableView.h */,
+				6EC227150F7E9504008FD532 /* GCKHUDTableView.m */,
+				6EC2271D0F7E9978008FD532 /* GCKHUDTableCell.h */,
+				6EC2271E0F7E9978008FD532 /* GCKHUDTableCell.m */,
 			);
 			name = "General Views";
 			sourceTree = "<group>";
@@ -1609,6 +1635,8 @@
 				6ECF81B00E72B2D3009433B3 /* TFTUIOOSCSettingsController.m */,
 				6ECF885C0E7534AD009433B3 /* TFTUIOFlashXmlSettingsController.h */,
 				6ECF885D0E7534AD009433B3 /* TFTUIOFlashXmlSettingsController.m */,
+				6EC2267F0F7E5F3E008FD532 /* TFPerformanceMonitorController.h */,
+				6EC226800F7E5F3E008FD532 /* TFPerformanceMonitorController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1828,6 +1856,7 @@
 				6E8738930F77B4F400402313 /* flash-image.jpg in Resources */,
 				6E8738940F77B4F400402313 /* TUIOFlashXMLSettings.xib in Resources */,
 				6E8738950F77B4F400402313 /* TFCIThresholdFilter.cikernel in Resources */,
+				6EC226850F7E64C3008FD532 /* PerformanceMonitor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1881,6 +1910,7 @@
 				6ECF88400E7488FB009433B3 /* flash-image.jpg in Resources */,
 				6ECF88470E75315C009433B3 /* TUIOFlashXMLSettings.xib in Resources */,
 				6E9279910EB3C78200C88BEC /* TFCIThresholdFilter.cikernel in Resources */,
+				6EC226840F7E64C3008FD532 /* PerformanceMonitor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2091,6 +2121,10 @@
 				6E8739050F77B4F400402313 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */,
 				6E8739060F77B4F400402313 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */,
 				6EC2230A0F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */,
+				6EC226810F7E5F3E008FD532 /* TFPerformanceMonitorController.m in Sources */,
+				6EC227160F7E9504008FD532 /* GCKHUDTableView.m in Sources */,
+				6EC2271F0F7E9978008FD532 /* GCKHUDTableCell.m in Sources */,
+				6EC227660F7ED324008FD532 /* TFResourceStats.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2267,6 +2301,10 @@
 				6ECE60340F719F8C0067CC99 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */,
 				6ECE61CD0F72B3F00067CC99 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */,
 				6EC223090F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */,
+				6EC226820F7E5F3E008FD532 /* TFPerformanceMonitorController.m in Sources */,
+				6EC227170F7E9504008FD532 /* GCKHUDTableView.m in Sources */,
+				6EC227200F7E9978008FD532 /* GCKHUDTableCell.m in Sources */,
+				6EC227670F7ED324008FD532 /* TFResourceStats.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2311,6 +2349,14 @@
 				6EAD35060D2C4B9900C34A1A /* English */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		6EC226830F7E64C3008FD532 /* PerformanceMonitor.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6EC2266E0F7E5CFE008FD532 /* English */,
+			);
+			name = PerformanceMonitor.xib;
 			sourceTree = "<group>";
 		};
 		6ECF81B30E72B362009433B3 /* TUIOOSCSettings.xib */ = {

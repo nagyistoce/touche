@@ -377,6 +377,8 @@
 			context = CIImageBitmapsCreateContextForGrayscale8(ciimage, renderFiltersOnCPU);
 		
 		CIImageBitmapsSetContextDeterminesFastestRenderingDynamically(context, YES);
+		CIImageBitmapsSetContextShouldBorderImage(context, YES);
+		CIImageBitmapsSetContextBorderColor(context, 1.0f, 0.0f, 0.0f, 0.0f);
 		
 		contextValue = [[NSValue valueWithPointer:context] retain];		
 	}

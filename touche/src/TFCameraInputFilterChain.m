@@ -114,9 +114,11 @@
 	[self addFilter:filter];
 	
 	// This draws a 1-pixel black border around the image to ensure that all blobs are closed
-	filter = [CIFilter filterWithName:@"TFCI1PixelBorderAroundImage"];
+	// UPDATE: We now do this on the CPU after filter-rendering, which performs better.
+	// See CIImage+MakeBitmaps (plus support files)
+	/*filter = [CIFilter filterWithName:@"TFCI1PixelBorderAroundImage"];
 	[filter setDefaults];
-	[self addFilter:filter];
+	[self addFilter:filter];*/
 					
 	return self;
 }

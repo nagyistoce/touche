@@ -26,6 +26,8 @@
 
 #import "CIImage+MakeBitmaps.h"
 
+#import "CIImage+MakeBitmapsSupport.h"
+
 #import <Accelerate/Accelerate.h>
 #import <mach/mach.h>
 #import <mach/mach_time.h>
@@ -73,6 +75,9 @@ typedef struct CIImageBitmapsInternalData {
 	NSUInteger							bytesPerPixel;
 	int									rowBytes;
 	void*								outputBuffer;
+	
+	BOOL								borderDrawingEnabled;
+	float								borderA, borderR, borderG, borderB;
 	
 	CIImageInternalBitmapCreationMethod	chosenCreationMethod;
 
@@ -230,13 +235,8 @@ methodDetermined:
 					break;
 				case CIImageInternalOutputPixelFormatRGBA8:
 					renderFormat = kCIFormatARGB8;
-#if defined(_USES_IPP_)
-					renderRowBytes = context->rowBytes;
-					renderBuffer = context->outputBuffer;
-#else
 					renderRowBytes = context->scratchRowBytes[0];
 					renderBuffer = context->scratchSpace[0];
-#endif
 					break;
 				case CIImageInternalOutputPixelFormatRGBAF:
 					renderFormat = kCIFormatRGBAf;
@@ -253,6 +253,33 @@ methodDetermined:
 										   bounds:extent
 										   format:renderFormat
 									   colorSpace:NULL];
+			
+			if (context->borderDrawingEnabled) {
+				if (kCIFormatARGB8 == renderFormat) {
+					unsigned char channels[] = { context->borderA * 255,
+												 context->borderR * 255,
+												 context->borderG * 255,
+												 context->borderB * 255 };
+				
+					CIImageBitmaps1PixelImageBorderARGB8(renderBuffer,
+														 renderRowBytes,
+														 context->width,
+														 context->height,
+														 channels);
+				} else if (kCIFormatRGBAf) {
+					float channels[] = { context->borderA,
+										 context->borderR,
+										 context->borderG,
+										 context->borderB };
+					
+					CIImageBitmaps1PixelImageBorderARGBf(renderBuffer,
+														 renderRowBytes,
+														 context->width,
+														 context->height,
+														 channels);
+					
+				}
+			}
 			
 			switch (context->internalOutputPixelFormat) {
 				case CIImageInternalOutputPixelFormatGray8:
@@ -424,6 +451,21 @@ void CIImageBitmapsSetContextDeterminesFastestRenderingDynamically(void* pContex
 		context->chosenCreationMethod = CIImageInternalBitmapCreationMethodDefault;
 }
 
+void CIImageBitmapsSetContextShouldBorderImage(void* pContext, BOOL shouldBorder)
+{
+	CIImageBitmapsInternalData* context = (CIImageBitmapsInternalData*)pContext;
+	context->borderDrawingEnabled = shouldBorder;
+}
+
+void CIImageBitmapsSetContextBorderColor(void* pContext, float a, float r, float g, float b)
+{
+	CIImageBitmapsInternalData* context = (CIImageBitmapsInternalData*)pContext;
+	context->borderA = MIN(1.0f, MAX(a, 0.0f));
+	context->borderR = MIN(1.0f, MAX(r, 0.0f));
+	context->borderG = MIN(1.0f, MAX(g, 0.0f));
+	context->borderB = MIN(1.0f, MAX(b, 0.0f));
+}
+
 inline BOOL CIImageBitmapsContextMatchesBitmapSize(void* pContext, CGSize size)
 {
 	CIImageBitmapsInternalData* context = (CIImageBitmapsInternalData*)pContext;
@@ -506,6 +548,9 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 	
 	context->renderOnCPU = renderOnCPU;
 	context->chosenCreationMethod = CIImageInternalBitmapCreationMethodDefault;
+	
+	context->borderDrawingEnabled = NO;
+	context->borderA = context->borderR = context->borderG = context->borderB = 0.0f;
 	
 	// no color matching
 	context->ciWorkingColorSpace = (CGColorSpaceRef)[[NSNull null] retain];
@@ -646,117 +691,36 @@ int _CIImagePrivateConvertInternalPixelFormats(void* dest,
 	if (NULL != dest && NULL != internalData) {
 		if (CIImageInternalOutputPixelFormatGray8 == destFormat &&
 			kCIFormatARGB8 == srcFormat) {
-#if defined(_USES_IPP_)
-			IppiSize swapChannelRoiSize = { width, height };
-			int permuteMap[] = { 1, 2, 3, 0 };
 			
-			ippiSwapChannels_8u_C4IR(internalData->scratchSpace[0],
-									 internalData->scratchRowBytes[0],
-									 swapChannelRoiSize,
-									 permuteMap);
-			
-			IppiSize convertToGrayRoiSize = { width, height };
-			
-			ippiRGBToGray_8u_AC4C1R(internalData->scratchSpace[0],
-									internalData->scratchRowBytes[0],
-									dest,
-									destRowBytes,
-									convertToGrayRoiSize);			
-#else // no IPP available
-			vImage_Buffer intermediateBuf, srcBuf, destBuf;
-			
-			intermediateBuf.data = internalData->scratchSpace[1];
-			intermediateBuf.width = width;
-			intermediateBuf.height = height;
-			intermediateBuf.rowBytes = internalData->scratchRowBytes[1];
-			
-			srcBuf.data = internalData->scratchSpace[0];
-			srcBuf.width = width;
-			srcBuf.height = height;
-			srcBuf.rowBytes = internalData->scratchRowBytes[0];
-			
-			destBuf.data = dest;
-			destBuf.width = width;
-			destBuf.height = height;
-			destBuf.rowBytes = destRowBytes;
-			
-			// these constants are derived from the NTSC RGB->Luminance conversion
-			// the same values are used by the Intel IPP.
-			int16_t matrix[] = { 0,   0, 0, 0,
-								 0, 299, 0, 0,
-								 0, 587, 0, 0,
-								 0, 114, 0, 0 };
-			
-			vImageMatrixMultiply_ARGB8888(&srcBuf, &intermediateBuf, matrix, 100, NULL, NULL, 0);
-			
-			const void* srcBufArray[] = { (void*)((char*)intermediateBuf.data + 1) };
-			const vImage_Buffer* destBufArray[] = { &destBuf };
-			
-			vImageConvert_ChunkyToPlanar8(srcBufArray,
-										  destBufArray,
-										  1,
-										  4,
-										  width,
-										  height,
-										  intermediateBuf.rowBytes,
-										  0);
-#endif
-			success = 1;
+			success = CIImageBitmapsConvertARGB8toMono8(internalData->scratchSpace[0],
+														internalData->scratchRowBytes[0],
+														dest,
+														destRowBytes,
+														internalData->scratchSpace[1],
+														internalData->scratchRowBytes[1],
+														width,
+														height);
+
 		} else if (CIImageInternalOutputPixelFormatRGBA8 == destFormat &&
 				   kCIFormatARGB8 == srcFormat) {
-#if defined(_USES_IPP_)
-			IppiSize roiSize = { width, height };
-			int permuteMap[] = { 1, 2, 3, 0 };
-			
-			ippiSwapChannels_8u_C4IR(dest,
-									 destRowBytes,
-									 roiSize,
-									 permuteMap);
-#else // no IPP available
-			vImage_Buffer srcBuf, destBuf;
-			
-			destBuf.data = dest;
-			destBuf.width = width;
-			destBuf.height = height;
-			destBuf.rowBytes = destRowBytes;
-			
-			srcBuf.data = internalData->scratchSpace[0];
-			srcBuf.width = width;
-			srcBuf.height = height;
-			srcBuf.rowBytes = internalData->scratchRowBytes[0];
-			
-			uint8_t permuteMap[] = { 1, 2, 3, 0 };
-			vImagePermuteChannels_ARGB8888(&srcBuf, &destBuf, permuteMap, 0);
-#endif
-			success = 1;
+				   
+			success = CIImageBitmapsConvertARGB8ToRGBA8(internalData->scratchSpace[0],
+														internalData->scratchRowBytes[0],
+														dest,
+														destRowBytes,
+														width,
+														height);
+
 		} else if (CIImageInternalOutputPixelFormatRGB8 == destFormat &&
 				   kCIFormatARGB8 == srcFormat) {
-#if defined(_USES_IPP_)
-			IppiSize roiSize = { width, height };
-			int permuteMap[] = { 1, 2, 3 };
-			
-			ippiSwapChannels_8u_C4C3R(internalData->scratchSpace[0],
-									  internalData->scratchRowBytes[0],
-									  dest,
-									  destRowBytes,
-									  roiSize,
-									  permuteMap);
-#else // no IPP available
-			vImage_Buffer srcBuf, destBuf;
-			
-			destBuf.data = dest;
-			destBuf.width = width;
-			destBuf.height = height;
-			destBuf.rowBytes = destRowBytes;
-			
-			srcBuf.data = internalData->scratchSpace[0];
-			srcBuf.width = width;
-			srcBuf.height = height;
-			srcBuf.rowBytes = internalData->scratchRowBytes[0];
-			
-			vImageConvert_ARGB8888toRGB888(&srcBuf, &destBuf, 0);
-#endif
-			success = 1;
+
+			success = CIImageBitmapsConvertARGB8toRGB8(internalData->scratchSpace[0],
+													   internalData->scratchRowBytes[0],
+													   dest,
+													   destRowBytes,
+													   width,
+													   height);
+
 		}
 	}
 	

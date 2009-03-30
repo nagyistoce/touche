@@ -43,6 +43,8 @@
 		6E2DC57A0E5A07AD00409C0E /* TFIPStreamSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC5790E5A07AD00409C0E /* TFIPStreamSocket.m */; };
 		6E2DC57D0E5A07D000409C0E /* TFIPDatagramSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC57C0E5A07D000409C0E /* TFIPDatagramSocket.m */; };
 		6E34D9170DC396E00040AF2D /* TFTouchTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E34D9160DC396E00040AF2D /* TFTouchTestController.m */; };
+		6E35FD830F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c in Sources */ = {isa = PBXBuildFile; fileRef = 6E35FD820F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c */; settings = {COMPILER_FLAGS = "-std=c99"; }; };
+		6E35FD840F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c in Sources */ = {isa = PBXBuildFile; fileRef = 6E35FD820F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c */; settings = {COMPILER_FLAGS = "-std=c99"; }; };
 		6E4A69EE0D18291C00B19EB0 /* TFBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69ED0D18291C00B19EB0 /* TFBlob.m */; };
 		6E4A69F10D1829D200B19EB0 /* TFBlobPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69F00D1829D200B19EB0 /* TFBlobPoint.m */; };
 		6E4A69FC0D1831C300B19EB0 /* TFBlobBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A69FB0D1831C300B19EB0 /* TFBlobBox.m */; };
@@ -573,6 +575,8 @@
 		6E2DC57C0E5A07D000409C0E /* TFIPDatagramSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFIPDatagramSocket.m; sourceTree = "<group>"; };
 		6E34D9150DC396E00040AF2D /* TFTouchTestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTouchTestController.h; sourceTree = "<group>"; };
 		6E34D9160DC396E00040AF2D /* TFTouchTestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTouchTestController.m; sourceTree = "<group>"; };
+		6E35FD810F80E51D005322C3 /* CIImage+MakeBitmapsSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIImage+MakeBitmapsSupport.h"; sourceTree = "<group>"; };
+		6E35FD820F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "CIImage+MakeBitmapsSupport.c"; sourceTree = "<group>"; };
 		6E4A69EC0D18291C00B19EB0 /* TFBlob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBlob.h; sourceTree = "<group>"; };
 		6E4A69ED0D18291C00B19EB0 /* TFBlob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBlob.m; sourceTree = "<group>"; };
 		6E4A69EF0D1829D200B19EB0 /* TFBlobPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBlobPoint.h; sourceTree = "<group>"; };
@@ -1107,6 +1111,17 @@
 			name = DO;
 			sourceTree = "<group>";
 		};
+		6E35FD800F80E4FC005322C3 /* CIImage Bitmap Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				6EC4DDB60D144EA7008AB9CF /* CIImage+MakeBitmaps.h */,
+				6EC4DDB70D144EA7008AB9CF /* CIImage+MakeBitmaps.m */,
+				6E35FD810F80E51D005322C3 /* CIImage+MakeBitmapsSupport.h */,
+				6E35FD820F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c */,
+			);
+			name = "CIImage Bitmap Rendering";
+			sourceTree = "<group>";
+		};
 		6E421F6E0D58CB440009839C /* Client-Server Communication */ = {
 			isa = PBXGroup;
 			children = (
@@ -1508,6 +1523,7 @@
 		6EC4DDB50D144E7F008AB9CF /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				6E35FD800F80E4FC005322C3 /* CIImage Bitmap Rendering */,
 				6E14CF200DCFA46800509998 /* CGColorFromNSColor.h */,
 				6E14CF210DCFA47000509998 /* CGColorFromNSColor.m */,
 				6E14CF190DCFA25000509998 /* CGColorRefColorSpaceConversions.h */,
@@ -1516,8 +1532,6 @@
 				6E14CFC00DCFAE2700509998 /* NSView+Extras.m */,
 				6E9355800DC0D6FC0048E1A3 /* NSImage-Extras.h */,
 				6E9355810DC0D6FC0048E1A3 /* NSImage-Extras.m */,
-				6EC4DDB60D144EA7008AB9CF /* CIImage+MakeBitmaps.h */,
-				6EC4DDB70D144EA7008AB9CF /* CIImage+MakeBitmaps.m */,
 				6EE60D190DDF0FBF0069A40E /* NSScreen+Extras.h */,
 				6EE60D1A0DDF0FBF0069A40E /* NSScreen+Extras.m */,
 			);
@@ -2125,6 +2139,7 @@
 				6EC227160F7E9504008FD532 /* GCKHUDTableView.m in Sources */,
 				6EC2271F0F7E9978008FD532 /* GCKHUDTableCell.m in Sources */,
 				6EC227660F7ED324008FD532 /* TFResourceStats.c in Sources */,
+				6E35FD840F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2305,6 +2320,7 @@
 				6EC227170F7E9504008FD532 /* GCKHUDTableView.m in Sources */,
 				6EC227200F7E9978008FD532 /* GCKHUDTableCell.m in Sources */,
 				6EC227670F7ED324008FD532 /* TFResourceStats.c in Sources */,
+				6E35FD830F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

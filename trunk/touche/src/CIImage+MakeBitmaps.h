@@ -21,7 +21,8 @@
 //  You should have received a copy of the GNU Lesser General Public
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
-//  Based on code by: http://www.geekspiff.com/unlinkedCrap/ciImageToBitmap.html
+//  CGContext-backed method based on code by:
+//	http://www.geekspiff.com/unlinkedCrap/ciImageToBitmap.html
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
@@ -44,6 +45,13 @@ void CIImageBitmapsReleaseContext(void* pContext);
 // dynamically by measuring the performance of different methods. Only set this on contexts that you
 // will use to render at least a couple of CIImages with. Off per default.
 void CIImageBitmapsSetContextDeterminesFastestRenderingDynamically(void* pContext, BOOL determineDynamically);
+
+// if set to YES, a 1-pixel wide border is drawn around the image during bitmap-ization, which is useful
+// for some image segmentation methods.
+void CIImageBitmapsSetContextShouldBorderImage(void* pContext, BOOL shouldBorder);
+
+// if image bordering is enabled, this sets the border color of the image
+void CIImageBitmapsSetContextBorderColor(void* pContext, float a, float r, float g, float b);
 
 inline BOOL CIImageBitmapsContextMatchesBitmapSize(void* pContext, CGSize size);
 inline BOOL CIImageBitmapsContextRendersOnCPU(void* pContext);

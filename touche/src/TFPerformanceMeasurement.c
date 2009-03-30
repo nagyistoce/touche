@@ -103,7 +103,7 @@ TFPerformanceMeasureID TFPMCreatePerformanceMeasurement()
 			}
 		}
 		
-		if (TFPMPerformanceMeasurementIDIsValid(result)) {
+		if (NULL != _measures && TFPMPerformanceMeasurementIDIsValid(result)) {
 			memset(pm, 0, sizeof(_TFPerformanceMeasureInternal));
 			_measures[result] = pm;
 		}

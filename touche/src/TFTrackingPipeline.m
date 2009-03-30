@@ -491,11 +491,10 @@ enum {
 		
 		TFBlobLibDc1394InputSource* dcInput = [[TFBlobLibDc1394InputSource alloc] init];
 		dcInput.delegate = self;
+		_blobInput = dcInput;
 		
 		if (nil != dcInput && ![dcInput loadWithConfiguration:configurationDictionary error:error])
 			return NO;
-		
-		_blobInput = dcInput;
 	} else if (TFTrackingPipelineInputMethodQuickTimeKitCamera == inputMethod) {
 		NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
 		
@@ -515,19 +514,17 @@ enum {
 		
 		TFBlobQuicktimeKitInputSource* qtInput = [[TFBlobQuicktimeKitInputSource alloc] init];
 		qtInput.delegate = self;
+		_blobInput = qtInput;
 		
 		if (nil != qtInput && ![qtInput loadWithConfiguration:configurationDictionary error:error])
 			return NO;
-		
-		_blobInput = qtInput;	
 	} else if (TFTrackingPipelineInputMethodWiiRemote == inputMethod) {
 		TFBlobWiiRemoteInputSource* wiiRemoteSource = [[TFBlobWiiRemoteInputSource alloc] init];
 		wiiRemoteSource.delegate = self;
+		_blobInput = wiiRemoteSource;
 		
 		if (nil != wiiRemoteSource && ![wiiRemoteSource loadWithConfiguration:nil error:error])
 			return NO;
-		
-		_blobInput = wiiRemoteSource;
 	} else {
 		if (NULL != error)
 			*error = [NSError errorWithDomain:TFErrorDomain

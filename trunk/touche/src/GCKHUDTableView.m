@@ -101,6 +101,7 @@ NSColor* rowColor, *alternateRowColor, *highlightColor;
 	if ([[[column dataCell] className] isEqualToString:@"NSTextFieldCell"]) {
 		GCKHUDTableCell* cell = [[GCKHUDTableCell alloc] init];
 		[column setDataCell:cell];
+		[cell release];
 	}
 }
 

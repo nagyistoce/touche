@@ -259,9 +259,8 @@ void* TFLCSGuessShmemKey()
 	
 	// first, try our known keys
 	int i = 0;
-	key_t tmp;
 	while(!found && _TFLCSKnownDarwinKeys[i]) {
-		if (-1 != (tmp = shmget(_TFLCSKnownDarwinKeys[i], FLASHLC_SHM_SIZE, 0))) {
+		if (-1 != shmget(_TFLCSKnownDarwinKeys[i], FLASHLC_SHM_SIZE, 0)) {
 			found = 1;
 			key = _TFLCSKnownDarwinKeys[i];
 		}

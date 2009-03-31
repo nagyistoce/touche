@@ -160,8 +160,7 @@
 	p.x = floor(p.x);
 	p.y = floor(p.y);
 	
-	segmentLength = MAX(2.0f, segmentLength);
-	CGFloat lineWidth = 2.0f; //MAX(1.0f, floor(segmentLength));
+	CGFloat lineWidth = 2.0f;
 			
 	glColor4f(r, g, b, a);
 	glLineWidth(lineWidth);
@@ -229,9 +228,9 @@
 	if (nil == blobs)
 		return;
 	
-	CGFloat lineWidth = MIN(2.0, ceil(MAX(1.0f, viewSize.width/320.0f)));
-	CGFloat	numSegmentLength = 2.0; //MIN(3.0, ceil(viewSize.width/320.0f));
-	CGFloat numSpacing = 2.0; //MIN(2.0, ceil(numSegmentLength/2.0));
+	CGFloat lineWidth = 2.0f;
+	CGFloat	numSegmentLength = pictureSize.width/120.0f;
+	CGFloat numSpacing = numSegmentLength/2.0f;
 	
 	for (TFBlob *blob in blobs) {
 		[self _drawBlobBoundingRect:CGRectMake(blob.boundingBox.origin.x,

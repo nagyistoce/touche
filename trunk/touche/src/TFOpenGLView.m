@@ -245,7 +245,7 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 		
 	[[self openGLContext] flushBuffer];
 	
-	[NSOpenGLContext clearCurrentContext];
+	//[NSOpenGLContext clearCurrentContext];
 }
 
 - (CVReturn)drawFrameForTimeStamp:(const CVTimeStamp*)timeStamp

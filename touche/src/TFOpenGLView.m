@@ -122,13 +122,15 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 	glDisable(GL_BLEND);
 	glDisable(GL_DITHER);
 	glDisable(GL_CULL_FACE);
+	glDisable(GL_LIGHTING);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glDepthMask(GL_FALSE);
 	glStencilMask (0);
 	glHint(GL_TRANSFORM_HINT_APPLE, GL_FASTEST);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	
-	GLint swapInterval = 1;
+	// turn v-sync off for better performance
+	GLint swapInterval = 0;
 	[[self openGLContext] setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
 	
 	_needsReshape = YES;
@@ -186,8 +188,6 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 	@synchronized(self) {
 		[[self openGLContext] makeCurrentContext];
 
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		if (nil != _ciimage) {
 			CGRect		imageRect;
 
@@ -221,6 +221,8 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 				glLoadIdentity();
 				gluOrtho2D(minX*_zoomX, maxX*_zoomX, minY*_zoomY, maxY*_zoomY);
 				
+				glClear(GL_COLOR_BUFFER_BIT);
+				
 				_needsReshape = NO;
 			}
 					
@@ -238,7 +240,7 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 										   pictureSize:imageRect.size
 											  viewSize:CGSizeMake(frame.size.width, frame.size.height)];
 			glPopMatrix();
-		}
+		}		
 	}
 		
 	[[self openGLContext] flushBuffer];

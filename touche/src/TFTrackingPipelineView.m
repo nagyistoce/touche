@@ -94,6 +94,9 @@
 		}
 	}
 	
+	if (kCVReturnSuccess == success)
+		success = [super drawFrameForTimeStamp:timeStamp];
+	
 	[pool release];
 	
 	return success;

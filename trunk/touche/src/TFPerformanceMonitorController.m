@@ -90,6 +90,8 @@ enum {
 												   userInfo:nil
 													repeats:YES] retain];
 	
+	[[NSRunLoop currentRunLoop] addTimer:_updateTimer forMode:NSEventTrackingRunLoopMode];
+	
 	[self _updatePerformanceMeasurements:_updateTimer];
 	
 	[super showWindow:sender];
@@ -254,7 +256,7 @@ enum {
 		TFRSGetTaskMemoryUsage(TFRSCurrentTask(), &_realMemBytes, &_virtualMemBytes, NULL);
 		
 		[_taskTableView reloadData];
-	}
+	}	
 }
 
 @end

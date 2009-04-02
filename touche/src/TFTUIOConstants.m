@@ -25,12 +25,14 @@
 #import "TFTUIOConstants.h"
 
 
-NSString* kTFTUIOProfileAddressString	= @"/tuio/2Dcur";
+NSString* kTFTUIO10CursorProfileAddressString	= @"/tuio/2Dcur";
 
-NSString* kTFTUIOSourceArgumentName					= @"source";
-NSString* kTFTUIOFrameSequenceNumberArgumentName	= @"fseq";
-NSString* kTFTUIOAliveArgumentName					= @"alive";
-NSString* kTFTUIOSetArgumentName					= @"set";
+NSString* kTFTUIO11BlobProfileAddressString		= @"/tuio/2Dblb";
+
+NSString* kTFTUIO10SourceArgumentName				= @"source";
+NSString* kTFTUIO10FrameSequenceNumberArgumentName	= @"fseq";
+NSString* kTFTUIO10AliveArgumentName				= @"alive";
+NSString* kTFTUIO10SetArgumentName					= @"set";
 
 NSString* TFTUIOConstantsSourceName()
 {
@@ -57,4 +59,63 @@ NSString* TFTUIOConstantsSourceName()
 	}
 	
 	return appName;
+}
+
+NSString* TFTUIOVersionToString(TFTUIOVersion ver)
+{
+	id rv = nil;
+	
+	switch(ver) {
+		case TFTUIOVersion1_0:
+			rv = [NSString stringWithString:NSLocalizedString(@"TUIOVersion1.0",
+															  @"TUIOVersion1.0")];
+			break;
+		case TFTUIOVersion1_0And1_1Blobs:
+			rv = [NSString stringWithString:NSLocalizedString(@"TUIOVersion1.0+1.1Blobs",
+															  @"TUIOVersion1.0+1.1Blobs")];
+			break;
+		case TFTUIOVersion1_1Blobs:
+			rv = [NSString stringWithString:NSLocalizedString(@"TFTUIOVersion1.1Blobs",
+															  @"TFTUIOVersion1.1Blobs")];
+			break;
+	}
+	
+	return rv;
+}
+
+NSMenu* TFTUIOVersionSelectionMenu()
+{
+	NSMenu* menu = [[NSMenu alloc] initWithTitle:NSLocalizedString(@"TFTUIOVersionMenuTitle",
+																   @"TFTUIOVersionMenuTitle")];
+	
+	[menu setAutoenablesItems:NO];
+	
+	int i;
+	for (i=TFTUIOVersionMin; i<=TFTUIOVersionMax; i++) {
+		NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:TFTUIOVersionToString(i)
+													  action:NULL
+											   keyEquivalent:[NSString string]];
+		
+		[item setTag:i];
+		[menu addItem:item];
+		
+		[item release];
+	}
+	
+	return [menu autorelease];
+}
+
+TFTUIOVersion TFTUIOVersionForMenuItem(NSMenuItem* item)
+{
+	TFTUIOVersion ver = [item tag];
+	
+	if (TFTUIOVersionMin > ver || TFTUIOVersionMax < ver)
+		ver = TFTUIOVersionMin;
+	
+	return ver;
+}
+
+NSInteger TFTUIOIndexForMenuItemWithVersion(NSMenu* menu, TFTUIOVersion ver)
+{
+	return [menu indexOfItemWithTag:ver];
 }

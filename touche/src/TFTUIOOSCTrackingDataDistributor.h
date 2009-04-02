@@ -25,6 +25,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "TFTUIOTrackingDataDistributor.h"
+#import "TFTUIOConstants.h"
 
 
 @class TFTUIOOSCServer, TFTUIOOSCTrackingDataReceiver, BBOSCPacket;
@@ -43,6 +44,7 @@
 - (BOOL)canAskReceiversToQuit;
 
 - (BOOL)addTUIOClientAtHost:(NSString*)host port:(UInt16)port error:(NSError**)error;
+- (BOOL)addTUIOClientAtHost:(NSString*)host port:(UInt16)port tuioVersion:(TFTUIOVersion)version error:(NSError**)error;
 - (void)removeTUIOClient:(TFTUIOOSCTrackingDataReceiver*)client;
 
 - (void)sendTUIOPacket:(BBOSCPacket*)packet toEndpoint:(NSData*)sockAddr;

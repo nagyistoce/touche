@@ -30,11 +30,19 @@
 @interface TFBlobBox : NSObject <NSCopying, NSCoding> {
 	TFBlobPoint*		origin;
 	TFBlobSize*			size;
+	
+	double				angle;
+	double				angularMotion;
+	double				angularAcceleration;
 }
 
 @property (retain) TFBlobPoint* origin;
 @property (retain) TFBlobSize* size;
+@property (assign) double angle;
+@property (assign) double angularMotion;
+@property (assign) double angularAcceleration;
 
 - (id)initWithOrigin:(TFBlobPoint*)o size:(TFBlobSize*)s;
+- (id)initWithOrigin:(TFBlobPoint*)o size:(TFBlobSize*)s angle:(double)anAngle;
 
 @end

@@ -35,6 +35,6 @@ NSString* TFFlashXMLTUIOFrameSequenceMessage(NSUInteger frameSequenceNumber);
 NSString* TFFlashXMLTUIOBundle(NSArray* activeBlobs, NSArray* movingBlobs, NSString* host, UInt16 port, NSUInteger fseq);
 
 @interface TFBlob (TFFlashXMLTUIOGeneration)
-- (NSString*)flashXmlTuioAliveArgument;
-- (NSString*)flashXmlTuioSetMessage;
+- (NSString*)flashXmlTuio10AliveArgument;
+- (NSString*)flashXmlTuio10CursorSetMessage;
 @end

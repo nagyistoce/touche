@@ -149,7 +149,7 @@ int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, cons
 							   movedTouches:(NSArray*)movedTouches
 								frameNumber:(NSUInteger)frameNumber
 {
-	BBOSCBundle* tuioBundle = TFTUIOPCBundleWithData(frameNumber, livingTouches, movedTouches);
+	BBOSCBundle* tuioBundle = TFTUIOPC10CursorBundleWithData(frameNumber, livingTouches, movedTouches);
 	
 	@synchronized (_receivers) {
 		for (TFTUIOFlashLCTrackingDataReceiver* receiver in [_receivers allValues])

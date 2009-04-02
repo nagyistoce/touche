@@ -35,7 +35,9 @@ typedef TFBlobPoint TFBlobVector;
 	TFBlobPoint*		center;
 	TFBlobPoint*		previousCenter;
 	TFBlobVector*		acceleration;
-	TFBlobBox*			boundingBox;
+	TFBlobBox*			axisAlignedBoundingBox;
+	TFBlobBox*			orientedBoundingBox;
+	double				area;
 	NSArray*			edgeVertices;
 	TFBlobLabel*		label;
 	BOOL				isUpdate;
@@ -47,13 +49,18 @@ typedef TFBlobPoint TFBlobVector;
 @property (retain) TFBlobPoint* center;
 @property (retain) TFBlobPoint* previousCenter;
 @property (retain) TFBlobVector* acceleration;
-@property (retain) TFBlobBox* boundingBox;
+@property (retain) TFBlobBox* axisAlignedBoundingBox;
+@property (retain) TFBlobBox* orientedBoundingBox;
 @property (retain) NSArray* edgeVertices;
 @property (retain) TFBlobLabel* label;
+@property (assign) double area;
 @property (assign) BOOL isUpdate;
 @property (readonly) NSTimeInterval createdAt;
 @property (assign) NSTimeInterval previousCreatedAt;
 @property (assign) NSTimeInterval trackedSince;
+
+// for historical reasons. This is an alias to the axisAlignedBoundingBox
+@property (retain) TFBlobBox* boundingBox;
 
 + (id)blob;
 + (id)blobWithCenter:(TFBlobPoint*)c;

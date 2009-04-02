@@ -32,6 +32,9 @@
 
 @synthesize origin;
 @synthesize size;
+@synthesize angle;
+@synthesize angularMotion;
+@synthesize angularAcceleration;
 
 - (void)dealloc
 {
@@ -48,6 +51,13 @@
 
 - (id)initWithOrigin:(TFBlobPoint*)o size:(TFBlobSize*)s
 {
+	return [self initWithOrigin:o
+						   size:s
+						  angle:0.0];
+}
+
+- (id)initWithOrigin:(TFBlobPoint*)o size:(TFBlobSize*)s angle:(double)anAngle
+{
 	if (!(self = [super init])) {
 		[self release];
 		return nil;
@@ -63,6 +73,10 @@
 	else
 		size = [[TFBlobSize alloc] init];
 	
+	self->angle = anAngle;
+	self->angularMotion = 0.0;
+	self->angularAcceleration = 0.0;
+	
 	return self;
 }
 
@@ -73,8 +87,8 @@
 {
 	TFBlobBox* aCopy = NSCopyObject(self, 0, zone);
 	
-	aCopy->origin = [self.origin copy];
-	aCopy->size = [self.size copy];
+	aCopy->origin = [self->origin copy];
+	aCopy->size = [self->size copy];
 	
 	return aCopy;
 }
@@ -87,13 +101,26 @@
 	TFBlobPoint* originC	= [coder decodeObject];
 	TFBlobSize* sizeC		= [coder decodeObject];
 	
-	return [self initWithOrigin:originC size:sizeC];
+	double a, am, aa;
+	[coder decodeValueOfObjCType:@encode(double) at:&a];
+	[coder decodeValueOfObjCType:@encode(double) at:&am];
+	[coder decodeValueOfObjCType:@encode(double) at:&aa];
+	
+	self = [self initWithOrigin:originC size:sizeC angle:a];
+	
+	self->angularMotion = am;
+	self->angularAcceleration = aa;
+	
+	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {	
 	[coder encodeObject:origin];
 	[coder encodeObject:size];
+	[coder encodeValueOfObjCType:@encode(double) at:&angle];
+	[coder encodeValueOfObjCType:@encode(double) at:&angularMotion];
+	[coder encodeValueOfObjCType:@encode(double) at:&angularAcceleration];
 }
 
 #pragma mark -

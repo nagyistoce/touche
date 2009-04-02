@@ -26,13 +26,20 @@
 
 #import "TFLocalization.h"
 #import "TFIPSocket.h"
+#import "TFTUIOConstants.h"
 #import "TFTUIOOSCTrackingDataDistributor.h"
 
 
 #define	DEFAULT_HOST	(@"127.0.0.1")
 #define DEFAULT_PORT	(@"3333")
+#define DEFAULT_VER		(TFTUIOVersionMin)
 
-NSString* tFTUIOPixelsForMotionPreferenceKey = @"tFTUIOPixelsForMotion";
+NSString* kTFTUIOClientOptionHost				= @"host";
+NSString* kTFTUIOClientOptionPort				= @"port";
+NSString* kTFTUIOClientOptionVersion			= @"tuioVersion";
+
+NSString* tFTUIOPixelsForMotionPreferenceKey	= @"tFTUIOPixelsForMotion";
+NSString* tFTUIOOSCLastClientOptionsPrefKey		= @"tFTUIOOSCLastClientOptions";
 
 @interface TFTUIOOSCSettingsController (PrivateMethods)
 - (void)_addClientFromPanelThread;
@@ -41,6 +48,21 @@ NSString* tFTUIOPixelsForMotionPreferenceKey = @"tFTUIOPixelsForMotion";
 @implementation TFTUIOOSCSettingsController
 
 @synthesize distributor;
+
++ (void)initialize
+{
+	NSDictionary* clientOptions = [NSDictionary dictionaryWithObjectsAndKeys:
+									DEFAULT_HOST, kTFTUIOClientOptionHost,
+									DEFAULT_PORT, kTFTUIOClientOptionPort,
+								    [NSNumber numberWithInteger:DEFAULT_VER], kTFTUIOClientOptionVersion,
+									nil];
+	
+	NSDictionary* prefs = [NSDictionary dictionaryWithObjectsAndKeys:
+							clientOptions, tFTUIOOSCLastClientOptionsPrefKey,
+							nil];
+	
+	[[NSUserDefaults standardUserDefaults] registerDefaults:prefs];
+}
 
 + (float)pixelsForBlobMotion
 {
@@ -55,6 +77,13 @@ NSString* tFTUIOPixelsForMotionPreferenceKey = @"tFTUIOPixelsForMotion";
 		 withKeyPath:[NSString stringWithFormat:@"values.%@", tFTUIOPixelsForMotionPreferenceKey]
 			 options:nil];
 	}
+}
+
+- (void)awakeFromNib
+{
+	NSMenu* menu = TFTUIOVersionSelectionMenu();
+	
+	[_addClientTUIOVersionPopup setMenu:menu];
 }
 
 - (id)init
@@ -97,9 +126,17 @@ NSString* tFTUIOPixelsForMotionPreferenceKey = @"tFTUIOPixelsForMotion";
 	
 	if (!_addClientPanelShown) {
 		[_addClientErrorLabel setHidden:YES];
+		
+		NSDictionary* lastOptions = [[NSUserDefaults standardUserDefaults]
+										dictionaryForKey:tFTUIOOSCLastClientOptionsPrefKey];
 	
-		[_addClientHostField setStringValue:DEFAULT_HOST];
-		[_addClientPortField setStringValue:DEFAULT_PORT];
+		[_addClientHostField setStringValue:[lastOptions objectForKey:kTFTUIOClientOptionHost]];
+		[_addClientPortField setStringValue:[lastOptions objectForKey:kTFTUIOClientOptionPort]];
+		
+		TFTUIOVersion lastVersion = [[lastOptions objectForKey:kTFTUIOClientOptionVersion] integerValue];
+		NSInteger index = TFTUIOIndexForMenuItemWithVersion([_addClientTUIOVersionPopup menu], lastVersion);
+		if (-1 != index)
+			[_addClientTUIOVersionPopup selectItemAtIndex:index];
 		
 		[_addClientHostField selectText:sender];
 	}
@@ -131,19 +168,31 @@ NSString* tFTUIOPixelsForMotionPreferenceKey = @"tFTUIOPixelsForMotion";
 	
 	NSInteger port = [_addClientPortField intValue];
 	NSString* host = [_addClientHostField stringValue];
+	TFTUIOVersion tuioVersion = TFTUIOVersionForMenuItem([_addClientTUIOVersionPopup selectedItem]);
+	
 	if(![TFIPSocket resolveName:host intoAddress:NULL]) {
 		[_addClientErrorLabel setStringValue:TFLocalizedString(@"TFTUIOAddClientInvalidHost", @"TFTUIOAddClientInvalidHost")];
 		[_addClientErrorLabel setHidden:NO];
 	} else if (port <= 0 || port > 65535) {
 		[_addClientErrorLabel setStringValue:TFLocalizedString(@"TFTUIOAddClientInvalidPort", @"TFTUIOAddClientInvalidPort")];
 		[_addClientErrorLabel setHidden:NO];
-	} else if (![distributor addTUIOClientAtHost:host port:port error:NULL]) {
+	// TODO: set client version here!
+	} else if (![distributor addTUIOClientAtHost:host port:port tuioVersion:tuioVersion error:NULL]) {
 		[_addClientErrorLabel setStringValue:TFLocalizedString(@"TFTUIOAddClientAlreadyExists", @"TFTUIOAddClientAlreadyExists")];
 		[_addClientErrorLabel setHidden:NO];
 	} else {
 		[_addClientPanel performSelectorOnMainThread:@selector(orderOut:)
 										  withObject:nil
 									   waitUntilDone:NO];
+	
+		NSDictionary* clientOptions = [NSDictionary dictionaryWithObjectsAndKeys:
+									   host, kTFTUIOClientOptionHost,
+									   [_addClientPortField stringValue], kTFTUIOClientOptionPort,
+									   [NSNumber numberWithInteger:tuioVersion], kTFTUIOClientOptionVersion,
+									   nil];
+		
+		[[NSUserDefaults standardUserDefaults] setObject:clientOptions
+												  forKey:tFTUIOOSCLastClientOptionsPrefKey];
 	}
 	
 	/* [_addClientProgressIndicator performSelectorOnMainThread:@selector(stopAnimation:)

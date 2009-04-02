@@ -25,11 +25,34 @@
 #import <Foundation/Foundation.h>
 
 
-extern NSString*	kTFTUIOProfileAddressString;
+extern NSString*	kTFTUIO10CursorProfileAddressString;
 
-extern NSString*	kTFTUIOSourceArgumentName;
-extern NSString*	kTFTUIOFrameSequenceNumberArgumentName;
-extern NSString*	kTFTUIOAliveArgumentName;
-extern NSString*	kTFTUIOSetArgumentName;
+extern NSString*	kTFTUIO11BlobProfileAddressString;
+
+extern NSString*	kTFTUIO10SourceArgumentName;
+extern NSString*	kTFTUIO10FrameSequenceNumberArgumentName;
+extern NSString*	kTFTUIO10AliveArgumentName;
+extern NSString*	kTFTUIO10SetArgumentName;
+
+typedef enum {
+	TFTUIOVersion1_0				= 0,
+	TFTUIOVersion1_1Blobs			= 1,
+	TFTUIOVersion1_0And1_1Blobs		= 2
+} TFTUIOVersion;
+
+#define	TFTUIOVersionMin		(TFTUIOVersion1_0)
+#define TFTUIOVersionMax		(TFTUIOVersion1_0And1_1Blobs)
+#define TFTUIOVersionCount		((TFTUIOVersionMax) - (TFTUIOVersionMin) + 1)
+
+#define TFTUIOVersionDefault	(TFTUIOVersion1_0)
 
 NSString* TFTUIOConstantsSourceName();
+
+NSString* TFTUIOVersionToString(TFTUIOVersion ver);
+
+NSMenu* TFTUIOVersionSelectionMenu();
+
+TFTUIOVersion TFTUIOVersionForMenuItem(NSMenuItem* item);
+
+// -1 on error, index of the item otherwise
+NSInteger TFTUIOIndexForMenuItemWithVersion(NSMenu* menu, TFTUIOVersion ver);

@@ -24,13 +24,31 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "TFTUIOConstants.h"
+
 
 @class BBOSCAddress, BBOSCBundle, BBOSCMessage;
 
-BBOSCAddress* TFTUIOPCProfileAddress();
-BBOSCMessage* TFTUIOPCSourceMessage();
-BBOSCMessage* TFTUIOPCFrameSequenceNumberMessageForFrameNumber(NSInteger frameNumber);
-BBOSCMessage* TFTUIOPCAliveMessageForBlobs(NSArray* blobs);
-BBOSCBundle* TFTUIOPCBundleWithData(NSInteger frameNumber,
-									NSArray* activeBlobs,
-									NSArray* movedBlobs);
+BBOSCAddress* TFTUIOPC10CursorProfileAddress();
+BBOSCMessage* TFTUIOPC10CursorSourceMessage();
+BBOSCMessage* TFTUIOPC10CursorFrameSequenceNumberMessageForFrameNumber(NSInteger frameNumber);
+BBOSCMessage* TFTUIOPC10CursorAliveMessageForBlobs(NSArray* blobs);
+
+BBOSCAddress* TFTUIOPC11BlobProfileAddress();
+BBOSCMessage* TFTUIOPC11BlobSourceMessage();
+BBOSCMessage* TFTUIOPC11BlobFrameSequenceNumberMessageForFrameNumber(NSInteger frameNumber);
+BBOSCMessage* TFTUIOPC11BlobAliveMessageForBlobs(NSArray* blobs);
+
+// returns a BBOSCPacket or an NSArray if multiple packets have to be sent for a given version
+id TFTUIOPCBundleWithDataForTUIOVersion(TFTUIOVersion version,
+										NSInteger frameNumber,
+										NSArray* activeBlobs,
+										NSArray* movedBlobs);
+
+BBOSCBundle* TFTUIOPC10CursorBundleWithData(NSInteger frameNumber,
+											NSArray* activeBlobs,
+											NSArray* movedBlobs);
+
+BBOSCBundle* TFTUIOPC11BlobsBundleWithData(NSInteger frameNumber,
+										   NSArray* activeBlobs,
+										   NSArray* movedBlobs);

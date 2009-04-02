@@ -34,6 +34,7 @@
 	IBOutlet NSTextField*			_addClientPortField;
 	IBOutlet NSTextField*			_addClientErrorLabel;
 	IBOutlet NSProgressIndicator*	_addClientProgressIndicator;
+	IBOutlet NSPopUpButton*			_addClientTUIOVersionPopup;
 	
 	BOOL							_addClientPanelShown;
 	NSThread*						_addClientThread;
@@ -41,9 +42,11 @@
 
 @property (nonatomic, retain) TFTUIOOSCTrackingDataDistributor* distributor;
 
++ (void)initialize;
 + (float)pixelsForBlobMotion;
 + (void)bindPixelsForBlobMotionToObject:(id)object keyPath:(NSString*)keyPath;
 
+- (void)awakeFromNib;
 - (id)init;
 - (void)dealloc;
 

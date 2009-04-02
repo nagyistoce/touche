@@ -27,6 +27,7 @@
 #import "TFIncludes.h"
 #import "TFBlob.h"
 #import "TFBlobPoint.h"
+#import "TFBlobBox.h"
 #import "TFBlobLabel.h"
 #import "TFLabelFactory.h"
 
@@ -71,6 +72,11 @@
 	float xAccel = newBlob.center.x - 2*oldBlob.center.x + oldBlob.previousCenter.x;
 	float yAccel = newBlob.center.y - 2*oldBlob.center.y + oldBlob.previousCenter.y;
 	newBlob.acceleration = [TFBlobVector pointWithX:xAccel Y:yAccel];
+	
+	// compute oriented bounding box angular motion and acceleration.
+	TFBlobBox *b = newBlob.orientedBoundingBox, *b2 = oldBlob.orientedBoundingBox;
+	b.angularMotion = b.angle - b2.angle;
+	b.angularAcceleration = b.angularMotion - b2.angularMotion;
 }
 
 - (void)prepareUnmatchedBlobForRemoval:(TFBlob*)blob

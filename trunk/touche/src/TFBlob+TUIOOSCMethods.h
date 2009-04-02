@@ -31,7 +31,10 @@
 
 @interface TFBlob (TUIOOSCMethods)
 
-- (BBOSCArgument*)tuioAliveArgument;
-- (BBOSCMessage*)tuioSetMessageForCurrentState;
+- (BBOSCArgument*)tuio10AliveArgument;
+- (BBOSCMessage*)tuio10CursorSetMessageForCurrentState;
+
+- (BBOSCArgument*)tuio11AliveArgument;
+- (BBOSCMessage*)tuio11BlobSetMessageForCurrentState;
 
 @end

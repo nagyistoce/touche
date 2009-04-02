@@ -31,6 +31,7 @@
 #import "TFBlobBox.h"
 
 @interface TFCamera2ScreenCoordinatesConverter (NonPublicMethods)
+- (BOOL)_transformBlobBoxFromCameraToScreen:(TFBlobBox*)box errors:(NSMutableArray**)errCollection;
 - (void)_recordError:(NSError*)error intoArrayAt:(NSMutableArray**)array;
 @end
 
@@ -209,28 +210,8 @@
 			[self _recordError:error intoArrayAt:&errCollection];
 		
 		if (transformsBoundingBox) {
-			TFBlobPoint* topLeftCorner = blob.boundingBox.origin;
-			TFBlobPoint* bottomRightCorner =
-				[TFBlobPoint pointWithX:blob.boundingBox.origin.x + blob.boundingBox.size.width
-									  Y:blob.boundingBox.origin.y + blob.boundingBox.size.height];
-			
-			if (![self transformPointFromCameraToScreen:topLeftCorner error:&error])
-				[self _recordError:error intoArrayAt:&errCollection];
-			
-			if (![self transformPointFromCameraToScreen:bottomRightCorner error:&error])
-				[self _recordError:error intoArrayAt:&errCollection];
-			
-			// we need to look at the transformed positions of the two points defining the transformed
-			// bounding box in order to compute the correct dimensions for the transformed box
-			float minX = MIN(topLeftCorner.x, bottomRightCorner.x);
-			float maxX = MAX(topLeftCorner.x, bottomRightCorner.x);
-			float minY = MIN(topLeftCorner.y, bottomRightCorner.y);
-			float maxY = MAX(topLeftCorner.y, bottomRightCorner.y);
-			
-			blob.boundingBox.origin.x = minX;
-			blob.boundingBox.origin.y = minY;
-			blob.boundingBox.size.width = maxX-minX;
-			blob.boundingBox.size.height = maxY-minY;
+			[self _transformBlobBoxFromCameraToScreen:blob.axisAlignedBoundingBox errors:&errCollection];
+			[self _transformBlobBoxFromCameraToScreen:blob.orientedBoundingBox errors:&errCollection];
 		}
 		
 		if (transformsEdgeVertices) {
@@ -248,6 +229,35 @@
 	}
 	
 	return (nil == errCollection);
+}
+
+- (BOOL)_transformBlobBoxFromCameraToScreen:(TFBlobBox*)box errors:(NSMutableArray**)errCollection
+{
+	NSError* error;
+	TFBlobPoint* topLeftCorner = box.origin;
+	TFBlobPoint* bottomRightCorner =
+			[TFBlobPoint pointWithX:box.origin.x + box.size.width
+								  Y:box.origin.y + box.size.height];
+	
+	if (![self transformPointFromCameraToScreen:topLeftCorner error:&error])
+		[self _recordError:error intoArrayAt:errCollection];
+	
+	if (![self transformPointFromCameraToScreen:bottomRightCorner error:&error])
+		[self _recordError:error intoArrayAt:errCollection];
+	
+	// we need to look at the transformed positions of the two points defining the transformed
+	// bounding box in order to compute the correct dimensions for the transformed box
+	float minX = MIN(topLeftCorner.x, bottomRightCorner.x);
+	float maxX = MAX(topLeftCorner.x, bottomRightCorner.x);
+	float minY = MIN(topLeftCorner.y, bottomRightCorner.y);
+	float maxY = MAX(topLeftCorner.y, bottomRightCorner.y);
+	
+	box.origin.x = minX;
+	box.origin.y = minY;
+	box.size.width = maxX-minX;
+	box.size.height = maxY-minY;
+	
+	return YES;
 }
 
 - (void)_recordError:(NSError*)error intoArrayAt:(NSMutableArray**)array

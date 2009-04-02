@@ -33,12 +33,22 @@
 
 @implementation TFTUIOOSCTrackingDataReceiver
 
+@synthesize tuioVersion;
+
 - (id)init
 {
 	return [self initWithHost:@"127.0.0.1" port:3333 error:NULL];
 }
 
 - (id)initWithHost:(NSString*)host port:(UInt16)port error:(NSError**)error
+{
+	return [self initWithHost:host
+						 port:port
+				  tuioVersion:TFTUIOVersionDefault
+						error:error];
+}
+
+- (id)initWithHost:(NSString*)host port:(UInt16)port tuioVersion:(TFTUIOVersion)version error:(NSError**)error
 {
 	in_addr_t inAddr;
 	
@@ -76,6 +86,8 @@
 		peer.sin_port = htons(port);
 		
 		_peerSA = [[NSData alloc] initWithBytes:&peer length:sizeof(struct sockaddr_in)];
+		
+		self.tuioVersion = version;
 	}
 	
 	return self;
@@ -98,9 +110,13 @@
 // trackingData is of type BBOSCPacket*
 - (void)consumeTrackingData:(id)trackingData
 {
-	if ([trackingData isKindOfClass:[BBOSCPacket class]]) {
-		TFTUIOOSCTrackingDataDistributor* distributor = (TFTUIOOSCTrackingDataDistributor*)self.owningDistributor;
+	TFTUIOOSCTrackingDataDistributor* distributor = (TFTUIOOSCTrackingDataDistributor*)self.owningDistributor;
+	
+	if ([trackingData isKindOfClass:[BBOSCPacket class]])
 		[distributor sendTUIOPacket:trackingData toEndpoint:self->_peerSA];
+	else if ([trackingData isKindOfClass:[NSArray class]]) {
+		for (BBOSCPacket* packet in (NSArray*)trackingData)
+			[distributor sendTUIOPacket:packet toEndpoint:self->_peerSA];
 	}
 }
 

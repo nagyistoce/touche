@@ -29,11 +29,24 @@
 
 @interface TFBlob (TUIOMethods)
 
-- (void)getTuioDataForCurrentStateWithSessionID:(NSInteger*)sessionID
-									  positionX:(float*)xPos
-									  positionY:(float*)yPos
-										motionX:(float*)xDelta
-										motionY:(float*)yDelta
-								   acceleration:(float*)accel;
+- (void)getTuio10CursorSetMessageForCurrentStateWithSessionID:(NSInteger*)sessionID
+													positionX:(float*)xPos
+													positionY:(float*)yPos
+													  motionX:(float*)xDelta
+													  motionY:(float*)yDelta
+												 acceleration:(float*)accel;
+
+- (void)getTuio11BlobSetMessageForCurrentStateWithSessionID:(NSInteger*)sessionID
+												  positionX:(float*)xPos
+												  positionY:(float*)yPos
+													  angle:(float*)angle
+													  width:(float*)width
+													 height:(float*)height
+													   area:(float*)area
+													motionX:(float*)xDelta
+													motionY:(float*)yDelta
+											  motionAngular:(float*)aDelta
+											   acceleration:(float*)accel
+										 motionAcceleration:(float*)aAccel;
 
 @end

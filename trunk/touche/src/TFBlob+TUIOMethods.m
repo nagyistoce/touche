@@ -25,43 +25,45 @@
 #import "TFBlob+TUIOMethods.h"
 
 #import "TFScreenPreferencesController.h"
-#import "TFBlobPoint.h"
 #import "TFBlobLabel.h"
+#import "TFBlobPoint.h"
+#import "TFBlobBox.h"
+#import "TFBlobSize.h"
 
 
 @implementation TFBlob (TUIOMethods)
 
-- (void)getTuioDataForCurrentStateWithSessionID:(NSInteger*)sessionID
-									  positionX:(float*)xPos
-									  positionY:(float*)yPos
-										motionX:(float*)xDelta
-										motionY:(float*)yDelta
-								   acceleration:(float*)accel
+- (void)getTuio10CursorSetMessageForCurrentStateWithSessionID:(NSInteger*)sessionID
+													positionX:(float*)xPos
+													positionY:(float*)yPos
+													  motionX:(float*)xDelta
+													  motionY:(float*)yDelta
+												 acceleration:(float*)accel
 {	
 	NSSize screenSize = [[TFScreenPreferencesController screen] frame].size;
 
 	if (NULL != sessionID)
-		*sessionID = self.label.intLabel;
+		*sessionID = self->label.intLabel;
 		
 	if (NULL != xPos)
-		*xPos = self.center.x/screenSize.width;
+		*xPos = self->center.x/screenSize.width;
 	// Touché uses Quartz-style coordinates with the origin at the bottom left,
 	// but TUIO has the origin in the upper left, meaning that we need to invert
 	// the y coordinate here.
 	if (NULL != yPos)
-		*yPos = (1.0f - self.center.y/screenSize.height);
+		*yPos = (1.0f - self->center.y/screenSize.height);
 	
 	float xD, yD, a;
 	if (self.isUpdate) {
-		NSTimeInterval secsSinceLast = self.createdAt - self.previousCreatedAt;
+		NSTimeInterval secsSinceLast = self->createdAt - self->previousCreatedAt;
 		
-		xD = ((self.center.x - self.previousCenter.x)/screenSize.width) / secsSinceLast;
+		xD = ((self->center.x - self->previousCenter.x)/screenSize.width) / secsSinceLast;
 		// like the position, we need to invert the yDelta
-		yD = -((self.center.y - self.previousCenter.y)/screenSize.height) / secsSinceLast;
+		yD = -((self->center.y - self->previousCenter.y)/screenSize.height) / secsSinceLast;
 		
-		float xAccel = (self.acceleration.x/screenSize.width) / secsSinceLast;
+		float xAccel = (self->acceleration.x/screenSize.width) / secsSinceLast;
 		// we don't need to invert y accel here, since we're just interested into the vec length anyway
-		float yAccel = (self.acceleration.y/screenSize.height) / secsSinceLast;
+		float yAccel = (self->acceleration.y/screenSize.height) / secsSinceLast;
 		a = hypot(xAccel, yAccel);
 	} else {
 		// if this blob is new (i.e. not an update), we set the motion vector and acceleration to 0.0.
@@ -76,6 +78,48 @@
 	
 	if (NULL != accel)
 		*accel = a;
+}
+
+- (void)getTuio11BlobSetMessageForCurrentStateWithSessionID:(NSInteger*)sessionID
+												  positionX:(float*)xPos
+												  positionY:(float*)yPos
+													  angle:(float*)angle
+													  width:(float*)width
+													 height:(float*)height
+													   area:(float*)pArea
+													motionX:(float*)xDelta
+													motionY:(float*)yDelta
+											  motionAngular:(float*)aDelta
+											   acceleration:(float*)accel
+										 motionAcceleration:(float*)aAccel
+{
+	[self getTuio10CursorSetMessageForCurrentStateWithSessionID:sessionID
+													  positionX:xPos
+													  positionY:yPos
+														motionX:xDelta
+														motionY:yDelta
+												   acceleration:accel];
+	
+	NSSize screenSize = [[TFScreenPreferencesController screen] frame].size;
+	NSTimeInterval secsSinceLast = self->createdAt - self->previousCreatedAt;
+	
+	if (NULL != angle)
+		*angle = self->orientedBoundingBox.angle;
+	
+	if (NULL != width)
+		*width = self->orientedBoundingBox.size.width / screenSize.width;
+	
+	if (NULL != height)
+		*height = self->orientedBoundingBox.size.height / screenSize.height;
+	
+	if (NULL != pArea)
+		*pArea = self->area / (screenSize.height * screenSize.width);
+	
+	if (NULL != aDelta)
+		*aDelta = self->orientedBoundingBox.angularMotion / secsSinceLast;
+	
+	if (NULL != aAccel)
+		*aAccel = self->orientedBoundingBox.angularAcceleration / secsSinceLast;
 }
 
 @end

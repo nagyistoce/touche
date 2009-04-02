@@ -86,10 +86,19 @@
 
 - (BOOL)addTUIOClientAtHost:(NSString*)host port:(UInt16)port error:(NSError**)error
 {
+	return [self addTUIOClientAtHost:host
+								port:port
+						 tuioVersion:TFTUIOVersionDefault
+							   error:error];
+}
+
+- (BOOL)addTUIOClientAtHost:(NSString*)host port:(UInt16)port tuioVersion:(TFTUIOVersion)version error:(NSError**)error
+{
 	BOOL success = NO;
 	TFTUIOOSCTrackingDataReceiver* receiver = [[TFTUIOOSCTrackingDataReceiver alloc] initWithHost:host
-																					   port:port
-																					  error:error];
+																							 port:port
+																					  tuioVersion:version
+																							error:error];
 	
 	if (nil != [_receivers objectForKey:receiver.receiverID]) {
 		// TODO: report error that this address is already being served TUIO data
@@ -134,11 +143,20 @@
 							   movedTouches:(NSArray*)movedTouches
 								frameNumber:(NSUInteger)frameNumber
 {
-	BBOSCBundle* tuioBundle = TFTUIOPCBundleWithData(frameNumber, livingTouches, movedTouches);
+	BBOSCBundle* tuioBundles[TFTUIOVersionCount];
+	memset(tuioBundles, 0, sizeof(BBOSCBundle*)*TFTUIOVersionCount);
 		
 	@synchronized (_receivers) {
-		for (TFTUIOOSCTrackingDataReceiver* receiver in [_receivers allValues])
-			[receiver consumeTrackingData:tuioBundle];
+		for (TFTUIOOSCTrackingDataReceiver* receiver in [_receivers allValues]) {
+			TFTUIOVersion version = receiver.tuioVersion;
+			if (nil == tuioBundles[version])
+				tuioBundles[version] = TFTUIOPCBundleWithDataForTUIOVersion(version,
+																			frameNumber,
+																			livingTouches,
+																			movedTouches);
+		
+			[receiver consumeTrackingData:tuioBundles[version]];
+		}
 	}
 }
 

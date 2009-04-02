@@ -26,14 +26,19 @@
 
 #import "TFTrackingDataReceiver.h"
 #import "TFIPSocket.h"
+#import "TFTUIOConstants.h"
 
 
 @interface TFTUIOOSCTrackingDataReceiver : TFTrackingDataReceiver {
-	NSData*		_peerSA;
+	TFTUIOVersion	tuioVersion;
+	NSData*			_peerSA;
 }
+
+@property (assign) TFTUIOVersion tuioVersion;
 
 - (id)init;
 - (id)initWithHost:(NSString*)host port:(UInt16)port error:(NSError**)error;
+- (id)initWithHost:(NSString*)host port:(UInt16)port tuioVersion:(TFTUIOVersion)version error:(NSError**)error;
 - (void)dealloc;
 
 - (void)receiverShouldQuit;

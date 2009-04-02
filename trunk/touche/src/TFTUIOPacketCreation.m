@@ -34,26 +34,46 @@
 #import "TFBlob+TUIOOSCMethods.h"
 
 
-BBOSCAddress* TFTUIOPCProfileAddress()
+BBOSCAddress* TFTUIOPC10CursorProfileAddress()
 {
 	static BBOSCAddress* tuioProfileAddress = nil;
 	
 	if (nil == tuioProfileAddress)
-		tuioProfileAddress = [[BBOSCAddress alloc] initWithString:kTFTUIOProfileAddressString];
+		tuioProfileAddress = [[BBOSCAddress alloc] initWithString:kTFTUIO10CursorProfileAddressString];
 	
 	return [[tuioProfileAddress retain] autorelease];
 }
 
-BBOSCMessage* TFTUIOPCSourceMessage()
+BBOSCAddress* TFTUIOPC11BlobsProfileAddress()
+{
+	static BBOSCAddress* tuioProfileAddress = nil;
+	
+	if (nil == tuioProfileAddress)
+		tuioProfileAddress = [[BBOSCAddress alloc] initWithString:kTFTUIO11BlobProfileAddressString];
+	
+	return [[tuioProfileAddress retain] autorelease];
+}
+
+BBOSCAddress* TFTUIOPC11BlobProfileAddress()
+{
+	static BBOSCAddress* tuioProfileAddress = nil;
+	
+	if (nil == tuioProfileAddress)
+		tuioProfileAddress = [[BBOSCAddress alloc] initWithString:kTFTUIO11BlobProfileAddressString];
+	
+	return [[tuioProfileAddress retain] autorelease];
+}
+
+BBOSCMessage* TFTUIOPC10CursorSourceMessage()
 {
 	static BBOSCMessage* sourceMsg = nil;
 	
 	if (nil == sourceMsg) {
-		sourceMsg = [[BBOSCMessage alloc] initWithBBOSCAddress:TFTUIOPCProfileAddress()];
+		sourceMsg = [[BBOSCMessage alloc] initWithBBOSCAddress:TFTUIOPC10CursorProfileAddress()];
 		
 		NSString* appName = TFTUIOConstantsSourceName();
 		if (nil != appName) {
-			[sourceMsg attachArgument:[BBOSCArgument argumentWithString:kTFTUIOSourceArgumentName]];
+			[sourceMsg attachArgument:[BBOSCArgument argumentWithString:kTFTUIO10SourceArgumentName]];
 			[sourceMsg attachArgument:[BBOSCArgument argumentWithString:appName]];
 		}
 	}
@@ -61,38 +81,116 @@ BBOSCMessage* TFTUIOPCSourceMessage()
 	return [[sourceMsg retain] autorelease];
 }
 
-BBOSCMessage* TFTUIOPCFrameSequenceNumberMessageForFrameNumber(NSInteger frameNumber)
+BBOSCMessage* TFTUIOPC11BlobSourceMessage()
 {
-	BBOSCMessage* fseqMessage = [BBOSCMessage messageWithBBOSCAddress:TFTUIOPCProfileAddress()];
-	[fseqMessage attachArgument:[BBOSCArgument argumentWithString:kTFTUIOFrameSequenceNumberArgumentName]];
+	static BBOSCMessage* sourceMsg = nil;
+	
+	if (nil == sourceMsg) {
+		sourceMsg = [[BBOSCMessage alloc] initWithBBOSCAddress:TFTUIOPC11BlobsProfileAddress()];
+		
+		NSString* appName = TFTUIOConstantsSourceName();
+		if (nil != appName) {
+			[sourceMsg attachArgument:[BBOSCArgument argumentWithString:kTFTUIO10SourceArgumentName]];
+			[sourceMsg attachArgument:[BBOSCArgument argumentWithString:appName]];
+		}
+	}
+	
+	return [[sourceMsg retain] autorelease];
+}
+
+BBOSCMessage* TFTUIOPC10CursorFrameSequenceNumberMessageForFrameNumber(NSInteger frameNumber)
+{
+	BBOSCMessage* fseqMessage = [BBOSCMessage messageWithBBOSCAddress:TFTUIOPC10CursorProfileAddress()];
+	[fseqMessage attachArgument:[BBOSCArgument argumentWithString:kTFTUIO10FrameSequenceNumberArgumentName]];
 	[fseqMessage attachArgument:[BBOSCArgument argumentWithInt:frameNumber]];
 	
 	return fseqMessage;
 }
 
-BBOSCMessage* TFTUIOPCAliveMessageForBlobs(NSArray* blobs)
+BBOSCMessage* TFTUIOPC11BlobFrameSequenceNumberMessageForFrameNumber(NSInteger frameNumber)
 {
-	BBOSCMessage* aliveMessage = [BBOSCMessage messageWithBBOSCAddress:TFTUIOPCProfileAddress()];
-	[aliveMessage attachArgument:[BBOSCArgument argumentWithString:kTFTUIOAliveArgumentName]];
+	BBOSCMessage* fseqMessage = [BBOSCMessage messageWithBBOSCAddress:TFTUIOPC11BlobsProfileAddress()];
+	[fseqMessage attachArgument:[BBOSCArgument argumentWithString:kTFTUIO10FrameSequenceNumberArgumentName]];
+	[fseqMessage attachArgument:[BBOSCArgument argumentWithInt:frameNumber]];
+	
+	return fseqMessage;
+}
+
+BBOSCMessage* TFTUIOPC10CursorAliveMessageForBlobs(NSArray* blobs)
+{
+	BBOSCMessage* aliveMessage = [BBOSCMessage messageWithBBOSCAddress:TFTUIOPC10CursorProfileAddress()];
+	[aliveMessage attachArgument:[BBOSCArgument argumentWithString:kTFTUIO10AliveArgumentName]];
 	
 	for (TFBlob* blob in blobs)
-		[aliveMessage attachArgument:[blob tuioAliveArgument]];
+		[aliveMessage attachArgument:[blob tuio10AliveArgument]];
 	
 	return aliveMessage;
 }
 
-BBOSCBundle* TFTUIOPCBundleWithData(NSInteger frameNumber,
+BBOSCMessage* TFTUIOPC11BlobAliveMessageForBlobs(NSArray* blobs)
+{
+	BBOSCMessage* aliveMessage = [BBOSCMessage messageWithBBOSCAddress:TFTUIOPC11BlobsProfileAddress()];
+	[aliveMessage attachArgument:[BBOSCArgument argumentWithString:kTFTUIO10AliveArgumentName]];
+	
+	for (TFBlob* blob in blobs)
+		[aliveMessage attachArgument:[blob tuio10AliveArgument]];
+	
+	return aliveMessage;
+}
+
+id TFTUIOPCBundleWithDataForTUIOVersion(TFTUIOVersion version,
+										NSInteger frameNumber,
+										NSArray* activeBlobs,
+										NSArray* movedBlobs)
+{
+	id data = nil;
+
+	switch(version) {
+		case TFTUIOVersion1_0:
+			data = TFTUIOPC10CursorBundleWithData(frameNumber, activeBlobs, movedBlobs);
+			break;
+		case TFTUIOVersion1_1Blobs:
+			data = TFTUIOPC11BlobsBundleWithData(frameNumber, activeBlobs, movedBlobs);
+			break;
+		case TFTUIOVersion1_0And1_1Blobs: {
+			id p1 = TFTUIOPC10CursorBundleWithData(frameNumber, activeBlobs, movedBlobs);
+			id p2 = TFTUIOPC11BlobsBundleWithData(frameNumber, activeBlobs, movedBlobs);
+			data = [NSArray arrayWithObjects:p1, p2, nil];
+			break;
+		}
+	}
+	
+	return data;
+}
+
+BBOSCBundle* TFTUIOPC10CursorBundleWithData(NSInteger frameNumber,
 									NSArray* activeBlobs,
 									NSArray* movedBlobs)
-{
+{	
 	BBOSCBundle* tuioBundle = [BBOSCBundle bundleWithTimestamp:[NSDate date]];
-	[tuioBundle attachObject:TFTUIOPCSourceMessage()];
+	[tuioBundle attachObject:TFTUIOPC10CursorSourceMessage()];
 	
 	for (TFBlob* blob in movedBlobs)
-		[tuioBundle attachObject:[blob tuioSetMessageForCurrentState]];
+		[tuioBundle attachObject:[blob tuio10CursorSetMessageForCurrentState]];
 	
-	[tuioBundle attachObject:TFTUIOPCAliveMessageForBlobs(activeBlobs)];
-	[tuioBundle attachObject:TFTUIOPCFrameSequenceNumberMessageForFrameNumber(frameNumber)];
+	[tuioBundle attachObject:TFTUIOPC10CursorAliveMessageForBlobs(activeBlobs)];
+	[tuioBundle attachObject:TFTUIOPC10CursorFrameSequenceNumberMessageForFrameNumber(frameNumber)];
+	
+	return tuioBundle;
+}
+
+BBOSCBundle* TFTUIOPC11BlobsBundleWithData(NSInteger frameNumber,
+										   NSArray* activeBlobs,
+										   NSArray* movedBlobs)
+{
+	BBOSCBundle* tuioBundle = [BBOSCBundle bundleWithTimestamp:[NSDate date]];
+	[tuioBundle attachObject:TFTUIOPC11BlobSourceMessage()];
+	
+	for (TFBlob* blob in movedBlobs)
+		[tuioBundle attachObject:[blob tuio11BlobSetMessageForCurrentState]];
+	
+	[tuioBundle attachObject:TFTUIOPC11BlobAliveMessageForBlobs(activeBlobs)];
+	[tuioBundle attachObject:TFTUIOPC11BlobFrameSequenceNumberMessageForFrameNumber(frameNumber)];
 	
 	return tuioBundle;
 }

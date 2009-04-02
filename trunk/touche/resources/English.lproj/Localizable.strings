@@ -34,6 +34,12 @@
 "PerformanceMemKBFormat"			= "%.2f KB";
 "PerformanceMemBFormat"				= "%d B";
 
+"TUIOVersion1.0"					= "TUIO 1.0";
+"TUIOVersion1.0+1.1Blobs"			= "TUIO 1.0 + TUIO 1.1 Blobs";
+"TFTUIOVersion1.1Blobs"				= "TUIO 1.1 Blobs";
+
+"TFTUIOVersionMenuTitle"			= "TUIO Version";
+
 "ScreenTitle"						= "Screen %d (%d x %d)";
 "PixelsMeasureLabel"				= "%1$.2f cm (%2$.1f pixels/cm) — %3$.4f inch (%4$.1f pixels/inch)";
 

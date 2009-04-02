@@ -37,15 +37,20 @@
 
 @implementation TFBlob (TUIOOSCMethods)
 
-- (BBOSCArgument*)tuioAliveArgument
+- (BBOSCArgument*)tuio10AliveArgument
 {
 	return [BBOSCArgument argumentWithInt:self.label.intLabel];
 }
 
-- (BBOSCMessage*)tuioSetMessageForCurrentState
+- (BBOSCArgument*)tuio11AliveArgument
 {
-	BBOSCMessage* setMsg = [BBOSCMessage messageWithBBOSCAddress:TFTUIOPCProfileAddress()];
-	[setMsg attachArgument:[BBOSCArgument argumentWithString:kTFTUIOSetArgumentName]];
+	return [BBOSCArgument argumentWithInt:self.label.intLabel];
+}
+
+- (BBOSCMessage*)tuio10CursorSetMessageForCurrentState
+{
+	BBOSCMessage* setMsg = [BBOSCMessage messageWithBBOSCAddress:TFTUIOPC10CursorProfileAddress()];
+	[setMsg attachArgument:[BBOSCArgument argumentWithString:kTFTUIO10SetArgumentName]];
 	
 	// s		sessionID, float
 	// x,y		position, float
@@ -55,12 +60,12 @@
 	NSInteger s;
 	float x, y, X, Y, a;
 	
-	[self getTuioDataForCurrentStateWithSessionID:&s
-										positionX:&x
-										positionY:&y
-										  motionX:&X
-										  motionY:&Y
-									 acceleration:&a];
+	[self getTuio10CursorSetMessageForCurrentStateWithSessionID:&s
+													  positionX:&x
+													  positionY:&y
+														motionX:&X
+														motionY:&Y
+												   acceleration:&a];
 	
 	[setMsg attachArgument:[BBOSCArgument argumentWithInt:s]];
 	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:x]];
@@ -68,6 +73,53 @@
 	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:X]];
 	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:Y]];
 	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:a]];
+	
+	return setMsg;
+}
+
+- (BBOSCMessage*)tuio11BlobSetMessageForCurrentState
+{
+	BBOSCMessage* setMsg = [BBOSCMessage messageWithBBOSCAddress:TFTUIOPC11BlobProfileAddress()];
+	[setMsg attachArgument:[BBOSCArgument argumentWithString:kTFTUIO10SetArgumentName]];
+	
+	// s		sessionID, float
+	// x,y		position, float
+	// a		oriented bounding box angle, float
+	// w, h		oriented bounding box width & height after inverse rotation, floar
+	// f		area, float
+	// X,Y		motion, float
+	// A		oriented bounding box angular motion, float
+	// m		acceleration, float
+	// r		oriented bounding box angular acceleration, float
+	
+	NSInteger s;
+	float x, y, X, Y, m, a, w, h, f, A, r;
+	
+	[self getTuio11BlobSetMessageForCurrentStateWithSessionID:&s
+													positionX:&x
+													positionY:&y
+														angle:&a
+														width:&w
+													   height:&h
+														 area:&f
+													  motionX:&X
+													  motionY:&Y
+												motionAngular:&A
+												 acceleration:&m
+										   motionAcceleration:&r];
+	
+	[setMsg attachArgument:[BBOSCArgument argumentWithInt:s]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:x]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:y]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:a]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:w]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:h]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:f]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:X]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:Y]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:A]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:m]];
+	[setMsg attachArgument:[BBOSCArgument argumentWithFloat:r]];
 	
 	return setMsg;
 }

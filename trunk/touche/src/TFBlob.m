@@ -31,8 +31,9 @@
 
 @implementation TFBlob
 
-@synthesize center, previousCenter, acceleration, boundingBox, edgeVertices,
-			label, isUpdate, createdAt, previousCreatedAt, trackedSince;
+@synthesize center, previousCenter, acceleration, axisAlignedBoundingBox, orientedBoundingBox,
+			boundingBox=axisAlignedBoundingBox, edgeVertices, label, isUpdate, createdAt, previousCreatedAt, trackedSince,
+			area;
 
 + (id)blob
 {
@@ -62,8 +63,10 @@
 	previousCenter = nil;
 	[acceleration release];
 	acceleration = nil;
-	[boundingBox release];
-	boundingBox = nil;
+	[axisAlignedBoundingBox release];
+	axisAlignedBoundingBox = nil;
+	[orientedBoundingBox release];
+	orientedBoundingBox = nil;
 	[edgeVertices release];
 	edgeVertices = nil;
 	[label release];
@@ -100,9 +103,11 @@
 		center = [[TFBlobPoint alloc] init];
 	
 	if (nil != bbox)
-		boundingBox = [bbox retain];
+		axisAlignedBoundingBox = [bbox retain];
 	else
-		boundingBox = [[TFBlobBox alloc] init];
+		axisAlignedBoundingBox = [[TFBlobBox alloc] init];
+		
+	orientedBoundingBox = [[TFBlobBox alloc] init];
 	
 	if (nil != edgeVertices)
 		edgeVertices = [vertices retain];
@@ -112,6 +117,8 @@
 	previousCenter = [[TFBlobPoint alloc] init];
 	acceleration = [[TFBlobVector alloc] init];
 	label = [[TFBlobLabel alloc] init];
+	
+	area = 0.0;
 	
 	isUpdate = NO;
 	createdAt = [NSDate timeIntervalSinceReferenceDate];
@@ -127,13 +134,14 @@
 {
 	TFBlob* aCopy = NSCopyObject(self, 0, zone);
 	
-	aCopy->center = [self.center copy];
-	aCopy->previousCenter = [self.previousCenter copy];
-	aCopy->acceleration = [self.acceleration copy];
-	aCopy->boundingBox = [self.boundingBox copy];
+	aCopy->center = [self->center copy];
+	aCopy->previousCenter = [self->previousCenter copy];
+	aCopy->acceleration = [self->acceleration copy];
+	aCopy->axisAlignedBoundingBox = [self->axisAlignedBoundingBox copy];
+	aCopy->orientedBoundingBox = [self->orientedBoundingBox copy];
 	aCopy->edgeVertices = nil;
-	aCopy->edgeVertices = [[NSArray alloc] initWithArray:self.edgeVertices copyItems:YES];
-	aCopy->label = [self.label copy];
+	aCopy->edgeVertices = [[NSArray alloc] initWithArray:self->edgeVertices copyItems:YES];
+	aCopy->label = [self->label copy];
 		
 	return aCopy;
 }
@@ -147,19 +155,22 @@
 	TFBlobPoint*	previousCenterC	= [coder decodeObject];
 	TFBlobVector*	accelerationC	= [coder decodeObject];
 	TFBlobBox*		boundingBoxC	= [coder decodeObject];
+	TFBlobBox*		boundingBox2C	= [coder decodeObject];
 	NSArray*		edgeVerticesC	= [coder decodeObject];
 	TFBlobLabel*	labelC			= [coder decodeObject];
 
 	self = [self init];
 	
 	if (nil != self) {
-		self.center			= centerC;
-		self.previousCenter	= previousCenterC;
-		self.acceleration	= accelerationC;
-		self.boundingBox	= boundingBoxC;
-		self.edgeVertices	= edgeVerticesC;
-		self.label			= labelC;
+		self.center							= centerC;
+		self.previousCenter					= previousCenterC;
+		self.acceleration					= accelerationC;
+		self.axisAlignedBoundingBox					= boundingBoxC;
+		self.orientedBoundingBox			= boundingBox2C;
+		self.edgeVertices					= edgeVerticesC;
+		self.label							= labelC;
 
+		[coder decodeValueOfObjCType:@encode(double) at:&area];
 		[coder decodeValueOfObjCType:@encode(BOOL) at:&isUpdate];
 		[coder decodeValueOfObjCType:@encode(NSTimeInterval) at:&createdAt];
 		[coder decodeValueOfObjCType:@encode(NSTimeInterval) at:&previousCreatedAt];
@@ -174,9 +185,11 @@
 	[coder encodeObject:center];
 	[coder encodeObject:previousCenter];
 	[coder encodeObject:acceleration];
-	[coder encodeObject:boundingBox];
+	[coder encodeObject:axisAlignedBoundingBox];
+	[coder encodeObject:orientedBoundingBox];
 	[coder encodeObject:edgeVertices];
 	[coder encodeObject:label];
+	[coder encodeValueOfObjCType:@encode(double) at:&area];
 	[coder encodeValueOfObjCType:@encode(BOOL) at:&isUpdate];
 	[coder encodeValueOfObjCType:@encode(NSTimeInterval) at:&createdAt];
 	[coder encodeValueOfObjCType:@encode(NSTimeInterval) at:&previousCreatedAt];

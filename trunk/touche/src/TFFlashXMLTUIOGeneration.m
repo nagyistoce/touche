@@ -67,8 +67,8 @@ NSString* TFFlashXMLTUIOSourceMessage()
 					 @"<ARGUMENT TYPE=\"s\" VALUE=\"%@\" />"
 					 @"<ARGUMENT TYPE=\"s\" VALUE=\"%@\" />"
 					 @"</MESSAGE>",
-					 kTFTUIOProfileAddressString,
-					 kTFTUIOSourceArgumentName,
+					 kTFTUIO10CursorProfileAddressString,
+					 kTFTUIO10SourceArgumentName,
 					 appName];
 	}
 	
@@ -80,11 +80,11 @@ NSString* TFFlashXMLTUIOAliveMessage(NSArray* blobs)
 	NSMutableString* aliveMsg = [NSMutableString stringWithFormat:
 								 @"<MESSAGE NAME=\"%@\">"
 								 @"<ARGUMENT TYPE=\"s\" VALUE=\"%@\" />",
-								 kTFTUIOProfileAddressString,
-								 kTFTUIOAliveArgumentName];
+								 kTFTUIO10CursorProfileAddressString,
+								 kTFTUIO10AliveArgumentName];
 	
 	for (TFBlob* blob in blobs)
-		[aliveMsg appendString:[blob flashXmlTuioAliveArgument]];
+		[aliveMsg appendString:[blob flashXmlTuio10AliveArgument]];
 	
 	[aliveMsg appendString:@"</MESSAGE>"];
 	
@@ -101,8 +101,8 @@ NSString* TFFlashXMLTUIOFrameSequenceMessage(NSUInteger frameSequenceNumber)
 				   @"<ARGUMENT TYPE=\"s\" VALUE=\"%@\" />"
 				   @"<ARGUMENT TYPE=\"i\" VALUE=\"%%u\" />"
 				   @"</MESSAGE>",
-				   kTFTUIOProfileAddressString,
-				   kTFTUIOFrameSequenceNumberArgumentName];
+				   kTFTUIO10CursorProfileAddressString,
+				   kTFTUIO10FrameSequenceNumberArgumentName];
 	
 	return [NSString stringWithFormat:fseqMsg, frameSequenceNumber];
 }
@@ -112,7 +112,7 @@ NSString* TFFlashXMLTUIOBundle(NSArray* activeBlobs, NSArray* movingBlobs, NSStr
 	NSMutableString* bundle = [NSMutableString stringWithString:TFFlashXMLTUIOSourceMessage()];
 	
 	for (TFBlob* blob in movingBlobs)
-		[bundle appendString:[blob flashXmlTuioSetMessage]];
+		[bundle appendString:[blob flashXmlTuio10CursorSetMessage]];
 	
 	[bundle appendString:TFFlashXMLTUIOAliveMessage(activeBlobs)];
 	[bundle appendString:TFFlashXMLTUIOFrameSequenceMessage(fseq)];
@@ -123,13 +123,13 @@ NSString* TFFlashXMLTUIOBundle(NSArray* activeBlobs, NSArray* movingBlobs, NSStr
 
 @implementation TFBlob (TFFlashXMLTUIOGeneration)
 
-- (NSString*)flashXmlTuioAliveArgument
+- (NSString*)flashXmlTuio10AliveArgument
 {
 	return [NSString stringWithFormat:
 			@"<ARGUMENT TYPE=\"i\" VALUE=\"%d\" />", self.label.intLabel];
 }
 
-- (NSString*)flashXmlTuioSetMessage
+- (NSString*)flashXmlTuio10CursorSetMessage
 {
 	NSInteger s;
 	float x, y, X, Y, a;
@@ -139,12 +139,12 @@ NSString* TFFlashXMLTUIOBundle(NSArray* activeBlobs, NSArray* movingBlobs, NSStr
 	// X,Y		motion, float
 	// a		acceleration, float
 	
-	[self getTuioDataForCurrentStateWithSessionID:&s
-										positionX:&x
-										positionY:&y
-										  motionX:&X
-										  motionY:&Y
-									 acceleration:&a];
+	[self getTuio10CursorSetMessageForCurrentStateWithSessionID:&s
+													  positionX:&x
+													  positionY:&y
+														motionX:&X
+														motionY:&Y
+												   acceleration:&a];
 	
 	return [NSString stringWithFormat:
 			@"<MESSAGE NAME=\"%@\">"
@@ -156,8 +156,8 @@ NSString* TFFlashXMLTUIOBundle(NSArray* activeBlobs, NSArray* movingBlobs, NSStr
 			@"<ARGUMENT TYPE=\"f\" VALUE=\"%f\" />"
 			@"<ARGUMENT TYPE=\"f\" VALUE=\"%f\" />"
 			@"</MESSAGE>",
-			kTFTUIOProfileAddressString,
-			kTFTUIOSetArgumentName,
+			kTFTUIO10CursorProfileAddressString,
+			kTFTUIO10SetArgumentName,
 			s, x, y, X, Y, a];
 }
 

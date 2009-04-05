@@ -242,6 +242,8 @@
 		6E8739130F77B4F400402313 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E7ECA800E0E69170080F7EF /* Sparkle.framework */; };
 		6E8739140F77B4F400402313 /* BBOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EED5EE60E5CE8E400375CC0 /* BBOSC.framework */; };
 		6E88D1D50DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E88D1D40DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m */; };
+		6E8B546B0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8B546A0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m */; };
+		6E8B546C0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8B546A0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m */; };
 		6E8BB7D10DE43A33006450C8 /* TFBlob+FrameworkAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BB7CB0DE43734006450C8 /* TFBlob+FrameworkAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E8BB7D20DE43A35006450C8 /* TFBlob+FrameworkAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BB7CC0DE43734006450C8 /* TFBlob+FrameworkAdditions.m */; };
 		6E8BB8B70DE44B9A006450C8 /* NSScreen+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60D1A0DDF0FBF0069A40E /* NSScreen+Extras.m */; };
@@ -627,6 +629,8 @@
 		6E87391B0F77B4F400402313 /* Info copy 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy 2.plist"; sourceTree = "<group>"; };
 		6E88D1D30DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIMorphologicalCloseWith3x3ShapeFilter.h; sourceTree = "<group>"; };
 		6E88D1D40DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIMorphologicalCloseWith3x3ShapeFilter.m; sourceTree = "<group>"; };
+		6E8B54690F87ACAF004F383E /* TFTUIOTrackingDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOTrackingDataReceiver.h; sourceTree = "<group>"; };
+		6E8B546A0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOTrackingDataReceiver.m; sourceTree = "<group>"; };
 		6E8BB7CB0DE43734006450C8 /* TFBlob+FrameworkAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFBlob+FrameworkAdditions.h"; sourceTree = "<group>"; };
 		6E8BB7CC0DE43734006450C8 /* TFBlob+FrameworkAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFBlob+FrameworkAdditions.m"; sourceTree = "<group>"; };
 		6E8BC3BF0DE86E4D006450C8 /* TFGestureInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFGestureInfo.h; sourceTree = "<group>"; };
@@ -1240,6 +1244,8 @@
 				6ECF85160E734879009433B3 /* TFBlob+TUIOMethods.m */,
 				6ECF81BA0E72B93D009433B3 /* TFTUIOTrackingDataDistributor.h */,
 				6ECF81BB0E72B93D009433B3 /* TFTUIOTrackingDataDistributor.m */,
+				6E8B54690F87ACAF004F383E /* TFTUIOTrackingDataReceiver.h */,
+				6E8B546A0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m */,
 			);
 			name = TUIO;
 			sourceTree = "<group>";
@@ -2140,6 +2146,7 @@
 				6EC2271F0F7E9978008FD532 /* GCKHUDTableCell.m in Sources */,
 				6EC227660F7ED324008FD532 /* TFResourceStats.c in Sources */,
 				6E35FD840F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c in Sources */,
+				6E8B546C0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2321,6 +2328,7 @@
 				6EC227200F7E9978008FD532 /* GCKHUDTableCell.m in Sources */,
 				6EC227670F7ED324008FD532 /* TFResourceStats.c in Sources */,
 				6E35FD830F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c in Sources */,
+				6E8B546B0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

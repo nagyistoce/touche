@@ -38,12 +38,13 @@
 
 @implementation TFTUIOTrackingDataDistributor
 
-@synthesize motionThreshold;
+@synthesize motionThreshold, defaultTuioVersion;
 
 - (id)init
 {
 	if (nil != (self = [super init])) {
 		self.motionThreshold = DEFAULT_MOTION_THRESHOLD;
+		self.defaultTuioVersion = TFTUIOVersionDefault;
 	}
 	
 	return self;

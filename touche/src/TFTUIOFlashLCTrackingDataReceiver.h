@@ -24,14 +24,14 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "TFTrackingDataReceiver.h"
+#import "TFTUIOTrackingDataReceiver.h"
 
 
 extern NSString* TFTUIOFlashLCTrackingDataReceiverIDFormat;
 
 struct TFLCSLocalConnection_t;
 
-@interface TFTUIOFlashLCTrackingDataReceiver : TFTrackingDataReceiver {
+@interface TFTUIOFlashLCTrackingDataReceiver : TFTUIOTrackingDataReceiver {
 	NSString*	_connectionName;
 	NSString*	_connectionMethod;
 	

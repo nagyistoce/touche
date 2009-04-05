@@ -33,8 +33,6 @@
 
 @implementation TFTUIOOSCTrackingDataReceiver
 
-@synthesize tuioVersion;
-
 - (id)init
 {
 	return [self initWithHost:@"127.0.0.1" port:3333 error:NULL];
@@ -61,6 +59,8 @@
 	if (nil != (self = [super init])) {
 		connected = YES;
 		
+		self.tuioVersion = version;
+		
 		receiverID = [[NSString alloc] initWithFormat:@"%@:%d:TUIO:OSC:UDP", host, port];
 
 		NSString* versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
@@ -86,8 +86,6 @@
 		peer.sin_port = htons(port);
 		
 		_peerSA = [[NSData alloc] initWithBytes:&peer length:sizeof(struct sockaddr_in)];
-		
-		self.tuioVersion = version;
 	}
 	
 	return self;

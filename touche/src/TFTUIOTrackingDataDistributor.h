@@ -25,13 +25,14 @@
 #import <Cocoa/Cocoa.h>
 
 #import "TFTrackingDataDistributor.h"
+#import "TFTUIOConstants.h"
 
 
 @class TFThreadMessagingQueue;
 
-
 @interface TFTUIOTrackingDataDistributor : TFTrackingDataDistributor {
 	float					motionThreshold;
+	TFTUIOVersion			defaultTuioVersion;
 
 @protected
 	NSThread*				_thread;
@@ -41,6 +42,7 @@
 }
 
 @property (nonatomic, assign) float motionThreshold;
+@property (nonatomic, assign) TFTUIOVersion defaultTuioVersion;
 
 - (id)init;
 - (void)dealloc;

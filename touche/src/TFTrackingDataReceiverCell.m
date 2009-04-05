@@ -124,28 +124,7 @@
 
 - (NSMenu*)menuForEvent:(NSEvent*)anEvent inRect:(NSRect)cellFrame ofView:(NSView*)aView
 {
-	NSMenu* menu = nil;
-	
-	TFTrackingDataReceiver* receiver = (TFTrackingDataReceiver*)[self objectValue];
-	TFTrackingDataDistributor* distributor = receiver.owningDistributor;
-	
-	if ([distributor canAskReceiversToQuit]) {
-		if (nil == _clientMenu) {
-			_clientMenu = [[NSMenu alloc] init];
-			
-			NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:TFLocalizedString(@"TellClientToQuit", @"TellClientToQuit")
-														  action:nil
-												   keyEquivalent:[NSString string]];
-			[item setTarget:self];
-			[item setAction:@selector(_receiverShouldQuitClicked:)];
-			[_clientMenu addItem:item];
-			[item release];
-		}
-		
-		menu = _clientMenu;
-	}
-	
-	return menu;
+	return [(TFTrackingDataReceiver*)[self objectValue] contextualMenuForReceiver];
 }
 
 - (BOOL)acceptsFirstResponder
@@ -229,15 +208,6 @@
 							  (NSMaxX(frame) - PADDINGX - versionRect.origin.x));
 	
 	return versionRect;
-}
-
-- (void)_receiverShouldQuitClicked:(id)sender
-{
-	TFTrackingDataReceiver* receiver = (TFTrackingDataReceiver*)[self objectValue];
-	TFTrackingDataDistributor* distributor = receiver.owningDistributor;
-	
-	if ([distributor canAskReceiversToQuit])
-		[distributor askReceiverToQuit:receiver];
 }
 
 - (NSDictionary*)_receiverInfoDict

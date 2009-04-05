@@ -59,6 +59,11 @@
 	[self doesNotRecognizeSelector:_cmd];
 }
 
+- (NSMenu*)contextualMenuForReceiver
+{
+	return nil;
+}
+
 #pragma mark -
 #pragma mark NSCopying protocol
 

@@ -78,6 +78,9 @@
 	
 	[_queue release];
 	_queue = nil;
+	
+	[_contextualMenu release];
+	_contextualMenu = nil;
 
 	NSConnection* clientConnection = [(id)client connectionForProxy];
 	[clientConnection invalidate];
@@ -125,6 +128,30 @@
 	[client clientShouldQuit];
 }
 
+- (NSMenu*)contextualMenuForReceiver
+{
+	if (nil == _contextualMenu) {
+		_contextualMenu = [[super contextualMenuForReceiver] retain];
+		
+		if (nil == _contextualMenu)
+			_contextualMenu = [[NSMenu alloc] init];
+		
+		NSMenuItem* item = nil;
+		
+		if ([self.owningDistributor canAskReceiversToQuit]) {
+			item = [[NSMenuItem alloc] initWithTitle:TFLocalizedString(@"TellClientToQuit", @"TellClientToQuit")
+											  action:nil
+									   keyEquivalent:[NSString string]];
+			[item setTarget:self];
+			[item setAction:@selector(_quitReceiverClicked:)];
+			[_contextualMenu addItem:item];
+			[item release];
+		}
+	}
+	
+	return _contextualMenu;
+}
+
 - (void)consumeTrackingData:(id)trackingData
 {
 	// we do not add new objects to the queue if the client is slow in consuming them and still has more than 3
@@ -150,6 +177,17 @@
 		[client disconnectedByServerWithError:error];
 	
 	[self stop];
+}
+
+#pragma mark -
+#pragma mark Private Methods
+
+- (void)_quitReceiverClicked:(id)sender
+{
+	TFTrackingDataDistributor* distributor = self.owningDistributor;
+	
+	if ([distributor canAskReceiversToQuit])
+		[distributor askReceiverToQuit:self];
 }
 
 - (void)_forwardTouchesInThread

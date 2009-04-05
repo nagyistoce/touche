@@ -35,16 +35,16 @@ extern NSString*	kTFTUIO10AliveArgumentName;
 extern NSString*	kTFTUIO10SetArgumentName;
 
 typedef enum {
-	TFTUIOVersion1_0				= 0,
-	TFTUIOVersion1_1Blobs			= 1,
-	TFTUIOVersion1_0And1_1Blobs		= 2
+	TFTUIOVersion1_0Cursors				= 0,
+	TFTUIOVersion1_1Blobs				= 1,
+	TFTUIOVersion1_0CursorsAnd1_1Blobs	= 2
 } TFTUIOVersion;
 
-#define	TFTUIOVersionMin		(TFTUIOVersion1_0)
-#define TFTUIOVersionMax		(TFTUIOVersion1_0And1_1Blobs)
+#define	TFTUIOVersionMin		(TFTUIOVersion1_0Cursors)
+#define TFTUIOVersionMax		(TFTUIOVersion1_0CursorsAnd1_1Blobs)
 #define TFTUIOVersionCount		((TFTUIOVersionMax) - (TFTUIOVersionMin) + 1)
 
-#define TFTUIOVersionDefault	(TFTUIOVersion1_0)
+#define TFTUIOVersionDefault	(TFTUIOVersion1_0Cursors)
 
 NSString* TFTUIOConstantsSourceName();
 
@@ -56,3 +56,7 @@ TFTUIOVersion TFTUIOVersionForMenuItem(NSMenuItem* item);
 
 // -1 on error, index of the item otherwise
 NSInteger TFTUIOIndexForMenuItemWithVersion(NSMenu* menu, TFTUIOVersion ver);
+
+// time interval between the Cocoa reference date and the NTP reference date (as used
+// in TUIO + OSC)
+NSTimeInterval TFTUIOTimeIntervalBetweenCocoaAndNTPRefDate();

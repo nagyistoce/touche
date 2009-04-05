@@ -1,10 +1,10 @@
 //
-//  TFFlashXMLTUIOTrackingDataReceiver.h
+//  TFTUIOTrackingDataReceiver.h
 //  Touché
 //
-//  Created by Georg Kaindl on 6/9/08.
+//  Created by Georg Kaindl on 4/4/09.
 //
-//  Copyright (C) 2008 Georg Kaindl
+//  Copyright (C) 2009 Georg Kaindl
 //
 //  This file is part of Touché.
 //
@@ -22,35 +22,29 @@
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
-#import "TFTUIOTrackingDataReceiver.h"
+#import "TFTUIOConstants.h"
+#import "TFTrackingDataReceiver.h"
 
 
-@class TFIPStreamSocket, TFSocket;
-
-@interface TFFlashXMLTUIOTrackingDataReceiver : TFTUIOTrackingDataReceiver {
-@protected
-	TFIPStreamSocket*			_socket;
-	NSThread*					_socketThread;
-	BOOL						_connectionDidDie;
+@interface TFTUIOTrackingDataReceiver : TFTrackingDataReceiver {
+	TFTUIOVersion	tuioVersion;
+	
+	NSMenu*			_contextualMenu;
+	NSMenu*			_tuioVersionMenu;
 }
 
+@property (assign) TFTUIOVersion tuioVersion;
+
 - (id)init;
-- (id)initWithConnectedSocket:(TFIPStreamSocket*)socket;
 - (void)dealloc;
 
-- (void)receiverShouldQuit;
-- (void)consumeTrackingData:(id)trackingData;
+- (NSMenu*)contextualMenuForReceiver;
 
 #pragma mark -
-#pragma mark TFSocket delegate
+#pragma mark NSMenu delegate
 
-- (void)socket:(TFSocket*)socket dataIsAvailableWithLength:(NSUInteger)dataLength;
-
-#pragma mark -
-#pragma mark TFIPStreamSocket delegate
-
-- (void)socketGotDisconnected:(TFIPStreamSocket*)socket;
+- (void)menuNeedsUpdate:(NSMenu *)menu;
 
 @end

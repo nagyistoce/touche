@@ -24,17 +24,32 @@
 
 #import <Foundation/Foundation.h>
 
+#import "TFTUIOConstants.h"
 #import "TFBlob.h"
 
-
+NSString* TFFlashXMLTUIOBundleForTUIOVersion(TFTUIOVersion version,
+											 NSArray* activeBlobs,
+											 NSArray* movingBlobs,
+											 NSString* host,
+											 UInt16 port,
+											 NSUInteger fseq);
 NSString* TFFlashXMLTUIOEnvelope(NSString* localAddress, UInt16 port);
-NSString* TFFlashXMLTUIOSourceMessage();
-NSString* TFFlashXMLTUIOAliveMessage(NSArray* blobs);
-NSString* TFFlashXMLTUIOFrameSequenceMessage(NSUInteger frameSequenceNumber);
 
-NSString* TFFlashXMLTUIOBundle(NSArray* activeBlobs, NSArray* movingBlobs, NSString* host, UInt16 port, NSUInteger fseq);
+NSString* TFFlashXMLTUIO10CursorSourceMessage();
+NSString* TFFlashXMLTUIO10CursorAliveMessage(NSArray* blobs);
+NSString* TFFlashXMLTUIO10CursorFrameSequenceMessage(NSUInteger frameSequenceNumber);
+NSString* TFFlashXMLTUIO10CursorBundle(NSArray* activeBlobs, NSArray* movingBlobs, NSString* host, UInt16 port, NSUInteger fseq);
+
+NSString* TFFlashXMLTUIO11BlobSourceMessage();
+NSString* TFFlashXMLTUIO11BlobAliveMessage(NSArray* blobs);
+NSString* TFFlashXMLTUIO11BlobFrameSequenceMessage(NSUInteger frameSequenceNumber);
+NSString* TFFlashXMLTUIO11BlobBundle(NSArray* activeBlobs, NSArray* movingBlobs, NSString* host, UInt16 port, NSUInteger fseq);
+
 
 @interface TFBlob (TFFlashXMLTUIOGeneration)
-- (NSString*)flashXmlTuio10AliveArgument;
+- (NSString*)flashXmlTuio10CursorAliveArgument;
 - (NSString*)flashXmlTuio10CursorSetMessage;
+
+- (NSString*)flashXmlTuio11BlobAliveArgument;
+- (NSString*)flashXmlTuio11BlobSetMessage;
 @end

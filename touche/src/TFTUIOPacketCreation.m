@@ -146,13 +146,13 @@ id TFTUIOPCBundleWithDataForTUIOVersion(TFTUIOVersion version,
 	id data = nil;
 
 	switch(version) {
-		case TFTUIOVersion1_0:
+		case TFTUIOVersion1_0Cursors:
 			data = TFTUIOPC10CursorBundleWithData(frameNumber, activeBlobs, movedBlobs);
 			break;
 		case TFTUIOVersion1_1Blobs:
 			data = TFTUIOPC11BlobsBundleWithData(frameNumber, activeBlobs, movedBlobs);
 			break;
-		case TFTUIOVersion1_0And1_1Blobs: {
+		case TFTUIOVersion1_0CursorsAnd1_1Blobs: {
 			id p1 = TFTUIOPC10CursorBundleWithData(frameNumber, activeBlobs, movedBlobs);
 			id p2 = TFTUIOPC11BlobsBundleWithData(frameNumber, activeBlobs, movedBlobs);
 			data = [NSArray arrayWithObjects:p1, p2, nil];

@@ -26,12 +26,14 @@
 
 #import "TFError.h"
 #import "TFLocalization.h"
+#import "TFTUIOConstants.h"
 #import "TFFlashXMLTUIOTrackingDataDistributor.h"
 
 
 #define	FLASH_OPTIONS_URL	(@"http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html")
 
 NSString* tFTUIOFlashXmlPixelsForMotionThresholdKey = @"tFTUIOFlashXmlPixelsForMotionThreshold";
+NSString* tFTUIOFlashXmlDefaultTuioVersionKey = @"tFTUIOFlashXmlDefaultTuioVersion";
 NSString* tFTUIOFlashXmlServerPortKey = @"tFTUIOFlashXmlServerPort";
 NSString* tFTUIOFlashXmlServerLocalAddressTagKey = @"tFTUIOFlashXmlServerLocalAddressTag";
 
@@ -54,6 +56,16 @@ NSString* tFTUIOFlashXmlServerLocalAddressTagKey = @"tFTUIOFlashXmlServerLocalAd
 		[object bind:keyPath
 			toObject:[NSUserDefaultsController sharedUserDefaultsController]
 		 withKeyPath:[NSString stringWithFormat:@"values.%@", tFTUIOFlashXmlPixelsForMotionThresholdKey]
+			 options:nil];
+	}
+}
+
++ (void)bindDefaultTuioVersionToObject:(id)object keyPath:(NSString*)keyPath
+{
+	if (nil != object && nil != keyPath) {
+		[object bind:keyPath
+			toObject:[NSUserDefaultsController sharedUserDefaultsController]
+		 withKeyPath:[NSString stringWithFormat:@"values.%@", tFTUIOFlashXmlDefaultTuioVersionKey]
 			 options:nil];
 	}
 }
@@ -92,6 +104,7 @@ NSString* tFTUIOFlashXmlServerLocalAddressTagKey = @"tFTUIOFlashXmlServerLocalAd
 		[distributor unbind:@"motionThreshold"];
 		
 		[[self class] bindPixelsForBlobMotionToObject:newDistributor keyPath:@"motionThreshold"];
+		[[self class] bindDefaultTuioVersionToObject:newDistributor keyPath:@"defaultTuioVersion"];
 		
 		[distributor release];
 		distributor = [newDistributor retain];
@@ -101,6 +114,12 @@ NSString* tFTUIOFlashXmlServerLocalAddressTagKey = @"tFTUIOFlashXmlServerLocalAd
 - (void)windowDidLoad
 {
 	[[self window] setShowsResizeIndicator:NO];
+	
+	[_defaultTuioVersionPopup setMenu:TFTUIOVersionSelectionMenu()];
+	[_defaultTuioVersionPopup bind:@"selectedTag"
+						  toObject:[NSUserDefaultsController sharedUserDefaultsController]
+					   withKeyPath:[NSString stringWithFormat:@"values.%@", tFTUIOFlashXmlDefaultTuioVersionKey]
+						   options:nil];
 }
 
 - (void)showWindow:(id)sender

@@ -207,6 +207,7 @@ int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, cons
 					
 					if (nil == [_receivers objectForKey:receiver.receiverID] && nil != receiver) {
 						receiver.owningDistributor = self;
+						receiver.tuioVersion = self.defaultTuioVersion;
 						
 						@synchronized (_receivers) {
 							[_receivers setObject:receiver forKey:receiver.receiverID];

@@ -46,6 +46,8 @@
 - (void)receiverShouldQuit;
 - (void)consumeTrackingData:(id)trackingData;
 
+- (NSMenu*)contextualMenuForReceiver;
+
 #pragma mark -
 #pragma mark NSCopying protocol
 

@@ -36,6 +36,8 @@
 	TFDOTrackingClient*		client;
 	BOOL					running;
 
+	NSMenu*					_contextualMenu;
+
 	UInt64					_sequenceNumber;
 	TFThreadMessagingQueue*	_queue;
 	NSThread*				_thread;
@@ -47,6 +49,7 @@
 + (NSString*)localNameForClientName:(NSString*)string;
 
 - (void)receiverShouldQuit;
+- (NSMenu*)contextualMenuForReceiver;
 - (void)consumeTrackingData:(id)trackingData;
 
 - (id)initWithClient:(TFDOTrackingClient*)theClient;

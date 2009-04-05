@@ -24,8 +24,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "TFTUIOTrackingDataDistributor.h"
 #import "TFTUIOConstants.h"
+#import "TFTUIOTrackingDataDistributor.h"
 
 
 @class TFTUIOOSCServer, TFTUIOOSCTrackingDataReceiver, BBOSCPacket;

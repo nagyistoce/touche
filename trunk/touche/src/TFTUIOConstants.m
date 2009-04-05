@@ -66,11 +66,11 @@ NSString* TFTUIOVersionToString(TFTUIOVersion ver)
 	id rv = nil;
 	
 	switch(ver) {
-		case TFTUIOVersion1_0:
+		case TFTUIOVersion1_0Cursors:
 			rv = [NSString stringWithString:NSLocalizedString(@"TUIOVersion1.0",
 															  @"TUIOVersion1.0")];
 			break;
-		case TFTUIOVersion1_0And1_1Blobs:
+		case TFTUIOVersion1_0CursorsAnd1_1Blobs:
 			rv = [NSString stringWithString:NSLocalizedString(@"TUIOVersion1.0+1.1Blobs",
 															  @"TUIOVersion1.0+1.1Blobs")];
 			break;
@@ -118,4 +118,29 @@ TFTUIOVersion TFTUIOVersionForMenuItem(NSMenuItem* item)
 NSInteger TFTUIOIndexForMenuItemWithVersion(NSMenu* menu, TFTUIOVersion ver)
 {
 	return [menu indexOfItemWithTag:ver];
+}
+
+NSTimeInterval TFTUIOTimeIntervalBetweenCocoaAndNTPRefDate()
+{	
+	static NSTimeInterval secs = (NSTimeInterval)0.0;
+	
+	if (0.0 >= secs) {
+		NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		
+		NSDateComponents* ntpRefDateComps = [[NSDateComponents alloc] init];
+		[ntpRefDateComps setDay:1];
+		[ntpRefDateComps setMonth:1];
+		[ntpRefDateComps setYear:1900];
+		
+		NSDate* ntpRefDate = [calendar dateFromComponents:ntpRefDateComps];
+		
+		NSDate* cocoaRefDate = [NSDate dateWithTimeIntervalSinceReferenceDate:(NSTimeInterval)0.0];
+		
+		secs = [cocoaRefDate timeIntervalSinceDate:ntpRefDate];
+		
+		[ntpRefDateComps release];
+		[calendar release];
+	}
+	
+	return secs;
 }

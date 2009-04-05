@@ -31,12 +31,14 @@
 	TFFlashXMLTUIOTrackingDataDistributor*	distributor;
 	
 	IBOutlet NSTextField*					_serverPortField;
+	IBOutlet NSPopUpButton*					_defaultTuioVersionPopup;
 }
 
 @property (nonatomic, retain) TFFlashXMLTUIOTrackingDataDistributor* distributor;
 
 + (float)pixelsForBlobMotion;
 + (void)bindPixelsForBlobMotionToObject:(id)object keyPath:(NSString*)keyPath;
++ (void)bindDefaultTuioVersionToObject:(id)object keyPath:(NSString*)keyPath;
 
 + (UInt16)serverPort;
 + (NSString*)serverAddress;

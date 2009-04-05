@@ -170,11 +170,22 @@ NSString* kTFFlashXMLTUIOTrackingDataDistributorPort			= @"kTFFlashXMLTUIOTracki
 							   movedTouches:(NSArray*)movedTouches
 								frameNumber:(NSUInteger)frameNumber
 {
-	NSString* flashXmlTuioMsg = TFFlashXMLTUIOBundle(livingTouches, movedTouches, _localAddr, _port, frameNumber);
+	NSString* flashXmlTuioBundles[TFTUIOVersionCount];
+	memset(flashXmlTuioBundles, 0, sizeof(NSString*)*TFTUIOVersionCount);
 
 	@synchronized (_receivers) {
-		for (TFTrackingDataReceiver* receiver in [_receivers allValues])
-			[receiver consumeTrackingData:flashXmlTuioMsg];
+		for (TFTUIOTrackingDataReceiver* receiver in [_receivers allValues]) {
+			TFTUIOVersion version = receiver.tuioVersion;
+			if (nil == flashXmlTuioBundles[version])
+				flashXmlTuioBundles[version] = TFFlashXMLTUIOBundleForTUIOVersion(version,
+																				  livingTouches,
+																				  movedTouches,
+																				  _localAddr,
+																				  _port,
+																				  frameNumber);
+			
+			[receiver consumeTrackingData:flashXmlTuioBundles[version]];
+		}
 	}
 }
 
@@ -187,6 +198,7 @@ NSString* kTFFlashXMLTUIOTrackingDataDistributorPort			= @"kTFFlashXMLTUIOTracki
 	
 	if (nil == [_receivers objectForKey:receiver.receiverID] && nil != receiver) {
 		receiver.owningDistributor = self;
+		receiver.tuioVersion = self.defaultTuioVersion;
 		
 		@synchronized (_receivers) {
 			[_receivers setObject:receiver forKey:receiver.receiverID];

@@ -52,6 +52,7 @@
 "XClientsConntected"				= "Serving %d Clients";
 
 "TellClientToQuit"					= "Quit Client";
+"DisconnectClient"					= "Disconnect Client";
 
 "Setup Assistant"					= "Setup Assistant";
 "Welcome to Touché"					= "Welcome to Touché";

@@ -24,17 +24,14 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "TFTrackingDataReceiver.h"
+#import "TFTUIOTrackingDataReceiver.h"
 #import "TFIPSocket.h"
 #import "TFTUIOConstants.h"
 
 
-@interface TFTUIOOSCTrackingDataReceiver : TFTrackingDataReceiver {
-	TFTUIOVersion	tuioVersion;
+@interface TFTUIOOSCTrackingDataReceiver : TFTUIOTrackingDataReceiver {
 	NSData*			_peerSA;
 }
-
-@property (assign) TFTUIOVersion tuioVersion;
 
 - (id)init;
 - (id)initWithHost:(NSString*)host port:(UInt16)port error:(NSError**)error;

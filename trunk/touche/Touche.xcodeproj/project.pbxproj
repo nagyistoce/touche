@@ -1741,9 +1741,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		6E87386F0F77B4F400402313 /* Touche (ICC IPP) 11.0 #056 */ = {
+		6E87386F0F77B4F400402313 /* Touche (ICC IPP) 11.0 #064 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6E8739160F77B4F400402313 /* Build configuration list for PBXNativeTarget "Touche (ICC IPP) 11.0 #056" */;
+			buildConfigurationList = 6E8739160F77B4F400402313 /* Build configuration list for PBXNativeTarget "Touche (ICC IPP) 11.0 #064" */;
 			buildPhases = (
 				6E8738700F77B4F400402313 /* Copy Frameworks */,
 				6E8738770F77B4F400402313 /* Resources */,
@@ -1758,15 +1758,15 @@
 			);
 			dependencies = (
 			);
-			name = "Touche (ICC IPP) 11.0 #056";
+			name = "Touche (ICC IPP) 11.0 #064";
 			productInstallPath = "$(HOME)/Applications";
 			productName = Touche;
 			productReference = 6E8739190F77B4F400402313 /* Touche.app */;
 			productType = "com.apple.product-type.application";
 		};
-		6EC221C50F77EEF8008FD532 /* ToucheFramework (ICC IPP) 11.0 #056 */ = {
+		6EC221C50F77EEF8008FD532 /* ToucheFramework (ICC IPP) 11.0 #064 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6EC221FF0F77EEF8008FD532 /* Build configuration list for PBXNativeTarget "ToucheFramework (ICC IPP) 11.0 #056" */;
+			buildConfigurationList = 6EC221FF0F77EEF8008FD532 /* Build configuration list for PBXNativeTarget "ToucheFramework (ICC IPP) 11.0 #064" */;
 			buildPhases = (
 				6EC221C60F77EEF8008FD532 /* Headers */,
 				6EC221E30F77EEF8008FD532 /* Resources */,
@@ -1780,7 +1780,7 @@
 			);
 			dependencies = (
 			);
-			name = "ToucheFramework (ICC IPP) 11.0 #056";
+			name = "ToucheFramework (ICC IPP) 11.0 #064";
 			productName = "TouchéFramework";
 			productReference = 6EC222020F77EEF8008FD532 /* ToucheFramework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1839,8 +1839,8 @@
 			targets = (
 				8D1107260486CEB800E47090 /* Touche */,
 				6EC4B0CC0DD9D6C20085D7B8 /* ToucheFramework */,
-				6E87386F0F77B4F400402313 /* Touche (ICC IPP) 11.0 #056 */,
-				6EC221C50F77EEF8008FD532 /* ToucheFramework (ICC IPP) 11.0 #056 */,
+				6E87386F0F77B4F400402313 /* Touche (ICC IPP) 11.0 #064 */,
+				6EC221C50F77EEF8008FD532 /* ToucheFramework (ICC IPP) 11.0 #064 */,
 			);
 		};
 /* End PBXProject section */
@@ -2526,7 +2526,7 @@
 				ICC_DEFINES = "_USES_IPP_ $(GCC_PREPROCESSOR_DEFINITIONS)";
 				ICC_FP_MODEL = fast2;
 				ICC_FP_SPECULATION = fast;
-				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
+				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/064;
 				ICC_LANG_ANSI = "compiler-default";
 				ICC_LANG_RESTRICT = YES;
 				ICC_OPTLEVEL = speedHLO;
@@ -2619,7 +2619,7 @@
 				ICC_DEFINES = "_USES_IPP_ $(GCC_PREPROCESSOR_DEFINITIONS)";
 				ICC_FP_MODEL = fast2;
 				ICC_FP_SPECULATION = fast;
-				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/056;
+				ICC_INSTALL_DIR = /opt/intel/Compiler/11.0/064;
 				ICC_LANG_RESTRICT = YES;
 				ICC_OPTLEVEL = speedHLO;
 				ICC_OPT_PARALLEL = YES;
@@ -2785,7 +2785,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6E8739160F77B4F400402313 /* Build configuration list for PBXNativeTarget "Touche (ICC IPP) 11.0 #056" */ = {
+		6E8739160F77B4F400402313 /* Build configuration list for PBXNativeTarget "Touche (ICC IPP) 11.0 #064" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6E8739170F77B4F400402313 /* Debug */,
@@ -2794,7 +2794,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		6EC221FF0F77EEF8008FD532 /* Build configuration list for PBXNativeTarget "ToucheFramework (ICC IPP) 11.0 #056" */ = {
+		6EC221FF0F77EEF8008FD532 /* Build configuration list for PBXNativeTarget "ToucheFramework (ICC IPP) 11.0 #064" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6EC222000F77EEF8008FD532 /* Debug */,

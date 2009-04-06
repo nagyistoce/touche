@@ -244,6 +244,10 @@
 		6E88D1D50DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E88D1D40DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m */; };
 		6E8B546B0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8B546A0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m */; };
 		6E8B546C0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8B546A0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m */; };
+		6E8B564F0F894C56004F383E /* TFTUIOFlashLCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8B564E0F894C56004F383E /* TFTUIOFlashLCSettingsController.m */; };
+		6E8B56500F894C56004F383E /* TFTUIOFlashLCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8B564E0F894C56004F383E /* TFTUIOFlashLCSettingsController.m */; };
+		6E8B56740F894FE2004F383E /* TUIOFlashLCSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E8B56730F894FE2004F383E /* TUIOFlashLCSettings.xib */; };
+		6E8B56750F894FE2004F383E /* TUIOFlashLCSettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E8B56730F894FE2004F383E /* TUIOFlashLCSettings.xib */; };
 		6E8BB7D10DE43A33006450C8 /* TFBlob+FrameworkAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8BB7CB0DE43734006450C8 /* TFBlob+FrameworkAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E8BB7D20DE43A35006450C8 /* TFBlob+FrameworkAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BB7CC0DE43734006450C8 /* TFBlob+FrameworkAdditions.m */; };
 		6E8BB8B70DE44B9A006450C8 /* NSScreen+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EE60D1A0DDF0FBF0069A40E /* NSScreen+Extras.m */; };
@@ -624,13 +628,14 @@
 		6E81EB220D522C87003EA72C /* TFCIRatioImageBlendFilter.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TFCIRatioImageBlendFilter.cikernel; sourceTree = "<group>"; };
 		6E854C710DBF977200B5EB68 /* TFTrackingPipeline+QTInputAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFTrackingPipeline+QTInputAdditions.h"; sourceTree = "<group>"; };
 		6E854C720DBF977200B5EB68 /* TFTrackingPipeline+QTInputAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFTrackingPipeline+QTInputAdditions.m"; sourceTree = "<group>"; };
-		6E8738570F77B0FB00402313 /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		6E8739190F77B4F400402313 /* Touche.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Touche.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6E87391B0F77B4F400402313 /* Info copy 2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy 2.plist"; sourceTree = "<group>"; };
 		6E88D1D30DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIMorphologicalCloseWith3x3ShapeFilter.h; sourceTree = "<group>"; };
 		6E88D1D40DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIMorphologicalCloseWith3x3ShapeFilter.m; sourceTree = "<group>"; };
 		6E8B54690F87ACAF004F383E /* TFTUIOTrackingDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOTrackingDataReceiver.h; sourceTree = "<group>"; };
 		6E8B546A0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOTrackingDataReceiver.m; sourceTree = "<group>"; };
+		6E8B564D0F894C56004F383E /* TFTUIOFlashLCSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOFlashLCSettingsController.h; sourceTree = "<group>"; };
+		6E8B564E0F894C56004F383E /* TFTUIOFlashLCSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOFlashLCSettingsController.m; sourceTree = "<group>"; };
+		6E8B56510F894D75004F383E /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/TUIOFlashLCSettings.xib; sourceTree = "<group>"; };
 		6E8BB7CB0DE43734006450C8 /* TFBlob+FrameworkAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFBlob+FrameworkAdditions.h"; sourceTree = "<group>"; };
 		6E8BB7CC0DE43734006450C8 /* TFBlob+FrameworkAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFBlob+FrameworkAdditions.m"; sourceTree = "<group>"; };
 		6E8BC3BF0DE86E4D006450C8 /* TFGestureInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFGestureInfo.h; sourceTree = "<group>"; };
@@ -702,7 +707,6 @@
 		6EBB25DC0D280EE1006520CD /* TFCalibrationPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCalibrationPoint.h; sourceTree = "<group>"; };
 		6EBB25DD0D280EE1006520CD /* TFCalibrationPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCalibrationPoint.m; sourceTree = "<group>"; };
 		6EC222020F77EEF8008FD532 /* ToucheFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ToucheFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6EC222030F77EEF8008FD532 /* ToucheFramework-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ToucheFramework-Info copy.plist"; sourceTree = "<group>"; };
 		6EC223070F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLibDC1394CapturePixelFormatConversions.h; sourceTree = "<group>"; };
 		6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFLibDC1394CapturePixelFormatConversions.c; sourceTree = "<group>"; };
 		6EC2266E0F7E5CFE008FD532 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/PerformanceMonitor.xib; sourceTree = "<group>"; };
@@ -981,9 +985,6 @@
 				6ECA94D10DD1E9A000A9ABE3 /* UserDefaults.plist */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				6EC4B0CE0DD9D6C20085D7B8 /* ToucheFramework-Info.plist */,
-				6E8738570F77B0FB00402313 /* Info copy.plist */,
-				6E87391B0F77B4F400402313 /* Info copy 2.plist */,
-				6EC222030F77EEF8008FD532 /* ToucheFramework-Info copy.plist */,
 			);
 			name = Resources;
 			path = resources;
@@ -1260,6 +1261,7 @@
 				6EC226830F7E64C3008FD532 /* PerformanceMonitor.xib */,
 				6EF63F3E0DD7B59100888DB0 /* PipelineSetup.xib */,
 				6EE60CAA0DDEF4030069A40E /* ScreenPreferences.xib */,
+				6E8B56730F894FE2004F383E /* TUIOFlashLCSettings.xib */,
 				6ECF88460E75315C009433B3 /* TUIOFlashXMLSettings.xib */,
 				6ECF81B30E72B362009433B3 /* TUIOOSCSettings.xib */,
 				6EF63F420DD7B5A500888DB0 /* WizardStep.xib */,
@@ -1655,6 +1657,8 @@
 				6ECF81B00E72B2D3009433B3 /* TFTUIOOSCSettingsController.m */,
 				6ECF885C0E7534AD009433B3 /* TFTUIOFlashXmlSettingsController.h */,
 				6ECF885D0E7534AD009433B3 /* TFTUIOFlashXmlSettingsController.m */,
+				6E8B564D0F894C56004F383E /* TFTUIOFlashLCSettingsController.h */,
+				6E8B564E0F894C56004F383E /* TFTUIOFlashLCSettingsController.m */,
 				6EC2267F0F7E5F3E008FD532 /* TFPerformanceMonitorController.h */,
 				6EC226800F7E5F3E008FD532 /* TFPerformanceMonitorController.m */,
 			);
@@ -1877,6 +1881,7 @@
 				6E8738940F77B4F400402313 /* TUIOFlashXMLSettings.xib in Resources */,
 				6E8738950F77B4F400402313 /* TFCIThresholdFilter.cikernel in Resources */,
 				6EC226850F7E64C3008FD532 /* PerformanceMonitor.xib in Resources */,
+				6E8B56750F894FE2004F383E /* TUIOFlashLCSettings.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1931,6 +1936,7 @@
 				6ECF88470E75315C009433B3 /* TUIOFlashXMLSettings.xib in Resources */,
 				6E9279910EB3C78200C88BEC /* TFCIThresholdFilter.cikernel in Resources */,
 				6EC226840F7E64C3008FD532 /* PerformanceMonitor.xib in Resources */,
+				6E8B56740F894FE2004F383E /* TUIOFlashLCSettings.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2147,6 +2153,7 @@
 				6EC227660F7ED324008FD532 /* TFResourceStats.c in Sources */,
 				6E35FD840F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c in Sources */,
 				6E8B546C0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m in Sources */,
+				6E8B56500F894C56004F383E /* TFTUIOFlashLCSettingsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2329,6 +2336,7 @@
 				6EC227670F7ED324008FD532 /* TFResourceStats.c in Sources */,
 				6E35FD830F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c in Sources */,
 				6E8B546B0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m in Sources */,
+				6E8B564F0F894C56004F383E /* TFTUIOFlashLCSettingsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2365,6 +2373,14 @@
 				6E7ED6410E621F9100ECAE8B /* English */,
 			);
 			name = Help;
+			sourceTree = "<group>";
+		};
+		6E8B56730F894FE2004F383E /* TUIOFlashLCSettings.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6E8B56510F894D75004F383E /* English */,
+			);
+			name = TUIOFlashLCSettings.xib;
 			sourceTree = "<group>";
 		};
 		6EAD35050D2C4B9900C34A1A /* Localizable.strings */ = {

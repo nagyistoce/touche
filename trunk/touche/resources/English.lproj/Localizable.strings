@@ -34,8 +34,8 @@
 "PerformanceMemKBFormat"			= "%.2f KB";
 "PerformanceMemBFormat"				= "%d B";
 
-"TUIOVersion1.0"					= "TUIO 1.0";
-"TUIOVersion1.0+1.1Blobs"			= "TUIO 1.0 + TUIO 1.1 Blobs";
+"TUIOVersion1.0Cursors"				= "TUIO 1.0 Cursors";
+"TUIOVersion1.0Cursors+1.1Blobs"	= "TUIO 1.0 Cursors + TUIO 1.1 Blobs";
 "TFTUIOVersion1.1Blobs"				= "TUIO 1.1 Blobs";
 
 "TFTUIOVersionMenuTitle"			= "TUIO Version";

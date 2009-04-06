@@ -36,12 +36,12 @@ extern NSString*	kTFTUIO10SetArgumentName;
 
 typedef enum {
 	TFTUIOVersion1_0Cursors				= 0,
-	TFTUIOVersion1_1Blobs				= 1,
-	TFTUIOVersion1_0CursorsAnd1_1Blobs	= 2
+	TFTUIOVersion1_0CursorsAnd1_1Blobs	= 1,
+	TFTUIOVersion1_1Blobs				= 2
 } TFTUIOVersion;
 
 #define	TFTUIOVersionMin		(TFTUIOVersion1_0Cursors)
-#define TFTUIOVersionMax		(TFTUIOVersion1_0CursorsAnd1_1Blobs)
+#define TFTUIOVersionMax		(TFTUIOVersion1_1Blobs)
 #define TFTUIOVersionCount		((TFTUIOVersionMax) - (TFTUIOVersionMin) + 1)
 
 #define TFTUIOVersionDefault	(TFTUIOVersion1_0Cursors)

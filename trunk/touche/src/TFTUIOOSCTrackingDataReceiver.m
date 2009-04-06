@@ -105,7 +105,7 @@
 	[distributor removeTUIOClient:self];
 }
 
-// trackingData is of type BBOSCPacket*
+// trackingData is of type BBOSCPacket* or NSArray*
 - (void)consumeTrackingData:(id)trackingData
 {
 	TFTUIOOSCTrackingDataDistributor* distributor = (TFTUIOOSCTrackingDataDistributor*)self.owningDistributor;

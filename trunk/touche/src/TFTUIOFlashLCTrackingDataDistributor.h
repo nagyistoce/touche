@@ -29,8 +29,9 @@
 struct TFLCSLocalConnection_t;
 
 @interface TFTUIOFlashLCTrackingDataDistributor : TFTUIOTrackingDataDistributor {
-	NSString*						_receiverConnectionName;
-	NSString*						_receiverMethodName;
+	NSString*						receiverConnectionName;
+	NSString*						receiverMethodName;
+	
 	NSMutableArray*					_receiverNames;
 
 	NSThread*						_receiverPollingThread;
@@ -38,10 +39,16 @@ struct TFLCSLocalConnection_t;
 	struct TFLCSLocalConnection_t*	_lcConnection;
 }
 
+@property (nonatomic, retain) NSString* receiverConnectionName;
+@property (nonatomic, retain) NSString* receiverMethodName;
+
+- (void)setReceiverConnectionName:(NSString*)newName;
+- (void)setReceiverMethodName:(NSString*)newName;
+
 - (id)init;
-- (id)initWithReceiverConnectionName:(NSString*)receiverConnectionName;
-- (id)initWithReceiverConnectionName:(NSString*)receiverConnectionName
-			   andReceiverMethodName:(NSString*)receiverMethodName;
+- (id)initWithReceiverConnectionName:(NSString*)aReceiverConnectionName;
+- (id)initWithReceiverConnectionName:(NSString*)aReceiverConnectionName
+			   andReceiverMethodName:(NSString*)aReceiverMethodName;
 - (void)dealloc;
 
 - (BOOL)startDistributorWithObject:(id)obj error:(NSError**)error;

@@ -67,12 +67,12 @@ NSString* TFTUIOVersionToString(TFTUIOVersion ver)
 	
 	switch(ver) {
 		case TFTUIOVersion1_0Cursors:
-			rv = [NSString stringWithString:NSLocalizedString(@"TUIOVersion1.0",
-															  @"TUIOVersion1.0")];
+			rv = [NSString stringWithString:NSLocalizedString(@"TUIOVersion1.0Cursors",
+															  @"TUIOVersion1.0Cursors")];
 			break;
 		case TFTUIOVersion1_0CursorsAnd1_1Blobs:
-			rv = [NSString stringWithString:NSLocalizedString(@"TUIOVersion1.0+1.1Blobs",
-															  @"TUIOVersion1.0+1.1Blobs")];
+			rv = [NSString stringWithString:NSLocalizedString(@"TUIOVersion1.0Cursors+1.1Blobs",
+															  @"TUIOVersion1.0Cursors+1.1Blobs")];
 			break;
 		case TFTUIOVersion1_1Blobs:
 			rv = [NSString stringWithString:NSLocalizedString(@"TFTUIOVersion1.1Blobs",

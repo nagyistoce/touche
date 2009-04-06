@@ -80,6 +80,12 @@ TFLCSLocalConnection_t* TFLCSConnect(const char* listenerName,
 // disconnect a Flash LocalConnection
 void TFLCSDisconnect(TFLCSLocalConnection_t* connection);
 
+// changes the connection listener name
+void TFLCSChangeListenerName(TFLCSLocalConnection_t* connection, const char* newListenerName);
+
+// changes the connection method name
+void TFLCSChangeMethodName(TFLCSLocalConnection_t* connection, const char* newMethodName);
+
 // returns non-zero if the given connection's Flash client is connected, 0 otherwise
 int TFLCSConnectionHasConnectedClient(TFLCSLocalConnection_t* connection);
 

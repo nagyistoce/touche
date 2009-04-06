@@ -39,6 +39,12 @@
 #define NEW_RECEIVERS_POLL_INTERVAL			((NSTimeInterval)1.0)
 #define	RECEIVERS_BUF_SIZE					(8192)
 
+#if defined(WINDOWS)
+#define NSStringToCString(str)	([(str) cString])
+#else
+#define NSStringToCString(str)	([(str) cStringUsingEncoding:NSASCIIStringEncoding])
+#endif
+
 // non-zero if yes, otherwise zero
 int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, const char* connectionName);
 
@@ -49,42 +55,64 @@ int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, cons
 
 @implementation TFTUIOFlashLCTrackingDataDistributor
 
+@synthesize receiverConnectionName, receiverMethodName;
+
 - (id)init
 {
 	return [self initWithReceiverConnectionName:DEFAULT_RECEIVER_CONNECTION_NAME];
 }
 
-- (id)initWithReceiverConnectionName:(NSString*)receiverConnectionName
+- (id)initWithReceiverConnectionName:(NSString*)aReceiverConnectionName
 {
-	return [self initWithReceiverConnectionName:receiverConnectionName
+	return [self initWithReceiverConnectionName:aReceiverConnectionName
 						  andReceiverMethodName:nil];
 }
 
-- (id)initWithReceiverConnectionName:(NSString*)receiverConnectionName
-			   andReceiverMethodName:(NSString*)receiverMethodName
+- (id)initWithReceiverConnectionName:(NSString*)aReceiverConnectionName
+			   andReceiverMethodName:(NSString*)aReceiverMethodName
 {
 	if (nil != (self = [super init])) {
-		if (nil == receiverConnectionName)
-			receiverConnectionName = [NSString stringWithString:DEFAULT_RECEIVER_CONNECTION_NAME];
-		if (nil == receiverMethodName)
-			receiverMethodName = [NSString stringWithString:DEFAULT_RECEIVER_METHOD_NAME];
+		if (nil == aReceiverConnectionName)
+			aReceiverConnectionName = [NSString stringWithString:DEFAULT_RECEIVER_CONNECTION_NAME];
+		if (nil == aReceiverMethodName)
+			aReceiverMethodName = [NSString stringWithString:DEFAULT_RECEIVER_METHOD_NAME];
 		
-		_receiverConnectionName = [receiverConnectionName copy];
-		_receiverMethodName = [receiverMethodName copy];		
+		receiverConnectionName = [aReceiverConnectionName copy];
+		receiverMethodName = [aReceiverMethodName copy];		
 	}
 	
 	return self;
+}
+
+- (void)setReceiverConnectionName:(NSString*)newName
+{
+	if (nil != newName && ![newName isEqualToString:self->receiverConnectionName]) {
+		[self->receiverConnectionName release];
+		self->receiverConnectionName = [newName retain];
+		
+		TFLCSChangeListenerName(_lcConnection, NSStringToCString(self->receiverConnectionName));		
+	}
+}
+
+- (void)setReceiverMethodName:(NSString*)newName
+{
+	if (nil != newName && ![newName isEqualToString:self->receiverMethodName]) {
+		[self->receiverMethodName release];
+		self->receiverMethodName = [newName retain];
+		
+		TFLCSChangeListenerName(_lcConnection, NSStringToCString(self->receiverMethodName));		
+	}
 }
 
 - (void)dealloc
 {
 	[self _disconnectLC];
 
-	[_receiverConnectionName release];
-	_receiverConnectionName = nil;
+	[receiverConnectionName release];
+	receiverConnectionName = nil;
 	
-	[_receiverMethodName release];
-	_receiverMethodName = nil;
+	[receiverMethodName release];
+	receiverMethodName = nil;
 	
 	[_receiverPollingThread release];
 	_receiverPollingThread = nil;
@@ -99,11 +127,11 @@ int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, cons
 {	
 	if (NULL == _lcConnection) {
 #if defined(WINDOWS)
-		_lcConnection = TFLCSConnect([_receiverConnectionName cString],
-									 [_receiverMethodName cString],
+		_lcConnection = TFLCSConnect([receiverConnectionName cString],
+									 [receiverMethodName cString],
 #else
-		_lcConnection = TFLCSConnect([_receiverConnectionName cStringUsingEncoding:NSASCIIStringEncoding],
-									 [_receiverMethodName cStringUsingEncoding:NSASCIIStringEncoding],
+		_lcConnection = TFLCSConnect([receiverConnectionName cStringUsingEncoding:NSASCIIStringEncoding],
+									 [receiverMethodName cStringUsingEncoding:NSASCIIStringEncoding],
 #endif
 									 NULL,
 									 NULL);
@@ -137,6 +165,16 @@ int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, cons
 	
 	[self _disconnectLC];
 	
+	@synchronized(_receivers) {
+		for (TFTrackingDataReceiver* receiver in [_receivers allValues]) {
+			[[receiver retain] autorelease];
+			[_receivers removeObjectForKey:receiver.receiverID];
+			
+			if ([delegate respondsToSelector:@selector(trackingDataDistributor:receiverDidDisconnect:)])
+				[delegate trackingDataDistributor:self receiverDidDisconnect:receiver];
+		}
+	}
+	
 	[super stopDistributor];
 }
 
@@ -149,11 +187,20 @@ int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, cons
 							   movedTouches:(NSArray*)movedTouches
 								frameNumber:(NSUInteger)frameNumber
 {
-	BBOSCBundle* tuioBundle = TFTUIOPC10CursorBundleWithData(frameNumber, livingTouches, movedTouches);
+	BBOSCBundle* tuioBundles[TFTUIOVersionCount];
+	memset(tuioBundles, 0, sizeof(BBOSCBundle*)*TFTUIOVersionCount);
 	
 	@synchronized (_receivers) {
-		for (TFTUIOFlashLCTrackingDataReceiver* receiver in [_receivers allValues])
-			[receiver consumeTrackingData:tuioBundle];
+		for (TFTUIOFlashLCTrackingDataReceiver* receiver in [_receivers allValues]) {
+			TFTUIOVersion version = receiver.tuioVersion;
+			if (nil == tuioBundles[version])
+				tuioBundles[version] = TFTUIOPCBundleWithDataForTUIOVersion(version,
+																			frameNumber,
+																			livingTouches,
+																			movedTouches);
+			
+			[receiver consumeTrackingData:tuioBundles[version]];
+		}
 	}
 }
 
@@ -179,7 +226,7 @@ int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, cons
 		if (numConnections > 0) {
 			int i=0;
 			char* p = &buf[0];
-			const char* recName = [_receiverConnectionName cStringUsingEncoding:NSASCIIStringEncoding];
+			const char* recName = [receiverConnectionName cStringUsingEncoding:NSASCIIStringEncoding];
 			
 			for (i; (char)0 != *p && i < numConnections; i++) {
 				if (_TFTUIOFlashLCReceiverNameBelongsToConnection(recName, p)) {
@@ -203,7 +250,7 @@ int _TFTUIOFlashLCReceiverNameBelongsToConnection(const char* receiverName, cons
 					
 					TFTUIOFlashLCTrackingDataReceiver* receiver =
 						[[TFTUIOFlashLCTrackingDataReceiver alloc] initWithConnectionName:connectionName
-																			andMethodName:_receiverMethodName];
+																			andMethodName:receiverMethodName];
 					
 					if (nil == [_receivers objectForKey:receiver.receiverID] && nil != receiver) {
 						receiver.owningDistributor = self;

@@ -14,5 +14,15 @@
 	<integer>3000</integer>
 	<key>tFTUIOFlashXmlServerLocalAddressTag</key>
 	<integer>0</integer>
+	<key>tFTUIOFlashXmlDefaultTuioVersion</key>
+	<integer>0</integer>
+	<key>tFTUIOFlashLCSettingsControllerPixelsForMotion</key>
+	<integer>5</integer>
+	<key>tFTUIOFlashLCSettingsControllerDefaultTUIOVersion</key>
+	<integer>0</integer>
+	<key>tFTUIOFlashLCSettingsControllerConnectionName</key>
+	<string>_TuioOscDataStream</string>
+	<key>tFTUIOFlashLCSettingsControllerConnectionMethod</key>
+	<string>receiveTuioOscData</string>
 </dict>
 </plist>

@@ -39,6 +39,7 @@
 @class TFWizardView;
 @class TFTUIOOSCSettingsController;
 @class TFTUIOFlashXmlSettingsController;
+@class TFTUIOFlashLCSettingsController;
 @class TFPerformanceMonitorController;
 
 @interface AppController : NSWindowController {
@@ -72,6 +73,7 @@
 	
 	TFTUIOOSCSettingsController*			_tuioSettingsController;
 	TFTUIOFlashXmlSettingsController*		_tuioFlashXmlSettingsController;
+	TFTUIOFlashLCSettingsController*		_tuioFlashLCSettingsController;
 	
 	NSInteger								_appStatus;
 }
@@ -85,6 +87,7 @@
 - (IBAction)showScreenPrefs:(id)sender;
 - (IBAction)showTUIOAddClientPanel:(id)sender;
 - (IBAction)showTUIOSettings:(id)sender;
+- (IBAction)showTUIOFlashLCSettings:(id)sender;
 - (IBAction)showTUIOFlashXmlSettings:(id)sender;
 - (IBAction)showMiscPrefs:(id)sender;
 - (IBAction)showTrackingPreviewWindow:(id)sender;

@@ -123,6 +123,16 @@ NSString* TFTUIOFlashLCTrackingDataReceiverIDFormat = @"%@:TUIO:OSC:FlashLC";
 		if (0 < len) {
 			TFLCSSendByteArray(_lcConnection, [packetData bytes], len);
 		}		
+	} else if ([trackingData isKindOfClass:[NSArray class]]) {
+		for (BBOSCPacket* packet in (NSArray*)trackingData) {
+			NSData* packetData = [packet packetizedData];
+			
+			int len = [packetData length];
+			if (0 < len) {
+				TFLCSSendByteArray(_lcConnection, [packetData bytes], len);
+				//[NSThread sleepForTimeInterval:0.005];
+			}
+		}
 	}
 }
 

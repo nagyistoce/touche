@@ -102,6 +102,7 @@ NSString* tFTUIOFlashXmlServerLocalAddressTagKey = @"tFTUIOFlashXmlServerLocalAd
 {
 	if (distributor != newDistributor) {
 		[distributor unbind:@"motionThreshold"];
+		[distributor unbind:@"defaultTuioVersion"];
 		
 		[[self class] bindPixelsForBlobMotionToObject:newDistributor keyPath:@"motionThreshold"];
 		[[self class] bindDefaultTuioVersionToObject:newDistributor keyPath:@"defaultTuioVersion"];

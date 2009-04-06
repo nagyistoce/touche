@@ -191,6 +191,18 @@ void TFLCSDisconnect(TFLCSLocalConnection_t* connection)
 	}
 }
 
+void TFLCSChangeListenerName(TFLCSLocalConnection_t* connection, const char* newListenerName)
+{
+	if (NULL != connection && NULL != newListenerName)
+		strncpy(connection->listenerName, newListenerName, TFLCS_LISTENER_NAME_MAX_LEN);
+}
+
+void TFLCSChangeMethodName(TFLCSLocalConnection_t* connection, const char* newMethodName)
+{
+	if (NULL != connection && NULL != newMethodName)
+		strncpy(connection->listenerMethod, newMethodName, TFLCS_LISTENER_METHOD_MAX_LEN);
+}
+
 int TFLCSConnectionHasConnectedClient(TFLCSLocalConnection_t* connection)
 {
 	ENSURE_CONNECTION_UP(connection, 0);

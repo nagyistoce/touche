@@ -49,6 +49,7 @@
 #import "TFFlashXMLTUIOTrackingDataDistributor.h"
 #import "TFTUIOFlashXmlSettingsController.h"
 #import "TFTUIOFlashLCTrackingDataDistributor.h"
+#import "TFTUIOFlashLCSettingsController.h"
 #import "TFTrackingDataDistributionCenter.h"
 
 
@@ -140,6 +141,12 @@ enum {
 	[_tuioSettingsController release];
 	_tuioSettingsController = nil;
 	
+	[_tuioFlashXmlSettingsController release];
+	_tuioFlashXmlSettingsController = nil;
+	
+	[_tuioFlashLCSettingsController release];
+	_tuioFlashLCSettingsController = nil;
+	
 	[super dealloc];
 }
 
@@ -215,6 +222,11 @@ enum {
 - (IBAction)showTUIOFlashXmlSettings:(id)sender
 {
 	[_tuioFlashXmlSettingsController showWindow:sender];
+}
+
+- (IBAction)showTUIOFlashLCSettings:(id)sender
+{
+	[_tuioFlashLCSettingsController showWindow:sender];
 }
 
 - (IBAction)showMiscPrefs:(id)sender
@@ -626,6 +638,9 @@ enum {
 	[flashLCDistributor startDistributorWithObject:nil error:NULL];
 	
 	[_distributionCenter addDistributor:flashLCDistributor];
+	
+	_tuioFlashLCSettingsController = [[TFTUIOFlashLCSettingsController alloc] init];
+	_tuioFlashLCSettingsController.distributor = flashLCDistributor;
 	[flashLCDistributor release];
 	
 	_pipeline = [[TFTrackingPipeline sharedPipeline] retain];

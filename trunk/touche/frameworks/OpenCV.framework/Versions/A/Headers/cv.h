@@ -1075,6 +1075,42 @@ CVAPI(int) cvFindFeaturesBoxed(struct CvFeatureTree* tr,
 		    CvMat* bounds_min, CvMat* bounds_max,
 		    CvMat* results);
 
+typedef struct CvSURFPoint
+{
+    CvPoint2D32f pt;
+    int laplacian;
+    int size;
+    float dir;
+    float hessian;
+} CvSURFPoint;
+
+CV_INLINE CvSURFPoint cvSURFPoint( CvPoint2D32f pt, int laplacian,
+                                   int size, float dir CV_DEFAULT(0),
+                                   float hessian CV_DEFAULT(0))
+{
+    CvSURFPoint kp;
+    kp.pt = pt;
+    kp.laplacian = laplacian;
+    kp.size = size;
+    kp.dir = dir;
+    kp.hessian = hessian;
+    return kp;
+}
+
+typedef struct CvSURFParams
+{
+    int extended;
+    double hessianThreshold;
+
+    int nOctaves;
+    int nOctaveLayers;
+}
+CvSURFParams;
+
+CVAPI(CvSURFParams) cvSURFParams( double hessianThreshold, int extended CV_DEFAULT(0) );
+CVAPI(void) cvExtractSURF( const CvArr* img, const CvArr* mask,
+                           CvSeq** keypoints, CvSeq** descriptors,
+                           CvMemStorage* storage, CvSURFParams params );
 
 /****************************************************************************************\
 *                         Haar-like Object Detection functions                           *
@@ -1214,7 +1250,8 @@ CVAPI(void) cvInitIntrinsicParams2D( const CvMat* object_points,
 CVAPI(int) cvFindChessboardCorners( const void* image, CvSize pattern_size,
                                     CvPoint2D32f* corners,
                                     int* corner_count CV_DEFAULT(NULL),
-                                    int flags CV_DEFAULT(CV_CALIB_CB_ADAPTIVE_THRESH) );
+                                    int flags CV_DEFAULT(CV_CALIB_CB_ADAPTIVE_THRESH+
+                                        CV_CALIB_CB_NORMALIZE_IMAGE) );
 
 /* Draws individual chessboard corners or the whole chessboard detected */
 CVAPI(void) cvDrawChessboardCorners( CvArr* image, CvSize pattern_size,
@@ -1314,12 +1351,12 @@ CVAPI(void) cvConvertPointsHomogeneous( const CvMat* src, CvMat* dst );
 #define CV_FM_8POINT 2
 #define CV_FM_LMEDS_ONLY  CV_LMEDS
 #define CV_FM_RANSAC_ONLY CV_RANSAC
-#define CV_FM_LMEDS (CV_FM_LMEDS_ONLY + CV_FM_8POINT)
-#define CV_FM_RANSAC (CV_FM_RANSAC_ONLY + CV_FM_8POINT)
+#define CV_FM_LMEDS CV_LMEDS
+#define CV_FM_RANSAC CV_RANSAC
 CVAPI(int) cvFindFundamentalMat( const CvMat* points1, const CvMat* points2,
                                  CvMat* fundamental_matrix,
                                  int method CV_DEFAULT(CV_FM_RANSAC),
-                                 double param1 CV_DEFAULT(1.), double param2 CV_DEFAULT(0.99),
+                                 double param1 CV_DEFAULT(3.), double param2 CV_DEFAULT(0.99),
                                  CvMat* status CV_DEFAULT(NULL) );
 
 /* For each input point on one of images
@@ -1374,6 +1411,38 @@ CVAPI(void) cvReleaseStereoBMState( CvStereoBMState** state );
 
 CVAPI(void) cvFindStereoCorrespondenceBM( const CvArr* left, const CvArr* right,
                                           CvArr* disparity, CvStereoBMState* state );
+
+/* Kolmogorov-Zabin stereo-correspondence algorithm (a.k.a. KZ1) */
+#define CV_STEREO_GC_OCCLUDED  SHRT_MAX
+
+typedef struct CvStereoGCState
+{
+    int Ithreshold;
+    int interactionRadius;
+    float K, lambda, lambda1, lambda2;
+    int occlusionCost;
+    int minDisparity;
+    int numberOfDisparities;
+    int maxIters;
+
+    CvMat* left;
+    CvMat* right;
+    CvMat* dispLeft;
+    CvMat* dispRight;
+    CvMat* ptrLeft;
+    CvMat* ptrRight;
+    CvMat* vtxBuf;
+    CvMat* edgeBuf;
+}
+CvStereoGCState;
+
+CVAPI(CvStereoGCState*) cvCreateStereoGCState( int numberOfDisparities, int maxIters );
+CVAPI(void) cvReleaseStereoGCState( CvStereoGCState** state );
+
+CVAPI(void) cvFindStereoCorrespondenceGC( const CvArr* left, const CvArr* right,
+                                          CvArr* disparityLeft, CvArr* disparityRight, 
+                                          CvStereoGCState* state, 
+                                          int useDisparityGuess CV_DEFAULT(0) );
 
 /* Reprojects the computed disparity image to the 3D space using the specified 4x4 matrix */
 CVAPI(void)  cvReprojectImageTo3D( const CvArr* disparityImage,

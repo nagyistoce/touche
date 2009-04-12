@@ -9,7 +9,7 @@
 <hr><p><ul>
 <li><a href="#cv_imgproc">Image Processing</a>
 <ul>
-<li><a href="#cv_imgproc_features">Gradients, Edges and Corners</a>
+<li><a href="#cv_imgproc_features">Gradients, Edges, Corners and Features</a>
 <li><a href="#cv_imgproc_resampling">Sampling, Interpolation and Geometrical Transforms</a>
 <li><a href="#cv_imgproc_morphology">Morphological Operations</a>
 <li><a href="#cv_imgproc_filters">Filters and Color Conversion</a>
@@ -59,7 +59,7 @@ as "images" however they do not necessarily have to be IplImage&#146;s, they may
 be CvMat&#146;s or CvMatND&#146;s as well.
 </p>
 
-<hr><h2><a name="cv_imgproc_features">Gradients, Edges and Corners</a></h2>
+<hr><h2><a name="cv_imgproc_features">Gradients, Edges, Corners and Features</a></h2>
 
 <hr><h3><a name="decl_cvSobel">Sobel</a></h3>
 <p class="Blurb">Calculates first, second, third or mixed image derivatives using extended Sobel operator</p>
@@ -351,6 +351,63 @@ and checking that the distance between the newly considered feature and the feat
 is larger than <code>min_distance</code>. So, the function removes the features than are too close
 to the stronger features.</p>
 
+
+<hr><h3><a name="decl_cvExtractSURF">ExtractSURF</a></h3>
+<p class="Blurb">Extracts Speeded Up Robust Features from image</p>
+<pre>
+void cvExtractSURF( const CvArr* image, const CvArr* mask,
+                    CvSeq** keypoints, CvSeq** descriptors,
+                    CvMemStorage* storage, CvSURFParams params );
+</pre><p><dl>
+<dt>image<dd>The input 8-bit grayscale image.
+<dt>mask<dd>The optional input 8-bit mask. The features are only found in the areas
+   that contain more than 50% of non-zero mask pixels.
+<dt>keypoints<dd>The output parameter; double pointer to the sequence of keypoints.
+ This will be the sequence of <code>CvSURFPoint</code> structures:
+ <pre>
+ typedef struct CvSURFPoint
+ {
+    CvPoint2D32f pt; // position of the feature within the image
+    int laplacian;   // -1, 0 or +1. sign of the laplacian at the point.
+                     // can be used to speedup feature comparison
+                     // (normally features with laplacians of different signs can not match)
+    int size;        // size of the feature
+    float dir;       // orientation of the feature: 0..360 degrees
+    float hessian;   // value of the hessian (can be used to approximately estimate the feature strengths;
+                     // see also params.hessianThreshold)
+ }
+ CvSURFPoint;
+ </pre>
+<dt>descriptors<dd>The optional output parameter; double pointer to the sequence of descriptors;
+   Depending on the <code>params.extended</code> value, each element of the sequence
+   will be either 64-element or 128-element floating-point (CV_32F) vector.
+   If the parameter is NULL, the descriptors are not computed.
+<dt>storage<dd>Memory storage where keypoints and descriptors will be stored.
+<dt>params<dd>Various algorithm parameters put to the structure <code>CvSURFParams</code>:
+ <pre>
+ typedef struct CvSURFParams
+ {
+    int extended; // 0 means basic descriptors (64 elements each),
+                  // 1 means extended descriptors (128 elements each)
+    double hessianThreshold; // only features with keypoint.hessian larger than that are extracted.
+                  // good default value is ~300-500 (can depend on the average
+                  // local contrast and sharpness of the image).
+                  // user can further filter out some features based on their hessian values
+                  // and other characteristics
+    int nOctaves; // the number of octaves to be used for extraction.
+                  // With each next octave the feature size is doubled (3 by default)
+    int nOctaveLayers; // The number of layers within each octave (4 by default)
+ }
+ CvSURFParams;
+
+ CvSURFParams cvSURFParams(double hessianThreshold, int extended=0); // returns default parameters
+ </pre>
+</dl><p>
+The function <code>cvExtractSURF</code> finds robust features in the image, as described in
+<a href="#paper_bay06">[Bay06]</a>. For each feature it returns its location, size, orientation
+and optionally the descriptor, basic or extended. The function can be used for object tracking
+and localization, image stitching etc. See find_obj.cpp demo in OpenCV samples directory.
+</p>
 
 <hr><h2><a name="cv_imgproc_resampling">Sampling, Interpolation and Geometrical Transforms</a></h2>
 
@@ -5428,7 +5485,7 @@ int cvFindFundamentalMat( const CvMat* points1,
                           const CvMat* points2,
                           CvMat* fundamental_matrix,
                           int    method=CV_FM_RANSAC,
-                          double param1=1.,
+                          double param1=3.,
                           double param2=0.99,
                           CvMat* status=NULL);
 </pre>
@@ -5444,19 +5501,19 @@ int cvFindFundamentalMat( const CvMat* points1,
 <dt>method<dd>Method for computing the fundamental matrix
           <dd>CV_FM_7POINT - for 7-point algorithm. N == 7
           <dd>CV_FM_8POINT - for 8-point algorithm. N >= 8
-          <dd>CV_FM_RANSAC - for RANSAC  algorithm. N >= 8
-          <dd>CV_FM_LMEDS  - for LMedS   algorithm. N >= 8
-<dt>param1<dd>The parameter is used for RANSAC or LMedS methods only.
+          <dd>CV_FM_RANSAC - for RANSAC  algorithm. N > 8
+          <dd>CV_FM_LMEDS  - for LMedS   algorithm. N > 8
+<dt>param1<dd>The parameter is used for RANSAC method only.
             It is the maximum distance from point to epipolar line in pixels,
             beyond which the point is considered an outlier and is not used
             for computing the final fundamental matrix.
-            Usually it is set to 0.5 or 1.0.
+            Usually it is set somewhere from 1 to 3.
 <dt>param2 <dd>The parameter is used for RANSAC or LMedS methods only.
-            It denotes the desirable level of confidence that the matrix
-            is correct.
+            It denotes the desirable level of confidence of the fundamental matrix estimate.
 <dt>status<dd>The optional output array of N elements,
             every element of which is set to 0 for outliers
-            and to 1 for the other points.
+            and to 1 for the "inliers", i.e. points that comply
+            well with the estimated epipolar geometry.
             The array is computed only in RANSAC and LMedS methods.
             For other methods it is set to all 1&#146;s.</p>
 </dl></p>
@@ -5503,7 +5560,7 @@ for( i = 0; i &lt; point_count; i++ )
 
 fundamental_matrix = cvCreateMat(3,3,CV_32FC1);
 int fm_count = cvFindFundamentalMat( points1,points2,fundamental_matrix,
-                                     CV_FM_RANSAC,1.0,0.99,status );
+                                     CV_FM_RANSAC,3,0.99,status );
 </pre>
 
 
@@ -5638,7 +5695,7 @@ post-filtering procedures.</p>
 It means that the supplied stereo pair should be rectified. Vertical stereo layout is not directly
 supported, but in such a case the images could be transposed by user.</p>
 
-<hr><h3><a name="decl_cvCreateStateBM">CreateStateBM</a></h3>
+<hr><h3><a name="decl_cvCreateStereoBMState">CreateStereoBMState</a></h3>
 <p class="Blurb">Creates block matching stereo correspondence structure</p>
 <pre>
 #define CV_STEREO_BM_BASIC 0
@@ -5662,7 +5719,7 @@ It is possible to override any of the parameters at any time between the calls t
 </p>
 
 
-<hr><h3><a name="decl_cvReleaseStateBM">ReleaseStateBM</a></h3>
+<hr><h3><a name="decl_cvReleaseStereoBMState">ReleaseStereoBMState</a></h3>
 <p class="Blurb">Releases block matching stereo correspondence structure</p>
 <pre>
 void cvReleaseStereoBMState( CvStereoBMState** state );
@@ -5673,7 +5730,7 @@ void cvReleaseStereoBMState( CvStereoBMState** state );
 </dl></p>
 <p>
 The function cvReleaseStereoBMState releases the stereo correspondence structure and
-all the internal buffers it points to.
+all the associated internal buffers.
 </p>
 
 
@@ -5696,6 +5753,139 @@ The function cvFindStereoCorrespondenceBM computes disparity map for
 the input rectified stereo pair.
 </p>
 
+
+<hr><h3><a name="decl_CvStereoGCState">CvStereoGCState</a></h3>
+<p class="Blurb">The structure for graph cuts-based stereo correspondence algorithm</p>
+<pre>
+typedef struct CvStereoGCState
+{
+    int Ithreshold; // threshold for piece-wise linear data cost function (5 by default)
+    int interactionRadius; // radius for smoothness cost function (1 by default; means Potts model)
+    float K, lambda, lambda1, lambda2; // parameters for the cost function
+                                       // (usually computed adaptively from the input data)
+    int occlusionCost; // 10000 by default
+    int minDisparity; // 0 by default; see CvStereoBMState
+    int numberOfDisparities; // defined by user; see CvStereoBMState
+    int maxIters; // number of iterations; defined by user.
+
+    // internal buffers
+    CvMat* left;
+    CvMat* right;
+    CvMat* dispLeft;
+    CvMat* dispRight;
+    CvMat* ptrLeft;
+    CvMat* ptrRight;
+    CvMat* vtxBuf;
+    CvMat* edgeBuf;
+}
+CvStereoGCState;
+</pre>
+<p>
+The graph cuts stereo correspondence algorithm,
+described in <a href="#paper_kolmogorov03">[Kolmogorov03]</a> (as <b>KZ1</b>), is non-realtime
+stereo correpsondence algorithm that usually gives very accurate depth map with well-defined
+object boundaries. The algorithm represents stereo problem as a sequence of binary
+optimization problems, each of those is solved using maximum graph flow algorithm.
+The state structure above should not be allocated and initialized manually; instead, use
+<a href="#decl_cvCreateStereoGCState">cvCreateStereoGCState</a> and then override
+necessary parameters if needed.</p>
+
+<hr><h3><a name="decl_cvCreateStereoGCState">CreateStereoGCState</a></h3>
+<p class="Blurb">Creates the state of graph cut-based stereo correspondence algorithm</p>
+<pre>
+CvStereoGCState* cvCreateStereoGCState( int numberOfDisparities,
+                                        int maxIters );
+</pre>
+<p>
+<dl>
+<dt>numberOfDisparities<dd>The number of disparities. The disparity search range will be
+   <code>state->minDisparity &le; disparity &lt; state->minDisparity + state->numberOfDisparities</code>
+<dt>maxIters<dd>Maximum number of iterations. On each iteration all possible (or reasonable)
+   alpha-expansions are tried. The algorithm may terminate earlier if it could not find
+   an alpha-expansion that decreases the overall cost function value. See
+   <a href="#paper_kolmogorov">[Kolmogorov03]</a>
+   for details.
+</dl></p>
+<p>
+The function cvCreateStereoGCState creates the stereo correspondence structure and initializes it.
+It is possible to override any of the parameters at any time between the calls to
+<a href="#decl_cvFindStereoCorrespondenceGC">cvFindStereoCorrespondenceGC</a>.
+</p>
+
+
+<hr><h3><a name="decl_cvReleaseStereoGCState">ReleaseStereoGCState</a></h3>
+<p class="Blurb">Releases the state structure of the graph cut-based stereo correspondence algorithm</p>
+<pre>
+void cvReleaseStereoGCState( CvStereoGCState** state );
+</pre>
+<p>
+<dl>
+<dt>state<dd>Double pointer to the released structure
+</dl></p>
+<p>
+The function cvReleaseStereoGCState releases the stereo correspondence structure and
+all the associated internal buffers.
+</p>
+
+
+<hr><h3><a name="decl_cvFindStereoCorrespondenceGC">FindStereoCorrespondenceGC</a></h3>
+<p class="Blurb">Computes the disparity map using graph cut-based algorithm</p>
+<pre>
+void cvFindStereoCorrespondenceGC( const CvArr* left, const CvArr* right,
+                                   CvArr* dispLeft, CvArr* dispRight,
+                                   CvStereoGCState* state,
+                                   int useDisparityGuess CV_DEFAULT(0) );
+</pre>
+<p>
+<dl>
+<dt>left<dd>The left single-channel, 8-bit image.
+<dt>right<dd>The right image of the same size and the same type.
+<dt>dispLeft<dd>The optional output single-channel 16-bit signed left disparity map of the same size as input images.
+<dt>dispRight<dd>The optional output single-channel 16-bit signed right disparity map of the same size as input images.
+<dt>state<dd>Stereo correspondence structure.
+<dt>useDisparityGuess<dd>If the parameter is not zero, the algorithm will start with pre-defined
+             disparity maps. Both dispLeft and dispRight should be valid disparity maps. Otherwise,
+             the function starts with blank disparity maps (all pixels are marked as occlusions).
+</dl></p>
+<p>
+The function cvFindStereoCorrespondenceGC computes disparity maps for
+the input rectified stereo pair. Note that the left disparity image will contain values in the following range:
+<pre>
+-state->numberOfDisparities-state->minDisparity &lt; dispLeft(x,y) &le; -state->minDisparity,
+or
+dispLeft(x,y) == CV_STEREO_GC_OCCLUSION,
+</pre>
+where as for the right disparity image the following will be true:
+<pre>
+state->minDisparity &le; dispRight(x,y) &lt; state->minDisparity+state->numberOfDisparities,
+or
+dispRight(x,y) == CV_STEREO_GC_OCCLUSION,
+</pre>
+that is, the range for the left disparity image will be inversed, and the pixels for
+which no good match has been found, will be marked as occlusions.
+</p>
+<p>Here is how the function can be called:</p>
+<pre>
+// image_left and image_right are the input 8-bit single-channel images
+// from the left and the right cameras, respectively
+CvSize size = cvGetSize(image_left);
+CvMat* disparity_left = cvCreateMat( size.height, size.width, CV_16S );
+CvMat* disparity_right = cvCreateMat( size.height, size.width, CV_16S );
+CvStereoGCState* state = cvCreateStereoGCState( 16, 2 );
+cvFindStereoCorrespondenceGC( image_left, image_right,
+    disparity_left, disparity_right, state, 0 );
+cvReleaseStereoGCState( &state );
+// now process the computed disparity images as you want ...
+</pre>
+and this is the output left disparity image computed from the well-known
+Tsukuba stereo pair and multiplied by -16 (because the values in the left
+disparity images are usually negative):
+<pre>
+CvMat* disparity_left_visual = cvCreateMat( size.height, size.width, CV_8U );
+cvConvertScale( disparity_left, disparity_left_visual, -16 );
+cvSave( "disparity.png", disparity_left_visual );
+</pre>
+<p><img align="center" src="pics/disparity.png"></p>
 
 <hr><h3><a name="decl_cvReprojectImageTo3D">ReprojectImageTo3D</a></h3>
 <p class="Blurb">Reprojects disparity image to 3D space</p>
@@ -6091,6 +6281,11 @@ as a starting point.
 </p>
 <ol>
 
+<li><a name="paper_bay06"><b>[Bay06]</b>
+Herbert Bay, Tinne Tuytelaars and Luc Van Gool
+"SURF: Speeded Up Robust Features", Proceedings of the 9th European Conference
+on Computer Vision, Springer LNCS volume 3951, part 1, pp 404--417, 2006.
+</a>
 
 <li><a name="paper_beis97"><b>[Beis97]</b>
 J.S. Beis and D.G. Lowe, "Shape indexing using approximate nearest-neighbor search in highdimensional spaces".
@@ -6174,6 +6369,9 @@ Artificial Intelligence (IJCAI), pp. 674-679.
 
 <li><b>[Kass88]</b> M. Kass, A. Witkin, and D. Terzopoulos. Snakes: Active Contour Models,
 International Journal of Computer Vision, pp. 321-331, 1988.
+
+<li><a name ="paper_kolmogorov03"></a><b>[Kolmogorov03]</b>V. Kolmogorov. Graph Based Algorithms for Scene Reconstruction
+from Two or More Views. PhD thesis, Cornell University, September 2003.
 
 <li><a name="paper_lienhart02"><b>[Lienhart02]</b>
 Rainer Lienhart and Jochen Maydt.

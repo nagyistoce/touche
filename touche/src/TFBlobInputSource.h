@@ -68,6 +68,7 @@
 - (BOOL)supportsCaptureResolution:(CGSize)size;
 
 - (BOOL)hasFilterStages;
+- (NSDictionary*)filterStages;
 - (CIImage*)currentRawImageForStage:(NSInteger)filterStage;
 
 - (CGColorSpaceRef)ciColorSpace;

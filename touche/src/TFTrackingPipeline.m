@@ -43,6 +43,7 @@
 #import "TFCIGrayscalingFilter.h"
 #import "TFCIMorphologicalOpenWith3x3ShapeFilter.h"
 #import "TFCIMorphologicalCloseWith3x3ShapeFilter.h"
+#import "TFCIHighpassFilter.h"
 #import "TFRGBA8888BlobDetector.h"
 #import "TFBlobLabelizer.h"
 #import "TFBlobSimpleDistanceLabelizer.h"
@@ -175,7 +176,7 @@ enum {
 	
 	showBlobsInPreview = YES;
 	transformBlobsToScreenCoordinates = YES;
-	frameStageForDisplay = TFFilterChainStageUnfiltered;
+	frameStageForDisplay = 0;
 	_calibrationStatus = TFTrackingPipelineCalibrationFine;
 	_calibrationError = nil;
 		
@@ -614,6 +615,11 @@ enum {
 															  @"isEnabled",
 															  @"inputRadius",
 															  nil]];
+				else if ([filter isKindOfClass:[TFCIHighpassFilter class]])
+					[self _bindToPreferences:filter keyPaths:[NSArray arrayWithObjects:
+															  @"enabled",
+															  @"inputRadius",
+															  nil]];
 				else if ([filter isKindOfClass:[TFCIContrastStretchFilter class]])
 					[self _bindToPreferences:filter keyPaths:[NSArray arrayWithObjects:
 																@"isEnabled",
@@ -955,6 +961,16 @@ enum {
 - (BOOL)currentInputMethodSupportsFilterStages
 {
 	return [_blobInput hasFilterStages];
+}
+
+- (NSDictionary*)filterStagesForCurrentInputMethod
+{
+	NSDictionary* stages = nil;
+	
+	if ([_blobInput hasFilterStages])
+		stages = [_blobInput filterStages];
+	
+	return stages;
 }
 
 - (BOOL)currentSettingsSupportCaptureResolution:(CGSize)resolution

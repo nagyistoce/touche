@@ -178,6 +178,13 @@
 	return NO;
 }
 
+- (NSDictionary*)filterStages
+{	
+	TFThrowMethodNotImplementedException();
+	
+	return nil;
+}
+
 - (CIImage*)currentRawImageForStage:(NSInteger)filterStage
 {
 	TFThrowMethodNotImplementedException();

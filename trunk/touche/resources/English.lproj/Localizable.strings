@@ -13,6 +13,7 @@
 "3x3DilationName"					= "Morphological dilation with a 3x3 pixel shape";
 "3x3OpenName"						= "Morphological open with a 3x3 pixel shape";
 "3x3CloseName"						= "Morphological close with a 3x3 pixel shape";
+"HighpassName"						= "Intensity Highpass Filter";
 
 "WiiRemoteNotYetInitialized"		= "Wii Remote support has not been initialized yet. Please try again later!";
 "WiiRemoteDiscovering"				= "A Wii Remote needs to be connected.\n\nPlease hold down the 1 and 2 buttons simultaneously in order to have your Wii Remote be discovered!";
@@ -33,6 +34,18 @@
 "PerformanceMemMBFormat"			= "%.2f MB";
 "PerformanceMemKBFormat"			= "%.2f KB";
 "PerformanceMemBFormat"				= "%d B";
+
+"StageUnfiltered"					= "Raw Image";
+"StageColorInverted"				= "Color Inversion";
+"StageBGSubtracted"					= "Background Subtraction";
+"StageBlur"							= "Gaussian Blur";
+"StageHighpass"						= "Highpass Filter";
+"StageContrastStretch"				= "Contrast Boost";
+"StageGrayscale"					= "Grayscale";
+"StageThresholding"					= "Thresholding";
+"StageMorphOpen"					= "Morphological Open";
+"StageMorphClose"					= "Morphological Close";
+"StageFinal"						= "Final";
 
 "TUIOVersion1.0Cursors"				= "TUIO 1.0 Cursors";
 "TUIOVersion1.0Cursors+1.1Blobs"	= "TUIO 1.0 Cursors + TUIO 1.1 Blobs";

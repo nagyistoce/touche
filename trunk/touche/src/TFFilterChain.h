@@ -25,24 +25,15 @@
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
 
-enum {
-	TFFilterChainStageUnknown					=		-1,
-	TFFilterChainStageUnfiltered				=		1,
-	TFFilterChainStageColorInverted				=		2,
-	TFFilterChainStageBackgroundSubtracted		=		3,
-	TFFilterChainStageBlurred					=		4,
-	TFFilterChainStageContrastStretched			=		5,
-	TFFilterChainStageGrayscaleConverted		=		6,
-	TFFilterChainStageThresholded				=		7,
-	TFFilterChainStageMorphologicalOpen			=		8,
-	TFFilterChainStageMorphologicalClose		=		9,
-	TFFilterChainStageFinal						=		10
-};	
+
+typedef NSInteger TFFilterChainStage;	
 
 @interface TFFilterChain : NSObject {
 }
 
 - (CIImage*)apply:(CIImage*)inputImage;
-- (CIImage*)currentImageForStage:(NSInteger)stage;
+- (CIImage*)currentImageForStage:(TFFilterChainStage)stage;
+
+- (NSDictionary*)filterChainStages;
 
 @end

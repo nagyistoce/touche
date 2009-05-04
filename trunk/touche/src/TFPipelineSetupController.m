@@ -45,6 +45,7 @@
 - (void)_setConfigurationViewAnimate:(NSView*)newView;
 - (void)_libdc1394CameraDidChange:(NSNotification*)notification;
 - (void)_adaptConfigurationWindowSizeWithMaxHeight:(CGFloat)height;
+- (void)_loadFilterStageSelectionPopup:(NSPopUpButton*)popUp;
 @end
 
 @implementation TFPipelineSetupController
@@ -231,6 +232,12 @@
 	
 	[_smallPreviewFilterStageSelection setEnabled:supportsFilters];
 	[_largePreviewFilterStageSelection setEnabled:supportsFilters];
+	
+	if (supportsFilters) {
+		// update the filter stage popups
+		[self _loadFilterStageSelectionPopup:_smallPreviewFilterStageSelection];
+		[self _loadFilterStageSelectionPopup:_largePreviewFilterStageSelection];
+	}
 }
 
 - (void)handleDisplayParametersChange
@@ -343,6 +350,27 @@
 	 display:YES]; */
 	
 	[[_configurationBox superview] scrollPoint:NSMakePoint(0, height)];
+}
+
+- (void)_loadFilterStageSelectionPopup:(NSPopUpButton*)popUp
+{
+	[popUp removeAllItems];
+	
+	TFTrackingPipeline* myPipeline = [TFTrackingPipeline sharedPipeline];
+	NSDictionary* filterStages = [myPipeline filterStagesForCurrentInputMethod];
+	NSArray* sortedTags = [[filterStages allKeys] sortedArrayUsingSelector:@selector(compare:)];
+	
+	if (nil != sortedTags) {	
+		for (NSNumber* tagNumber in sortedTags) {
+			NSInteger tag = [tagNumber integerValue];
+			NSString* title = [filterStages objectForKey:tagNumber];
+			
+			[popUp addItemWithTitle:title];
+			[[popUp lastItem] setTag:tag];
+		}
+		
+		[popUp selectItemWithTag:myPipeline.frameStageForDisplay];
+	}
 }
 
 #pragma mark -

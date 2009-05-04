@@ -36,6 +36,7 @@
 #import "TFCI3x3DilationFilter.h"
 #import "TFCIMorphologicalOpenWith3x3ShapeFilter.h"
 #import "TFCIMorphologicalCloseWith3x3ShapeFilter.h"
+#import "TFCIHighpassFilter.h"
 
 @implementation TFCIFilterChain
 
@@ -57,6 +58,7 @@
 	[TFCI3x3DilationFilter class];
 	[TFCIMorphologicalOpenWith3x3ShapeFilter class];
 	[TFCIMorphologicalCloseWith3x3ShapeFilter class];
+	[TFCIHighpassFilter class];
 }
 
 - (void)dealloc

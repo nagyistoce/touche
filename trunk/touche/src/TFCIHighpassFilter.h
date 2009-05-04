@@ -1,10 +1,10 @@
 //
-//  TFFilterChain.m
-//  Touché
+//  TFCIHighpassFilter.h
+//  Touche
 //
-//  Created by Georg Kaindl on 15/12/07.
+//  Created by Georg Kaindl on 28/4/09.
 //
-//  Copyright (C) 2007 Georg Kaindl
+//  Copyright (C) 2008 Georg Kaindl
 //
 //  This file is part of Touché.
 //
@@ -22,31 +22,19 @@
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "TFFilterChain.h"
+#import <Foundation/Foundation.h>
 
-#import "TFIncludes.h"
+#import <QuartzCore/QuartzCore.h>
 
-@implementation TFFilterChain
 
-- (CIImage*)apply:(CIImage*)inputImage
-{
-	TFThrowMethodNotImplementedException();
+@interface TFCIHighpassFilter : CIFilter {
+	CIImage*		inputImage;
+	NSNumber*		inputRadius;
+	BOOL			enabled;
 	
-	return nil;
+	CIFilter*		_blurFilter;
 }
 
-- (CIImage*)currentImageForStage:(TFFilterChainStage)stage
-{
-	TFThrowMethodNotImplementedException();
-	
-	return nil;
-}
-
-- (NSDictionary*)filterChainStages
-{
-	TFThrowMethodNotImplementedException();
-	
-	return nil;
-}
+@property (assign, getter=isEnabled) BOOL enabled;
 
 @end

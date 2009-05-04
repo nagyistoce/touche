@@ -273,6 +273,8 @@
 		6E8BC4140DE86F8E006450C8 /* TFZoomPinchRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8BC3C80DE86E95006450C8 /* TFZoomPinchRecognizer.m */; };
 		6E8BC45C0DE8742F006450C8 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E90B19A0D1ED84700A21C36 /* Accelerate.framework */; };
 		6E8BC45D0DE87436006450C8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC4D9940D1199E9008AB9CF /* QuartzCore.framework */; };
+		6E902D110FA745E100646707 /* TFCIHighpassFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E902D100FA745E100646707 /* TFCIHighpassFilter.m */; };
+		6E902D120FA745E100646707 /* TFCIHighpassFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E902D100FA745E100646707 /* TFCIHighpassFilter.m */; };
 		6E90B19B0D1ED84700A21C36 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E90B19A0D1ED84700A21C36 /* Accelerate.framework */; };
 		6E9279910EB3C78200C88BEC /* TFCIThresholdFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 6E9279900EB3C78200C88BEC /* TFCIThresholdFilter.cikernel */; };
 		6E9279940EB3C7AC00C88BEC /* TFCIThresholdFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9279930EB3C7AC00C88BEC /* TFCIThresholdFilter.m */; };
@@ -654,6 +656,8 @@
 		6E8BC3D90DE86F18006450C8 /* TFCATouchIndicationLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCATouchIndicationLayer.m; sourceTree = "<group>"; };
 		6E8BC3DC0DE86F39006450C8 /* TFLabeledTouchSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLabeledTouchSet.h; sourceTree = "<group>"; };
 		6E8BC3DD0DE86F39006450C8 /* TFLabeledTouchSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFLabeledTouchSet.m; sourceTree = "<group>"; };
+		6E902D0F0FA745E100646707 /* TFCIHighpassFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIHighpassFilter.h; sourceTree = "<group>"; };
+		6E902D100FA745E100646707 /* TFCIHighpassFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIHighpassFilter.m; sourceTree = "<group>"; };
 		6E90B19A0D1ED84700A21C36 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = /System/Library/Frameworks/Accelerate.framework; sourceTree = "<absolute>"; };
 		6E9279900EB3C78200C88BEC /* TFCIThresholdFilter.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TFCIThresholdFilter.cikernel; sourceTree = "<group>"; };
 		6E9279920EB3C7AC00C88BEC /* TFCIThresholdFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIThresholdFilter.h; sourceTree = "<group>"; };
@@ -1488,6 +1492,8 @@
 				6E6021E90E07CD8500E83E18 /* TFCIGrayscalingFilter.m */,
 				6EAE6FD70E640C520083A4C7 /* TFCIColorInversionFilter.h */,
 				6EAE6FD80E640C520083A4C7 /* TFCIColorInversionFilter.m */,
+				6E902D0F0FA745E100646707 /* TFCIHighpassFilter.h */,
+				6E902D100FA745E100646707 /* TFCIHighpassFilter.m */,
 			);
 			name = CIFilters;
 			sourceTree = "<group>";
@@ -2182,6 +2188,7 @@
 				6E35FD840F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c in Sources */,
 				6E8B546C0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m in Sources */,
 				6E8B56500F894C56004F383E /* TFTUIOFlashLCSettingsController.m in Sources */,
+				6E902D110FA745E100646707 /* TFCIHighpassFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2365,6 +2372,7 @@
 				6E35FD830F80E51D005322C3 /* CIImage+MakeBitmapsSupport.c in Sources */,
 				6E8B546B0F87ACAF004F383E /* TFTUIOTrackingDataReceiver.m in Sources */,
 				6E8B564F0F894C56004F383E /* TFTUIOFlashLCSettingsController.m in Sources */,
+				6E902D120FA745E100646707 /* TFCIHighpassFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

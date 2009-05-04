@@ -279,6 +279,11 @@
 	return YES;
 }
 
+- (NSDictionary*)filterStages
+{	
+	return [filterChain filterChainStages];
+}
+
 - (CIImage*)currentRawImageForStage:(NSInteger)filterStage
 {
 	CIImage* img;

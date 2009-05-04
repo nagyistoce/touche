@@ -99,6 +99,7 @@ extern NSInteger TFTrackingPipelineInputResolutionHighest;
 - (BOOL)currentSettingsSupportCaptureResolutionWithKey:(NSInteger)key;
 
 - (BOOL)currentInputMethodSupportsFilterStages;
+- (NSDictionary*)filterStagesForCurrentInputMethod;
 
 - (CGSize)currentCaptureResolution;
 

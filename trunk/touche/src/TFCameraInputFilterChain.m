@@ -29,6 +29,21 @@
 
 #define DEFAULT_TIME_BETWEEN_BG_IMAGE_ACQUISITION	((NSTimeInterval)5.0)
 
+enum {
+	TFCIFilterChainStageUnknown					=		-1,
+	TFCIFilterChainStageUnfiltered				=		1,
+	TFCIFilterChainStageColorInverted			=		2,
+	TFCIFilterChainStageBackgroundSubtracted	=		3,
+	TFCIFilterChainStageBlurred					=		4,
+	TFCIFilterChainStageHighpass				=		5,
+	TFCIFilterChainStageContrastStretched		=		6,
+	TFCIFilterChainStageGrayscaleConverted		=		7,
+	TFCIFilterChainStageThresholded				=		8,
+	TFCIFilterChainStageMorphologicalOpen		=		9,
+	TFCIFilterChainStageMorphologicalClose		=		10,
+	TFCIFilterChainStageFinal					=		11
+};
+
 @implementation TFCameraInputFilterChain
 
 @synthesize timeBetweenBackgroundFrameAcquisition;
@@ -83,6 +98,11 @@
 	
 	// No we blur the picture to reduce the noise, if necessary
 	filter = [CIFilter filterWithName:@"TFCIGaussianBlurFilter"];
+	[filter setDefaults];
+	[self addFilter:filter];
+	
+	// Highpass filtering
+	filter = [CIFilter filterWithName:@"TFCIHighpassFilter"];
 	[filter setDefaults];
 	[self addFilter:filter];
 	
@@ -143,32 +163,34 @@
 	}
 }
 
-- (CIImage*)currentImageForStage:(NSInteger)stage;
+- (CIImage*)currentImageForStage:(TFFilterChainStage)stage;
 {
 	if (nil == [[filters objectAtIndex:0] valueForKey:@"inputImage"])
 		return nil;
 
 	switch (stage) {
-		case TFFilterChainStageUnfiltered:
+		case TFCIFilterChainStageUnfiltered:
 			return [[filters objectAtIndex:0] valueForKey:@"inputImage"];
-		case TFFilterChainStageColorInverted:
+		case TFCIFilterChainStageColorInverted:
 			return [[filters objectAtIndex:0] valueForKey:@"outputImage"];
-		case TFFilterChainStageBackgroundSubtracted:
+		case TFCIFilterChainStageBackgroundSubtracted:
 			return [[filters objectAtIndex:1] valueForKey:@"outputImage"];
-		case TFFilterChainStageBlurred:
+		case TFCIFilterChainStageBlurred:
 			return [[filters objectAtIndex:2] valueForKey:@"outputImage"];
-		case TFFilterChainStageContrastStretched:
+		case TFCIFilterChainStageHighpass:
 			return [[filters objectAtIndex:3] valueForKey:@"outputImage"];
-		case TFFilterChainStageGrayscaleConverted:
+		case TFCIFilterChainStageContrastStretched:
 			return [[filters objectAtIndex:4] valueForKey:@"outputImage"];
-		case TFFilterChainStageThresholded:
+		case TFCIFilterChainStageGrayscaleConverted:
 			return [[filters objectAtIndex:5] valueForKey:@"outputImage"];
-		case TFFilterChainStageMorphologicalOpen:
+		case TFCIFilterChainStageThresholded:
 			return [[filters objectAtIndex:6] valueForKey:@"outputImage"];
-		case TFFilterChainStageMorphologicalClose:
+		case TFCIFilterChainStageMorphologicalOpen:
 			return [[filters objectAtIndex:7] valueForKey:@"outputImage"];
-		case TFFilterChainStageUnknown:
-		case TFFilterChainStageFinal:
+		case TFCIFilterChainStageMorphologicalClose:
+			return [[filters objectAtIndex:8] valueForKey:@"outputImage"];
+		case TFCIFilterChainStageUnknown:
+		case TFCIFilterChainStageFinal:
 		default: {			
 			return [[filters lastObject] valueForKey:@"outputImage"];
 		}
@@ -176,6 +198,35 @@
 	
 	// unreachable
 	return nil;
+}
+
+- (NSDictionary*)filterChainStages
+{
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+				TFLocalizedString(@"StageUnfiltered", @"StageUnfiltered"),
+					[NSNumber numberWithInteger:TFCIFilterChainStageUnfiltered],
+				TFLocalizedString(@"StageColorInverted", @"StageColorInverted"),
+					[NSNumber numberWithInteger:TFCIFilterChainStageColorInverted],
+				TFLocalizedString(@"StageBGSubtracted", @"StageBGSubtracted"),
+					[NSNumber numberWithInteger:TFCIFilterChainStageBackgroundSubtracted],
+				TFLocalizedString(@"StageBlur", @"StageBlur"),
+					[NSNumber numberWithInteger:TFCIFilterChainStageBlurred],
+				TFLocalizedString(@"StageHighpass", @"StageHighpass"),
+					[NSNumber numberWithInteger:TFCIFilterChainStageHighpass],
+				TFLocalizedString(@"StageContrastStretch", @"StageContrastStretch"),
+					[NSNumber numberWithInteger:TFCIFilterChainStageContrastStretched],
+				TFLocalizedString(@"StageGrayscale", @"StageGrayscale"),
+					[NSNumber numberWithInteger:TFCIFilterChainStageGrayscaleConverted],
+				TFLocalizedString(@"StageThresholding", @"StageThresholding"),
+					[NSNumber numberWithInteger:TFCIFilterChainStageThresholded],
+				TFLocalizedString(@"StageMorphOpen", @"StageMorphOpen"),
+					[NSNumber numberWithInteger:TFCIFilterChainStageMorphologicalOpen],
+				TFLocalizedString(@"StageMorphClose", @"StageMorphClose"),
+					[NSNumber numberWithInteger:TFCIFilterChainStageMorphologicalClose],
+				TFLocalizedString(@"StageFinal", @"StageFinal"),
+					[NSNumber numberWithInteger:TFCIFilterChainStageFinal],
+				nil];
+				
 }
 
 - (void)updateBackgroundForSubtraction

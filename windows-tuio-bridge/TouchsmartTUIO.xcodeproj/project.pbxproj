@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		6E69E1CF0FBB308B0030F497 /* TFTUIOTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E1CE0FBB308B0030F497 /* TFTUIOTrackingDataReceiver.m */; };
+		6E69E1D00FBB308B0030F497 /* TFTUIOTrackingDataReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E69E1CE0FBB308B0030F497 /* TFTUIOTrackingDataReceiver.m */; };
 		6E84641B0F556A6800E145FB /* TFSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D10F556A6800E145FB /* TFSocket.m */; };
 		6E84641C0F556A6800E145FB /* TFIPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D30F556A6800E145FB /* TFIPSocket.m */; };
 		6E84641D0F556A6800E145FB /* TFIPDatagramSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8463D50F556A6800E145FB /* TFIPDatagramSocket.m */; };
@@ -153,6 +155,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* TouchsmartTUIO_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchsmartTUIO_Prefix.pch; sourceTree = "<group>"; };
+		6E69E1CD0FBB308B0030F497 /* TFTUIOTrackingDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTUIOTrackingDataReceiver.h; sourceTree = "<group>"; };
+		6E69E1CE0FBB308B0030F497 /* TFTUIOTrackingDataReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTUIOTrackingDataReceiver.m; sourceTree = "<group>"; };
 		6E8463D00F556A6800E145FB /* TFSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFSocket.h; sourceTree = "<group>"; };
 		6E8463D10F556A6800E145FB /* TFSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFSocket.m; sourceTree = "<group>"; };
 		6E8463D20F556A6800E145FB /* TFIPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIPSocket.h; sourceTree = "<group>"; };
@@ -446,6 +450,8 @@
 				6E8463F10F556A6800E145FB /* TFTUIOOSCTrackingDataReceiver.m */,
 				6E8463F20F556A6800E145FB /* TFTUIOTrackingDataDistributor.h */,
 				6E8463F30F556A6800E145FB /* TFTUIOTrackingDataDistributor.m */,
+				6E69E1CD0FBB308B0030F497 /* TFTUIOTrackingDataReceiver.h */,
+				6E69E1CE0FBB308B0030F497 /* TFTUIOTrackingDataReceiver.m */,
 				6E8463F40F556A6800E145FB /* TFTUIOOSCSettingsController.h */,
 				6E8463F50F556A6800E145FB /* TFBlob+TUIOMethods.h */,
 				6E8463F60F556A6800E145FB /* TFBlob+TUIOMethods.m */,
@@ -746,6 +752,7 @@
 				6EC221020F77DAFA008FD532 /* TFFlashLCSHMEM.c in Sources */,
 				6EC2210F0F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */,
 				6EC221100F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */,
+				6E69E1CF0FBB308B0030F497 /* TFTUIOTrackingDataReceiver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -803,6 +810,7 @@
 				6EC221030F77DAFA008FD532 /* TFFlashLCSHMEM.c in Sources */,
 				6EC221110F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */,
 				6EC221120F77DB5A008FD532 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */,
+				6E69E1D00FBB308B0030F497 /* TFTUIOTrackingDataReceiver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

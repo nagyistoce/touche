@@ -129,21 +129,6 @@ void* _CIImageBitmapsMalloc(int width, int height, int* rowBytes, CIImageInterna
 // frees a pointer allocated with the above malloc variant.
 void _CIImageBitmapsFree(void* ptr);
 
-@interface CIImage (MakeBitmapsExtensionsPrivate)
-- (void*)_createBitmapWithColorSpace:(CGColorSpaceRef)colorSpace
-				  ciOutputColorSpace:(CGColorSpaceRef)ciOutputColorSpace
-				 ciWorkingColorSpace:(CGColorSpaceRef)ciWorkingColorSpace
-			  finalOutputPixelFormat:(CIImageInternalOutputPixelFormat)foPixelFormat
-						  bitmapInfo:(CGBitmapInfo)bitmapInfo
-					   bytesPerPixel:(NSUInteger)bytesPerPixel
-							rowBytes:(size_t*)rowBytes
-							  buffer:(void*)buffer
-					cgContextPointer:(CGContextRef*)cgContextPointer
-					ciContextPointer:(CIContext**)ciContextPointer
-						 renderOnCPU:(BOOL)renderOnCPU
-						internalData:(void**)internalData;
-@end
-
 @implementation CIImage (MakeBitmapsExtensions)
 
 + (CGColorSpaceRef)screenColorSpace
@@ -173,7 +158,10 @@ void _CIImageBitmapsFree(void* ptr);
 	if (NULL == context || CGRectIsInfinite(extent))
 		goto errorReturn;
 	
-	if (CIImageInternalBitmapCreationMethodUndetermined == method) {
+	if (CIImageInternalBitmapCreationMethodUndetermined == method && !context->renderOnCPU)
+		// when rendering to a CGContext on the GPU, we get a massive memory leak.
+		method = CIImageInternalBitmapCreationMethodCIContextRender;
+	else if (CIImageInternalBitmapCreationMethodUndetermined == method) {
 		measurePerformance = YES;
 	
 		uint64_t minNanos = UINT64_MAX;
@@ -191,6 +179,24 @@ void _CIImageBitmapsFree(void* ptr);
 		// if we're here, we have enough samples for all rendering methods. now determine the fastest one.
 		context->chosenCreationMethod = minIndex;
 		method = minIndex;
+		
+		for (i=CIImageInternalBitmapCreationMethodMin; i<CIImageInternalBitmapCreationMethodMax; i++) {
+			if (i == method)
+				continue;
+			
+			switch (i) {
+				case CIImageInternalBitmapCreationMethodCIContextRender:
+					[(context->ciContextglContext) clearCaches];
+					[(context->ciContextglContext) reclaimResources];
+					break;
+				case CIImageInternalBitmapCreationMethodBitmapContextBackedCIContext:
+					[(context->ciContextcgContext) clearCaches];
+					[(context->ciContextcgContext) reclaimResources];
+					break;
+				default:
+					break;
+			}
+		}
 	}
 	
 methodDetermined:
@@ -253,7 +259,7 @@ methodDetermined:
 										   bounds:extent
 										   format:renderFormat
 									   colorSpace:NULL];
-			
+						
 			if (context->borderDrawingEnabled) {
 				if (kCIFormatARGB8 == renderFormat) {
 					unsigned char channels[] = { context->borderA * 255,
@@ -445,7 +451,7 @@ void CIImageBitmapsSetContextDeterminesFastestRenderingDynamically(void* pContex
 {
 	CIImageBitmapsInternalData* context = (CIImageBitmapsInternalData*)pContext;
 	
-	if (NO && determineDynamically)
+	if (determineDynamically)
 		context->chosenCreationMethod = CIImageInternalBitmapCreationMethodUndetermined;
 	else
 		context->chosenCreationMethod = CIImageInternalBitmapCreationMethodDefault;
@@ -647,10 +653,11 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 															pixelFormat:cglPixelFormatObj
 																options:options] retain];
 	
-		CGLSetCurrentContext(NULL);
-				
-		CGLDestroyPixelFormat(cglPixelFormatObj);		
+		CGLSetCurrentContext(NULL);				
 	}
+	
+	if (NULL != cglPixelFormatObj)
+		CGLDestroyPixelFormat(cglPixelFormatObj);
 	
 	if (nil == context->ciContextglContext)
 		goto errorReturn;

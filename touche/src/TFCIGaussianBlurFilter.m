@@ -27,6 +27,12 @@
 
 #import "TFLocalization.h"
 
+
+typedef enum {
+	TFBlurTypeGaussian,
+	TFBlurTypeCheat
+} _TFBlurType;
+
 @implementation TFCIGaussianBlurFilter
 
 @synthesize isEnabled;
@@ -48,8 +54,8 @@
 
 - (void)dealloc
 {
-	[_gaussianBlur release];
-	_gaussianBlur = nil;
+	[_blurFilter release];
+	_blurFilter = nil;
 	
 	[super dealloc];
 }
@@ -61,8 +67,29 @@
 		return nil;
 	}
 	
-	_gaussianBlur = [[CIFilter filterWithName:@"CIGaussianBlur"] retain];
-	[_gaussianBlur setDefaults];
+	// CICheatBlur is fast, but unofficial, so we try to instantiate it, but if that
+	// fails, we fall back to a regular public CIGaussianBlur.
+	self->_blurFilter = [[CIFilter filterWithName:@"CICheatBlur"] retain];
+	self->_blurType = TFBlurTypeCheat;
+	
+	if (nil == _blurFilter) {
+		self->_blurFilter = [[CIFilter filterWithName:@"CIGaussianBlur"] retain];
+		self->_blurType = TFBlurTypeGaussian;
+	}
+	
+	[self->_blurFilter setDefaults];
+	
+	self->_blurRadiusMultiplier = 1.0;
+	switch (self->_blurType) {
+		case TFBlurTypeCheat:
+			self->_blurRadiusMultiplier = 1.5;
+			break;
+		default:
+			self->_blurRadiusMultiplier = 1.0;
+			break;
+	}
+	
+	self->_prevRadius = -1.0;
 	
 	return self;
 }
@@ -100,9 +127,31 @@
 	CIImage* outImg = inputImage;
 	
 	if (isEnabled) {
-		[_gaussianBlur setValue:inputRadius forKey:@"inputRadius"];
-		[_gaussianBlur setValue:inputImage forKey:@"inputImage"];
-		outImg = [_gaussianBlur valueForKey:@"outputImage"];
+		double rad = [inputRadius doubleValue];
+		if (rad != self->_prevRadius || self->_prevRadius < 0.0) {
+			NSString* key = nil;
+			switch(self->_blurType) {
+				case TFBlurTypeCheat:
+					key = @"inputAmount";
+					// CICheatBlur crashes when the amount is 0
+					if (rad < 0.01)
+						rad = 0.01;
+					break;
+				case TFBlurTypeGaussian:
+					key = @"inputRadius";
+					break;
+				default:
+					break;
+			}
+						
+			if (nil != key)
+				[_blurFilter setValue:[NSNumber numberWithDouble:rad * self->_blurRadiusMultiplier] forKey:key];
+			
+			self->_prevRadius = rad;			
+		}
+				
+		[_blurFilter setValue:inputImage forKey:@"inputImage"];
+		outImg = [_blurFilter valueForKey:@"outputImage"];
 	}
 	
 	return outImg;

@@ -30,7 +30,11 @@
 	BOOL			isEnabled;
 	CIImage*		inputImage;
 	NSNumber*		inputRadius;
-	CIFilter*		_gaussianBlur;
+	CIFilter*		_blurFilter;
+	
+	NSInteger		_blurType;
+	double			_blurRadiusMultiplier;
+	double			_prevRadius;
 }
 
 @property (assign) BOOL isEnabled;

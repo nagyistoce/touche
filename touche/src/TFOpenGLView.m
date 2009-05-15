@@ -70,17 +70,23 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 
 - (void)dealloc
 {
+	[self clearCIContext];
+	
 	[_ciContext release];
 	_ciContext = nil;
 	
 	[_ciimage release];
 	_ciimage = nil;
 	
-	CGColorSpaceRelease(_colorSpace);
-	_colorSpace = NULL;
+	if (NULL != _colorSpace) {
+		CGColorSpaceRelease(_colorSpace);
+		_colorSpace = NULL;
+	}
 	
-	CGColorSpaceRelease(_workingColorSpace);
-	_workingColorSpace = NULL;
+	if (NULL != _workingColorSpace) {
+		CGColorSpaceRelease(_workingColorSpace);
+		_workingColorSpace = NULL;
+	}
 
 	if (_displayLink) {
 		[self stopDisplayLink];
@@ -231,7 +237,7 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 			[[self _currentCIContext] drawImage:image
 										atPoint:imgOriginOnGLFrame
 									   fromRect:imageRect];
-			
+									   			
 			// invert y-axis so that 0,0 is in the top left corner (as expected)
 			glPushMatrix();
 			glTranslatef(0.0f, frame.size.height*_zoomY, 0.0f);
@@ -240,12 +246,12 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 										   pictureSize:imageRect.size
 											  viewSize:CGSizeMake(frame.size.width, frame.size.height)];
 			glPopMatrix();
-		}		
+		}
+		
+		[NSOpenGLContext clearCurrentContext];
 	}
 		
 	[[self openGLContext] flushBuffer];
-	
-	//[NSOpenGLContext clearCurrentContext];
 }
 
 - (CVReturn)drawFrameForTimeStamp:(const CVTimeStamp*)timeStamp
@@ -292,10 +298,17 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 		CVDisplayLinkRelease(_displayLink);
 		_displayLink = NULL;
 		
-		[_ciimage release];
-		_ciimage = nil;
+		@synchronized(self) {
+			[_ciimage release];
+			_ciimage = nil;
 		
-		[self clearCIContext];
+			[_ciContext clearCaches];
+			[_ciContext reclaimResources];
+			
+			// we should re-use the cicontext as long as possible, since those are
+			// prone to leaking memory until Apple finally fixes them...
+			//[self clearCIContext];
+		}
 		
 		return rv;
 	}

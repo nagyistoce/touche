@@ -125,6 +125,9 @@ NSTimeInterval TFTUIOTimeIntervalBetweenCocoaAndNTPRefDate()
 	static NSTimeInterval secs = (NSTimeInterval)0.0;
 	
 	if (0.0 >= secs) {
+#if defined(WINDOWS)
+		secs = 3187299600.0;
+#else
 		NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		
 		NSDateComponents* ntpRefDateComps = [[NSDateComponents alloc] init];
@@ -140,7 +143,10 @@ NSTimeInterval TFTUIOTimeIntervalBetweenCocoaAndNTPRefDate()
 		
 		[ntpRefDateComps release];
 		[calendar release];
+#endif
 	}
+	
+	NSLog(@"seconds: %lf\n", secs);
 	
 	return secs;
 }

@@ -75,7 +75,6 @@ static CIKernel*	tfSubtractKernel = nil;
 	
 	self->_blurFilter = [[CIFilter filterWithName:@"TFCIGaussianBlurFilter"] retain];
 	[self->_blurFilter setDefaults];
-	[(TFCIGaussianBlurFilter*)self->_blurFilter setIsEnabled:YES];
 	
 	self.enabled = NO;
 	
@@ -115,10 +114,8 @@ static CIKernel*	tfSubtractKernel = nil;
 	CIImage* outputImage = self->inputImage;
 		
 	if (self->enabled) {
-		[self->_blurFilter setValue:inputImage forKey:@"inputImage"];
-		[self->_blurFilter setValue:inputRadius forKey:@"inputRadius"];
-		
-		CIImage* blurredImage = [self->_blurFilter valueForKey:@"outputImage"];
+		CIImage* blurredImage = [(TFCIGaussianBlurFilter*)self->_blurFilter blurImage:self->inputImage
+																	   withBlurRadius:[inputRadius doubleValue]];
 				
 		CISampler* blurredSampler = [CISampler samplerWithImage:blurredImage options:
 										[NSDictionary dictionaryWithObjectsAndKeys:kCISamplerFilterNearest,

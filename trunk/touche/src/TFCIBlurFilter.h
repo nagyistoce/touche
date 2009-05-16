@@ -1,6 +1,6 @@
 //
-//  TFCIGaussianBlurFilter.h
-//  Touche
+//  TFCIBlurFilter.h
+//  Touché
 //
 //  Created by Georg Kaindl on 14/7/08.
 //
@@ -26,7 +26,7 @@
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface TFCIGaussianBlurFilter : CIFilter {
+@interface TFCIBlurFilter : CIFilter {
 	BOOL			isEnabled;
 	CIImage*		inputImage;
 	NSNumber*		inputRadius;

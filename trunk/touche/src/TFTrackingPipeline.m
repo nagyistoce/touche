@@ -38,7 +38,7 @@
 #import "TFCIColorInversionFilter.h"
 #import "TFCIThresholdFilter.h"
 #import "TFCIBackgroundSubtractionFilter.h"
-#import "TFCIGaussianBlurFilter.h"
+#import "TFCIBlurFilter.h"
 #import "TFCIContrastStretchFilter.h"
 #import "TFCIGrayscalingFilter.h"
 #import "TFCIMorphologicalOpenWith3x3ShapeFilter.h"
@@ -610,7 +610,7 @@ enum {
 																@"doSmartSubtraction",
 																@"smartSubtractionLuminanceThreshold",
 															  nil]];
-				else if ([filter isKindOfClass:[TFCIGaussianBlurFilter class]])
+				else if ([filter isKindOfClass:[TFCIBlurFilter class]])
 					[self _bindToPreferences:filter keyPaths:[NSArray arrayWithObjects:
 															  @"isEnabled",
 															  @"inputRadius",

@@ -39,4 +39,6 @@
 
 @property (assign) BOOL isEnabled;
 
+- (CIImage*)blurImage:(CIImage*)image withBlurRadius:(double)radius;
+
 @end

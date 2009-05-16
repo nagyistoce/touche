@@ -126,34 +126,43 @@ typedef enum {
 {
 	CIImage* outImg = inputImage;
 	
-	if (isEnabled) {
-		double rad = [inputRadius doubleValue];
-		if (rad != self->_prevRadius || self->_prevRadius < 0.0) {
-			NSString* key = nil;
-			switch(self->_blurType) {
-				case TFBlurTypeCheat:
-					key = @"inputAmount";
-					// CICheatBlur crashes when the amount is 0
-					if (rad < 0.01)
-						rad = 0.01;
-					break;
-				case TFBlurTypeGaussian:
-					key = @"inputRadius";
-					break;
-				default:
-					break;
-			}
-						
-			if (nil != key)
-				[_blurFilter setValue:[NSNumber numberWithDouble:rad * self->_blurRadiusMultiplier] forKey:key];
-			
-			self->_prevRadius = rad;			
+	if (isEnabled)
+		outImg = [self blurImage:inputImage withBlurRadius:[inputRadius doubleValue]];
+	
+	return outImg;
+}
+
+// it's faster to call this directly rather than to use the filter approach, so we
+// provide this method for performance reasons
+- (CIImage*)blurImage:(CIImage*)image withBlurRadius:(double)radius
+{
+	CIImage* outImg = nil;
+	
+	if (radius != self->_prevRadius || self->_prevRadius < 0.0) {
+		NSString* key = nil;
+		switch(self->_blurType) {
+			case TFBlurTypeCheat:
+				key = @"inputAmount";
+				// CICheatBlur crashes when the amount is 0
+				if (radius < 0.01)
+					radius = 0.01;
+				break;
+			case TFBlurTypeGaussian:
+				key = @"inputRadius";
+				break;
+			default:
+				break;
 		}
-				
-		[_blurFilter setValue:inputImage forKey:@"inputImage"];
-		outImg = [_blurFilter valueForKey:@"outputImage"];
+		
+		if (nil != key)
+			[_blurFilter setValue:[NSNumber numberWithDouble:radius * self->_blurRadiusMultiplier] forKey:key];
+		
+		self->_prevRadius = radius;			
 	}
 	
+	[_blurFilter setValue:image forKey:@"inputImage"];
+	outImg = [_blurFilter valueForKey:@"outputImage"];
+
 	return outImg;
 }
 

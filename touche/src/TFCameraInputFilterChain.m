@@ -97,7 +97,7 @@ enum {
 				context:NULL];
 	
 	// No we blur the picture to reduce the noise, if necessary
-	filter = [CIFilter filterWithName:@"TFCIGaussianBlurFilter"];
+	filter = [CIFilter filterWithName:@"TFCIBlurFilter"];
 	[filter setDefaults];
 	[self addFilter:filter];
 	

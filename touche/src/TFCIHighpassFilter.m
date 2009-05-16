@@ -25,7 +25,7 @@
 #import "TFCIHighpassFilter.h"
 
 #import "TFIncludes.h"
-#import "TFCIGaussianBlurFilter.h"
+#import "TFCIBlurFilter.h"
 
 
 static CIKernel*	tfSubtractKernel = nil;
@@ -73,7 +73,7 @@ static CIKernel*	tfSubtractKernel = nil;
 		tfSubtractKernel = [[[CIKernel kernelsWithString:kernelCode] objectAtIndex:0] retain];		
 	}
 	
-	self->_blurFilter = [[CIFilter filterWithName:@"TFCIGaussianBlurFilter"] retain];
+	self->_blurFilter = [[CIFilter filterWithName:@"TFCIBlurFilter"] retain];
 	[self->_blurFilter setDefaults];
 	
 	self.enabled = NO;
@@ -114,7 +114,7 @@ static CIKernel*	tfSubtractKernel = nil;
 	CIImage* outputImage = self->inputImage;
 		
 	if (self->enabled) {
-		CIImage* blurredImage = [(TFCIGaussianBlurFilter*)self->_blurFilter blurImage:self->inputImage
+		CIImage* blurredImage = [(TFCIBlurFilter*)self->_blurFilter blurImage:self->inputImage
 																	   withBlurRadius:[inputRadius doubleValue]];
 				
 		CISampler* blurredSampler = [CISampler samplerWithImage:blurredImage options:

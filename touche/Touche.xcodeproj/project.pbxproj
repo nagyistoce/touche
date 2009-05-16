@@ -62,7 +62,7 @@
 		6E6C8CF40E72AF030062EA15 /* TFTUIOOSCServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C8CF30E72AF030062EA15 /* TFTUIOOSCServer.m */; };
 		6E76BF080DCA0FAA00D30859 /* TFGrayscale8BlobDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E76BF070DCA0FAA00D30859 /* TFGrayscale8BlobDetector.m */; };
 		6E76BF120DCA12AE00D30859 /* TFOpenCVContourBlobDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E76BF110DCA12AE00D30859 /* TFOpenCVContourBlobDetector.m */; };
-		6E7C61220E2AC257006B4D67 /* TFCIGaussianBlurFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C61210E2AC257006B4D67 /* TFCIGaussianBlurFilter.m */; };
+		6E7C61220E2AC257006B4D67 /* TFCIBlurFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C61210E2AC257006B4D67 /* TFCIBlurFilter.m */; };
 		6E7DB2BE0DEB76E700CF9556 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6E7DB2BD0DEB76E700CF9556 /* AppIcon.icns */; };
 		6E7DB4E10DEC66EC00CF9556 /* TFError.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E7DB4BE0DEC588B00CF9556 /* TFError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E7DB4EB0DEC677800CF9556 /* TFError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7DB4EA0DEC677800CF9556 /* TFError.m */; };
@@ -189,7 +189,7 @@
 		6E8738DB0F77B4F400402313 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF5E3E90DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m */; };
 		6E8738DC0F77B4F400402313 /* TFCIMorphologicalCloseWith3x3ShapeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E88D1D40DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m */; };
 		6E8738DD0F77B4F400402313 /* TFCIGrayscalingFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6021E90E07CD8500E83E18 /* TFCIGrayscalingFilter.m */; };
-		6E8738DE0F77B4F400402313 /* TFCIGaussianBlurFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C61210E2AC257006B4D67 /* TFCIGaussianBlurFilter.m */; };
+		6E8738DE0F77B4F400402313 /* TFCIBlurFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C61210E2AC257006B4D67 /* TFCIBlurFilter.m */; };
 		6E8738DF0F77B4F400402313 /* TFSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC3DD0E5874FE00409C0E /* TFSocket.m */; };
 		6E8738E00F77B4F400402313 /* TFIPSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC5760E5A075B00409C0E /* TFIPSocket.m */; };
 		6E8738E10F77B4F400402313 /* TFIPStreamSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2DC5790E5A07AD00409C0E /* TFIPStreamSocket.m */; };
@@ -613,8 +613,8 @@
 		6E76BF070DCA0FAA00D30859 /* TFGrayscale8BlobDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGrayscale8BlobDetector.m; sourceTree = "<group>"; };
 		6E76BF100DCA12AE00D30859 /* TFOpenCVContourBlobDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFOpenCVContourBlobDetector.h; sourceTree = "<group>"; };
 		6E76BF110DCA12AE00D30859 /* TFOpenCVContourBlobDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFOpenCVContourBlobDetector.m; sourceTree = "<group>"; };
-		6E7C61200E2AC257006B4D67 /* TFCIGaussianBlurFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIGaussianBlurFilter.h; sourceTree = "<group>"; };
-		6E7C61210E2AC257006B4D67 /* TFCIGaussianBlurFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIGaussianBlurFilter.m; sourceTree = "<group>"; };
+		6E7C61200E2AC257006B4D67 /* TFCIBlurFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCIBlurFilter.h; sourceTree = "<group>"; };
+		6E7C61210E2AC257006B4D67 /* TFCIBlurFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCIBlurFilter.m; sourceTree = "<group>"; };
 		6E7DB2BD0DEB76E700CF9556 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = images/AppIcon.icns; sourceTree = "<group>"; };
 		6E7DB4BE0DEC588B00CF9556 /* TFError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFError.h; sourceTree = "<group>"; };
 		6E7DB4EA0DEC677800CF9556 /* TFError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFError.m; sourceTree = "<group>"; };
@@ -1474,8 +1474,8 @@
 				6E1D0DED0D351F37005AB4DA /* TFCIBackgroundSubtractionFilter.m */,
 				6E81EB1F0D522BAF003EA72C /* TFCIRatioImageBlendFilter.h */,
 				6E81EB200D522BAF003EA72C /* TFCIRatioImageBlendFilter.m */,
-				6E7C61200E2AC257006B4D67 /* TFCIGaussianBlurFilter.h */,
-				6E7C61210E2AC257006B4D67 /* TFCIGaussianBlurFilter.m */,
+				6E7C61200E2AC257006B4D67 /* TFCIBlurFilter.h */,
+				6E7C61210E2AC257006B4D67 /* TFCIBlurFilter.m */,
 				6E5F837C0DF5E2B200A39FFF /* TFCIContrastStretchFilter.h */,
 				6E5F837D0DF5E2B200A39FFF /* TFCIContrastStretchFilter.m */,
 				6EAF4EF80DFE8BBA00104357 /* TFCI3x3ErosionFilter.h */,
@@ -2139,7 +2139,7 @@
 				6E8738DB0F77B4F400402313 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m in Sources */,
 				6E8738DC0F77B4F400402313 /* TFCIMorphologicalCloseWith3x3ShapeFilter.m in Sources */,
 				6E8738DD0F77B4F400402313 /* TFCIGrayscalingFilter.m in Sources */,
-				6E8738DE0F77B4F400402313 /* TFCIGaussianBlurFilter.m in Sources */,
+				6E8738DE0F77B4F400402313 /* TFCIBlurFilter.m in Sources */,
 				6E8738DF0F77B4F400402313 /* TFSocket.m in Sources */,
 				6E8738E00F77B4F400402313 /* TFIPSocket.m in Sources */,
 				6E8738E10F77B4F400402313 /* TFIPStreamSocket.m in Sources */,
@@ -2323,7 +2323,7 @@
 				6EF5E3EA0DFEAD2C00432557 /* TFCIMorphologicalOpenWith3x3ShapeFilter.m in Sources */,
 				6E88D1D50DFEC80F00A72B7D /* TFCIMorphologicalCloseWith3x3ShapeFilter.m in Sources */,
 				6E6021EA0E07CD8500E83E18 /* TFCIGrayscalingFilter.m in Sources */,
-				6E7C61220E2AC257006B4D67 /* TFCIGaussianBlurFilter.m in Sources */,
+				6E7C61220E2AC257006B4D67 /* TFCIBlurFilter.m in Sources */,
 				6E2DC3DE0E5874FE00409C0E /* TFSocket.m in Sources */,
 				6E2DC5770E5A075B00409C0E /* TFIPSocket.m in Sources */,
 				6E2DC57A0E5A07AD00409C0E /* TFIPStreamSocket.m in Sources */,

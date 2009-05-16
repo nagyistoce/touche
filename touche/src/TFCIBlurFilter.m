@@ -1,6 +1,6 @@
 //
-//  TFCIGaussianBlurFilter.m
-//  Touche
+//  TFCIBlurFilter.m
+//  Touché
 //
 //  Created by Georg Kaindl on 14/7/08.
 //
@@ -23,7 +23,7 @@
 //
 //
 
-#import "TFCIGaussianBlurFilter.h"
+#import "TFCIBlurFilter.h"
 
 #import "TFLocalization.h"
 
@@ -33,16 +33,16 @@ typedef enum {
 	TFBlurTypeCheat
 } _TFBlurType;
 
-@implementation TFCIGaussianBlurFilter
+@implementation TFCIBlurFilter
 
 @synthesize isEnabled;
 
 + (void)initialize
 {
-	[CIFilter registerFilterName:@"TFCIGaussianBlurFilter"
+	[CIFilter registerFilterName:@"TFCIBlurFilter"
 					 constructor:self
 				 classAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-								  TFLocalizedString(@"GaussianFilterName", @"Gaussian Blur"),
+								  TFLocalizedString(@"BlurFilterName", @"Blur"),
 								  kCIAttributeFilterDisplayName,
 								  [NSArray arrayWithObjects:
 								   kCICategoryVideo, kCICategoryBlur,

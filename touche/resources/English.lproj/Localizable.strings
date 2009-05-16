@@ -5,7 +5,7 @@
 "1PixelBorderFilterName"			= "1-pixel border around an image";
 "BackgroundSubtractionName"			= "Subtracts a backround from an image, ignoring alpha and capping each result pixel at 0,0,0";
 "RatioImageBlendFilterName"			= "Blends two pictures by combining according pixels from both with a given ratio.";
-"GaussianFilterName"				= "Gaussian Blur";
+"BlurFilterName"					= "Blur";
 "ColorInvertFilterName"				= "Color Inversion";
 "ContrastStretchFilterName"			= "Contrast Stretch";
 "GrayscalingFilterName"				= "Grayscale from Component Operation";
@@ -38,7 +38,7 @@
 "StageUnfiltered"					= "Raw Image";
 "StageColorInverted"				= "Color Inversion";
 "StageBGSubtracted"					= "Background Subtraction";
-"StageBlur"							= "Gaussian Blur";
+"StageBlur"							= "Blur";
 "StageHighpass"						= "Highpass Filter";
 "StageContrastStretch"				= "Contrast Boost";
 "StageGrayscale"					= "Grayscale";

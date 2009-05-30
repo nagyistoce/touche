@@ -28,7 +28,7 @@
 #import <dc1394/dc1394.h>
 
 #import "TFIncludes.h"
-#import "TFLibDC1394CapturePixelFormatConversions.h"
+#import "TFCapturePixelFormatConversions.h"
 
 #if defined(_USES_IPP_)
 #import <ipp.h>
@@ -302,7 +302,7 @@ void _TFLibDC1394CapturePrepareConversionContext(TFLibDC1394CaptureConversionCon
 	
 	static int converterInitialized = 0;
 	if (!converterInitialized) {
-		TFLibDC1394PixelFormatConvertInitialize();
+		TFCapturePixelFormatConvertInitialize();
 		converterInitialized = 1;
 	}
 	
@@ -450,7 +450,7 @@ TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394Capture
 		if (DC1394_COLOR_CODING_YUV411 == frame->color_coding	&&
 			k32ARGBPixelFormat == context->destCVPixelFormat) {
 			
-			TFLibDC1394PixelFormatConvertYUV411toARGB8(frame->image,
+			TFCapturePixelFormatConvertYUV411toARGB8(frame->image,
 													   outputData,
 													   context->width,
 													   context->height);
@@ -459,7 +459,7 @@ TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394Capture
 		} else if (DC1394_COLOR_CODING_YUV444 == frame->color_coding	&&
 			k32ARGBPixelFormat == context->destCVPixelFormat) {
 		
-			TFLibDC1394PixelFormatConvertYUV444toARGB8(frame->image,
+			TFCapturePixelFormatConvertYUV444toARGB8(frame->image,
 													   3*frame->size[0],
 													   outputData,
 													   context->rowBytes,
@@ -471,7 +471,7 @@ TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394Capture
 		} else if (DC1394_COLOR_CODING_RGB8 == frame->color_coding	&&
 				   k32ARGBPixelFormat == context->destCVPixelFormat) {
 		
-			TFLibDC1394PixelFormatConvertRGB8toARGB8(frame->image,
+			TFCapturePixelFormatConvertRGB8toARGB8(frame->image,
 													 3*frame->size[0],
 													 outputData,
 													 context->rowBytes,
@@ -481,7 +481,7 @@ TFLibDC1394CaptureConversionResult _TFLibDC1394CaptureConvert(TFLibDC1394Capture
 		} else if (DC1394_COLOR_CODING_MONO8 == frame->color_coding &&
 				   k32ARGBPixelFormat == context->destCVPixelFormat) {
 		
-			TFLibDC1394PixelFormatConvertMono8toARGB8(frame->image,
+			TFCapturePixelFormatConvertMono8toARGB8(frame->image,
 													  frame->size[0],
 													  outputData,
 													  context->rowBytes,

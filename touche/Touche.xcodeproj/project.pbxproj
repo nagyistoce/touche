@@ -356,8 +356,8 @@
 		6EC221FA0F77EEF8008FD532 /* TFTrackingDataReceiverInfoDictKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EED61470E5F0CD700375CC0 /* TFTrackingDataReceiverInfoDictKeys.m */; };
 		6EC221FC0F77EEF8008FD532 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC4D9940D1199E9008AB9CF /* QuartzCore.framework */; };
 		6EC221FD0F77EEF8008FD532 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E90B19A0D1ED84700A21C36 /* Accelerate.framework */; };
-		6EC223090F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */; settings = {COMPILER_FLAGS = "-std=c99"; }; };
-		6EC2230A0F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */; settings = {COMPILER_FLAGS = "-std=c99"; }; };
+		6EC223090F797AE1008FD532 /* TFCapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC223080F797AE1008FD532 /* TFCapturePixelFormatConversions.c */; settings = {COMPILER_FLAGS = "-std=c99"; }; };
+		6EC2230A0F797AE1008FD532 /* TFCapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EC223080F797AE1008FD532 /* TFCapturePixelFormatConversions.c */; settings = {COMPILER_FLAGS = "-std=c99"; }; };
 		6EC226810F7E5F3E008FD532 /* TFPerformanceMonitorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC226800F7E5F3E008FD532 /* TFPerformanceMonitorController.m */; };
 		6EC226820F7E5F3E008FD532 /* TFPerformanceMonitorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC226800F7E5F3E008FD532 /* TFPerformanceMonitorController.m */; };
 		6EC226840F7E64C3008FD532 /* PerformanceMonitor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EC226830F7E64C3008FD532 /* PerformanceMonitor.xib */; };
@@ -708,8 +708,8 @@
 		6EBB25DC0D280EE1006520CD /* TFCalibrationPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCalibrationPoint.h; sourceTree = "<group>"; };
 		6EBB25DD0D280EE1006520CD /* TFCalibrationPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCalibrationPoint.m; sourceTree = "<group>"; };
 		6EC222020F77EEF8008FD532 /* ToucheFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ToucheFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6EC223070F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLibDC1394CapturePixelFormatConversions.h; sourceTree = "<group>"; };
-		6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFLibDC1394CapturePixelFormatConversions.c; sourceTree = "<group>"; };
+		6EC223070F797AE1008FD532 /* TFCapturePixelFormatConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCapturePixelFormatConversions.h; sourceTree = "<group>"; };
+		6EC223080F797AE1008FD532 /* TFCapturePixelFormatConversions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFCapturePixelFormatConversions.c; sourceTree = "<group>"; };
 		6EC2266E0F7E5CFE008FD532 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/PerformanceMonitor.xib; sourceTree = "<group>"; };
 		6EC2267F0F7E5F3E008FD532 /* TFPerformanceMonitorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPerformanceMonitorController.h; sourceTree = "<group>"; };
 		6EC226800F7E5F3E008FD532 /* TFPerformanceMonitorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPerformanceMonitorController.m; sourceTree = "<group>"; };
@@ -1053,6 +1053,7 @@
 				6EC4DC440D1439BD008AB9CF /* Filtering */,
 				6EE6074F0DDB53240069A40E /* QuickTime Kit */,
 				6EE607500DDB53360069A40E /* libdc1394 */,
+				6EA7E3B60FD197F4003D28FD /* Pixel Format Conversion */,
 				6E203EF80D2EE92300162547 /* TFCapture.h */,
 				6E203EF90D2EE92300162547 /* TFCapture.m */,
 			);
@@ -1448,6 +1449,15 @@
 			name = "Image & Camera Sources";
 			sourceTree = "<group>";
 		};
+		6EA7E3B60FD197F4003D28FD /* Pixel Format Conversion */ = {
+			isa = PBXGroup;
+			children = (
+				6EC223070F797AE1008FD532 /* TFCapturePixelFormatConversions.h */,
+				6EC223080F797AE1008FD532 /* TFCapturePixelFormatConversions.c */,
+			);
+			name = "Pixel Format Conversion";
+			sourceTree = "<group>";
+		};
 		6EC4D9E20D11A99A008AB9CF /* Multitouch-related Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1598,8 +1608,6 @@
 				6EC4B12A0DD9DBE30085D7B8 /* TFLibDC1394Capture.m */,
 				6EEC22550E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.h */,
 				6EEC22540E76CCD90068570A /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */,
-				6EC223070F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.h */,
-				6EC223080F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c */,
 			);
 			name = libdc1394;
 			sourceTree = "<group>";
@@ -2180,7 +2188,7 @@
 				6E8739040F77B4F400402313 /* TFTUIOPacketCreation.m in Sources */,
 				6E8739050F77B4F400402313 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */,
 				6E8739060F77B4F400402313 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */,
-				6EC2230A0F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */,
+				6EC2230A0F797AE1008FD532 /* TFCapturePixelFormatConversions.c in Sources */,
 				6EC226810F7E5F3E008FD532 /* TFPerformanceMonitorController.m in Sources */,
 				6EC227160F7E9504008FD532 /* GCKHUDTableView.m in Sources */,
 				6EC2271F0F7E9978008FD532 /* GCKHUDTableCell.m in Sources */,
@@ -2364,7 +2372,7 @@
 				6ECE5F830F6FF6C10067CC99 /* TFTUIOPacketCreation.m in Sources */,
 				6ECE60340F719F8C0067CC99 /* TFTUIOFlashLCTrackingDataDistributor.m in Sources */,
 				6ECE61CD0F72B3F00067CC99 /* TFTUIOFlashLCTrackingDataReceiver.m in Sources */,
-				6EC223090F797AE1008FD532 /* TFLibDC1394CapturePixelFormatConversions.c in Sources */,
+				6EC223090F797AE1008FD532 /* TFCapturePixelFormatConversions.c in Sources */,
 				6EC226820F7E5F3E008FD532 /* TFPerformanceMonitorController.m in Sources */,
 				6EC227170F7E9504008FD532 /* GCKHUDTableView.m in Sources */,
 				6EC227200F7E9978008FD532 /* GCKHUDTableCell.m in Sources */,

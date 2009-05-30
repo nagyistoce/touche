@@ -30,8 +30,38 @@
 #import "TFThreadMessagingQueue.h"
 #import "TFPerformanceTimer.h"
 
+#import "TFCapturePixelFormatConversions.h"
+
+#if defined(_USES_IPP_)
+#import <ipp.h>
+#import <ippi.h>
+#endif
+
 
 #define DEFAULT_LATENCY_FRAMEDROP_THRESHOLD		(0.5)
+
+typedef enum {
+	TFQTKitCaptureFormatConversionNone,
+	TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8
+} TFQTKitCaptureFormatConversion;
+
+typedef struct _TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context {
+	CVPixelBufferPoolRef	pixelBufferPool;
+	void* tmpBuf;
+	int tmpBufRowBytes, width, height, camwidth, camheight, finalwidth, finalheight;
+} TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context;
+
+// forward declaration, since this requires QT 7.6.1
+@interface QTCaptureDecompressedVideoOutput (ForwardDeclaration)
+- (void)setMinimumVideoFrameInterval:(NSTimeInterval)minimumVideoFrameInterval;
+@end
+
+@interface TFQTKitCapture (PixelFormatConversions)
+- (CVPixelBufferRef)_formatConvertImageBuffer:(CVImageBufferRef)src;
+- (CIImage*)_formatConvertCIImage:(CIImage*)image;
+- (void)_updateFormatConversionContext;
+- (void)_freeFormatConversionContext;
+@end
 
 @implementation TFQTKitCapture
 
@@ -48,10 +78,15 @@
 	if ([device isOpen])
 		[device close];
 
+	[self _freeFormatConversionContext];
+
 	[session release];
+	session = nil;
 	[deviceInput release];
+	deviceInput = nil;
 	[videoOut release];
-	
+	videoOut = nil;
+		
 	[super dealloc];
 }
 
@@ -142,30 +177,64 @@
 
 - (CGSize)frameSize
 {
-	NSDictionary* pixAttr = [videoOut pixelBufferAttributes];
+	CGSize size;
+	
+	switch (self->_formatConversion) {
+		case TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8: {
+			if (NULL != self->_formatConversionContext) {
+				TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context* ctx = self->_formatConversionContext;
+			
+				size = CGSizeMake(ctx->finalwidth, ctx->finalheight);
+			}
+			
+			break;
+		}
+		
+		default: {
+			NSDictionary* pixAttr = [videoOut pixelBufferAttributes];
 
-	return CGSizeMake(
-		[[pixAttr valueForKey:(id)kCVPixelBufferWidthKey] floatValue],
-		[[pixAttr valueForKey:(id)kCVPixelBufferHeightKey] floatValue]
-	);
+			size = CGSizeMake(
+				[[pixAttr valueForKey:(id)kCVPixelBufferWidthKey] floatValue],
+				[[pixAttr valueForKey:(id)kCVPixelBufferHeightKey] floatValue]
+			);
+		}
+	}
+	
+	return size;
 }
 
 - (BOOL)setFrameSize:(CGSize)size error:(NSError**)error
 {
-	BOOL wasRunning = [self isCapturing];
-	
-	if (![self stopCapturing:error])
-		return NO;
+	switch (self->_formatConversion) {
+		case TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8: {
+			if (NULL != self->_formatConversionContext) {
+				TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context* ctx = self->_formatConversionContext;
+				
+				ctx->finalwidth = size.width;
+				ctx->finalheight = size.height;
+			}
+			
+			break;
+		}
 		
-	[videoOut setPixelBufferAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-											[NSNumber numberWithFloat:size.width], (id)kCVPixelBufferWidthKey,
-                                            [NSNumber numberWithFloat:size.height], (id)kCVPixelBufferHeightKey,
-                                           // [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32ARGB], (id)kCVPixelBufferPixelFormatTypeKey,
-                                            nil]];
-	
-	if (wasRunning) {
-		if (![self startCapturing:error])
-			return NO;
+		default: {
+			BOOL wasRunning = [self isCapturing];
+			
+			if (![self stopCapturing:error])
+				return NO;
+			
+			[videoOut setPixelBufferAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+													[NSNumber numberWithFloat:size.width], (id)kCVPixelBufferWidthKey,
+													[NSNumber numberWithFloat:size.height], (id)kCVPixelBufferHeightKey,
+													nil]];
+			
+			[self _updateFormatConversionContext];
+			
+			if (wasRunning) {
+				if (![self startCapturing:error])
+					return NO;
+			}
+		}
 	}
 	
 	return YES;
@@ -261,6 +330,8 @@
 		
 		return NO;
 	}
+	
+	[self _updateFormatConversionContext];
 		
 	if (wasRunning) {
 		if (![self startCapturing:error])
@@ -349,6 +420,11 @@
 	TFPMStartTimer(TFPerformanceTimerCIImageAcquisition);
 	
 	if (_delegateCapabilities.hasDidCaptureFrame) {
+		CVPixelBufferRef pixelBuffer = videoFrame;
+	
+		if (TFQTKitCaptureFormatConversionNone != self->_formatConversion)
+			pixelBuffer = [self _formatConvertImageBuffer:videoFrame];
+	
 		CIImage* image = nil;
 				
 		if (_delegateCapabilities.hasWantedCIImageColorSpace) {
@@ -356,16 +432,28 @@
 			if (nil == colorSpace)
 				colorSpace = [NSNull null];
 						
-			image = [CIImage imageWithCVImageBuffer:videoFrame
+			image = [CIImage imageWithCVImageBuffer:pixelBuffer
 											options:[NSDictionary dictionaryWithObject:colorSpace
 																				forKey:kCIImageColorSpace]];
 		} else
-			image = [CIImage imageWithCVImageBuffer:videoFrame];
+			image = [CIImage imageWithCVImageBuffer:pixelBuffer];
+		
+		if (TFQTKitCaptureFormatConversionNone != self->_formatConversion)
+			image = [self _formatConvertCIImage:image];
 		
 		[_frameQueue enqueue:image];
+								
+		if (TFQTKitCaptureFormatConversionNone != self->_formatConversion)
+			CVPixelBufferRelease(pixelBuffer);
 	}
 	
 	TFPMStopTimer(TFPerformanceTimerCIImageAcquisition);
+}
+
+- (void)setMaximumFramerate:(float)frameRate
+{
+	if (0.0f < frameRate && [videoOut respondsToSelector:@selector(setMinimumVideoFrameInterval:)])
+		[(id)videoOut setMinimumVideoFrameInterval:(1.0f / frameRate)];
 }
 
 + (NSDictionary*)connectedDevicesNamesAndIds
@@ -393,6 +481,212 @@
 + (BOOL)deviceConnectedWithID:(NSString*)deviceID
 {
 	return [[QTCaptureDevice deviceWithUniqueID:deviceID] isConnected];
+}
+
+#pragma mark -
+#pragma mark Format Conversions
+
+- (CVPixelBufferRef)_formatConvertImageBuffer:(CVImageBufferRef)src
+{
+	CVPixelBufferRef dest = src;
+	
+	switch (self->_formatConversion) {
+		case TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8: {
+			TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context* ctx =
+				(TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context*)self->_formatConversionContext;
+			
+			CVReturn err = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, ctx->pixelBufferPool, &dest);
+			
+			if (kCVReturnSuccess != err) {
+				// TODO: report error
+			}
+			
+			err = CVPixelBufferLockBaseAddress(src, 0);
+			
+			if (kCVReturnSuccess != err) {
+				// TODO: report error
+			}
+			
+			err = CVPixelBufferLockBaseAddress(dest, 0);
+			
+			if (kCVReturnSuccess != err) {
+				// TODO: report error
+			}
+						
+			unsigned char* srcAddr = CVPixelBufferGetBaseAddress(src);
+			unsigned char* destAddr = CVPixelBufferGetBaseAddress(dest);
+						
+			TFCapturePixelFormatConvertMono8toARGB8(srcAddr,
+													CVPixelBufferGetBytesPerRow(src),
+													destAddr,
+													CVPixelBufferGetBytesPerRow(dest),
+													ctx->tmpBuf,
+													ctx->tmpBufRowBytes,
+													ctx->width,
+													ctx->height);
+			
+			err = CVPixelBufferUnlockBaseAddress(src, 0);
+			
+			if (kCVReturnSuccess != err) {
+				// TODO: report error
+			}
+			
+			err = CVPixelBufferUnlockBaseAddress(dest, 0);
+			
+			if (kCVReturnSuccess != err) {
+				// TODO: report error
+			}
+			
+			break;
+		}
+		
+		default:
+			CVPixelBufferRetain(dest);
+			break;
+	}
+	
+	return dest;
+}
+
+- (CIImage*)_formatConvertCIImage:(CIImage*)image
+{
+	CIImage* img = image;
+	
+	switch (self->_formatConversion) {
+		case TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8: {
+			TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context* ctx = self->_formatConversionContext;
+			
+			float sx = (float)ctx->finalwidth / (float)ctx->width;
+			float sy = (float)ctx->finalheight / (float)ctx->height;
+			
+			CGAffineTransform t1 = CGAffineTransformMakeScale(sx, sy);
+			img = [img imageByApplyingTransform:t1];
+			
+			CGRect r = CGRectMake(0, 0, ctx->finalwidth, ctx->finalheight);
+			img = [img imageByCroppingToRect:r];
+			
+			break;
+		}
+		
+		default:
+			break;
+	}
+	
+	return img;
+}
+
+- (void)_updateFormatConversionContext
+{
+	[self _freeFormatConversionContext];
+	
+	CGSize frameSize = [self frameSize];
+	
+	if (0 == frameSize.width || 0 == frameSize.height)
+		return;
+	
+	TFQTKitCaptureFormatConversion conversion = TFQTKitCaptureFormatConversionNone;
+	
+	// Determine whether we need a format conversion
+	NSString* modelID = [[deviceInput device] modelUniqueID];
+	
+	// TheImagingSource DMM 21AUC03-ML USB Monochrome CMOS camera
+	if ([modelID isEqualToString:@"UVC Camera VendorID_6558 ProductID_33282"])
+		conversion = TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8;
+				
+	switch (conversion) {
+		case TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8: {
+			TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context* ctx =
+				malloc(sizeof(TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context));
+			
+			if (NULL == ctx) {
+				// TODO: report error
+			}
+			
+			// this is what the mono picture will be at
+			ctx->width = 640;
+			ctx->height = 480;
+			
+			// this is what the input misinterpreted by QT as YUV4:2:2 has
+			ctx->camwidth = 320;
+			ctx->camheight = 480;
+			
+			// this is what the user requested
+			ctx->finalwidth = frameSize.width;
+			ctx->finalheight = frameSize.height;
+			
+			NSDictionary* poolAttr = [NSDictionary dictionaryWithObjectsAndKeys:
+									  [NSNumber numberWithUnsignedInt:k32ARGBPixelFormat], (id)kCVPixelBufferPixelFormatTypeKey,
+									  [NSNumber numberWithUnsignedInt:ctx->width], (id)kCVPixelBufferWidthKey,
+									  [NSNumber numberWithUnsignedInt:ctx->height], (id)kCVPixelBufferHeightKey,
+									  [NSNumber numberWithUnsignedInt:32], (id)kCVPixelBufferBytesPerRowAlignmentKey,
+									  nil]; 
+			
+			CVReturn err = CVPixelBufferPoolCreate(kCFAllocatorDefault, NULL, (CFDictionaryRef)poolAttr, &ctx->pixelBufferPool);
+			if (kCVReturnSuccess != err) {
+				// TODO: report error
+			}
+			
+			self->_formatConversionContext = ctx;
+
+#if defined(_USES_IPP_)			
+			ctx->tmpBuf = ippiMalloc_8u_AC4(ctx->width,
+											ctx->height,
+											&ctx->tmpBufRowBytes);
+#else
+			ctx->tmpBufRowBytes = TFCapturePixelFormatOptimalRowBytesForWidthAndBytesPerPixel(ctx->width, 4);
+			ctx->tmpBuf = malloc(ctx->height * ctx->tmpBufRowBytes);
+#endif
+			
+			if (NULL == ctx->tmpBuf) {
+				// TODO: report error
+			}
+			
+			[videoOut setPixelBufferAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+												[NSNumber numberWithFloat:ctx->camwidth], (id)kCVPixelBufferWidthKey,
+												[NSNumber numberWithFloat:ctx->camheight], (id)kCVPixelBufferHeightKey,
+												nil]];
+						
+			self->_formatConversionContext = ctx;
+		}
+		
+		default:
+			break;
+	}
+	
+	self->_formatConversion = conversion;
+}
+
+- (void)_freeFormatConversionContext
+{
+	switch (self->_formatConversion) {
+		case TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8: {
+			if (NULL != self->_formatConversionContext) {
+				TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context* ctx = self->_formatConversionContext;
+				if (NULL != ctx->pixelBufferPool)
+					CVPixelBufferPoolRelease(ctx->pixelBufferPool);
+				if (NULL != ctx->tmpBuf)
+#if defined(_USES_IPP_)
+					ippiFree(ctx->tmpBuf);
+#else
+					free(ctx->tmpBuf);
+#endif
+				
+				[videoOut setPixelBufferAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+													[NSNumber numberWithFloat:ctx->finalwidth], (id)kCVPixelBufferWidthKey,
+													[NSNumber numberWithFloat:ctx->finalheight], (id)kCVPixelBufferHeightKey,
+													nil]];
+			}
+			break;
+		}
+		
+		default:
+			break;
+	}
+	
+	if (NULL != self->_formatConversionContext)
+		free(self->_formatConversionContext);
+	
+	self->_formatConversion = TFQTKitCaptureFormatConversionNone;
 }
 
 @end

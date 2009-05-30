@@ -25,6 +25,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <QTKit/QTKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 #import "TFCapture.h"
 
@@ -34,6 +35,9 @@
 	QTCaptureDeviceInput*				deviceInput;
 	QTCaptureDecompressedVideoOutput*	videoOut;
 	double								framedropLatencyThreshold;
+	
+	int									_formatConversion;
+	void*								_formatConversionContext;
 }
 
 @property (readonly) QTCaptureSession* session;
@@ -50,6 +54,8 @@
 - (BOOL)setCaptureDevice:(QTCaptureDevice*)newDevice error:(NSError**)error;
 - (NSString*)captureDeviceUniqueId;
 - (BOOL)setCaptureDeviceWithUniqueId:(NSString*)deviceId error:(NSError**)error;
+
+- (void)setMaximumFramerate:(float)frameRate;
 
 + (NSDictionary*)connectedDevicesNamesAndIds;
 + (QTCaptureDevice*)defaultCaptureDevice;

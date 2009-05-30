@@ -100,6 +100,8 @@ NSString*	tfBlobQuicktimeKitInputSourceConfItemCameraResolutionY = @"tfBlobQuick
 			return NO;
 	}
 	
+	[qtKitCapture setMaximumFramerate:maximumFramesPerSecond];
+	
 	if (NULL != error)
 		*error = nil;
 	
@@ -120,6 +122,14 @@ NSString*	tfBlobQuicktimeKitInputSourceConfItemCameraResolutionY = @"tfBlobQuick
 - (TFCapture*)captureObject
 {
 	return qtKitCapture;
+}
+
+- (void)setMaximumFramesPerSecond:(float)newVal
+{
+	if (newVal != maximumFramesPerSecond) {
+		maximumFramesPerSecond = newVal;
+		[qtKitCapture setMaximumFramerate:maximumFramesPerSecond];
+	}
 }
 
 @end

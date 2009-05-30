@@ -22,7 +22,7 @@
 //  License along with Touché. If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include "TFLibDC1394CapturePixelFormatConversions.h"
+#include "TFCapturePixelFormatConversions.h"
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -36,7 +36,7 @@
 #endif
 
 
-void TFLibDC1394PixelFormatConvertInitialize()
+void TFCapturePixelFormatConvertInitialize()
 {
 #if defined(_USES_IPP_)
 	static int ippInitialized = 0;
@@ -140,7 +140,7 @@ int TFLibDC1394PixelFormatConvertYUV411toARGB8(void* src,
 #endif
 
 // icc 11.0 and (hopefully) gcc can vectorize this
-int TFLibDC1394PixelFormatConvertYUV411toARGB8(void* src,
+int TFCapturePixelFormatConvertYUV411toARGB8(void* src,
 											   void* dst,
 											   int width,
 											   int height)
@@ -186,7 +186,7 @@ int TFLibDC1394PixelFormatConvertYUV411toARGB8(void* src,
 	return 1;
 }
 
-int TFLibDC1394PixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
+int TFCapturePixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
 											   int srcRowBytes,
 											   uint8_t* dstBuf,
 											   int dstRowBytes,
@@ -268,7 +268,7 @@ int TFLibDC1394PixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
 }
 
 // returns non-zero on success, zero on failure
-int TFLibDC1394PixelFormatConvertRGB8toARGB8(uint8_t* srcBuf,
+int TFCapturePixelFormatConvertRGB8toARGB8(uint8_t* srcBuf,
 											 int srcRowBytes,
 											 uint8_t* dstBuf,
 											 int dstRowBytes,
@@ -314,7 +314,7 @@ int TFLibDC1394PixelFormatConvertRGB8toARGB8(uint8_t* srcBuf,
 	return 1;
 }
 
-int TFLibDC1394PixelFormatConvertMono8toARGB8(uint8_t* srcBuf,
+int TFCapturePixelFormatConvertMono8toARGB8(uint8_t* srcBuf,
 											  int srcRowBytes,
 											  uint8_t* dstBuf,
 											  int dstRowBytes,
@@ -363,3 +363,20 @@ int TFLibDC1394PixelFormatConvertMono8toARGB8(uint8_t* srcBuf,
 	
 	return 1;
 }
+
+unsigned TFCapturePixelFormatOptimalRowBytesForWidthAndBytesPerPixel(unsigned width,
+																	 unsigned bytesPerPixel)
+{
+	unsigned rowBytes = width * bytesPerPixel;
+	
+	// Widen rowBytes out to a integer multiple of 16 bytes
+	rowBytes = (rowBytes + 15) & ~15;
+	
+	// Make sure we are not an even power of 2 wide. 
+	// Will loop a few times for rowBytes <= 16.
+	while(0 == (rowBytes & (rowBytes - 1)))
+		rowBytes += 16;
+	
+	return rowBytes;
+}
+

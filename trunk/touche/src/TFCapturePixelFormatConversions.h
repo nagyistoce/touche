@@ -25,38 +25,42 @@
 #include <stdint.h>
 
 // call this once before using any of the conversion functions below
-void TFLibDC1394PixelFormatConvertInitialize();
+void TFCapturePixelFormatConvertInitialize();
 
 // returns non-zero on success, zero on failure
-int TFLibDC1394PixelFormatConvertYUV411toARGB8(void* srcBuf,
-											   void* dstBuf,
-											   int width,
-											   int height);
-
-// returns non-zero on success, zero on failure
-int TFLibDC1394PixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
-											   int srcRowBytes,
-											   uint8_t* dstBuf,
-											   int dstRowBytes,
-											   uint8_t* intermediateBuf,
-											   int intermediateRowBytes,
-											   int width,
-											   int height);
-
-// returns non-zero on success, zero on failure
-int TFLibDC1394PixelFormatConvertRGB8toARGB8(uint8_t* srcBuf,
-											 int srcRowBytes,
-											 uint8_t* dstBuf,
-											 int dstRowBytes,
+int TFCapturePixelFormatConvertYUV411toARGB8(void* srcBuf,
+											 void* dstBuf,
 											 int width,
 											 int height);
 
 // returns non-zero on success, zero on failure
-int TFLibDC1394PixelFormatConvertMono8toARGB8(uint8_t* srcBuf,
-											  int srcRowBytes,
-											  uint8_t* dstBuf,
-											  int dstRowBytes,
-											  uint8_t* tmpBuf,
-											  int tmpRowBytes,
-											  int width,
-											  int height);
+int TFCapturePixelFormatConvertYUV444toARGB8(uint8_t* srcBuf,
+											 int srcRowBytes,
+											 uint8_t* dstBuf,
+											 int dstRowBytes,
+											 uint8_t* intermediateBuf,
+											 int intermediateRowBytes,
+											 int width,
+											 int height);
+
+// returns non-zero on success, zero on failure
+int TFCapturePixelFormatConvertRGB8toARGB8(uint8_t* srcBuf,
+										   int srcRowBytes,
+										   uint8_t* dstBuf,
+										   int dstRowBytes,
+										   int width,
+										   int height);
+
+// returns non-zero on success, zero on failure
+int TFCapturePixelFormatConvertMono8toARGB8(uint8_t* srcBuf,
+											int srcRowBytes,
+											uint8_t* dstBuf,
+											int dstRowBytes,
+											uint8_t* tmpBuf,
+											int tmpRowBytes,
+											int width,
+											int height);
+
+// returns the optimal number for rowBytes of a given width and bytesPerPixels
+unsigned TFCapturePixelFormatOptimalRowBytesForWidthAndBytesPerPixel(unsigned width,
+																	 unsigned bytesPerPixel);

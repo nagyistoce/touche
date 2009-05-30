@@ -34,6 +34,7 @@
 // see http://developer.apple.com/qa/qa2004/qa1398.html for measurement details
 
 #define MAX_MEASUREMENT_TYPES	(32)
+#define	READOUT_MIX_NUM			(0.1)
 
 static int _TFPMNumMeasurementTypes = 1;
 
@@ -192,7 +193,7 @@ void TFPMStopPerformanceTimer(TFPerformanceMeasureID pmid, TFPerformanceMeasurem
 				measure = measure * (timeBase.numer / timeBase.denom);
 				
 				if (pm->measures[type] > 0)
-					measure = (pm->measures[type] >> 1) + (measure >> 1);
+					measure = (pm->measures[type]*(1.0 - READOUT_MIX_NUM)) + measure*READOUT_MIX_NUM;
 				
 				pm->measures[type] = measure;
 			}

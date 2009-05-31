@@ -35,7 +35,7 @@
 	CGColorSpaceRef			_colorSpace;
 	CGColorSpaceRef			_workingColorSpace;
 	BOOL					_needsReshape;
-	float					_zoomX, _zoomY;
+	float					_zoomX, _zoomY, _tx, _ty;
 }
 
 - (CVReturn)drawFrameForTimeStamp:(const CVTimeStamp*)timeStamp;

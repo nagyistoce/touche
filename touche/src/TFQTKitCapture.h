@@ -30,14 +30,22 @@
 #import "TFCapture.h"
 
 
+typedef enum _TFQTKitCaptureFormatConversionScaleType {
+	TFQTKitCaptureFormatConversionScaleTypeSquish,
+	TFQTKitCaptureFormatConversionScaleTypeCrop
+} TFQTKitCaptureFormatConversionScaleType;
+
 @interface TFQTKitCapture : TFCapture {
 	QTCaptureSession*					session;
 	QTCaptureDeviceInput*				deviceInput;
 	QTCaptureDecompressedVideoOutput*	videoOut;
 	double								framedropLatencyThreshold;
 	
-	int									_formatConversion;
-	void*								_formatConversionContext;
+	CGSize								_lastCIImageSize;
+	
+	int										_formatConversion;
+	TFQTKitCaptureFormatConversionScaleType	_formatConversionScaleType;
+	void*									_formatConversionContext;
 }
 
 @property (readonly) QTCaptureSession* session;

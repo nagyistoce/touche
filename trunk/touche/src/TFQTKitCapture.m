@@ -171,6 +171,8 @@ typedef struct _TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context {
 		[self release];
 		return nil;
 	}
+	
+	self->_formatConversionScaleType = TFQTKitCaptureFormatConversionScaleTypeSquish;
 		
 	return self;
 }
@@ -193,10 +195,19 @@ typedef struct _TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context {
 		default: {
 			NSDictionary* pixAttr = [videoOut pixelBufferAttributes];
 
-			size = CGSizeMake(
-				[[pixAttr valueForKey:(id)kCVPixelBufferWidthKey] floatValue],
-				[[pixAttr valueForKey:(id)kCVPixelBufferHeightKey] floatValue]
-			);
+			if (nil != pixAttr)
+				size = CGSizeMake(
+					[[pixAttr valueForKey:(id)kCVPixelBufferWidthKey] floatValue],
+					[[pixAttr valueForKey:(id)kCVPixelBufferHeightKey] floatValue]
+				);
+			else {
+				NSSize s = [[[[[deviceInput connections] objectAtIndex:0] formatDescription]
+								attributeForKey:QTFormatDescriptionVideoCleanApertureDisplaySizeAttribute] sizeValue];
+				size = NSSizeToCGSize(s);
+			}
+			
+			if (0.0 == size.width || 0.0 == size.height)
+				size = self->_lastCIImageSize;
 		}
 	}
 	
@@ -279,6 +290,10 @@ typedef struct _TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context {
 
 		return NO;
 	}
+	
+	// for some reason, enumerating the formats like this causes a slight drop in CPU usage during capturing
+	for (QTFormatDescription* fd in [newDevice formatDescriptions])
+		(void)[fd localizedFormatSummary];
 
 	BOOL wasRunning = [self isCapturing];
 	
@@ -437,9 +452,11 @@ typedef struct _TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context {
 																				forKey:kCIImageColorSpace]];
 		} else
 			image = [CIImage imageWithCVImageBuffer:pixelBuffer];
-		
+				
 		if (TFQTKitCaptureFormatConversionNone != self->_formatConversion)
 			image = [self _formatConvertCIImage:image];
+		
+		self->_lastCIImageSize = [image extent].size;
 		
 		[_frameQueue enqueue:image];
 								
@@ -556,14 +573,35 @@ typedef struct _TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context {
 		case TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8: {
 			TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context* ctx = self->_formatConversionContext;
 			
-			float sx = (float)ctx->finalwidth / (float)ctx->width;
-			float sy = (float)ctx->finalheight / (float)ctx->height;
-			
-			CGAffineTransform t1 = CGAffineTransformMakeScale(sx, sy);
-			img = [img imageByApplyingTransform:t1];
-			
-			CGRect r = CGRectMake(0, 0, ctx->finalwidth, ctx->finalheight);
-			img = [img imageByCroppingToRect:r];
+			switch(self->_formatConversionScaleType) {
+				case TFQTKitCaptureFormatConversionScaleTypeSquish: {
+					float sx = (float)ctx->finalwidth / (float)ctx->width;
+					float sy = (float)ctx->finalheight / (float)ctx->height;
+					
+					CGAffineTransform t1 = CGAffineTransformMakeScale(sx, sy);
+					img = [img imageByApplyingTransform:t1];
+										
+					CGRect r = CGRectMake(0, 0, ctx->finalwidth, ctx->finalheight);
+					img = [img imageByCroppingToRect:r];
+				
+					break;
+				}
+				
+				case TFQTKitCaptureFormatConversionScaleTypeCrop:
+				default: {			
+					float s = (float)ctx->finalheight / (float)ctx->height;
+					
+					CGAffineTransform t1 = CGAffineTransformMakeScale(s, s);
+					img = [img imageByApplyingTransform:t1];
+					
+					CGSize ss = CGSizeApplyAffineTransform([image extent].size, t1);
+					
+					CGRect r = CGRectMake((ss.width - ctx->finalwidth)/2.0, 0, ctx->finalwidth, ctx->finalheight);
+					img = [img imageByCroppingToRect:r];
+					
+					break;
+				}
+			}
 			
 			break;
 		}
@@ -603,11 +641,11 @@ typedef struct _TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context {
 			}
 			
 			// this is what the mono picture will be at
-			ctx->width = 640;
+			ctx->width = 744;
 			ctx->height = 480;
 			
 			// this is what the input misinterpreted by QT as YUV4:2:2 has
-			ctx->camwidth = 320;
+			ctx->camwidth = 372;
 			ctx->camheight = 480;
 			
 			// this is what the user requested
@@ -629,11 +667,11 @@ typedef struct _TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context {
 			self->_formatConversionContext = ctx;
 
 #if defined(_USES_IPP_)			
-			ctx->tmpBuf = ippiMalloc_8u_AC4(ctx->width,
-											ctx->height,
-											&ctx->tmpBufRowBytes);
+			ctx->tmpBuf = ippiMalloc_8u_C1(ctx->width,
+										   ctx->height,
+										   &ctx->tmpBufRowBytes);
 #else
-			ctx->tmpBufRowBytes = TFCapturePixelFormatOptimalRowBytesForWidthAndBytesPerPixel(ctx->width, 4);
+			ctx->tmpBufRowBytes = TFCapturePixelFormatOptimalRowBytesForWidthAndBytesPerPixel(ctx->width, 1);
 			ctx->tmpBuf = malloc(ctx->height * ctx->tmpBufRowBytes);
 #endif
 			
@@ -641,10 +679,7 @@ typedef struct _TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context {
 				// TODO: report error
 			}
 			
-			[videoOut setPixelBufferAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithFloat:ctx->camwidth], (id)kCVPixelBufferWidthKey,
-												[NSNumber numberWithFloat:ctx->camheight], (id)kCVPixelBufferHeightKey,
-												nil]];
+			[videoOut setPixelBufferAttributes:nil];
 						
 			self->_formatConversionContext = ctx;
 		}

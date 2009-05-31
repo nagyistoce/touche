@@ -133,7 +133,7 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 	glDepthMask(GL_FALSE);
 	glStencilMask (0);
 	glHint(GL_TRANSFORM_HINT_APPLE, GL_FASTEST);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	
 	// turn v-sync off for better performance
 	GLint swapInterval = 0;
@@ -145,7 +145,6 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 - (void)reshape
 { 	
 	_needsReshape = YES;
-	[[self openGLContext] update];
 }
 
 // override this in a subclass to process a frame before displaying it
@@ -202,30 +201,40 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 			
 			NSRect frame = [self frame];
 			NSRect bounds = [self bounds];
+		
+			glClear(GL_COLOR_BUFFER_BIT);
 			
 			if (_needsReshape) {
 				float minX, minY, maxX, maxY;
-				
-				[[self openGLContext] update];
-				
+								
 				minX = NSMinX(bounds);
 				minY = NSMinY(bounds);
 				maxX = NSMaxX(bounds);
 				maxY = NSMaxY(bounds);
 				
-				_zoomX = imageRect.size.width/frame.size.width;
-				_zoomY = imageRect.size.height/frame.size.height;
+				// we don't stretch, instead, we letterbox if necessary.
+				float longSide = MAX(imageRect.size.width, imageRect.size.height);
+				float longFSide = (longSide == imageRect.size.width) ? frame.size.width : frame.size.height;
+				_zoomX = _zoomY = longSide / longFSide;
+				
+				float scaledWidth = imageRect.size.width / _zoomX;
+				float scaledHeight = imageRect.size.height / _zoomY;
+				_tx = round(((maxX - minX) - scaledWidth)/2.0);
+				_ty = round(((maxY - minY) - scaledHeight)/2.0);
 				
 				if (NSIsEmptyRect([self visibleRect]))
 					glViewport(0, 0, 1, 1);
 				else
-					glViewport(0, 0, frame.size.width, frame.size.height);
+					glViewport(_tx, _ty, frame.size.width, frame.size.height);
 				
 				glMatrixMode(GL_MODELVIEW);
 				glLoadIdentity();
 				glMatrixMode(GL_PROJECTION);
 				glLoadIdentity();
-				gluOrtho2D(minX*_zoomX, maxX*_zoomX, minY*_zoomY, maxY*_zoomY);
+				gluOrtho2D(minX*_zoomX,
+						   maxX*_zoomX,
+						   minY*_zoomY,
+						   maxY*_zoomY);
 				
 				glClear(GL_COLOR_BUFFER_BIT);
 				
@@ -240,18 +249,22 @@ static CVReturn TFOpenGLViewCallback(CVDisplayLinkRef displayLink,
 									   			
 			// invert y-axis so that 0,0 is in the top left corner (as expected)
 			glPushMatrix();
-			glTranslatef(0.0f, frame.size.height*_zoomY, 0.0f);
+			glTranslatef(0.0f, (frame.size.height - _ty)*_zoomY, 0.0f);
 			glScaled(1.0, -1.0, 1.0);
+			// take care of any letterboxing...
+			glTranslatef(_tx * _zoomX, _ty * _zoomY, 0);
+						
 			[self _drawAdditionalOpenGLStuffWithOrigin:imgOriginOnGLFrame
 										   pictureSize:imageRect.size
 											  viewSize:CGSizeMake(frame.size.width, frame.size.height)];
+			
 			glPopMatrix();
 		}
 		
+		[[self openGLContext] flushBuffer];
+		
 		[NSOpenGLContext clearCurrentContext];
 	}
-		
-	[[self openGLContext] flushBuffer];
 }
 
 - (CVReturn)drawFrameForTimeStamp:(const CVTimeStamp*)timeStamp

@@ -474,7 +474,7 @@ enum {
 		NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
 		
 		NSNumber* cameraUid = [standardDefaults objectForKey:libDc1394CameraUniqueIdPrefKey];
-		if (![self libdc1394CameraConnectedWithGUID:cameraUid])
+		if (![cameraUid isKindOfClass:[NSNumber class]] || ![self libdc1394CameraConnectedWithGUID:cameraUid])
 			cameraUid = [self _defaultLibDc1394CameraUniqueID];
 		
 		CGSize frameSize = [self _sizeFromResolutionKey:

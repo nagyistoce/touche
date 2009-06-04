@@ -288,9 +288,7 @@
 {
 	CIImage* img;
 	
-	@synchronized (filterChain) {
-		img = [filterChain currentImageForStage:filterStage];
-	}
+	img = [filterChain currentImageForStage:filterStage];
 	
 	return img;
 }
@@ -530,10 +528,8 @@
 							rowBytes:bitmapData.rowBytes];
 		
 		NSArray* blobs = nil;
-		@synchronized (blobDetector) {
-			[blobDetector detectBlobs:NULL ignoreErrors:YES];
-			blobs = [NSArray arrayWithArray:[blobDetector detectedBlobs]];
-		}
+		[blobDetector detectBlobs:NULL ignoreErrors:YES];
+		blobs = [NSArray arrayWithArray:[blobDetector detectedBlobs]];
 		
 		if (0 == [blobs count])
 			[self _updateBackgroundForSubtraction];

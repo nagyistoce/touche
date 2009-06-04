@@ -118,7 +118,7 @@
 
 		NSMutableArray* edgeVertices = [NSMutableArray array];
 		int i;
-		CvMemStorage* storage = cvCreateMemStorage(0);
+		CvMemStorage* storage = cvCreateMemStorage(500);
 		CvSeq* contours = NULL, *edgePoints = NULL;
 		CvBox2D obb;
 		CvRect aabb;
@@ -126,7 +126,7 @@
 	
 		//cvFindContours(_cvImg, storage, &contours, sizeof(CvContour), CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cvPoint(0,0));
 		cvFindContours(_cvImg, storage, &contours, sizeof(CvContour), CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, cvPoint(0,0));
-
+		
 		int numContours = 0;
 		for (; contours != NULL; contours = contours->h_next) {			
 			if (contours->total > 5)

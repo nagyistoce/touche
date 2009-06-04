@@ -210,8 +210,8 @@
 		return;
 	
 	[CATransaction begin];
-	[CATransaction setValue:[NSNumber numberWithFloat:0.0f]
-					 forKey:kCATransactionAnimationDuration];
+	[CATransaction setValue:[NSNumber numberWithBool:YES]
+					 forKey:kCATransactionDisableActions];
 	touchLayer.position = pos;
 	[CATransaction commit];
 }

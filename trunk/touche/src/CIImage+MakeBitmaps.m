@@ -770,7 +770,7 @@ void* _CIImageBitmapsMalloc(int width, int height, int* rowBytes, CIImageInterna
 	
 	return m;
 #else
-	return (void*)malloc(height * (*rowBytes));
+	return (void*)valloc(height * (*rowBytes));
 #endif
 }
 

@@ -427,7 +427,7 @@ typedef struct _TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context {
 {
 	uint64_t ht = CVGetCurrentHostTime(), iht = [[sampleBuffer attributeForKey:QTSampleBufferHostTimeAttribute] unsignedLongLongValue];
 	double freq = CVGetHostClockFrequency(), hts = ht/freq, ihts = iht/freq;
-		
+					
 	// If the frame latency has grown larger than the cutoff threshold, we drop the frame. 
 	if (hts > ihts + framedropLatencyThreshold)
 		return;
@@ -469,6 +469,7 @@ typedef struct _TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context {
 
 - (void)setMaximumFramerate:(float)frameRate
 {
+	// this requires QT 7.6.2 or later, thus wrapped in a check
 	if (0.0f < frameRate && [videoOut respondsToSelector:@selector(setMinimumVideoFrameInterval:)])
 		[(id)videoOut setMinimumVideoFrameInterval:(1.0f / frameRate)];
 }
@@ -680,7 +681,9 @@ typedef struct _TFQTKitCaptureFormatConversionTheImagingSourceUVCMono8Context {
 			}
 			
 			[videoOut setPixelBufferAttributes:nil];
-						
+			
+			TFCapturePixelFormatConvertInitialize();
+			
 			self->_formatConversionContext = ctx;
 		}
 		

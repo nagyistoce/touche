@@ -4,6 +4,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <CoreFoundation/CFSocket.h>
+
 #ifdef __OBJC__
     #import <Cocoa/Cocoa.h>
 	
@@ -61,4 +63,6 @@
 	#endif
 	
 	int close(int fd);
+	
+	#define kCFAllocatorDefault	NULL
 #endif

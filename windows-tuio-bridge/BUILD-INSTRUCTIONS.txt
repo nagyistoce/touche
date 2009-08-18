@@ -3,16 +3,6 @@ Build Instructions
 
 In order to build the windows target, you need to have use Cocotron within Apple's XCode.
 
-You can obtain Cocotron from <http://code.google.com/p/cocotron>. The official website of Cocotron is <http://cocotron.org>.
+You can obtain the mist recent version of Cocotron from <http://code.google.com/p/cocotron>. The official website of Cocotron is <http://cocotron.org>.
 
-Since Cocotron is a work-in-progress and in constant flux, building with the latest version might not work. This is because our target uses a lot of workarounds for bugs and stuff that's not yet implemented in Cocotron, but might be in a future version, causing a conflict or other weird behavior during building.
-
-However, since the Google Code page hosts an SVN repository, you can check out the Cocotron code revision that the windows target was designed for.
-
-Currently, you want rev 407 of the CF branch of Cocotron. To check it out via SVN, use the following command:
-
-svn -r407 http://cocotron.googlecode.com/svn/branches/CF cocotron-src
-
-Also, you NEED to apply my fix from revision 415. This is absolutely necessary, otherwise the built program will deadlock. You can get the patch from <http://code.google.com/p/cocotron/source/detail?r=415> and apply it manually.
-
-Other than that, just follow the instructions from <http://cocotron.org> to build the Cocotron toolchain and the frameworks. Next, you should build the -windows target in our xcode project. Be sure to use XCode 3.1 or later.
+Just follow the instructions from <http://cocotron.org> to build the Cocotron toolchain and the frameworks. Next, you should build the -windows target in our xcode project. Be sure to use XCode 3.1 or later.

@@ -3,7 +3,7 @@
 **  NWMultiTouch.h - Header file.                                            **
 **  Author : Jim Gardner                                                     **
 **  Date : 22/01/2008                                                        **
-**  Version : 1.2.0.0 Beta with Gesture Decoder                              **
+**  Version : 1.2.3.0 Beta with Gesture Decoder                              **
 **                                                                           **
 **  This header file defines the public functions / enumerations exported    **
 **  from NWMultiTouch.dll for use as part of the NextWindow MultiTouch API.  **
@@ -206,7 +206,8 @@ float __declspec(dllexport) __cdecl GetAngleBetweenPointsRadians (point_t point1
 float __declspec(dllexport) __cdecl GetDistanceBetweenPoints(point_t point1, point_t point2);
 
 //Units Conversion Functions.
-void __declspec(dllexport) __cdecl SetTouchScreenDimensions (DWORD deviceID, float xMin, float yMin, float xMax, float yMax);
+DWORD __declspec(dllexport) __cdecl SetTouchScreenDimensions (DWORD deviceID, float xMin, float yMin, float xMax, float yMax);
+DWORD __declspec(dllexport) __cdecl GetTouchScreenDimensions (DWORD deviceID, float* xMin, float* yMin, float* xMax, float* yMax);
 
 //Kalman Filter Control functions
 void __declspec(dllexport) __cdecl SetKalmanFilterCoefficients(DWORD deviceID, float g, float h, float k);
@@ -279,8 +280,10 @@ void __declspec(dllexport) __cdecl SetGestureGain(int GestureType, float tPercen
 *******************************************************************************/
 void __declspec(dllexport) __cdecl SetDisplayRect (rect_t tDisplayRect);
 
+
+
 #ifdef __cplusplus
-}   //End Extern "C"
+} //End Extern "C"
 #endif
 
 #endif  // __NWMULTITOUCH_H__

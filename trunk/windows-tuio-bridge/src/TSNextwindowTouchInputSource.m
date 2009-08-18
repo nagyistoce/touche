@@ -229,7 +229,7 @@ BOOL TSNWConnectToDevice(DWORD deviceID);
 			if (DS_TOUCH_INFO == _currentDevice->lastDeviceStatus &&
 				0 < (lastTouches = _currentDevice->lastTouches)) {
 				
-				NSUInteger ti, tl;
+				NSUInteger ti;
 				successCode_t sc;
 				NWTouchPoint pt;
 				float displayHeight = [[TFScreenPreferencesController screen] frame].size.height;
@@ -237,7 +237,7 @@ BOOL TSNWConnectToDevice(DWORD deviceID);
 				DWORD packetID = _currentDevice->lastPacketID;
 				touches = [NSMutableArray arrayWithCapacity:MAX_TOUCHES];
 				
-				for (tl = ti = 0; ti < MAX_TOUCHES; ti++) {
+				for (ti = 0; ti < MAX_TOUCHES; ti++) {
 					if (lastTouches & (1 << ti)) {
 						sc = NWAPI("GetTouch", deviceID, packetID, &pt, (1 << ti), 0);
 												
@@ -250,7 +250,7 @@ BOOL TSNWConnectToDevice(DWORD deviceID);
 							TFBlob* blob = [TFBlob blob];
 							blob.center.x = pt.touchPos.x;
 							blob.center.y = displayHeight - pt.touchPos.y; // y needs to be inverted
-							blob.label = [TFBlobLabel labelWithInteger:++tl];
+							blob.label = [TFBlobLabel labelWithInteger:ti];
 							
 							[touches addObject:blob];
 						}

@@ -47,6 +47,7 @@ typedef struct _TSNextwindowTouchDevice {
 	DWORD	lastTouches;
 	DWORD	lastGhostTouches;
 	DWORD	lastDeviceStatus;
+	DWORD	origReportMode;
 	
 	NWDeviceInfo	deviceInfo;
 	
@@ -74,7 +75,8 @@ void __stdcall TSNWMultiTouchDataCallback(DWORD deviceID,
 										  DWORD ghostTouches);
 
 TSNextwindowTouchDevice* TSNWCreateDeviceStruct(DWORD deviceID);
-void TSNWReleaseDeviceStruct(DWORD deviceID);
+void TSNWReleaseDeviceStruct(TSNextwindowTouchDevice* device);
+void TSNWReleaseDeviceStructByID(DWORD deviceID);
 void TSNWReleaseAllDeviceStructs();
 TSNextwindowTouchDevice* TSNWFindDeviceStructByID(DWORD deviceID);
 void TSNWLogDevice(TSNextwindowTouchDevice* device);
@@ -184,14 +186,6 @@ BOOL TSNWConnectToDevice(DWORD deviceID);
 	NWAPI("SetDisconnectEventHandler", NULL);
 
 	_currentDevice = NULL;
-	
-	LOCK(_touchDevicesLock);
-		for (TSNextwindowTouchDevice* d = _touchDevices; NULL != d; d = d->next) {
-			LOCK(d->lock);
-				NWAPI("CloseDevice", d->deviceID);
-			UNLOCK(d->lock);
-		}
-	UNLOCK(_touchDevicesLock);
 	
 	TSNWReleaseAllDeviceStructs();
 		
@@ -344,7 +338,7 @@ void __stdcall TSNWOnConnectHandler(DWORD deviceID)
 
 void __stdcall TSNWOnDisconnectHandler(DWORD deviceID)
 {
-	TSNWReleaseDeviceStruct(deviceID);
+	TSNWReleaseDeviceStructByID(deviceID);
 }
 
 void __stdcall TSNWMultiTouchDataCallback(DWORD deviceID,
@@ -370,10 +364,16 @@ void __stdcall TSNWMultiTouchDataCallback(DWORD deviceID,
 
 BOOL TSNWConnectToDevice(DWORD deviceID)
 {	
+	// let's see if we're already connected to this device
+	if (NULL != TSNWFindDeviceStructByID(deviceID))
+		return YES;
+	
 	successCode_t result = NWAPI("OpenDevice", deviceID, TSNWMultiTouchDataCallback);
 	
 	if (SUCCESS == result) {
 		TSNextwindowTouchDevice* device = TSNWCreateDeviceStruct(deviceID);
+	
+		device->origReportMode = NWAPI("GetReportMode", deviceID);
 	
 		// if the firmware is larger than or equal to 2.98, we try slopesmode, otherwise,
 		// we fall back to regular multitouch mode (which is less accurate)
@@ -428,10 +428,24 @@ TSNextwindowTouchDevice* TSNWCreateDeviceStruct(DWORD deviceID)
 	return d;
 }
 
-void TSNWReleaseDeviceStruct(DWORD deviceID)
+void TSNWReleaseDeviceStruct(TSNextwindowTouchDevice* device)
+{
+	if (NULL != device) {
+		CloseHandle(device->lock);
+		
+		if (0 <= device->origReportMode)
+			(void)NWAPI("SetReportMode", device->deviceID, device->origReportMode);
+		
+		NWAPI("CloseDevice", device->deviceID);
+		
+		free(device);
+	}
+}
+
+void TSNWReleaseDeviceStructByID(DWORD deviceID)
 {
 	TSNextwindowTouchDevice* d = TSNWFindDeviceStructByID(deviceID);
-	
+		
 	if (NULL != d) {
 		if (_currentDevice == d) {
 			_currentDevice = NULL;
@@ -450,26 +464,21 @@ void TSNWReleaseDeviceStruct(DWORD deviceID)
 				d->next->prev = d->prev;
 		UNLOCK(_touchDevicesLock);
 		
-		CloseHandle(d->lock);
-		
-		free(d);
+		TSNWReleaseDeviceStruct(d);
 	}
 }
 
 void TSNWReleaseAllDeviceStructs()
 {
-	LOCK(_touchDevicesLock);
-		TSNextwindowTouchDevice* d = _touchDevices;
-		_touchDevices = NULL;
-		_currentDevice = NULL;
-		
-		while (NULL != d) {
-			TSNextwindowTouchDevice* n = d->next;
-			CloseHandle(d->lock);
-			free(d);
-			d = n;
-		}
-	UNLOCK(_touchDevicesLock);
+	TSNextwindowTouchDevice* d = _touchDevices;
+	_touchDevices = NULL;
+	_currentDevice = NULL;
+			
+	while (NULL != d) {
+		TSNextwindowTouchDevice* n = d->next;
+		TSNWReleaseDeviceStruct(d);
+		d = n;
+	}
 }
 
 TSNextwindowTouchDevice* TSNWFindDeviceStructByID(DWORD deviceID)

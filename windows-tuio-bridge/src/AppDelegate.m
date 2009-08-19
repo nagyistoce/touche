@@ -47,6 +47,8 @@
 #define DEVICE_TABLE_LABEL_COLUMN_ID		(@"labels")
 #define DEVICE_TABLE_DATA_COLUMN_ID			(@"data")
 
+#define HOMEPAGE	(@"http://gkaindl.com/software/touchsmart-tuio")
+
 @interface AppDelegate (PrivateMethods)
 - (void)_distributionThread;
 @end
@@ -97,11 +99,20 @@ NSString* TSLocalizedLabelForDeviceInfoKey(NSString* deviceInfoKey);
 	
 	[_deviceInfoTableView setDataSource:self];
 	[_deviceInfoTableView setDelegate:self];
+	
+	NSString* versionName = [NSString stringWithFormat:@"Version %@",
+							 [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+	[_versionField setStringValue:versionName];
 }
 
 - (IBAction)showPreferences:(id)sender
 {	
 	[_preferencesController showWindow:sender];
+}
+
+- (IBAction)openWebsite:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:HOMEPAGE]];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath

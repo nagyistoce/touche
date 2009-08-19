@@ -34,6 +34,8 @@
 	NSDictionary*				_deviceInfoDict;
 
 	IBOutlet NSTableView*		_deviceInfoTableView;
+	
+	IBOutlet NSTextField*		_versionField;
 
 	TSTouchInputSource*			_inputSource;
 	TSPreferencesController*	_preferencesController;
@@ -50,6 +52,7 @@
 
 - (void)awakeFromNib;
 
+- (IBAction)openWebsite:(id)sender;
 - (IBAction)showPreferences:(id)sender;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath

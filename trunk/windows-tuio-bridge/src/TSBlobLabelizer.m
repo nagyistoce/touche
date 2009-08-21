@@ -35,6 +35,7 @@
 {
 	if (nil != (self = [super init])) {
 		_previousBlobs = [[NSMutableDictionary alloc] init];
+		_labelMapping = [[NSMutableDictionary alloc] init];
 	}
 	
 	return self;
@@ -45,6 +46,9 @@
 	[_previousBlobs release];
 	_previousBlobs = nil;
 	
+	[_labelMapping release];
+	_labelMapping = nil;
+	
 	[super dealloc];
 }
 
@@ -53,32 +57,40 @@
 		   ignoringErrors:(BOOL)ignoreErrors
 					error:(NSError**)error
 {
+	NSMutableArray* livingLabels = [NSMutableArray array];
+
 	for (TFBlob* blob in blobs) {
-		TFBlob* oldBlob = [_previousBlobs objectForKey:blob.label];
+		TFBlobLabel* inLabel = blob.label;
+		TFBlobLabel* mappedLabel = [_labelMapping objectForKey:inLabel];
+		TFBlob* oldBlob = nil;
+		
+		if (nil != mappedLabel)
+			oldBlob = [_previousBlobs objectForKey:mappedLabel];
 		
 		if (nil != oldBlob) {
 			[self matchOldBlob:oldBlob withNewBlob:blob];
 		} else {
-			TFBlobLabel* label = blob.label;
 			[self initializeNewBlob:blob];
-			[_labelFactory freeLabel:blob.label];
-			blob.label = label;
+			[_labelMapping setObject:blob.label forKey:inLabel];
 		}
 		
 		[_previousBlobs setObject:blob forKey:blob.label];
+		[livingLabels addObject:blob.label];
 	}
 	
 	NSMutableArray* removedBlobs = [NSMutableArray array];
 	NSMutableArray* removedLabels = [NSMutableArray array];
 	for (TFBlob* blob in [_previousBlobs allValues]) {
-		if (![blobs containsObject:blob]) {
+		if (![livingLabels containsObject:blob.label]) {
+			NSArray* reverseMappingKeys = [_labelMapping allKeysForObject:blob.label];
+			if ([reverseMappingKeys count] > 0) {
+				TFBlobLabel* reverseMappedLabel = [reverseMappingKeys objectAtIndex:0];
+				if (nil != reverseMappedLabel)
+					[_labelMapping removeObjectForKey:reverseMappedLabel];				
+			}
+			
 			[removedLabels addObject:blob.label];
-			
-			TFBlobLabel* tmp = blob.label;
-			blob.label = [_labelFactory claimLabel];
 			[self prepareUnmatchedBlobForRemoval:blob];
-			
-			blob.label = tmp;
 			[removedBlobs addObject:blob];
 		}
 	}

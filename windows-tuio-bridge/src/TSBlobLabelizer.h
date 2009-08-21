@@ -32,6 +32,7 @@
 // to new blobs done by existing code.
 
 @interface TSBlobLabelizer : TFBlobLabelizer {
+	NSMutableDictionary* _labelMapping;
 	NSMutableDictionary* _previousBlobs;
 }
 

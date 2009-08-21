@@ -100,7 +100,7 @@ NSString* TSLocalizedLabelForDeviceInfoKey(NSString* deviceInfoKey);
 	[_deviceInfoTableView setDataSource:self];
 	[_deviceInfoTableView setDelegate:self];
 	
-	NSString* versionName = [NSString stringWithFormat:@"Version %@",
+	NSString* versionName = [NSString stringWithFormat:NSLocalizedString(@"VersionWithNumber", @"VersionWithNumber"),
 							 [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
 	[_versionField setStringValue:versionName];
 }

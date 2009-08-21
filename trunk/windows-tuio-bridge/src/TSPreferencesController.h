@@ -63,4 +63,6 @@ extern NSString* PrefKeyOSCTargetPort;
 - (IBAction)changeFlashXMLServerPort:(id)sender;
 - (IBAction)commitOSCTargetChange:(id)sender;
 
+- (IBAction)openFlashSecuritySettings:(id)sender;
+
 @end

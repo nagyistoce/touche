@@ -30,6 +30,7 @@
 
 
 #define CHANGE_OK_LABEL_SHOWN_TIME		((NSTimeInterval)1.0)
+#define	FLASH_OPTIONS_URL	(@"http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager04.html")
 
 NSString* PrefKeyPixelsForMotion		= @"PixelsForMotion";
 NSString* PrefKeyFPS					= @"FramesPerSecond";
@@ -159,6 +160,11 @@ NSString* PrefKeyOSCTargetPort			= @"OSCTargetPort";
 														   object:nil];
 		[_changeOSCClientThread start];
 	}
+}
+
+- (IBAction)openFlashSecuritySettings:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:FLASH_OPTIONS_URL]];
 }
 
 #pragma mark -

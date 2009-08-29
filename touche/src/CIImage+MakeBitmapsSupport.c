@@ -45,6 +45,33 @@
 								((b) & 0xff))
 #endif
 
+int _CIImageBitmapsConvert8888toMono8(void* src,
+									  unsigned srcRowBytes,
+									  void* dest,
+									  unsigned destRowBytes,
+									  void* buffer,
+									  int bufferRowBytes,
+									  int width,
+									  int height,
+									  const int permute[4]);
+int _CIImageBitmapsPermute8888To8888(void* src,
+									 unsigned srcRowBytes,
+									 void* dest,
+									 unsigned destRowBytes,
+									 int width,
+									 int height,
+									 const int permute[4]);
+int _CIImageBitmapsConvert8888to888(void* src,
+									unsigned srcRowBytes,
+									void* dest,
+									unsigned destRowBytes,
+									void* buffer,
+									int bufferRowBytes,
+									int width,
+									int height,
+									const int permute[3]);
+
+
 int CIImageBitmapsConvertARGB8toMono8(void* src,
 									  unsigned srcRowBytes,
 									  void* dest,
@@ -55,8 +82,63 @@ int CIImageBitmapsConvertARGB8toMono8(void* src,
 									  int height)
 {
 #if defined(_USES_IPP_)
+	// needs RGBA
+	const int permute[] = { 1, 2, 3, 0};
+#else
+	// needs ARGB
+	const int permute[] = { 0, 1, 2, 3 };
+#endif
+	return _CIImageBitmapsConvert8888toMono8(src,
+											 srcRowBytes,
+											 dest,
+											 destRowBytes,
+											 buffer,
+											 bufferRowBytes,
+											 width,
+											 height,
+											 permute);
+}
+
+int CIImageBitmapsConvertBGRA8toMono8(void* src,
+									  unsigned srcRowBytes,
+									  void* dest,
+									  unsigned destRowBytes,
+									  void* buffer,
+									  int bufferRowBytes,
+									  int width,
+									  int height)
+{
+#if defined(_USES_IPP_)
+	// needs RGBA
+	const int permute[] = { 2, 1, 0, 3};
+#else
+	// needs ARGB
+	const int permute[] = { 3, 2, 1, 0 };
+#endif
+	return _CIImageBitmapsConvert8888toMono8(src,
+											 srcRowBytes,
+											 dest,
+											 destRowBytes,
+											 buffer,
+											 bufferRowBytes,
+											 width,
+											 height,
+											 permute);
+}
+
+int _CIImageBitmapsConvert8888toMono8(void* src,
+									  unsigned srcRowBytes,
+									  void* dest,
+									  unsigned destRowBytes,
+									  void* buffer,
+									  int bufferRowBytes,
+									  int width,
+									  int height,
+									  const int permute[4])
+{
+#if defined(_USES_IPP_)
 	IppiSize swapChannelRoiSize = { width, height };
-	int permuteMap[] = { 1, 2, 3, 0 };
+	const int* permuteMap = permute;
 	
 	ippiSwapChannels_8u_C4IR(src,
 							 srcRowBytes,
@@ -88,16 +170,31 @@ int CIImageBitmapsConvertARGB8toMono8(void* src,
 	destBuf.height = height;
 	destBuf.rowBytes = destRowBytes;
 	
+	int16_t matrix[] = { 0,   0, 0, 0,
+						 0,   0, 0, 0,
+						 0,   0, 0, 0,
+						 0,   0, 0, 0 };
+	
 	// these constants are derived from the NTSC RGB->Luminance conversion
 	// the same values are used by the Intel IPP.
-	int16_t matrix[] = { 0,   0, 0, 0,
-						 0, 299, 0, 0,
-						 0, 587, 0, 0,
-						 0, 114, 0, 0 };
+	int i, colOff = 0;
+	for (i=0; i<4; i++) {
+		int16_t val = 0;
+		switch (permute[i]) {
+			case 1: val = 299; colOff = i; break;
+			case 2: val = 587; break;
+			case 3: val = 114; break;
+			default: break;
+		}
+		
+		int j;
+		for (j=0; j<4; j++)
+			matrix[i*4+j] = val;
+	}
 	
 	vImageMatrixMultiply_ARGB8888(&srcBuf, &intermediateBuf, matrix, 100, NULL, NULL, 0);
 	
-	const void* srcBufArray[] = { (void*)((char*)intermediateBuf.data + 1) };
+	const void* srcBufArray[] = { (void*)((char*)intermediateBuf.data + colOff) };
 	const vImage_Buffer* destBufArray[] = { &destBuf };
 	
 	vImageConvert_ChunkyToPlanar8(srcBufArray,
@@ -120,9 +217,44 @@ int CIImageBitmapsConvertARGB8ToRGBA8(void* src,
 									  int width,
 									  int height)
 {
+	const int permute[] = { 1, 2, 3, 0 };
+	return _CIImageBitmapsPermute8888To8888(src,
+											srcRowBytes,
+											dest,
+											destRowBytes,
+											width,
+											height,
+											permute);
+}
+
+int CIImageBitmapsConvertBGRA8ToRGBA8(void* src,
+									  unsigned srcRowBytes,
+									  void* dest,
+									  unsigned destRowBytes,
+									  int width,
+									  int height)
+{
+	const int permute[] = { 2, 1, 0, 3 };
+	return _CIImageBitmapsPermute8888To8888(src,
+											srcRowBytes,
+											dest,
+											destRowBytes,
+											width,
+											height,
+											permute);
+}
+
+int _CIImageBitmapsPermute8888To8888(void* src,
+									 unsigned srcRowBytes,
+									 void* dest,
+									 unsigned destRowBytes,
+									 int width,
+									 int height,
+									 const int permute[4])
+{
 #if defined(_USES_IPP_)
 	IppiSize roiSize = { width, height };
-	int permuteMap[] = { 1, 2, 3, 0 };
+	const int* permuteMap = permute;
 	
 	if (src == dest)
 		ippiSwapChannels_8u_C4IR(dest,
@@ -149,7 +281,11 @@ int CIImageBitmapsConvertARGB8ToRGBA8(void* src,
 	srcBuf.height = height;
 	srcBuf.rowBytes = srcRowBytes;
 	
-	uint8_t permuteMap[] = { 1, 2, 3, 0 };
+	uint8_t permuteMap[4];
+	int i;
+	for (i=0; i<4; i++)
+		permuteMap[i] = (uint8_t)permute[i];
+
 	vImagePermuteChannels_ARGB8888(&srcBuf, &destBuf, permuteMap, 0);
 #endif
 	
@@ -160,12 +296,65 @@ int CIImageBitmapsConvertARGB8toRGB8(void* src,
 									 unsigned srcRowBytes,
 									 void* dest,
 									 unsigned destRowBytes,
+									 void* buffer,
+									 int bufferRowBytes,
 									 int width,
 									 int height)
 {
 #if defined(_USES_IPP_)
+	const int permute[] = { 1, 2, 3 };
+#else
+	const int* permute = NULL;
+#endif
+	return _CIImageBitmapsConvert8888to888(src,
+										   srcRowBytes,
+										   dest,
+										   destRowBytes,
+										   buffer,
+										   bufferRowBytes,
+										   width,
+										   height,
+										   permute);
+}
+
+int CIImageBitmapsConvertBGRA8toRGB8(void* src,
+									 unsigned srcRowBytes,
+									 void* dest,
+									 unsigned destRowBytes,
+									 void* buffer,
+									 int bufferRowBytes,
+									 int width,
+									 int height)
+{
+#if defined(_USES_IPP_)
+	const int permute[] = { 2, 1, 0 };
+#else
+	const int permute[] = { 3, 2, 1, 0 };
+#endif
+	return _CIImageBitmapsConvert8888to888(src,
+										   srcRowBytes,
+										   dest,
+										   destRowBytes,
+										   buffer,
+										   bufferRowBytes,
+										   width,
+										   height,
+										   permute);
+}
+
+int _CIImageBitmapsConvert8888to888(void* src,
+									unsigned srcRowBytes,
+									void* dest,
+									unsigned destRowBytes,
+									void* buffer,
+									int bufferRowBytes,
+									int width,
+									int height,
+									const int permute[4])
+{
+#if defined(_USES_IPP_)
 	IppiSize roiSize = { width, height };
-	int permuteMap[] = { 1, 2, 3 };
+	const int* permuteMap = permute;
 	
 	ippiSwapChannels_8u_C4C3R(src,
 							  srcRowBytes,
@@ -174,7 +363,7 @@ int CIImageBitmapsConvertARGB8toRGB8(void* src,
 							  roiSize,
 							  permuteMap);
 #else // no IPP available
-	vImage_Buffer srcBuf, destBuf;
+	vImage_Buffer srcBuf, destBuf, tmpBuf, *cBuf;
 	
 	destBuf.data = dest;
 	destBuf.width = width;
@@ -186,17 +375,35 @@ int CIImageBitmapsConvertARGB8toRGB8(void* src,
 	srcBuf.height = height;
 	srcBuf.rowBytes = srcRowBytes;
 	
-	vImageConvert_ARGB8888toRGB888(&srcBuf, &destBuf, 0);
+	if (NULL != permute) {
+		tmpBuf.data = buffer;
+		tmpBuf.width = width;
+		tmpBuf.height = height;
+		tmpBuf.rowBytes = bufferRowBytes;
+		
+		uint8_t permuteMap[4];
+		int i;
+		for (i=0; i<4; i++)
+			permuteMap[i] = (uint8_t)permute[i];
+		
+		vImagePermuteChannels_ARGB8888(&srcBuf, &tmpBuf, permuteMap, 0);
+				
+		cBuf = &tmpBuf;
+	} else
+		cBuf = &srcBuf;
+		
+	
+	vImageConvert_ARGB8888toRGB888(cBuf, &destBuf, 0);
 #endif
 
 	return 1;
 }
 
-int CIImageBitmaps1PixelImageBorderARGB8(void* image,
-										 unsigned imageRowBytes,
-										 int width,
-										 int height,
-										 const unsigned char borderColor[4])
+int CIImageBitmaps1PixelImageBorder8888(void* image,
+										unsigned imageRowBytes,
+										int width,
+										int height,
+										const unsigned char borderColor[4])
 {	
 	uint32_t destRowPixels = imageRowBytes/4;
 	uint32_t pix = PACKARGB8(borderColor[0],
@@ -216,11 +423,11 @@ int CIImageBitmaps1PixelImageBorderARGB8(void* image,
 	return 1;
 }
 
-int CIImageBitmaps1PixelImageBorderARGBf(void* image,
-										 unsigned imageRowBytes,
-										 int width,
-										 int height,
-										 const float borderColor[4])
+int CIImageBitmaps1PixelImageBorderFFFF(void* image,
+										unsigned imageRowBytes,
+										int width,
+										int height,
+										const float borderColor[4])
 {	
 	float a = borderColor[0], r = borderColor[1], g = borderColor[2], b = borderColor[3];
 	uint32_t destRowElements = imageRowBytes/4;	

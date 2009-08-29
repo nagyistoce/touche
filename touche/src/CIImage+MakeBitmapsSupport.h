@@ -36,7 +36,25 @@ int CIImageBitmapsConvertARGB8toMono8(void* src,
 									  int height);
 
 // zero on failure, non-zero on success
+int CIImageBitmapsConvertBGRA8toMono8(void* src,
+									  unsigned srcRowBytes,
+									  void* dest,
+									  unsigned destRowBytes,
+									  void* buffer,
+									  int bufferRowBytes,
+									  int width,
+									  int height);
+
+// zero on failure, non-zero on success
 int CIImageBitmapsConvertARGB8ToRGBA8(void* src,
+									  unsigned srcRowBytes,
+									  void* dest,
+									  unsigned destRowBytes,
+									  int width,
+									  int height);
+
+// zero on failure, non-zero on success
+int CIImageBitmapsConvertBGRA8ToRGBA8(void* src,
 									  unsigned srcRowBytes,
 									  void* dest,
 									  unsigned destRowBytes,
@@ -48,20 +66,32 @@ int CIImageBitmapsConvertARGB8toRGB8(void* src,
 									 unsigned srcRowBytes,
 									 void* dest,
 									 unsigned destRowBytes,
+									 void* buffer,
+									 int bufferRowBytes,
 									 int width,
 									 int height);
 
 // zero on failure, non-zero on success
-int CIImageBitmaps1PixelImageBorderARGB8(void* image,
-										 unsigned imageRowBytes,
-										 int width,
-										 int height,
-										 const unsigned char borderColor[4]);
+int CIImageBitmapsConvertBGRA8toRGB8(void* src,
+									 unsigned srcRowBytes,
+									 void* dest,
+									 unsigned destRowBytes,
+									 void* buffer,
+									 int bufferRowBytes,
+									 int width,
+									 int height);
 
-int CIImageBitmaps1PixelImageBorderARGBf(void* image,
-										 unsigned imageRowBytes,
-										 int width,
-										 int height,
-										 const float borderColor[4]);
+// zero on failure, non-zero on success
+int CIImageBitmaps1PixelImageBorder8888(void* image,
+										unsigned imageRowBytes,
+										int width,
+										int height,
+										const unsigned char borderColor[4]);
+
+int CIImageBitmaps1PixelImageBorderFFFF(void* image,
+										unsigned imageRowBytes,
+										int width,
+										int height,
+										const float borderColor[4]);
 
 #endif // __CIImage_MakeBitmapsSupport_h__

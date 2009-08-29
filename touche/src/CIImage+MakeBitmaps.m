@@ -24,11 +24,16 @@
 //  CGBitmapContext-backed rendering based on:
 //	http://www.geekspiff.com/unlinkedCrap/ciImageToBitmap.html
 
+// TODO: glReadPixels() method does not yet support Float output for the color
+//		 channels.
+
 #import "CIImage+MakeBitmaps.h"
 
 #import "CIImage+MakeBitmapsSupport.h"
 
 #import <Accelerate/Accelerate.h>
+#import <OpenGL/gl.h>
+#import <OpenGL/OpenGL.h>
 #import <mach/mach.h>
 #import <mach/mach_time.h>
 
@@ -48,13 +53,14 @@ typedef enum {
 typedef enum {
 	CIImageInternalBitmapCreationMethodBitmapContextBackedCIContext = 0,
 	CIImageInternalBitmapCreationMethodCIContextRender,
+	CIImageInternalBitmapCreationMethodGlReadPixels,
 	CIImageInternalBitmapCreationMethodUndetermined
 } CIImageInternalBitmapCreationMethod;
 
 #define CIImageInternalBitmapCreationMethodMin	(CIImageInternalBitmapCreationMethodBitmapContextBackedCIContext)
-#define	CIImageInternalBitmapCreationMethodMax	(CIImageInternalBitmapCreationMethodCIContextRender)
+#define	CIImageInternalBitmapCreationMethodMax	(CIImageInternalBitmapCreationMethodGlReadPixels)
 #define CIImageInternalBitmapCreationMethodCnt	(CIImageInternalBitmapCreationMethodMax - CIImageInternalBitmapCreationMethodMin + 1)
-#define CIImageInternalBitmapCreationMethodDefault	(CIImageInternalBitmapCreationMethodCIContextRender)
+#define CIImageInternalBitmapCreationMethodDefault	(CIImageInternalBitmapCreationMethodGlReadPixels)
 
 #define DYNAMIC_METHOD_SELECTION_SAMPLE_COUNT	(5)
 
@@ -62,12 +68,21 @@ typedef enum {
 
 typedef struct CIImageBitmapsInternalData {
 	size_t								width, height;
+	CGFloat								aspectRatio;
 
 	CGColorSpaceRef						colorSpace, ciOutputColorSpace, ciWorkingColorSpace;
 	CGContextRef						cgContext;
 	CIContext*							ciContextcgContext;		// CGBitmapContext-backed CIContext
 	CGLContextObj						cglContext;
-	CIContext*							ciContextglContext;		// CGLContext-backed CIContext
+	CIContext*							ciContextglContext;		// CGLContext-backed CIContext	
+	CGRect								glrpRenderImgRect;
+	GLenum								glrpFormatType, glrpPixelFormatType;
+	CGLContextObj						glrpCglContext;
+	GLboolean							glrpHasPbo;
+	GLuint								glrpPboId;
+	CGLPBufferObj						glrpPBObj;
+	CIContext*							glrpCiContext;			// rendering via glReadPixels()
+	
 	BOOL								renderOnCPU;
 	
 	CIImageInternalOutputPixelFormat	internalOutputPixelFormat;
@@ -104,17 +119,31 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 												   CIImage* image,
 												   BOOL renderOnCPU);
 
+// set up the CGLContext for rendering CIImages to an FBO
+void _CIImagePrivateCreateCGLContextForGlReadPixels(CIImageBitmapsInternalData* context,
+													CIImage* image,
+													BOOL renderOnCPU);
+
 // returns the optimal rowBytes for a pixel buffer with respect to memory alignment
 size_t _CIImagePrivateOptimalRowBytesForWidthAndBytesPerPixel(size_t width, size_t bytesPerPixel);
 
 // returns non-zero on success, zero on error
-int _CIImagePrivateConvertInternalPixelFormats(void* dest,
+int _CIImagePrivateConvertCIFormatPixelFormats(void* dest,
 											   int destRowBytes,
 											   CIImageBitmapsInternalData* internalData,
 											   int width,
 											   int height,
 											   CIImageInternalOutputPixelFormat destFormat,
 											   CIFormat srcFormat);
+
+int _CIImagePrivateConvertOpenGLPixelFormats(void* dest,
+											 int destRowBytes,
+											 CIImageBitmapsInternalData* internalData,
+											 int width,
+											 int height,
+											 CIImageInternalOutputPixelFormat destFormat,
+											 GLenum openglPixelFormatType,
+											 GLenum openglType);
 
 // get the amount of nanoseconds since the system was started (used to determine the fastest
 // rendering method dynamically)
@@ -147,7 +176,7 @@ void _CIImageBitmapsFree(void* ptr);
 }
 
 - (CIImageBitmapData)bitmapDataWithBitmapCreationContext:(void*)pContext
-{	
+{		
 	uint64_t beforeTime;
 	BOOL measurePerformance = NO;
 	CIImageBitmapsInternalData* context = (CIImageBitmapsInternalData*)pContext;
@@ -158,16 +187,18 @@ void _CIImageBitmapsFree(void* ptr);
 	if (NULL == context || CGRectIsInfinite(extent))
 		goto errorReturn;
 	
-	if (CIImageInternalBitmapCreationMethodUndetermined == method && !context->renderOnCPU)
-		// when rendering to a CGContext on the GPU, we get a massive memory leak.
-		method = CIImageInternalBitmapCreationMethodCIContextRender;
-	else if (CIImageInternalBitmapCreationMethodUndetermined == method) {
+	if (CIImageInternalBitmapCreationMethodUndetermined == method) {
 		measurePerformance = YES;
 	
 		uint64_t minNanos = UINT64_MAX;
 		int minIndex = CIImageInternalBitmapCreationMethodMin;
 		int i = CIImageInternalBitmapCreationMethodMin;
-		for (i; i<=CIImageInternalBitmapCreationMethodMax; i++)
+		
+		for (i; i<=CIImageInternalBitmapCreationMethodMax; i++) {
+			// exclude on-GPU rendering of CGContext-backed context, since this would be a massive leak.
+			if (!context->renderOnCPU && i == CIImageInternalBitmapCreationMethodBitmapContextBackedCIContext)
+				continue;
+					
 			if (context->measurementsPerMethodCount[i] < DYNAMIC_METHOD_SELECTION_SAMPLE_COUNT) {
 				method = i;
 				goto methodDetermined;
@@ -175,16 +206,21 @@ void _CIImageBitmapsFree(void* ptr);
 				minNanos = context->measuredNanosPerMethod[i];
 				minIndex = i;
 			}
+		}
 		
 		// if we're here, we have enough samples for all rendering methods. now determine the fastest one.
 		context->chosenCreationMethod = minIndex;
 		method = minIndex;
-		
+				
 		for (i=CIImageInternalBitmapCreationMethodMin; i<CIImageInternalBitmapCreationMethodMax; i++) {
 			if (i == method)
 				continue;
 			
 			switch (i) {
+				case CIImageInternalBitmapCreationMethodGlReadPixels:
+					[(context->glrpCiContext) clearCaches];
+					[(context->glrpCiContext) reclaimResources];
+					break;
 				case CIImageInternalBitmapCreationMethodCIContextRender:
 					[(context->ciContextglContext) clearCaches];
 					[(context->ciContextglContext) reclaimResources];
@@ -267,7 +303,7 @@ methodDetermined:
 												 context->borderG * 255,
 												 context->borderB * 255 };
 				
-					CIImageBitmaps1PixelImageBorderARGB8(renderBuffer,
+					CIImageBitmaps1PixelImageBorder8888(renderBuffer,
 														 renderRowBytes,
 														 context->width,
 														 context->height,
@@ -278,7 +314,7 @@ methodDetermined:
 										 context->borderG,
 										 context->borderB };
 					
-					CIImageBitmaps1PixelImageBorderARGBf(renderBuffer,
+					CIImageBitmaps1PixelImageBorderFFFF(renderBuffer,
 														 renderRowBytes,
 														 context->width,
 														 context->height,
@@ -289,7 +325,7 @@ methodDetermined:
 			
 			switch (context->internalOutputPixelFormat) {
 				case CIImageInternalOutputPixelFormatGray8:
-					_CIImagePrivateConvertInternalPixelFormats(context->outputBuffer,
+					_CIImagePrivateConvertCIFormatPixelFormats(context->outputBuffer,
 															   context->rowBytes,
 															   context,
 															   context->width,
@@ -298,7 +334,7 @@ methodDetermined:
 															   kCIFormatARGB8);
 					break;
 				case CIImageInternalOutputPixelFormatRGBA8:
-					_CIImagePrivateConvertInternalPixelFormats(context->outputBuffer,
+					_CIImagePrivateConvertCIFormatPixelFormats(context->outputBuffer,
 															   context->rowBytes,
 															   context,
 															   context->width,
@@ -307,13 +343,146 @@ methodDetermined:
 															   kCIFormatARGB8);
 					break;
 				case CIImageInternalOutputPixelFormatRGB8:
-					_CIImagePrivateConvertInternalPixelFormats(context->outputBuffer,
+					_CIImagePrivateConvertCIFormatPixelFormats(context->outputBuffer,
 															   context->rowBytes,
 															   context,
 															   context->width,
 															   context->height,
 															   CIImageInternalOutputPixelFormatRGB8,
 															   kCIFormatARGB8);
+					break;
+				default:
+					break;
+			}
+			
+			break;
+		}
+			
+		case CIImageInternalBitmapCreationMethodGlReadPixels: {
+			int renderRowBytes = context->rowBytes;
+			void* renderBuffer = context->outputBuffer;
+			
+			switch(context->internalOutputPixelFormat) {
+				case CIImageInternalOutputPixelFormatRGB8:
+					renderRowBytes = context->scratchRowBytes[0];
+					renderBuffer = context->scratchSpace[0];
+					break;
+				case CIImageInternalOutputPixelFormatGray8:
+					renderRowBytes = context->scratchRowBytes[0];
+					renderBuffer = context->scratchSpace[0];
+					break;
+				case CIImageInternalOutputPixelFormatARGB8:
+					renderRowBytes = context->rowBytes;
+					renderBuffer = context->outputBuffer;
+					break;
+				case CIImageInternalOutputPixelFormatRGBA8:
+					renderRowBytes = context->scratchRowBytes[0];
+					renderBuffer = context->scratchSpace[0];
+					break;
+				// TODO: support RGBAF output
+				/*case CIImageInternalOutputPixelFormatRGBAF:
+					renderRowBytes = context->rowBytes;
+					renderBuffer = context->outputBuffer;
+					break;*/
+				default:
+					break;
+			}
+			
+			CGLSetCurrentContext(context->glrpCglContext);
+															
+			[context->glrpCiContext drawImage:self
+									 atPoint:CGPointZero
+									fromRect:context->glrpRenderImgRect];
+			
+			glFlush();
+
+			if (context->glrpHasPbo) {
+				glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, context->glrpPboId);
+				glReadPixels(0,
+							 0,
+							 context->width,
+							 context->height,
+							 context->glrpPixelFormatType,
+							 context->glrpFormatType,
+							 0);
+				GLubyte* ptr = (GLubyte*)glMapBufferARB(GL_PIXEL_PACK_BUFFER_ARB,
+														GL_READ_ONLY);
+										
+				if (ptr) {
+#if defined(_USES_IPP_)
+					IppiSize roiSize = { context->width, context->height };
+					switch (context->glrpFormatType) {
+						case GL_UNSIGNED_INT_8_8_8_8_REV:
+						default:
+							ippiCopy_8u_C4R(ptr,
+											renderRowBytes,
+											renderBuffer,
+											renderRowBytes,
+											roiSize);
+							break;
+					}
+#else
+					memcpy(renderBuffer, ptr, renderRowBytes * context->height);
+#endif
+					glUnmapBufferARB(GL_PIXEL_PACK_BUFFER_ARB);
+				}
+				
+				glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
+			} else {
+				glReadPixels(0,
+							 0,
+							 context->width,
+							 context->height,
+							 context->glrpPixelFormatType,
+							 context->glrpFormatType,
+							 renderBuffer);
+			}
+															
+			CGLSetCurrentContext(NULL);
+						
+			if (context->borderDrawingEnabled) {
+				unsigned char channels[] = { context->borderB * 255,
+					context->borderG * 255,
+					context->borderR * 255,
+					context->borderA * 255 };
+				
+				CIImageBitmaps1PixelImageBorder8888(renderBuffer,
+													renderRowBytes,
+													context->width,
+													context->height,
+													channels);
+			}
+			
+			switch (context->internalOutputPixelFormat) {
+				case CIImageInternalOutputPixelFormatGray8:
+					_CIImagePrivateConvertOpenGLPixelFormats(context->outputBuffer,
+															 context->rowBytes,
+															 context,
+															 context->width,
+															 context->height,
+															 CIImageInternalOutputPixelFormatGray8,
+															 context->glrpPixelFormatType,
+															 context->glrpFormatType);
+					break;
+				case CIImageInternalOutputPixelFormatRGBA8:
+					_CIImagePrivateConvertOpenGLPixelFormats(context->outputBuffer,
+															 context->rowBytes,
+															 context,
+															 context->width,
+															 context->height,
+															 CIImageInternalOutputPixelFormatRGBA8,
+															 context->glrpPixelFormatType,
+															 context->glrpFormatType);
+					break;
+				case CIImageInternalOutputPixelFormatRGB8:
+					_CIImagePrivateConvertOpenGLPixelFormats(context->outputBuffer,
+															 context->rowBytes,
+															 context,
+															 context->width,
+															 context->height,
+															 CIImageInternalOutputPixelFormatRGB8,
+															 context->glrpPixelFormatType,
+															 context->glrpFormatType);
 					break;
 				default:
 					break;
@@ -423,6 +592,29 @@ void CIImageBitmapsReleaseContext(void* pContext)
 		
 		[context->ciContextglContext release];
 		context->ciContextglContext = nil;
+		
+		[context->glrpCiContext release];
+		context->glrpCiContext = nil;
+		
+		if (NULL != context->glrpCglContext) {
+			if (context->glrpHasPbo && 0 != context->glrpPboId) {
+				CGLSetCurrentContext(context->glrpCglContext);
+				glDeleteBuffersARB(1, &context->glrpPboId);
+				context->glrpPboId = 0;
+				CGLSetCurrentContext(NULL);
+			}
+		
+			CGLClearDrawable(context->glrpCglContext);
+			
+			CGLDestroyContext(context->glrpCglContext);
+			context->glrpCglContext = NULL;
+		}
+		
+		if (NULL != context->glrpPBObj) {
+			if (NULL != context->glrpCglContext)
+				CGLDestroyPBuffer(context->glrpPBObj);
+			context->glrpPBObj = NULL;
+		}
 		
 		RELEASE_CF_MEMBER(context->colorSpace);
 		RELEASE_CF_MEMBER(context->ciOutputColorSpace);
@@ -534,6 +726,12 @@ CIImageBitmapsInternalData* _CIImagePrivateInitializeBitmapCreationContext(CIIma
 	if (NULL != context)	
 		memset(context, 0, sizeof(CIImageBitmapsInternalData));
 	
+	CGRect extent = [image extent];
+	
+	context->width = extent.size.width;
+	context->height = extent.size.height;
+	context->aspectRatio = extent.size.width / extent.size.height;
+	
 	return context;
 }
 
@@ -543,11 +741,6 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 {
 	if (NULL == context)
 		return NULL;
-	
-	CGRect extent = [image extent];
-	
-	context->width = extent.size.width;
-	context->height = extent.size.height;
 	
 	context->rowBytes = _CIImagePrivateOptimalRowBytesForWidthAndBytesPerPixel(context->width, context->bytesPerPixel);
 	context->outputBuffer = _CIImageBitmapsMalloc(context->width, context->height, &context->rowBytes, context->internalOutputPixelFormat);
@@ -589,6 +782,12 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 			context->scratchSpace[0] = _CIImageBitmapsMalloc(context->width,
 															 context->height,
 															 &context->scratchRowBytes[0],
+															 CIImageInternalOutputPixelFormatARGB8);
+			
+			context->scratchRowBytes[1] = sRowBytes;
+			context->scratchSpace[1] = _CIImageBitmapsMalloc(context->width,
+															 context->height,
+															 &context->scratchRowBytes[1],
 															 CIImageInternalOutputPixelFormatARGB8);
 		
 			break;
@@ -632,7 +831,8 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 		kCGLPFAAccelerated,
 		kCGLPFANoRecovery,
 		kCGLPFAAllowOfflineRenderers,
-		kCGLPFAColorSize, 32,
+		NSOpenGLPFAColorSize, 24,
+		NSOpenGLPFAAlphaSize, 8,
 		(CGLPixelFormatAttribute)NULL
 	};
 	
@@ -662,12 +862,168 @@ void* _CIImagePrivateFinalizeBitmapCreationContext(CIImageBitmapsInternalData* c
 	if (nil == context->ciContextglContext)
 		goto errorReturn;
 	
+	// set up the glReadPixels rendering method
+	_CIImagePrivateCreateCGLContextForGlReadPixels(context, image, renderOnCPU);
+	
 	return (void*)context;
 	
 errorReturn:
 	CIImageBitmapsReleaseContext((void*)context);
 	
 	return NULL;
+}
+
+void _CIImagePrivateCreateCGLContextForGlReadPixels(CIImageBitmapsInternalData* context,
+													CIImage* image,
+													BOOL renderOnCPU)
+{
+	// create the CIContext backed by a CGLContext
+	CGLPixelFormatObj cglPixelFormatObj = nil;
+	
+	static const CGLPixelFormatAttribute attr[] = {
+		kCGLPFAPBuffer,
+		kCGLPFAAccelerated,
+		kCGLPFADoubleBuffer,
+		kCGLPFANoRecovery,
+		kCGLPFAAllowOfflineRenderers,
+		kCGLPFAColorSize, 32,
+		(CGLPixelFormatAttribute)NULL
+	};
+	
+	GLint numFormats = 0;
+	CGLChoosePixelFormat(attr, &cglPixelFormatObj, &numFormats);
+	
+	if (numFormats <= 0)
+		goto errorReturn;
+	else {
+		CGLCreatePBuffer(context->width, context->height, GL_TEXTURE_RECTANGLE_EXT, GL_RGBA, 0, &context->glrpPBObj);
+		
+		if (NULL == context->glrpPBObj)
+			goto errorReturn;
+		
+		CGLCreateContext(cglPixelFormatObj, NULL, &context->glrpCglContext);
+		
+		if (NULL == context->glrpCglContext)
+			goto errorReturn;
+				
+		GLint virtScreen;
+		CGLGetVirtualScreen(context->glrpCglContext, &virtScreen);
+		CGLSetPBuffer(context->glrpCglContext, context->glrpPBObj, 0, 0, virtScreen);
+		
+		CGLSetCurrentContext(context->glrpCglContext);
+		
+		glDisable(GL_ALPHA_TEST);
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_SCISSOR_TEST);
+		glDisable(GL_BLEND);
+		glDisable(GL_DITHER);
+		glDisable(GL_CULL_FACE);
+		glDisable(GL_LIGHTING);
+		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+		glDepthMask(GL_FALSE);
+		glStencilMask (0);
+		glHint(GL_TRANSFORM_HINT_APPLE, GL_FASTEST);
+		glClearColor(0, 0, 0, 1);
+		
+		unsigned glBytesPerPixel = 4;
+		switch (context->internalOutputPixelFormat) {
+			case CIImageInternalOutputPixelFormatGray8:
+			case CIImageInternalOutputPixelFormatARGB8:
+			case CIImageInternalOutputPixelFormatRGB8:
+			case CIImageInternalOutputPixelFormatRGBA8:
+			default:
+				glBytesPerPixel = 4;
+				context->glrpPixelFormatType = GL_BGRA;
+				context->glrpFormatType = GL_UNSIGNED_INT_8_8_8_8_REV;
+				break;
+		}
+		
+		GLint textureSize;
+		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &textureSize);
+		
+		context->glrpRenderImgRect = [image extent];
+		if (context->glrpRenderImgRect.size.width > textureSize || context->glrpRenderImgRect.size.height > textureSize) {			
+			if (context->aspectRatio > 1.0) {
+				context->glrpRenderImgRect.size.width = textureSize;
+				context->glrpRenderImgRect.size.height = textureSize / context->aspectRatio;
+			} else {
+				context->glrpRenderImgRect.size.width = textureSize / context->aspectRatio;
+				context->glrpRenderImgRect.size.height = textureSize;
+			}
+		}
+		
+		// if it is supported, we'll use a PBO for the readback
+		{
+			const GLubyte* glExtensions = glGetString(GL_EXTENSIONS);
+			context->glrpHasPbo = gluCheckExtension((const GLubyte*)"GL_ARB_pixel_buffer_object", glExtensions);
+		}
+		
+		if (context->glrpHasPbo) {
+			glGenBuffersARB(1, &context->glrpPboId);
+			glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, context->glrpPboId);
+			glBufferDataARB(GL_PIXEL_PACK_BUFFER_ARB, context->width * context->height * glBytesPerPixel, NULL, GL_STREAM_READ);
+			glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, 0);
+		}
+				
+		glViewport(0, 0, context->width, context->height);
+		
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0, context->width, context->height, 0, -1, 1);
+		
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		
+		glClear(GL_COLOR_BUFFER_BIT);
+		
+		// respect our rowBytes setting during glReadPixels
+		glPixelStorei(GL_PACK_ROW_LENGTH, context->rowBytes);
+				
+		NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys:
+								 (id)context->ciOutputColorSpace, kCIContextOutputColorSpace, 
+								 (id)context->ciWorkingColorSpace, kCIContextWorkingColorSpace,
+								 [NSNumber numberWithBool:renderOnCPU], kCIContextUseSoftwareRenderer,
+								 nil];
+		
+		context->glrpCiContext = [[CIContext contextWithCGLContext:context->glrpCglContext
+													  pixelFormat:cglPixelFormatObj
+														  options:options] retain];
+		
+		CGLSetCurrentContext(NULL);				
+	}
+	
+	if (NULL != cglPixelFormatObj)
+		CGLDestroyPixelFormat(cglPixelFormatObj);
+	
+	return;
+	
+errorReturn:
+
+	[context->glrpCiContext release];
+	context->glrpCiContext = nil;
+	
+	if (NULL != context->glrpCglContext) {
+		if (context->glrpHasPbo && 0 != context->glrpPboId) {
+			CGLSetCurrentContext(context->glrpCglContext);
+			glDeleteBuffersARB(1, &context->glrpPboId);
+			context->glrpPboId = 0;
+			CGLSetCurrentContext(NULL);
+		}
+	
+		CGLClearDrawable(context->glrpCglContext);
+		
+		CGLDestroyContext(context->glrpCglContext);
+		context->glrpCglContext = NULL;
+	}
+	
+	if (NULL != context->glrpPBObj) {
+		if (NULL != context->glrpCglContext)
+		CGLDestroyPBuffer(context->glrpPBObj);
+		context->glrpPBObj = NULL;
+	}
+	
+	if (NULL != cglPixelFormatObj)
+		CGLDestroyPixelFormat(cglPixelFormatObj);
 }
 
 size_t _CIImagePrivateOptimalRowBytesForWidthAndBytesPerPixel(size_t width, size_t bytesPerPixel)
@@ -685,7 +1041,7 @@ size_t _CIImagePrivateOptimalRowBytesForWidthAndBytesPerPixel(size_t width, size
 	return rowBytes;
 }
 
-int _CIImagePrivateConvertInternalPixelFormats(void* dest,
+int _CIImagePrivateConvertCIFormatPixelFormats(void* dest,
 											   int destRowBytes,
 											   CIImageBitmapsInternalData* internalData,
 											   int width,
@@ -725,10 +1081,67 @@ int _CIImagePrivateConvertInternalPixelFormats(void* dest,
 													   internalData->scratchRowBytes[0],
 													   dest,
 													   destRowBytes,
+													   internalData->scratchSpace[1],
+													   internalData->scratchRowBytes[1],
 													   width,
 													   height);
 
 		}
+	}
+	
+	return success;
+}
+
+int _CIImagePrivateConvertOpenGLPixelFormats(void* dest,
+											 int destRowBytes,
+											 CIImageBitmapsInternalData* internalData,
+											 int width,
+											 int height,
+											 CIImageInternalOutputPixelFormat destFormat,
+											 GLenum openglPixelFormatType,
+											 GLenum openglType)
+{
+	int success = 0;
+	
+	if (NULL != dest && NULL != internalData) {
+		if (CIImageInternalOutputPixelFormatGray8 == destFormat &&
+			GL_UNSIGNED_INT_8_8_8_8_REV == openglType) {
+			
+			if (GL_BGRA == openglPixelFormatType)
+				success = CIImageBitmapsConvertBGRA8toMono8(internalData->scratchSpace[0],
+															internalData->scratchRowBytes[0],
+															dest,
+															destRowBytes,
+															internalData->scratchSpace[1],
+															internalData->scratchRowBytes[1],
+															width,
+															height);
+			
+		} else if (CIImageInternalOutputPixelFormatRGBA8 == destFormat &&
+				   GL_UNSIGNED_INT_8_8_8_8_REV == openglType) {
+		 
+			 if (GL_BGRA == openglPixelFormatType)
+				 success = CIImageBitmapsConvertBGRA8ToRGBA8(internalData->scratchSpace[0],
+															 internalData->scratchRowBytes[0],
+															 dest,
+															 destRowBytes,
+															 width,
+															 height);
+		 
+		} else if (CIImageInternalOutputPixelFormatRGB8 == destFormat &&
+				   GL_UNSIGNED_INT_8_8_8_8_REV == openglType) {
+		 
+			if (GL_BGRA == openglPixelFormatType)
+				success = CIImageBitmapsConvertBGRA8toRGB8(internalData->scratchSpace[0],
+														   internalData->scratchRowBytes[0],
+														   dest,
+														   destRowBytes,
+														   internalData->scratchSpace[1],
+														   internalData->scratchRowBytes[1],
+														   width,
+														   height);
+		 
+		 }
 	}
 	
 	return success;

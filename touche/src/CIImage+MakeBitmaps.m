@@ -394,8 +394,6 @@ methodDetermined:
 									 atPoint:CGPointZero
 									fromRect:context->glrpRenderImgRect];
 			
-			glFlush();
-
 			if (context->glrpHasPbo) {
 				glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, context->glrpPboId);
 				glReadPixels(0,
@@ -405,6 +403,9 @@ methodDetermined:
 							 context->glrpPixelFormatType,
 							 context->glrpFormatType,
 							 0);
+				// this is needed because of an Apple bug, where glMapBufferARB() doesn't always
+				// return after the DMA is finished, but earlier...
+				glFinishObjectAPPLE(GL_BUFFER_OBJECT_APPLE, context->glrpPboId);
 				GLubyte* ptr = (GLubyte*)glMapBufferARB(GL_PIXEL_PACK_BUFFER_ARB,
 														GL_READ_ONLY);
 										
@@ -896,6 +897,19 @@ void _CIImagePrivateCreateCGLContextForGlReadPixels(CIImageBitmapsInternalData* 
 	if (numFormats <= 0)
 		goto errorReturn;
 	else {
+		unsigned glBytesPerPixel = 4;
+		switch (context->internalOutputPixelFormat) {
+			case CIImageInternalOutputPixelFormatGray8:
+			case CIImageInternalOutputPixelFormatARGB8:
+			case CIImageInternalOutputPixelFormatRGB8:
+			case CIImageInternalOutputPixelFormatRGBA8:
+			default:
+				glBytesPerPixel = 4;
+				context->glrpPixelFormatType = GL_BGRA;
+				context->glrpFormatType = GL_UNSIGNED_INT_8_8_8_8_REV;
+				break;
+		}
+	
 		CGLCreatePBuffer(context->width, context->height, GL_TEXTURE_RECTANGLE_EXT, GL_RGBA, 0, &context->glrpPBObj);
 		
 		if (NULL == context->glrpPBObj)
@@ -925,19 +939,6 @@ void _CIImagePrivateCreateCGLContextForGlReadPixels(CIImageBitmapsInternalData* 
 		glHint(GL_TRANSFORM_HINT_APPLE, GL_FASTEST);
 		glClearColor(0, 0, 0, 1);
 		
-		unsigned glBytesPerPixel = 4;
-		switch (context->internalOutputPixelFormat) {
-			case CIImageInternalOutputPixelFormatGray8:
-			case CIImageInternalOutputPixelFormatARGB8:
-			case CIImageInternalOutputPixelFormatRGB8:
-			case CIImageInternalOutputPixelFormatRGBA8:
-			default:
-				glBytesPerPixel = 4;
-				context->glrpPixelFormatType = GL_BGRA;
-				context->glrpFormatType = GL_UNSIGNED_INT_8_8_8_8_REV;
-				break;
-		}
-		
 		GLint textureSize;
 		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &textureSize);
 		
@@ -961,7 +962,7 @@ void _CIImagePrivateCreateCGLContextForGlReadPixels(CIImageBitmapsInternalData* 
 		if (context->glrpHasPbo) {
 			glGenBuffersARB(1, &context->glrpPboId);
 			glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, context->glrpPboId);
-			glBufferDataARB(GL_PIXEL_PACK_BUFFER_ARB, context->width * context->height * glBytesPerPixel, NULL, GL_STREAM_READ);
+			glBufferDataARB(GL_PIXEL_PACK_BUFFER_ARB, context->width * context->height * glBytesPerPixel, NULL, GL_DYNAMIC_READ);
 			glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, 0);
 		}
 				

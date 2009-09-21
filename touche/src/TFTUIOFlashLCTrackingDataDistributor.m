@@ -33,8 +33,8 @@
 #import "TFTUIOFlashLCTrackingDataReceiver.h"
 
 
-#define	DEFAULT_RECEIVER_CONNECTION_NAME	(@"_TuioOscDataStream")
-#define	DEFAULT_RECEIVER_METHOD_NAME		(@"receiveTuioOscData")
+#define	DEFAULT_RECEIVER_CONNECTION_NAME	(@"_OscDataStream")
+#define	DEFAULT_RECEIVER_METHOD_NAME		(@"receiveOscData")
 
 #define NEW_RECEIVERS_POLL_INTERVAL			((NSTimeInterval)1.0)
 #define	RECEIVERS_BUF_SIZE					(8192)

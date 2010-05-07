@@ -61,7 +61,9 @@ static CIKernel*	tFCI1PixelBorderAroundImage = nil;
 	if (nil == tFCI1PixelBorderAroundImage) {
 		NSString*	kernelCode = [NSString stringWithContentsOfFile:
 			[[NSBundle bundleForClass:[self class]]
-				pathForResource:@"TFCI1PixelBorderAroundImage" ofType:@"cikernel"]];
+				pathForResource:@"TFCI1PixelBorderAroundImage" ofType:@"cikernel"]
+														 encoding:NSUTF8StringEncoding
+															error:NULL];
 		
 		NSArray *kernels = [CIKernel kernelsWithString:kernelCode];
 		

@@ -127,7 +127,9 @@ static NSMutableArray*	_freeMinMaxCIImageBitmapContexts = nil;
 	if (nil == tFCIContrastStretchFilterKernel || nil == tFCIContrastStretchFilterEvalMinMaxOnCPUKernel) {
 		NSString*	kernelCode = [NSString stringWithContentsOfFile:
 								  [[NSBundle bundleForClass:[self class]]
-								   pathForResource:@"TFCIContrastStretchFilter" ofType:@"cikernel"]];
+								   pathForResource:@"TFCIContrastStretchFilter" ofType:@"cikernel"]
+														 encoding:NSUTF8StringEncoding
+															error:NULL];
 		
 		NSArray *kernels = [CIKernel kernelsWithString:kernelCode];
 		

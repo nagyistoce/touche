@@ -63,7 +63,9 @@ static NSArray*	tFCI3x3ErosionFilterKernels = nil;
 	if (nil == tFCI3x3ErosionFilterKernels) {
 		NSString*	kernelCode = [NSString stringWithContentsOfFile:
 								  [[NSBundle bundleForClass:[self class]]
-								   pathForResource:@"TFCI3x3ErosionFilter" ofType:@"cikernel"]];
+								   pathForResource:@"TFCI3x3ErosionFilter" ofType:@"cikernel"]
+														 encoding:NSUTF8StringEncoding
+															error:NULL];
 		
 		tFCI3x3ErosionFilterKernels = [[CIKernel kernelsWithString:kernelCode] retain];
 		

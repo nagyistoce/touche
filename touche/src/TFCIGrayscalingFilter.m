@@ -65,7 +65,9 @@ static NSArray*	tfCIGrayscalingFilterKernels = nil;
 	if (nil == tfCIGrayscalingFilterKernels) {
 		NSString*	kernelCode = [NSString stringWithContentsOfFile:
 								  [[NSBundle bundleForClass:[self class]]
-								   pathForResource:@"TFCIGrayscalingFilter" ofType:@"cikernel"]];
+								   pathForResource:@"TFCIGrayscalingFilter" ofType:@"cikernel"]
+														 encoding:NSUTF8StringEncoding
+															error:NULL];
 		
 		NSArray *kernels = [CIKernel kernelsWithString:kernelCode];
 		tfCIGrayscalingFilterKernels = [kernels retain];

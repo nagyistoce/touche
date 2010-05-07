@@ -62,7 +62,9 @@ static NSArray*	tfThresholdKernelFilters = nil;
 	if (nil == tfThresholdKernelFilters) {
 		NSString*	kernelCode = [NSString stringWithContentsOfFile:
 			[[NSBundle bundleForClass:[self class]]
-				pathForResource:@"TFCIThresholdFilter" ofType:@"cikernel"]];
+				pathForResource:@"TFCIThresholdFilter" ofType:@"cikernel"]
+														 encoding:NSUTF8StringEncoding
+															error:NULL];
 		
 		tfThresholdKernelFilters = [[CIKernel kernelsWithString:kernelCode] retain];		
 	}

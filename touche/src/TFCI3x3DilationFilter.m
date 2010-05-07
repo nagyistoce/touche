@@ -63,7 +63,9 @@ static NSArray*	tFCI3x3DilationFilterKernels = nil;
 	if (nil == tFCI3x3DilationFilterKernels) {
 		NSString*	kernelCode = [NSString stringWithContentsOfFile:
 								  [[NSBundle bundleForClass:[self class]]
-								   pathForResource:@"TFCI3x3DilationFilter" ofType:@"cikernel"]];
+								   pathForResource:@"TFCI3x3DilationFilter" ofType:@"cikernel"]
+														 encoding:NSUTF8StringEncoding
+															error:NULL];
 		
 		tFCI3x3DilationFilterKernels = [[CIKernel kernelsWithString:kernelCode] retain];
 		

@@ -234,7 +234,6 @@
 		6E8739090F77B4F400402313 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC4D9900D1199DE008AB9CF /* QTKit.framework */; };
 		6E87390A0F77B4F400402313 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC4D9940D1199E9008AB9CF /* QuartzCore.framework */; };
 		6E87390B0F77B4F400402313 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD10D11D72200664F81 /* GLUT.framework */; };
-		6E87390C0F77B4F400402313 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD50D11D73000664F81 /* QuickTime.framework */; };
 		6E87390D0F77B4F400402313 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD90D11D74900664F81 /* OpenGL.framework */; };
 		6E87390E0F77B4F400402313 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E90B19A0D1ED84700A21C36 /* Accelerate.framework */; };
 		6E87390F0F77B4F400402313 /* WiiRemote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E9394300DC775DC00D21ADC /* WiiRemote.framework */; };
@@ -389,7 +388,6 @@
 		6EC4DDB80D144EA7008AB9CF /* CIImage+MakeBitmaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4DDB70D144EA7008AB9CF /* CIImage+MakeBitmaps.m */; };
 		6EC632CF0ED9A2170094958E /* GCKGradientOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC632CE0ED9A2170094958E /* GCKGradientOverlayView.m */; };
 		6EC86AD20D11D72200664F81 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD10D11D72200664F81 /* GLUT.framework */; };
-		6EC86AD60D11D73000664F81 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD50D11D73000664F81 /* QuickTime.framework */; };
 		6EC86ADA0D11D74900664F81 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC86AD90D11D74900664F81 /* OpenGL.framework */; };
 		6ECA93FD0DD1D91200A9ABE3 /* GCKPlatinumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECA93FC0DD1D91200A9ABE3 /* GCKPlatinumView.m */; };
 		6ECA94D20DD1E9A000A9ABE3 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6ECA94D10DD1E9A000A9ABE3 /* UserDefaults.plist */; };
@@ -740,7 +738,6 @@
 		6EC632CD0ED9A2170094958E /* GCKGradientOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCKGradientOverlayView.h; sourceTree = "<group>"; };
 		6EC632CE0ED9A2170094958E /* GCKGradientOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCKGradientOverlayView.m; sourceTree = "<group>"; };
 		6EC86AD10D11D72200664F81 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = /System/Library/Frameworks/GLUT.framework; sourceTree = "<absolute>"; };
-		6EC86AD50D11D73000664F81 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
 		6EC86AD90D11D74900664F81 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		6ECA93FB0DD1D91200A9ABE3 /* GCKPlatinumView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCKPlatinumView.h; sourceTree = "<group>"; };
 		6ECA93FC0DD1D91200A9ABE3 /* GCKPlatinumView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCKPlatinumView.m; sourceTree = "<group>"; };
@@ -855,7 +852,6 @@
 				6E8739090F77B4F400402313 /* QTKit.framework in Frameworks */,
 				6E87390A0F77B4F400402313 /* QuartzCore.framework in Frameworks */,
 				6E87390B0F77B4F400402313 /* GLUT.framework in Frameworks */,
-				6E87390C0F77B4F400402313 /* QuickTime.framework in Frameworks */,
 				6E87390D0F77B4F400402313 /* OpenGL.framework in Frameworks */,
 				6E87390E0F77B4F400402313 /* Accelerate.framework in Frameworks */,
 				6E87390F0F77B4F400402313 /* WiiRemote.framework in Frameworks */,
@@ -893,7 +889,6 @@
 				6EC4D9910D1199DE008AB9CF /* QTKit.framework in Frameworks */,
 				6EC4D9950D1199E9008AB9CF /* QuartzCore.framework in Frameworks */,
 				6EC86AD20D11D72200664F81 /* GLUT.framework in Frameworks */,
-				6EC86AD60D11D73000664F81 /* QuickTime.framework in Frameworks */,
 				6EC86ADA0D11D74900664F81 /* OpenGL.framework in Frameworks */,
 				6E90B19B0D1ED84700A21C36 /* Accelerate.framework in Frameworks */,
 				6E9394310DC775DC00D21ADC /* WiiRemote.framework in Frameworks */,
@@ -934,7 +929,6 @@
 				6E07FD090DF03ECC00FCB681 /* WebKit.framework */,
 				6E90B19A0D1ED84700A21C36 /* Accelerate.framework */,
 				6EC86AD90D11D74900664F81 /* OpenGL.framework */,
-				6EC86AD50D11D73000664F81 /* QuickTime.framework */,
 				6EC86AD10D11D72200664F81 /* GLUT.framework */,
 				6EC4D9940D1199E9008AB9CF /* QuartzCore.framework */,
 				6EC4D9900D1199DE008AB9CF /* QTKit.framework */,

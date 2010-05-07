@@ -84,7 +84,9 @@ static CIKernel* tFCIRatioImageBlendFilter = nil;
 	if (nil == tFCIRatioImageBlendFilter) {
 		NSString*	kernelCode = [NSString stringWithContentsOfFile:
 								  [[NSBundle bundleForClass:[self class]]
-								   pathForResource:@"TFCIRatioImageBlendFilter" ofType:@"cikernel"]];
+								   pathForResource:@"TFCIRatioImageBlendFilter" ofType:@"cikernel"]
+														 encoding:NSUTF8StringEncoding
+															error:NULL];
 		
 		NSArray *kernels = [CIKernel kernelsWithString:kernelCode];
 		

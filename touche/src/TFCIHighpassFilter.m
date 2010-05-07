@@ -68,7 +68,9 @@ static CIKernel*	tfSubtractKernel = nil;
 	if (nil == tfSubtractKernel) {
 		NSString*	kernelCode = [NSString stringWithContentsOfFile:
 								  [[NSBundle bundleForClass:[self class]]
-								   pathForResource:@"TFCIBackgroundSubtractionFilter" ofType:@"cikernel"]];
+								   pathForResource:@"TFCIBackgroundSubtractionFilter" ofType:@"cikernel"]
+														 encoding:NSUTF8StringEncoding
+															error:NULL];
 		
 		tfSubtractKernel = [[[CIKernel kernelsWithString:kernelCode] objectAtIndex:0] retain];		
 	}

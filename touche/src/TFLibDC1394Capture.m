@@ -263,11 +263,11 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		dc1394feature_info_t featureInfo;
 		featureInfo.id = currentFeature;
 		
-		if (DC1394_SUCCESS != dc1394_feature_get(_camera, &featureInfo))
-			continue;
-		
 		_supportedFeatures[i] = NO;
 		_automodeFeatures[i] = NO;
+		
+		if (DC1394_SUCCESS != dc1394_feature_get(_camera, &featureInfo))
+			continue;
 		
 		int j;
 		for (j=0; j<featureInfo.modes.num; j++)

@@ -188,8 +188,14 @@ NSString* TSLocalizedLabelForDeviceInfoKey(NSString* deviceInfoKey);
 	// flash LocalConnection distributor
 	TFTUIOFlashLCTrackingDataDistributor* flashLCDistributor = [[TFTUIOFlashLCTrackingDataDistributor alloc] init];
 	flashLCDistributor.delegate = self;
+	flashLCDistributor.motionThreshold = DEFAULT_MOTION_THRESHOLD;
 	
 	[flashLCDistributor startDistributorWithObject:nil error:NULL];
+	
+	[flashLCDistributor bind:@"motionThreshold"
+					toObject:[NSUserDefaultsController sharedUserDefaultsController]
+				 withKeyPath:[NSString stringWithFormat:@"values.%@", PrefKeyPixelsForMotion]
+					 options:nil];
 	
 	[_distributionCenter addDistributor:flashLCDistributor];
 	[flashLCDistributor release];

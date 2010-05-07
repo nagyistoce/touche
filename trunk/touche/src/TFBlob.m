@@ -32,8 +32,10 @@
 @implementation TFBlob
 
 @synthesize center, previousCenter, acceleration, axisAlignedBoundingBox, orientedBoundingBox,
-			boundingBox=axisAlignedBoundingBox, edgeVertices, label, isUpdate, createdAt, previousCreatedAt, trackedSince,
+			edgeVertices, label, isUpdate, createdAt, previousCreatedAt, trackedSince,
 			area;
+
+@dynamic boundingBox;
 
 + (id)blob
 {
@@ -125,6 +127,21 @@
 	trackedSince = createdAt;
 			
 	return self;
+}
+
+#pragma mark -
+#pragma mark @dynamic
+
+- (TFBlobBox*)boundingBox
+{
+	return self->axisAlignedBoundingBox;
+}
+
+- (void)setBoundingBox:(TFBlobBox*)newBox
+{
+	[newBox retain];
+	[self->axisAlignedBoundingBox release];
+	self->axisAlignedBoundingBox = newBox;
 }
 
 #pragma mark -
